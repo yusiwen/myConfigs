@@ -1,4 +1,4 @@
-#include "/home/yusiwen/.colors/solarized"
+#include "/home/yusiwen/myConfigs/colors/solarized"
 
 Xft.autohint: 0
 Xft.lcdfilter: lcddefault
