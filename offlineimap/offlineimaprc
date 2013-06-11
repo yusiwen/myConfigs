@@ -1,0 +1,39 @@
+[general]
+ui = ttyui
+accounts = yusiwen
+pythonfile=~/.mutt/offlineimap.py
+fsync = False
+
+[Account yusiwen]
+localrepository = yusiwen-Local
+remoterepository = yusiwen-Remote
+status_backend = sqlite
+postsynchook = notmuch new
+
+[Repository yusiwen-Local]
+type = Maildir
+localfolders = ~/.mail/gmail.com
+nametrans = lambda folder: {'drafts':  '[Gmail]/草稿',
+                            'sent':    '[Gmail]/已发邮件',
+                            'flagged': '[Gmail]/已加星标',
+                            'trash':   '[Gmail]/已删除邮件',
+                            'archive': '[Gmail]/所有邮件',
+                            }.get(folder, folder)
+
+[Repository yusiwen-Remote]
+maxconnections = 1
+type = Gmail
+remoteuser = yusiwen@gmail.com
+remotepasseval = keyring.get_password("offlineimap","yusiwen@gmail.com") 
+realdelete = no
+nametrans = lambda folder: {'[Gmail]/草稿':    'drafts',
+                            '[Gmail]/已发邮件': 'sent',
+                            '[Gmail]/已加星标':   'flagged',
+                            '[Gmail]/已删除邮件':     'trash',
+                            '[Gmail]/所有邮件':  'archive',
+                            }.get(folder, folder)
+folderfilter = lambda folder: folder not in ['[Gmail]/已删除邮件',
+                                             '[Gmail]/重要',
+                                             '[Gmail]/垃圾邮件',
+                                             ]
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
