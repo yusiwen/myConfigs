@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 # ~/.xinitrc
+# is a symbolic link to ~/myConfigs/xinitrc
 #
 # Executed by startx (run your window manager from here)
 

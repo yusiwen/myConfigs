@@ -1,0 +1,14 @@
+JAVA_HOME=/opt/java/jdk1.6.0_45
+export JAVA_HOME
+
+M2_HOME=/data/apache-maven-2.2.1
+export M2_HOME
+
+PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+export PATH
+
+LD_LIBRARY_PATH=/opt/Qt5.0.2/5.0.2/gcc_64/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+
+WINEARCH=win32
+export WINEARCH

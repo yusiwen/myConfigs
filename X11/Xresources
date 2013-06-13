@@ -1,3 +1,5 @@
+! ~/.Xresources is a symbolic link to ~/myConfigs/Xresources
+
 #include "/home/yusiwen/myConfigs/colors/solarized"
 
 Xft.autohint: 0
