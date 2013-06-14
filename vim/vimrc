@@ -321,20 +321,7 @@ set nocompatible               " be iMproved
   set expandtab
 " }}}
 " Invisibles {{{
-  set listchars=tab:>\ ,eol:<
-  set list
-  nmap <silent> <F5> :set list!<CR>
-" }}}
-" Tabstops {{{
-  set tabstop=2
-  set shiftwidth=2
-  set softtabstop=2
-  set autoindent
-  set smartindent
-  set expandtab
-" }}}
-" Invisibles {{{
-  set listchars=tab:>\ ,eol:<
+  set listchars=tab:▸\ ,eol:¬
   set list
   nmap <silent> <F5> :set list!<CR>
 " }}}
