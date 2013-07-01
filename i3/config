@@ -20,6 +20,14 @@ set $mod Mod4
 # chose a FreeType font, such as:
 font pango:Sans 9
 
+# By default, window focus follows your mouse movements. However, if you have a
+# setup where your mouse usually is in your way (like a touchpad on your laptop
+# which you do not want to disable completely), you might want to disable focus
+# follows mouse and control focus only by using your keyboard. The mouse will
+# still be useful inside the currently active window (for example to click on
+# links in your browser window).
+focus_follows_mouse no
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -37,6 +45,7 @@ floating_modifier $mod
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Return exec urxvtc
+bindsym $mod+Shift+Return exec xfce4-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -161,8 +170,10 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# bind key for i3lock
+bindsym $mod+Control+l exec i3lock -c 424242
 # bind key for ec.py (Eclipse Environment Chooser)
-bindsym $mod+p exec /home/yusiwen/bin/ec.py
+bindsym $mod+Shift+p exec /home/yusiwen/bin/ec.py
 # bind key for Google Chrome Browser
 bindsym $mod+z exec google-chrome
 # bind key for Thunderbird mail client
@@ -247,3 +258,4 @@ for_window [class="Komodo edit" title="Software Update"] floating enable
 for_window [class="Font-manager"] floating enable
 for_window [class="Grub-customizer"] floating enable
 for_window [class="Thunar"] floating enable
+for_window [class="Flareget"] floating enable
