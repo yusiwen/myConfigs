@@ -177,7 +177,7 @@ bindsym $mod+Shift+p exec /home/yusiwen/bin/ec.py
 # bind key for Google Chrome Browser
 bindsym $mod+z exec google-chrome
 # bind key for Thunderbird mail client
-bindsym $mod+Shift+x exec thunderbird
+bindsym $mod+Shift+x exec geary
 # bind key for Alpine, run in a new urxvt window
 bindsym $mod+x exec urxvtc -e mutt
 # bind key for weechat-curses, run in a new urxvt window
@@ -210,7 +210,7 @@ exec --no-startup-id source /home/yusiwen/keyring.sh
 exec --no-startup-id xcompmgr -n
 exec --no-startup-id dunst
 exec feh --bg-scale /home/yusiwen/.wallpaper/black_sheep_1366x768.jpg
-exec /home/yusiwen/goagent-goagent-4bc4752/local/goagent-gtk.py
+exec /home/yusiwen/goagent-3.0/local/goagent-gtk.py
 exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 #exec --no-startup-id /home/yusiwen/bin/cbatticon -u 30
@@ -227,7 +227,7 @@ exec --no-startup-id /home/yusiwen/mTouch.py>/dev/null
 
 # Assign applications to workspace
 assign [class="Google-chrome"] → 2:Web
-assign [class="Thunderbird"] → 3:Mail
+assign [class="Geary"] → 3:Mail
 assign [class="URxvt" title="alpine"] → 3:Mail
 assign [class="URxvt" title="mutt"] → 3:Mail
 assign [class="Calibre-gui"] → 4:Book
@@ -235,12 +235,14 @@ assign [class="Wiznote"] → 4:Book
 assign [class="Eric4.py"] → 5:Python
 assign [class="Komodo"] → 5:Python
 assign [class="Eclipse"] → 6:Eclipse
+assign [class="Java" title="Eclipse"] → 6:Eclipse
 assign [class="Wps"] → 7:Office
 assign [class="Et"] → 7:Office
 assign [class="VirtualBox"] → 8:VBox
 assign [class="URxvt" title="weechat"] → 9:Chat
 
 for_window [class="Eclipse" title="Workspace Launcher "] floating enable
+for_window [class="Java" title="Eclipse "] floating enable
 for_window [class="Gimp"] floating enable
 for_window [class="Gpick"] floating enable
 for_window [class="Volti"] floating enable

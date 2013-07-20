@@ -1,4 +1,5 @@
-text/html; w3m -I %{charset} -T text/html; copiousoutput;
+text/plain; more %s; copiousoutput; nametemplate=%s.txt
+text/html; w3m -I %{charset} -T text/html -F -dump %s; copiousoutput; nametemplate=%s.html
 image/*; feh %s
 application/msword; wps %s
 application/vnd.ms-excel; et '%s'
