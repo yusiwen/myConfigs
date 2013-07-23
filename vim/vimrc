@@ -131,7 +131,7 @@ set nocompatible               " be iMproved
     set laststatus=2                " always show statusline
 
     " set gfn=Pragmata\ 6.5
-    set gfn=Monospace 9
+    set gfn=Monospace\ 9
     " set gfn=Mensch\ 7
 
     set lines=40                    " Height
