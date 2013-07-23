@@ -1,0 +1,48 @@
+# ~/myConfigs/mutt/muttrc.imap
+# mutt with IMAP account configuration file.
+# ~/.mutt/muttrc.imap is a symblic link to ~/myConfigs/mutt/muttrc.imap
+
+# loading general configurations within ~/.mutt/muttrc.general
+source /home/yusiwen/.mutt/muttrc.general
+
+# Gmail IMAP Account details
+set imap_user = "yusiwen@gmail.com"
+set smtp_url = "smtp://yusiwen@smtp.gmail.com:587/"
+# use mutt_get_imap_passwd.py script to get password from gnome-keyring
+#   and set "imap_pass" and "smtp_pass"
+# ~/.mutt/mutt_get_imap_passwd.py is a symbolic link to 
+#   ~/myConfigs/mutt/mutt_get_imap_passwd.py
+# see ~/myConfigs/mutt/mutt_get_imap_passwd.py
+source "~/.mutt/mutt_get_imap_passwd.py"|
+
+
+# IMAP folder settings
+set folder = "imaps://imap.gmail.com:993"
+#set spoolfile = "+INBOX"
+set spoolfile = "+[Gmail]/All Mail"
+set postponed = "+[Gmail]/Drafts"
+set trash = "+[Gmail]/Trash"
+# Gmail will automatically save sent mails, no need to record them in +[Gmail]/Sent again.
+set record = ~/.mutt/sent/sent
+set header_cache = ~/.mutt/cache
+set message_cachedir = ~/.mutt/cache
+
+unset imap_passive
+unset imap_idle
+
+set imap_check_subscribed
+set mail_check = 30
+set timeout = 10
+set imap_keepalive = 30
+
+# mutt-patched
+set sidebar_delim = ' |'
+set sidebar_width = 33
+set sidebar_visible = no
+#color sidebar_new color221 color233
+
+# Sidebar Navigation ---------------------------------
+bind index,pager <down> sidebar-next
+bind index,pager <up> sidebar-prev
+bind index,pager <right> sidebar-open
+

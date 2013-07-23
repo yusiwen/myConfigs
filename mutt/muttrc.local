@@ -1,0 +1,15 @@
+# ~/myConfigs/mutt/muttrc.local
+# mutt with local offlineimap maildir configuration file.
+# ~/.mutt/muttrc.local is a symblic link to ~/myConfigs/mutt/muttrc.local
+
+# loading configurations within muttrc.general
+source /home/yusiwen/.mutt/muttrc.general
+
+# Basic config, you can leave this as is
+set hostname = "gmail.com"
+set folder = ~/.mail
+set spoolfile = "+gmail.com/archive"
+set postponed = "+[Gmail]/Drafts"
+set trash = "+[Gmail]/Trash"
+# Gmail will automatically save sent mails, no need to record them in +[Gmail]/Sent again.
+set record = ~/.mutt/sent/sent
