@@ -15,4 +15,4 @@ alias grep='grep --color=auto --exclude-dir=\.svn'
 # Shortcut for using the Kdiff3 tool for svn diffs.
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
 
-alias uksmstat='uksmstat -auscgpppvv'
+# alias uksmstat='uksmstat -auscgpppvv'

@@ -1,0 +1,11 @@
+JAVA_HOME=/opt/java/jdk1.6.0_45
+export JAVA_HOME
+
+M2_HOME=/data/apache-maven-2.2.1
+export M2_HOME
+
+PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+export PATH
+
+WINEARCH=win32
+export WINEARCH
