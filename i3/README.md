@@ -1,5 +1,11 @@
 configs
 =======
+1. i3-wm session icon used by LightDM session chooser:
 cd /usr/share/unity-greeter
-sudo ln -sf /home/yusiwen/myConfigs/i3/i3.png custom_i3_badge.png 
+sudo cp /home/yusiwen/myConfigs/i3/i3.png custom_i3_badge.png 
+
+2. lock screen when restoring from suspension using i3lock.
+   see pm-utils and xautolock.
+cd /etc/pm/sleep.d
+sudo cp /home/yusiwen/myConfigs/i3/i3lock.pm 66_i3lock
 
