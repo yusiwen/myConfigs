@@ -7,5 +7,5 @@ export M2_HOME
 PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 export PATH
 
-WINEARCH=win32
-export WINEARCH
+#WINEARCH=win32
+#export WINEARCH
