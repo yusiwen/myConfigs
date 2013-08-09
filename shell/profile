@@ -7,8 +7,16 @@ export M2_HOME
 PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 export PATH
 
-LD_LIBRARY_PATH=/opt/Qt5.0.2/5.0.2/gcc_64/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH
+QT5_HOME=/home/yusiwen/Qt5.1.0
+export QT5_HOME
+
+# Since Ubuntu 9.04 Jaunty Jackalope, LD_LIBRARY_PATH cannot be set in $HOME/.profile, 
+# /etc/profile, nor /etc/environment files. 
+# You must use /etc/ld.so.conf.d/*.conf configuration files. 
+# See Launchpad bug #366728 for more information.
+# -----------------------------------------------------------
+# LD_LIBRARY_PATH=$QT5_HOME/5.1.0/gcc_64/lib:$LD_LIBRARY_PATH
+# export LD_LIBRARY_PATH
 
 WINEARCH=win32
 export WINEARCH
