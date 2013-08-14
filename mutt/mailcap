@@ -3,5 +3,6 @@ text/html; w3m -I %{charset} -T text/html -F -dump %s; copiousoutput; nametempla
 image/*; feh %s
 application/msword; wps %s
 application/vnd.ms-excel; et '%s'
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; et '%s'
 application/vnd.ms-powerpoint; wpp '%s'
 application/pdf; evince %s
