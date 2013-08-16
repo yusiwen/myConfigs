@@ -40,6 +40,7 @@ set nocompatible               " be iMproved
   " Bundle 'fholgado/minibufexpl.vim'
   Bundle 'shemerey/vim-project'
   " Bundle 'Twinside/vim-codeoverview'
+  Bundle 'vim-scripts/fcitx.vim'
 
   " vim-scripts repos
 
@@ -399,4 +400,8 @@ set nocompatible               " be iMproved
   nmap <Space> @q
   " Map @ to + for more comfortable macros on DE kb layout
   nmap + @
+" }}}
+" Colorizer {{{
+  let g:colorizer_nomap = 1
+  let g:colorizer_startup = 0
 " }}}
