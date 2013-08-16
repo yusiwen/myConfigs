@@ -41,6 +41,7 @@ set nocompatible               " be iMproved
   Bundle 'shemerey/vim-project'
   " Bundle 'Twinside/vim-codeoverview'
   Bundle 'vim-scripts/fcitx.vim'
+  " Bundle 'vim-scripts/TabBar'
 
   " vim-scripts repos
 
@@ -90,9 +91,8 @@ set nocompatible               " be iMproved
   " Delete previous word with C-BS
   imap <C-BS> <C-W>
 
-  " Toggle Buffer Selection and list Tag Lists
+  " Toggle Buffer Selection
   map <F2> <Esc>:TSelectBuffer<CR>
-  map <F4> <Esc>:TlistToggle<CR>
 
    
   " Set text wrapping toggles
@@ -162,7 +162,7 @@ set nocompatible               " be iMproved
 
   function! SetRightStatus()
     setl statusline+=
-          \%5*\ %{StatusFileencoding()}%7*\ ┃
+          \%5*\ %{StatusFileEncoding()}%7*\ ┃
           \%5*\ %{StatusBuffersize()}%7*\ ┃
           \%=%<%7*\ ┃
           \%5*\ %{StatusWrapON()}
@@ -204,7 +204,7 @@ set nocompatible               " be iMproved
 
   " Some Functions shamelessly ripped and modified from Cream
   "fileencoding (three characters only) {{{
-  function! StatusFileencoding()
+  function! StatusFileEncoding()
     if &fileencoding == ""
       if &encoding != ""
         return &encoding
@@ -363,8 +363,10 @@ set nocompatible               " be iMproved
 " NERDTree {{{
   map <F3> :NERDTreeToggle<CR>
 
-  let NERDTreeChDirMode = 2
-  let NERDTreeShowBookmarks = 1
+  let g:NERDTreeChDirMode = 2
+  let g:NERDTreeShowBookmarks = 1
+  let g:NERDTreeWinPos = "right"
+  let g:NERDTreeShowHidden = 1
 " }}}
 " Wrapping {{{
   set linebreak
@@ -404,4 +406,9 @@ set nocompatible               " be iMproved
 " Colorizer {{{
   let g:colorizer_nomap = 1
   let g:colorizer_startup = 0
+" }}}
+" TagList {{{
+  map <F4> <Esc>:TlistToggle<CR>
+  let g:Tlist_WinWidth = 40
+  let g:Tlist_Exit_OnlyWindow = 1
 " }}}
