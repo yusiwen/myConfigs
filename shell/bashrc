@@ -36,11 +36,6 @@ if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
 
-# Add bash aliases.
-if [ -f ~/.bash_aliases ]; then
-    source ~/.bash_aliases
-fi
-
 if [[ $(tty) == \/dev\/tty[0-9]* ]] ; then
   fbterm
 fi
