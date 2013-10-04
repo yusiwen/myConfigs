@@ -1,0 +1,6 @@
+[submodule "solarized"]
+	path = solarized
+	url = git@github.com:yusiwen/solarized.git
+[submodule "oh-my-zsh"]
+	path = oh-my-zsh
+	url = git@github.com:yusiwen/oh-my-zsh.git

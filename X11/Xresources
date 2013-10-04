@@ -1,6 +1,6 @@
 ! ~/.Xresources is a symbolic link to ~/myConfigs/Xresources
 
-#include "/home/yusiwen/myConfigs/colors/solarized"
+#include "/home/yusiwen/myConfigs/solarized/xresources/solarized"
 
 Xft.autohint: 0
 Xft.lcdfilter: lcddefault
