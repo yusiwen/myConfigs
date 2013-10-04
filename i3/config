@@ -187,6 +187,8 @@ bindsym $mod+Shift+q mode "Exit >> (L)ogout, (X)Reboot, (P)oweroff  (C)Reload (R
 
 # bind key for i3lock
 bindsym $mod+Control+l exec i3lock -i /home/yusiwen/.wallpaper/lock.png
+# bind key for pidgin
+bindsym $mod+p exec pidgin
 # bind key for ec.py (Eclipse Environment Chooser)
 bindsym $mod+Shift+p exec /home/yusiwen/bin/ec.py
 # bind key for Google Chrome Browser
@@ -223,6 +225,7 @@ bar {
 #        }
 }
 
+exec --no-startup-id xbacklight -set 75
 exec --no-startup-id xrdb -merge /home/yusiwen/.Xresources
 exec --no-startup-id source /home/yusiwen/keyring.sh
 exec --no-startup-id xcompmgr -n
@@ -239,9 +242,10 @@ exec --no-startup-id indicator-virtualbox
 exec --no-startup-id urxvtd -q -o -f
 exec --no-startup-id volti
 #exec --no-startup-id goldendict
-exec --no-startup-id mpd
+exec --no-startup-id mpd ~/.mpd/mpd.conf
 exec --no-startup-id /home/yusiwen/mTouch.py>/dev/null
 exec --no-startup-id parcellite
+exec --no-startup-id orage
 
 # Assign applications to workspace
 assign [class="Google-chrome"] → 2:Web
@@ -266,8 +270,8 @@ for_window [class="Volti"] floating enable
 for_window [class="Volti-mixer"] floating enable
 for_window [class="KeePass2"] floating enable
 for_window [class="Goldendict"] floating enable
-for_window [class="Ubuntu-tweak"] floating enable
-for_window [class="URxvt" title="ncmpcpp"] floating enable
+# for_window [class="Ubuntu-tweak"] floating enable
+for_window [class="URxvt" title="^ncmpcpp"] floating enable
 for_window [class="URxvt" title="^mc"] floating enable
 for_window [class="Komodo edit" title="About Komodo"] floating enable
 for_window [class="Komodo edit" title="Preferences"] floating enable
@@ -276,6 +280,7 @@ for_window [class="Komodo edit" title="Komodo Edit Help"] floating enable
 for_window [class="Komodo edit" title="Software Update"] floating enable
 for_window [class="Font-manager"] floating enable
 for_window [class="Grub-customizer"] floating enable
-# for_window [class="Thunar"] floating enable
+for_window [class="Thunar" title="文件操作进度"] floating enable
 for_window [class="Flareget"] floating enable
 for_window [class="Catfish"] floating enable
+for_window [class="Pidgin"] floating enable

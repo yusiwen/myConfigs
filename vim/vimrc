@@ -39,6 +39,8 @@ set nocompatible               " be iMproved
   Bundle 'lilydjwg/colorizer'
   " Bundle 'fholgado/minibufexpl.vim'
   Bundle 'shemerey/vim-project'
+  Bundle 'kien/ctrlp.vim'
+  Bundle 'altercation/vim-colors-solarized'
   " Bundle 'Twinside/vim-codeoverview'
   Bundle 'vim-scripts/fcitx.vim'
   " Bundle 'vim-scripts/TabBar'
@@ -136,7 +138,9 @@ set nocompatible               " be iMproved
     set lines=40                    " Height
     set columns=85                  " Width
 
-    colorscheme peachpuff 
+    set background=light
+
+    colorscheme solarized
 
   else
 "    set t_Co=256
@@ -408,4 +412,5 @@ set nocompatible               " be iMproved
   map <F4> <Esc>:TlistToggle<CR>
   let g:Tlist_WinWidth = 40
   let g:Tlist_Exit_OnlyWindow = 1
+  let g:Tlist_Ctags_Cmd = '/usr/bin/ctags-exuberant'
 " }}}
