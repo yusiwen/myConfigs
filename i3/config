@@ -259,6 +259,7 @@ assign [class="Eclipse"] → 6:Eclipse
 assign [class="Java" title="Eclipse"] → 6:Eclipse
 assign [class="Wps"] → 7:Office
 assign [class="Et"] → 7:Office
+assign [class="Wpp"] → 7:Office
 assign [class="VirtualBox"] → 8:VBox
 assign [class="URxvt" title="weechat"] → 9:Chat
 
