@@ -412,5 +412,6 @@ set nocompatible               " be iMproved
   map <F4> <Esc>:TlistToggle<CR>
   let g:Tlist_WinWidth = 40
   let g:Tlist_Exit_OnlyWindow = 1
+  let g:Tlist_Sort_Type = "name"
   let g:Tlist_Ctags_Cmd = '/usr/bin/ctags-exuberant'
 " }}}
