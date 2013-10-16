@@ -5,4 +5,5 @@ application/msword; wps %s
 application/vnd.ms-excel; et '%s'
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; et '%s'
 application/vnd.ms-powerpoint; wpp '%s'
+application/vnd.openxmlformats-officedocument.presentationml.presentation; wpp '%s'
 application/pdf; evince %s

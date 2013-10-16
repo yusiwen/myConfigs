@@ -34,6 +34,7 @@ set nocompatible               " be iMproved
   Bundle 'tomtom/tselectbuffer_vim'
   Bundle 'tsaleh/vim-matchit'
   Bundle 'vim-scripts/taglist.vim'
+  Bundle 'majutsushi/tagbar'
   Bundle 'Townk/vim-autoclose'
   Bundle 'trapd00r/x11colors.vim'
   Bundle 'lilydjwg/colorizer'
@@ -414,4 +415,7 @@ set nocompatible               " be iMproved
   let g:Tlist_Exit_OnlyWindow = 1
   let g:Tlist_Sort_Type = "name"
   let g:Tlist_Ctags_Cmd = '/usr/bin/ctags-exuberant'
+" }}}
+" TagBar {{{
+  map <F8> <Esc>:TagbarToggle<CR>
 " }}}
