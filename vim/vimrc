@@ -409,6 +409,13 @@ set nocompatible               " be iMproved
   let g:colorizer_nomap = 1
   let g:colorizer_startup = 0
 " }}}
+" CTags {{{
+  map <C-\> <Esc>:tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+  map <C-T> <Esc>:tabnew<CR>
+  map <C-W> <Esc>:confirm bdelete<CR>
+  map <C-Tab> <Esc>:tabnext<CR>
+  map <C-S-Tab> <Esc>:tabpreviuos<CR>
+" }}}
 " TagList {{{
   map <F4> <Esc>:TlistToggle<CR>
   let g:Tlist_WinWidth = 40
