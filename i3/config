@@ -113,6 +113,10 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
+# switch between the current and the previously focused one
+bindsym $mod+b workspace prev
+bindsym $mod+n workspace next
+
 # switch to workspace
 bindsym $mod+1 workspace 1:Main
 bindsym $mod+2 workspace 2:Web
@@ -133,7 +137,7 @@ bindsym $mod+Shift+4 move container to workspace 4:Book
 bindsym $mod+Shift+5 move container to workspace 5:Python
 bindsym $mod+Shift+6 move container to workspace 6:Eclipse
 bindsym $mod+Shift+7 move container to workspace 7:Office
-bindsym $mod+Shift+8 move container to workspace 8:Vbox
+bindsym $mod+Shift+8 move container to workspace 8:VMs
 bindsym $mod+Shift+9 move container to workspace 9:Chat
 bindsym $mod+Shift+0 move container to workspace 10
 
@@ -207,6 +211,8 @@ bindsym $mod+m exec urxvtc -geometry 160x42 -e mc -c
 bindsym $mod+Shift+m exec thunar
 # bind key for Catfish
 bindsym $mod+c exec catfish
+# bind key for vmplayer winxp
+bindsym $mod+Shift+i exec vmplayer ~/vmwares/winxp/winxp.vmx
 
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -243,7 +249,7 @@ exec --no-startup-id urxvtd -q -o -f
 exec --no-startup-id volti
 #exec --no-startup-id goldendict
 exec --no-startup-id mpd ~/.mpd/mpd.conf
-exec --no-startup-id /home/yusiwen/mTouch.py>/dev/null
+#exec --no-startup-id /home/yusiwen/mTouch.py>/dev/null
 exec --no-startup-id parcellite
 exec --no-startup-id orage
 
@@ -260,7 +266,8 @@ assign [class="Java" title="Eclipse"] → 6:Eclipse
 assign [class="Wps"] → 7:Office
 assign [class="Et"] → 7:Office
 assign [class="Wpp"] → 7:Office
-assign [class="VirtualBox"] → 8:VBox
+assign [class="VirtualBox"] → 8:VMs
+assign [class="Vmplayer"] → 8:VMs
 assign [class="URxvt" title="weechat"] → 9:Chat
 
 for_window [class="Eclipse" title="Workspace Launcher "] floating enable

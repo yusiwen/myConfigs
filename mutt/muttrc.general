@@ -81,7 +81,13 @@ set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)
 set date_format = "%m/%d"
 # set index_format = "[%Z]  %D  %-20.20F  %s"
 set index_format = "%4C [%Z] %X %D %-35.35L %?M?(#%03M)&(%4c)? %s"
+
+# Threads settings -----------------------------------
 set sort = threads                         # like gmail
+unset strict_threads
+set sort_re
+set reply_regexp = "^(re([\[0-9\]+])*|回复|答复|回覆)[:：][ \t]*"
+
 set sort_aux = reverse-last-date-received  # like gmail
 set uncollapse_jump                        # don't collapse on an unread message
 set sort_re                                # thread based on regex
