@@ -82,6 +82,8 @@ set nocompatible               " be iMproved
 
   set noshowmode        " don't display mode, it's already in the status line
 
+  set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+
   let mapleader=","
   let maplocalleader=","
   
@@ -384,7 +386,7 @@ set nocompatible               " be iMproved
   imap <C-Space> <C-X><Space>
   imap <C-CR> <C-X><CR>
 " }}}
-" 'Bubbling' {{{
+" Bubbling {{{
   nmap <C-up> [e
   nmap <C-down> ]e
   vmap <C-up> [egv

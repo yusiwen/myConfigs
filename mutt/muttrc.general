@@ -30,8 +30,6 @@ set rfc2047_parameters # attachment file auto decoding
 set include
 set delete
 set quit
-set sort = 'threads'
-set sort_aux = 'reverse-last-date-received'
 set auto_tag = yes
 set query_command="goobook query '%s'"
 set pipe_decode
@@ -84,14 +82,12 @@ set index_format = "%4C [%Z] %X %D %-35.35L %?M?(#%03M)&(%4c)? %s"
 
 # Threads settings -----------------------------------
 set sort = threads                         # like gmail
+set sort_aux = reverse-last-date-received
 unset strict_threads
 set sort_re
-set reply_regexp = "^(re([\[0-9\]+])*|回复|答复|回覆)[:：][ \t]*"
+set reply_regexp = "^([Rr][Ee]([\[0-9\]+])*|回复|答复|回覆|[Ff][Ww][Dd]|转发)[:：][ \t]*"
 
-set sort_aux = reverse-last-date-received  # like gmail
 set uncollapse_jump                        # don't collapse on an unread message
-set sort_re                                # thread based on regex
-set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 
 # Pager View Options ---------------------------------
 set pager_index_lines = 10 # number of index lines to show
