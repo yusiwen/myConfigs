@@ -38,13 +38,14 @@ set nocompatible               " be iMproved
   Bundle 'Townk/vim-autoclose'
   Bundle 'trapd00r/x11colors.vim'
   Bundle 'lilydjwg/colorizer'
-  " Bundle 'fholgado/minibufexpl.vim'
+" Bundle 'fholgado/minibufexpl.vim'
   Bundle 'shemerey/vim-project'
   Bundle 'kien/ctrlp.vim'
   Bundle 'altercation/vim-colors-solarized'
-  " Bundle 'Twinside/vim-codeoverview'
+  Bundle 'chriskempson/base16-vim'
+" Bundle 'Twinside/vim-codeoverview'
   Bundle 'vim-scripts/fcitx.vim'
-  " Bundle 'vim-scripts/TabBar'
+" Bundle 'vim-scripts/TabBar'
 
   " vim-scripts repos
 
@@ -143,14 +144,16 @@ set nocompatible               " be iMproved
 
     set background=light
 
-    colorscheme solarized
+"   colorscheme solarized
+    colorscheme base16-solarized
 
   else
 "    set t_Co=256
     let g:solarized_termcolors=16
     let g:solarized_contrast="normal"
     let g:solarized_visibility="normal"
-    colorscheme solarized
+"   colorscheme solarized
+    colorscheme base16-solarized
   endif
 " }}}
 " Status line {{{
