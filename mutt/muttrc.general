@@ -6,10 +6,10 @@
 #    ~/myConfigs/mutt/mutt-colors-solarized/
 
 #uncomment the colorscheme you want to use, and comment out the others
-#source $MAILCONF/mutt-colors-solarized/mutt-colors-solarized-dark-16.muttrc
-#source $MAILCONF/mutt-colors-solarized/mutt-colors-solarized-light-16.muttrc
-source /home/yusiwen/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
-#source $MAILCONF/mutt-colors-solarized/mutt-colors-solarized-light-256.muttrc
+source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-16.muttrc
+#source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-light-16.muttrc
+#source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
+#source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-light-256.muttrc
 
 # Basic config, you can leave this as is
 set hostname = "gmail.com"
