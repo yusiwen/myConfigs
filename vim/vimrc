@@ -139,12 +139,12 @@ set nocompatible               " be iMproved
     set guioptions-=r               " No Scrollbar right
     set guioptions-=r               " No Scrollbar right when split
 
-    set gfn=Monospace\ 9
+    set gfn=Meslo\ LG\ S\ DZ\ for\ Powerline\ 10
 
     set lines=40                    " Height
     set columns=85                  " Width
 
-    set background=light
+    set background=dark
 
 "   colorscheme solarized
     colorscheme base16-solarized

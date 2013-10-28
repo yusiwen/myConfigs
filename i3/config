@@ -208,7 +208,7 @@ bindsym $mod+o exec urxvtc -e ncmpcpp
 # bind key for MidnightCommander, run in a new urxvt window
 bindsym $mod+m exec urxvtc -geometry 160x42 -e mc -c
 # bind key for thunar
-bindsym $mod+Shift+m exec thunar
+bindsym $mod+Shift+m exec nemo --no-desktop
 # bind key for Catfish
 bindsym $mod+c exec catfish
 # bind key for vmplayer winxp
@@ -240,11 +240,11 @@ exec feh --bg-scale /home/yusiwen/.wallpaper/wallpaper.jpg
 exec python /home/yusiwen/goagent-3.0.5/local/goagent-gtk.py
 exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id thunar --daemon
+#exec --no-startup-id thunar --daemon
 exec --no-startup-id remmina -i
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
-exec --no-startup-id indicator-virtualbox
+#exec --no-startup-id indicator-virtualbox
 exec --no-startup-id urxvtd -q -o -f
 exec --no-startup-id volti
 #exec --no-startup-id goldendict
@@ -288,6 +288,7 @@ for_window [class="Komodo edit" title="Software Update"] floating enable
 for_window [class="Font-manager"] floating enable
 for_window [class="Grub-customizer"] floating enable
 for_window [class="Thunar" title="文件操作进度"] floating enable
+for_window [class="file_progress"] floating enable
 for_window [class="Catfish"] floating enable
 for_window [class="Pidgin"] floating enable
 for_window [class="Steadyflow" title="下载管理器"] floating enable
