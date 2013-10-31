@@ -42,6 +42,12 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git svn mercurial mvn colored-man colorize)
 
+# ZSH uses the KEYTIMEOUT parameter to determine how long to wait (in hundredths of a second)
+# for additional characters in sequence. Default is 0.4 seconds.
+
+# 50ms for key sequences
+KEYTIMEOUT=5
+
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...

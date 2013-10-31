@@ -266,7 +266,7 @@ assign [class="Java" title="Eclipse"] → 6:Eclipse
 assign [class="Wps"] → 7:Office
 assign [class="Et"] → 7:Office
 assign [class="Wpp"] → 7:Office
-assign [class="VirtualBox"] → 8:VMs
+#assign [class="VirtualBox"] → 8:VMs
 assign [class="Vmplayer"] → 8:VMs
 assign [class="URxvt" title="weechat"] → 9:Chat
 
@@ -287,7 +287,7 @@ for_window [class="Komodo edit" title="Komodo Edit Help"] floating enable
 for_window [class="Komodo edit" title="Software Update"] floating enable
 for_window [class="Font-manager"] floating enable
 for_window [class="Grub-customizer"] floating enable
-for_window [class="Thunar" title="文件操作进度"] floating enable
+#for_window [class="Thunar" title="文件操作进度"] floating enable
 for_window [class="file_progress"] floating enable
 for_window [class="Catfish"] floating enable
 for_window [class="Pidgin"] floating enable
