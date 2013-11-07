@@ -237,7 +237,8 @@ exec --no-startup-id source /home/yusiwen/keyring.sh
 exec --no-startup-id xcompmgr -n
 exec --no-startup-id dunst
 exec feh --bg-scale /home/yusiwen/.wallpaper/wallpaper.jpg
-exec python /home/yusiwen/goagent-3.0.5/local/goagent-gtk.py
+# ~/goagent is a symbolic link to ~/goagent-x.x.x
+exec python ~/goagent/local/goagent-gtk.py
 exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 #exec --no-startup-id thunar --daemon
