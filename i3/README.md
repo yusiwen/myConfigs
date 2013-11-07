@@ -11,3 +11,5 @@ sudo cp /home/yusiwen/myConfigs/i3/i3lock.pm 66_i3lock
 
 3. custom i3 session in lightdm/gdm:
 sudo cp i3.desktop /usr/share/xsessions
+
+4. dunstrc should be copied to ~/.config/dunst/ or linked to that folder.
