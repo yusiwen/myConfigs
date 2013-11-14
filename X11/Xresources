@@ -1,7 +1,7 @@
 ! ~/.Xresources is a symbolic link to ~/myConfigs/Xresources
 
-! #include "/home/yusiwen/myConfigs/solarized/xresources/solarized"
-#include "/home/yusiwen/myConfigs/base16/base16-xresources/base16-solarized.dark.xresources"
+! #include "myConfigs/solarized/xresources/solarized"
+#include "myConfigs/base16/base16-xresources/base16-default.dark.xresources"
 
 Xft.autohint: 0
 Xft.lcdfilter: lcddefault
@@ -33,6 +33,9 @@ URxvt.preeditType: OverTheSpot
 ! URxvt.letterSpace:-2
 
 URxvt.scrollBar: false
+URxvt.scrollTtyOutput: false
+URxvt.scrollWithBuffer: true
+URxvt.scrollTtyKeypress: true
 
 URxvt.perl-ext-common:  default,matcher,clipboard
 URxvt.url-launcher:     /usr/bin/google-chrome

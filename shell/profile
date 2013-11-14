@@ -1,3 +1,6 @@
+TZ='Asia/Shanghai'
+export TZ
+
 JAVA_HOME=/opt/java/jdk1.6.0_45
 export JAVA_HOME
 
@@ -20,3 +23,7 @@ export QT5_HOME
 
 WINEARCH=win32
 export WINEARCH
+
+# $TERMINAL used in i3-sensible-terminal
+TERMINAL=urxvtc
+export TERMINAL

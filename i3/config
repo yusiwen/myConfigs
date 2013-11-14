@@ -43,9 +43,11 @@ floating_modifier $mod
 #client.background       #1d1d1d
 
 # start a terminal
-#bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec urxvtc
-bindsym $mod+Shift+Return exec roxterm
+# If want i3-sensible-terminal to start urxvtc instead of urxvt,
+#  should either change it's content, or set $TERMINAL to urxvtc in .profile.
+bindsym $mod+Return exec i3-sensible-terminal
+#bindsym $mod+Return exec urxvtc
+bindsym $mod+Shift+Return exec gnome-terminal
 
 # kill focused window
 bindsym $mod+q kill
@@ -112,6 +114,13 @@ bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
+
+# Window border style: normal: border normal, with window title bar;
+# none: no border or window title bar; 1pixel: 1 pixel border.
+new_window 1pixel
+bindsym $mod+t border normal
+bindsym $mod+y border 1pixel
+bindsym $mod+u border none
 
 # switch between the current and the previously focused one
 bindsym $mod+b workspace prev
@@ -190,11 +199,11 @@ mode "Exit >> (L)ogout, (X)Reboot, (P)oweroff  (C)Reload (R)Restart" {
 bindsym $mod+Shift+q mode "Exit >> (L)ogout, (X)Reboot, (P)oweroff  (C)Reload (R)Restart"
 
 # bind key for i3lock
-bindsym $mod+Control+l exec i3lock -i /home/yusiwen/.wallpaper/lock.png
+bindsym $mod+Control+l exec i3lock -i ~/.wallpaper/lock.png
 # bind key for pidgin
 bindsym $mod+p exec pidgin
 # bind key for ec.py (Eclipse Environment Chooser)
-bindsym $mod+Shift+p exec /home/yusiwen/bin/ec.py
+bindsym $mod+Shift+p exec ~/bin/ec.py
 # bind key for Google Chrome Browser
 bindsym $mod+z exec google-chrome
 # bind key for Thunderbird mail client
@@ -208,7 +217,7 @@ bindsym $mod+o exec urxvtc -e ncmpcpp
 # bind key for MidnightCommander, run in a new urxvt window
 bindsym $mod+m exec urxvtc -geometry 160x42 -e mc -c
 # bind key for thunar
-bindsym $mod+Shift+m exec nemo --no-desktop
+bindsym $mod+Shift+m exec thunar
 # bind key for Catfish
 bindsym $mod+c exec catfish
 # bind key for vmplayer winxp
@@ -232,16 +241,16 @@ bar {
 }
 
 exec --no-startup-id xbacklight -set 75
-exec --no-startup-id xrdb -merge /home/yusiwen/.Xresources
-exec --no-startup-id source /home/yusiwen/keyring.sh
+exec --no-startup-id xrdb -merge ~/.Xresources
+exec --no-startup-id source ~/keyring.sh
 exec --no-startup-id xcompmgr -n
 exec --no-startup-id dunst
-exec feh --bg-scale /home/yusiwen/.wallpaper/wallpaper.jpg
+exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 # ~/goagent is a symbolic link to ~/goagent-x.x.x
 exec python ~/goagent/local/goagent-gtk.py
 exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
-#exec --no-startup-id thunar --daemon
+exec --no-startup-id thunar --daemon
 exec --no-startup-id remmina -i
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
@@ -288,8 +297,7 @@ for_window [class="Komodo edit" title="Komodo Edit Help"] floating enable
 for_window [class="Komodo edit" title="Software Update"] floating enable
 for_window [class="Font-manager"] floating enable
 for_window [class="Grub-customizer"] floating enable
-#for_window [class="Thunar" title="文件操作进度"] floating enable
-for_window [class="file_progress"] floating enable
+for_window [class="Thunar" title="文件操作进度"] floating enable
 for_window [class="Catfish"] floating enable
 for_window [class="Pidgin"] floating enable
 for_window [class="Steadyflow" title="下载管理器"] floating enable
