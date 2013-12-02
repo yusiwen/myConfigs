@@ -1,0 +1,3 @@
+# Dual monitor settings for xrandr
+# Put it in /etc/X11/Xsession.d/
+xrandr --output DVI-I-1 --mode 1920x1080 --pos 0x0 --output DVI-D-0 --mode 1920x1080 --pos 1920x0 --right-of DVI-I-1 --rotate right
