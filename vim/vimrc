@@ -46,7 +46,8 @@ set nocompatible               " be iMproved
 " Bundle 'Twinside/vim-codeoverview'
   Bundle 'vim-scripts/fcitx.vim'
 " Bundle 'vim-scripts/TabBar'
-  Bundle 'Lokaltog/vim-powerline'
+" Bundle 'Lokaltog/vim-powerline'
+  Bundle 'bling/vim-airline'
 
   " vim-scripts repos
 

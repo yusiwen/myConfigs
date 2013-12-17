@@ -7,7 +7,7 @@ import subprocess
 
 class EclipseChooser:
     i = 1
-    commands = ["ec-java-indigo.sh","ec-jee-indigo.sh","ec-rcp-indigo.sh", "ec-cpp-juno.sh"]
+    commands = ["ec-java-indigo.sh","ec-java-kepler.sh","ec-jee-indigo.sh","ec-rcp-indigo.sh"]
 
     def callback(self, widget, data):
         self.i = data
@@ -19,25 +19,25 @@ class EclipseChooser:
         
         dialog.vbox.pack_start(label, True, True, 0)
 
-        button = gtk.RadioButton(None, "JDT Indigo SR2")
-        button.connect("toggled", self.callback, 1)
-        button.set_active(True)
-        dialog.vbox.pack_start(button, True, True, 0)
+        button1 = gtk.RadioButton(None, "JDT Indigo SR2")
+        button1.connect("toggled", self.callback, 1)
+        #button.set_active(True)
+        dialog.vbox.pack_start(button1, True, True, 0)
         #button.show()
 
-        button = gtk.RadioButton(button, "Java EE Indigo SR2")
-        button.connect("toggled", self.callback, 2)
-        dialog.vbox.pack_start(button, True, True, 0)
+        button2 = gtk.RadioButton(button1, "JDT Kepler SR1")
+        button2.connect("toggled", self.callback, 2)
+        dialog.vbox.pack_start(button2, True, True, 0)
         #button.show()
 
-        button = gtk.RadioButton(button, "RCP/PDE Indigo SR2")
-        button.connect("toggled", self.callback, 3)
-        dialog.vbox.pack_start(button, True, True, 0)
+        button3 = gtk.RadioButton(button1, "Java EE Indigo SR2")
+        button3.connect("toggled", self.callback, 3)
+        dialog.vbox.pack_start(button3, True, True, 0)
         #button.show()
-        
-        button = gtk.RadioButton(button, "CPP Juno SR2")
-        button.connect("toggled", self.callback, 4)
-        dialog.vbox.pack_start(button, True, True, 0)
+
+        button4 = gtk.RadioButton(button1, "RCP/PDE Indigo SR2")
+        button4.connect("toggled", self.callback, 4)
+        dialog.vbox.pack_start(button4, True, True, 0)
         #button.show()
         
         dialog.show_all()
@@ -46,8 +46,8 @@ class EclipseChooser:
         
         if response == gtk.RESPONSE_OK:
             cmd = "/home/yusiwen/" + self.commands[self.i-1]
-            print(self.i)
-            print(cmd)
+            #print(self.i)
+            #print(cmd)
             subprocess.Popen([cmd])
         
         dialog.destroy()
