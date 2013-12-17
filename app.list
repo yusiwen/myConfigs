@@ -1,0 +1,64 @@
+# Chrome
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+deb http://dl.google.com/linux/chrome/deb/ stable main
+
+# SVN 1.8 (for Precise) 
+ppa:dominik-stadler/subversion-1.8
+
+# Vim daily
+ppa:dgadomski/vim-daily
+git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+
+# Gimp 
+ppa:otto-kesselgulasch/gimp
+
+# rxvt-unicode
+cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
+./configure --enable-256-color --enable-unicode3 --enable-combining --enable-xft --enable-font-styles --enable-pixbuf --enable-startup-notification --enable-transparency --enable-fading --enable-rxvt-scroll --enable-perl --enable-iso14755 --enable-keepscrolling --enable-selectionscrolling --enable-mousewheel --enable-slipwheeling --enable-smart-resize --enable-text-blink --enable-pointer-blank --enable-utmp --enable-wtmp --enable-lastlog
+sudo apt-get install libperl-dev libstartup-notification0-dev libgdk-pixbuf2.0-dev
+
+# feh
+sudo apt-get install libcurl4-openssl-dev libx11-dev libxt-dev libimlib2-dev giblib-dev libxinerama-dev libjpeg-progs
+git clone git://derf.homelinux.org/feh
+
+# Midnight Commander
+git clone git://repo.or.cz/midnight-commander.git
+
+# GoAgent Linux 
+sudo apt-get install python-dev python-greenlet python-gevent python-vte python-openssl python-crypto python-appindicator
+wget https://github.com/surfly/gevent/releases/download/1.0/gevent-1.0.tar.gz && tar xvzpf gevent-1.0.tar.gz && cd gevent-1.0 && sudo python setup.py install
+sudo apt-get install python-pip
+sudo pip install gevent --upgrade
+
+# i3-wm
+deb http://build.i3wm.org/debian/sid sid main
+sudo apt-get --allow-unauthenticated install i3-autobuild-keyring
+sudo apt-get install consolekit
+
+# VLC media player
+ppa:videolan/master-daily
+or
+ppa:videolan/stable-daily
+
+# mutt
+sudo apt-get install mutt-patched
+sudo apt-get install w3m w3m-img
+run ~/myConfigs/mutt/mkenv.sh
+
+# Geary 
+ppa:yorba/ppa
+
+# MPD
+ppa:gmpc-trunk/mpd-trunk
+run ~/myConfigs/mpd/mkenv.sh
+
+# Install kingsoft-office on 13.10+, which has removed ia32-libs package.
+sudo dpkg --add-architecture i386
+sudo apt-get update
+sudo apt-get install libc6:i386 libstdc++6:i386 libfreetype6:i386 libglu1-mesa:i386 libcups2:i386 libglib2.0-0:i386 libpng12-0:i386 libsm6:i386 libxrender1:i386 libfontconfig1:i386 
+install kingsoft-office package using dpkg.
+
+# Numix theme
+ppa:satyajit-happy/themes
+or
+ppa:numix/ppa

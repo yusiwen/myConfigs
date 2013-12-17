@@ -6,5 +6,5 @@ sub on_sel_grab {
     my $query = quotemeta $_[0]->selection;
     $query =~ s/\n/\\n/g;
     $query =~ s/\r/\\r/g;
-    system( "echo " . $query . " | xsel -ibp" );
+    system( "/bin/echo -n -e " . $query . " | xsel -ibp" );
 }

@@ -30,7 +30,7 @@ URxvt.boldFont: xft:Meslo LG S DZ for Powerline:bold:size=10,xft:WenQuanYi Zen H
 URxvt.intensityStyles: false
 
 URxvt.preeditType: OverTheSpot
-! URxvt.letterSpace:-2
+URxvt.letterSpace:-2
 
 URxvt.scrollBar: false
 URxvt.scrollTtyOutput: false

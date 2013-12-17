@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Eclipse RCP Kepler SR1
+Exec=/home/yusiwen/eclipse-rcp-kepler-SR1/eclipse
+Icon=/home/yusiwen/eclipse-rcp-kepler-SR1/icon.xpm
+Terminal=false
+Categories=GTK;Development;IDE;
+StartupNotify=true

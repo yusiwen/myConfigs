@@ -1,3 +1,5 @@
+# Dunst configuartion file
+# Put it in ~/.config/dunst
 [global]
     font = Monospace 9
     allow_markup = yes
