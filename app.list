@@ -40,14 +40,25 @@ ppa:videolan/master-daily
 or
 ppa:videolan/stable-daily
 
+# mutt
+sudo apt-get install mutt-patched
+sudo apt-get install w3m w3m-img
+run ~/myConfigs/mutt/mkenv.sh
+
 # Geary 
 ppa:yorba/ppa
 
 # MPD
 ppa:gmpc-trunk/mpd-trunk
+run ~/myConfigs/mpd/mkenv.sh
 
 # Install kingsoft-office on 13.10+, which has removed ia32-libs package.
 sudo dpkg --add-architecture i386
 sudo apt-get update
 sudo apt-get install libc6:i386 libstdc++6:i386 libfreetype6:i386 libglu1-mesa:i386 libcups2:i386 libglib2.0-0:i386 libpng12-0:i386 libsm6:i386 libxrender1:i386 libfontconfig1:i386 
 install kingsoft-office package using dpkg.
+
+# Numix theme
+ppa:satyajit-happy/themes
+or
+ppa:numix/ppa

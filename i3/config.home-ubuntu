@@ -18,7 +18,7 @@ set $mod Mod4
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-font pango:Sans 9
+font pango:Droid Sans 10
 
 # By default, window focus follows your mouse movements. However, if you have a
 # setup where your mouse usually is in your way (like a touchpad on your laptop
@@ -138,9 +138,11 @@ bindsym $mod+8 workspace 8:VMware
 bindsym $mod+9 workspace 9:Chat
 bindsym $mod+0 workspace 10
 
+workspace "1:Main" output DVI-I-1
 workspace "2:Web" output DVI-D-0
 workspace "3:Mail" output DVI-D-0
 workspace "7:Office" output DVI-D-0
+workspace "8:VMware" output DVI-I-1
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1:Main
@@ -150,7 +152,7 @@ bindsym $mod+Shift+4 move container to workspace 4:Book
 bindsym $mod+Shift+5 move container to workspace 5:Python
 bindsym $mod+Shift+6 move container to workspace 6:Eclipse
 bindsym $mod+Shift+7 move container to workspace 7:Office
-bindsym $mod+Shift+8 move container to workspace 8:VMs
+bindsym $mod+Shift+8 move container to workspace 8:VMware
 bindsym $mod+Shift+9 move container to workspace 9:Chat
 bindsym $mod+Shift+0 move container to workspace 10
 
@@ -252,7 +254,9 @@ exec --no-startup-id dunst
 exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 # ~/goagent is a symbolic link to ~/goagent-x.x.x
 exec python ~/goagent/local/goagent-gtk.py
-exec --no-startup-id gnome-settings-daemon
+#exec --no-startup-id gnome-settings-daemon
+# The session must have a PolicyKit agent – 
+#   this is the piece of software that displays elevation prompts
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id thunar --daemon
 #exec --no-startup-id remmina -i
@@ -279,7 +283,7 @@ assign [class="Wps"] → 7:Office
 assign [class="Et"] → 7:Office
 assign [class="Wpp"] → 7:Office
 #assign [class="VirtualBox"] → 8:VMs
-assign [class="Vmplayer"] → 8:VMs
+assign [class="Vmplayer"] → 8:VMware
 assign [class="URxvt" title="weechat"] → 9:Chat
 
 for_window [class="Eclipse" title="Workspace Launcher "] floating enable
