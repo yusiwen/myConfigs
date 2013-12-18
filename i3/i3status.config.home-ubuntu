@@ -12,7 +12,7 @@ general {
 }
 
 #order += "ipv4"
-#order += "disk /"
+order += "disk /"
 #order += "run_watch DHCP"
 #order += "run_watch VPN"
 #order += "wireless wlan0"
@@ -22,6 +22,7 @@ order += "ethernet eth0"
 #order += "cpu_temperature 1"
 order += "load"
 order += "tztime local"
+order += "volume master"
 
 wireless wlan0 {
 	format_up = "W: (%quality) %ip"
@@ -66,4 +67,11 @@ load {
 
 disk "/" {
 	format = "%free"
+}
+
+volume master {
+  format = "♪: %volume"
+  device = "default"
+  mixer = "Master"
+  mixer_idx = 0
 }

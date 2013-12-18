@@ -16,4 +16,6 @@ UUID=6a465afe-b009-4423-8306-787da4d03378 none            swap    sw            
 UUID=4C74C17974C165F4 /data ntfs-3g defaults,windows_names,locale=zh_CN.utf8  0 0
 # DISK1_VOL0 was on /dev/sdb1
 UUID=5EB27B2CB27B07B3 /softwares ntfs-3g  defaults,windows_names,locale=zh_CN.utf8  0 0
+# DISK1_VOL2 was on /dev/sdb3
+UUID=662A34B22A34815B /documents ntfs-3g  defaults,windows_names,locale=zh_CN.utf8  0 0
 

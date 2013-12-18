@@ -1,6 +1,9 @@
 # Chrome
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 deb http://dl.google.com/linux/chrome/deb/ stable main
+# To solve the missing download page icons, intall
+sudo apt-get install gnome-icon-theme-full
+#  or install faenza icon theme
 
 # SVN 1.8 (for Precise) 
 ppa:dominik-stadler/subversion-1.8
@@ -78,3 +81,7 @@ ppa:numix/ppa
 
 # wiznote
 ppa:wiznote-team/ppa
+
+# Calibre
+sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
+
