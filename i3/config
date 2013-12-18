@@ -250,7 +250,7 @@ exec --no-startup-id dunst
 exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 # ~/goagent is a symbolic link to ~/goagent-x.x.x
 exec python ~/goagent/local/goagent-gtk.py
-exec --no-startup-id gnome-settings-daemon
+#exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id thunar --daemon
 exec --no-startup-id remmina -i
