@@ -3,7 +3,7 @@
 # ~/.mutt/muttrc.imap is a symblic link to ~/myConfigs/mutt/muttrc.imap
 
 # loading general configurations within ~/.mutt/muttrc.general
-source /home/yusiwen/.mutt/muttrc.general
+source ~/.mutt/muttrc.general
 
 # Gmail IMAP Account details
 set imap_user = "yusiwen@gmail.com"

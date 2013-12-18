@@ -85,7 +85,7 @@ set sort = threads                         # like gmail
 set sort_aux = reverse-last-date-received
 unset strict_threads
 set sort_re
-set reply_regexp = "^([Rr][Ee]([\[0-9\]+])*|回复|答复|回覆|[Ff][Ww][Dd]|转发)[:：][ \t]*"
+set reply_regexp = "^(([Rr][Ee]([\[0-9\]+])*|回复|答复|回覆|[Ff][Ww][Dd]|转发)[:：][ \t])*"
 
 set uncollapse_jump                        # don't collapse on an unread message
 
