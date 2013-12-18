@@ -141,6 +141,7 @@ bindsym $mod+0 workspace 10
 workspace "1:Main" output DVI-I-1
 workspace "2:Web" output DVI-D-0
 workspace "3:Mail" output DVI-D-0
+workspace "6:Eclipse" output DVI-I-1
 workspace "7:Office" output DVI-D-0
 workspace "8:VMware" output DVI-I-1
 
