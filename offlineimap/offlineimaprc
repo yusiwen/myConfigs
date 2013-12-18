@@ -5,7 +5,7 @@
 [general]
 ui = ttyui
 accounts = yusiwen
-pythonfile=~/.offlineimap/offlineimap.py
+pythonfile=~/.offlineimap/offlineimap_scripts.py
 fsync = False
 
 [Account yusiwen]
@@ -29,7 +29,7 @@ remoteuser = yusiwen@gmail.com
 #   SERVICENAME = offlineimap
 #   USERNAME    = yusiwen@gmail.com
 #   PASSWORD    = xxxx
-remotepasseval = keyring.get_password("offlineimap","yusiwen@gmail.com") 
+remotepasseval = keyring.get_password("gmail","yusiwen@gmail.com") 
 realdelete = no
 nametrans = lambda folder: {'[Gmail]/All Mail':  'archive',
                             }.get(folder, folder)

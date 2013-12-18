@@ -22,4 +22,9 @@ cd python_keyring
 ln -sf ~/myConfigs/mutt/keyringrc.cfg keyringrc.cfg
 
 cd
+ln -sf ~/myConfigs/mutt/goobookrc .goobookrc
 
+# In python shell, use:
+# import keyring
+# keyring.set_password("gmail","yusiwen@gmail.com","XXXX")
+#  to set password for mutt and goobook
