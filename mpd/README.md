@@ -26,7 +26,7 @@ touch ~/.mpd/{mpd.db,mpd.log,mpd.pid,mpdstate,sticker.sqlite}
 NOTE: Change `music_directory` path in `mpd.conf` file to music library.
 
 ## Reference
-See this [link][1] for further instructions.
+See this [link] for further instructions.
 
-[1]http://crunchbang.org/forums/viewtopic.php?pid=182574
+[link]:http://crunchbang.org/forums/viewtopic.php?pid=182574
 
