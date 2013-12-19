@@ -3,7 +3,7 @@ configs
 
 Configurations for i3-wm.
 
-1. i3-wm config files:
+1. i3-wm config files.
 ```
 ln -sf ~/myConfigs/i3/config ~/.i3/config
 ln -sf ~/myConfigs/i3/i3status ~/.i3/i3status
@@ -13,6 +13,7 @@ or (on home-ubuntu)
 ln -sf ~/myConfigs/i3/config.home-ubuntu ~/.i3/config
 ln -sf ~/myConfigs/i3/i3status.home-ubuntu ~/.i3/i3status
 ```
+
 2. i3-wm session icon used by LightDM session chooser:
 ```
 cd /usr/share/unity-greeter
