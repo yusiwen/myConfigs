@@ -21,7 +21,7 @@ sudo update-rc.d mpd disable
 ```
 mkdir -p ~/.mpd/playlists
 cp ~/myConfigs/mpd/mpd.conf ~/.mpd/
-touch ~/.mpd/{mpd.db,mpd.log,mpd.pid,mpdstate,sticker.sqlite}
+touch ~/.mpd/{mpd.db,mpd.log,mpd.pid,mpd.state,sticker.sqlite}
 ```
 NOTE: Change `music_directory` path in `mpd.conf` file to music library.
 

@@ -36,3 +36,26 @@ sudo cp i3.desktop /usr/share/xsessions
 ```
 ln -sf ~/myConfigs/i3/dunstrc ~/.config/dunst/dunstrc
 ```
+
+6. make thunar as default file manager.
+```
+vim ./local/share/applications/thunar.desktop
+```
+paste content as below:
+```
+[Desktop Entry]
+Name=Open Folder
+TryExec=thunar
+Exec=thunar %U
+NoDisplay=true
+Terminal=false
+Icon=folder-open
+StartupNotify=true
+Type=Application
+MimeType=x-directory/gnome-default-handler;x-directory/normal;inode/directory;application/x-gnome-saved-search;
+```
+add content below to ./local/share/applications/mimeapps.list
+```
+inode/directory=thunar.desktop
+x-directory/normal=thunar.desktop
+```
