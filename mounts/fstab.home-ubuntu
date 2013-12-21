@@ -1,0 +1,21 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda2 during installation
+UUID=ca362199-c1e7-40bd-b679-112376ed7d98 /               ext4    errors=remount-ro 0       1
+# /home was on /dev/sda8 during installation
+UUID=d08950e2-5344-4b32-b213-308b243ce806 /home           ext4    defaults        0       2
+# swap was on /dev/sda7 during installation
+UUID=6a465afe-b009-4423-8306-787da4d03378 none            swap    sw              0       0
+# DISK0_VOL1 was on /dev/sda5 
+UUID=4C74C17974C165F4 /data ntfs-3g users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
+# DISK1_VOL0 was on /dev/sdb1
+UUID=5EB27B2CB27B07B3 /softwares ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
+# DISK1_VOL2 was on /dev/sdb3
+UUID=662A34B22A34815B /documents ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
+# DISK0_VOL2 was on /dev/sda6
+UUID=702A6FBA2A6F7BCA /games  ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
