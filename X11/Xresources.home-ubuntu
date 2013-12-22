@@ -24,8 +24,8 @@ URxvt.meta8: true
 !URxvt.font: xft:Meslo LG S DZ for Powerline:pixelsize=13,xft:WenQuanYi Zen Hei Mono:pixelsize=13
 !URxvt.boldFont: xft:Meslo LG S DZ for Powerline:bold:pixelsize=13,xft:WenQuanYi Zen Hei Mono:bold:pixelsize=13
 
-URxvt.font: xft:Meslo LG S DZ for Powerline:size=10,xft:WenQuanYi Zen Hei Mono:size=10
-URxvt.boldFont: xft:Meslo LG S DZ for Powerline:bold:size=10,xft:WenQuanYi Zen Hei Mono:bold:size=10
+URxvt.font: xft:Meslo\ LG\ S\ DZ\ for\ Powerline:size=10,xft:WenQuanYi\ Zen\ Hei\ Mono:size=10
+URxvt.boldFont: xft:Meslo\ LG\ S\ DZ\ for\ Powerline:bold:size=10,xft:WenQuanYi\ Zen\ Hei\ Mono:bold:size=10
 
 URxvt.intensityStyles: false
 
