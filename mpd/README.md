@@ -22,8 +22,11 @@ sudo update-rc.d mpd disable
 mkdir -p ~/.mpd/playlists
 cp ~/myConfigs/mpd/mpd.conf ~/.mpd/
 touch ~/.mpd/{mpd.db,mpd.log,mpd.pid,mpd.state,sticker.sqlite}
+ln -sf /softwares/iTunes_library/Music ~/music_library
 ```
 NOTE: Change `music_directory` path in `mpd.conf` file to music library.
+
+NOTE: In `ncmpcpp`, use `u` key to update library.
 
 ## Reference
 See this [link] for further instructions.
