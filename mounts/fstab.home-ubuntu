@@ -5,17 +5,22 @@
 # that works even if disks are added and removed. See fstab(5).
 #
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
-# / was on /dev/sda2 during installation
-UUID=ca362199-c1e7-40bd-b679-112376ed7d98 /               ext4    errors=remount-ro 0       1
-# /home was on /dev/sda8 during installation
+# / was on /dev/sdb2 during installation
+UUID=a1ece8f9-c1f0-4e36-8e7c-92be52925ff1 /               ext4    noatime,errors=remount-ro 0       1
+# /home was on /dev/sda7 during installation
 UUID=d08950e2-5344-4b32-b213-308b243ce806 /home           ext4    defaults        0       2
-# swap was on /dev/sda7 during installation
-UUID=6a465afe-b009-4423-8306-787da4d03378 none            swap    sw              0       0
+# /work was on /dev/sda9 during installation
+UUID=0e2df002-045a-4e3b-8b70-a65c7cf08f4e /work           ext4    defaults        0       2
+# swap was on /dev/sda8 during installation
+UUID=186e3028-9ad1-4bac-8070-c77ee9c40d43 none            swap    sw              0       0
 # DISK0_VOL1 was on /dev/sda5 
 UUID=4C74C17974C165F4 /data ntfs-3g users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
-# DISK1_VOL0 was on /dev/sdb1
+# DISK1_VOL0 was on /dev/sdc1
 UUID=5EB27B2CB27B07B3 /softwares ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
-# DISK1_VOL2 was on /dev/sdb3
+# DISK1_VOL2 was on /dev/sdc3
 UUID=662A34B22A34815B /documents ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
 # DISK0_VOL2 was on /dev/sda6
 UUID=702A6FBA2A6F7BCA /games  ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
+# Modification for SSD
+tmpfs      /var/log        tmpfs      defaults,noatime        0    0
+tmpfs      /tmp          tmpfs      defaults,noatime,mode=1777    0    0
