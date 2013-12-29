@@ -1,7 +1,37 @@
 configs
 =======
 
-Configurations for i3-wm.
+Installation
+------------
+
+1. Add `deb http://build.i3wm.org/debian/sid sid main` to `/etc/apt/sources.list`.
+
+2. Install `libxcb-cursor0_0.1.1-1_amd64.deb` manually.
+```
+sudo dpkg --install libxcb-cursor0_0.1.1-1_amd64.deb
+```
+
+3. Update repository and install i3-keyring.
+```
+sudo apt-get update
+sudo apt-get --allow-unauthenticated install i3-autobuild-keyring
+sudo apt-get update
+sudo apt-get install i3
+```
+
+4. (Optional) Remove unity
+On Ubuntu 13.10
+```
+sudo apt-get remove nautilus gnome-power-manager compiz compiz-gnome unity unity-* unity8* hud zeitgeist zeitgeist-core python-zeitgeist libzeitgeist* activity-log-manager-common gnome-control-center gnome-screenshot
+```
+
+5. (Optional) Cleanup
+```
+sudo dpkg --list |grep "^rc" | cut -d " " -f 3 | xargs sudo dpkg --purge
+```
+
+Configuration
+-------------
 
 1. i3-wm config files.
 ```
