@@ -9,9 +9,13 @@ Configuration files of my linux boxes: laptop and desktop (home-ubuntu).
 
 `oh-my-zsh/` is a submodule. It's configurations for ZSH.
 
+`dual-monitor/` dual-monitor configurations for home-ubuntu.
+
 `eclipse/` Eclipse configurations under linux.
 
 `i3/` i3-wm configurations.
+
+`mounts/` fstab configurations for home-ubuntu.
 
 `mpd/` mpd configurations.
 
