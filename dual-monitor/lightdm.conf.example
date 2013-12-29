@@ -1,0 +1,4 @@
+[SeatDefaults]
+greeter-session=lightdm-gtk-greeter
+user-session=xubuntu
+display-setup-script=/usr/local/bin/set_dual_monitor.sh
