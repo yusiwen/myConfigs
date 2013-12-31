@@ -294,6 +294,7 @@ exec --no-startup-id mpd ~/.mpd/mpd.conf
 #exec --no-startup-id /home/yusiwen/mTouch.py>/dev/null
 #exec --no-startup-id parcellite
 exec --no-startup-id ~/.dropbox-dist/dropboxd
+exec --no-startup-id ~/bin/set_accel.sh
 
 # Assign applications to workspace
 assign [class="Google-chrome"] → 2:Web

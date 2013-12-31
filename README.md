@@ -23,6 +23,8 @@ Configuration files of my linux boxes: laptop and desktop (home-ubuntu).
 
 `offlineimap/` offlineimap, sup, and notmuch configurations.
 
+`razer/` Razer DeathAdder mouse polling rate configurations.
+
 `rxvt/` rxvt-unicode terminal configurations.
 
 `screen/` screen configurations.
