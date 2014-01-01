@@ -1,3 +1,6 @@
+# Git
+ppa:git-core/ppa
+
 # Liquorix kernel
 deb http://liquorix.net/debian sid main
 sudo apt-get install '^liquorix-([^-]+-)?keyring.?'
