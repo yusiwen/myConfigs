@@ -44,13 +44,13 @@ ln -sf ~/myConfigs/i3/config.home-ubuntu ~/.i3/config
 ln -sf ~/myConfigs/i3/i3status.home-ubuntu ~/.i3/i3status
 ```
 
-2. (Optioinal) Change i3-wm session icon used by LightDM. Only applicable for unity-greeter.
+2. (Optional) Change i3-wm session icon used by LightDM. Only applicable for unity-greeter.
 ```
 cd /usr/share/unity-greeter
 sudo cp /home/yusiwen/myConfigs/i3/i3.png custom_i3_badge.png 
 ```
 
-3. Set lock screen when restoring from suspension using i3lock.
+3. (Optional) Set lock screen when restoring from suspension using i3lock.
    see `pm-utils` and `xautolock`.
 ```
 cd /etc/pm/sleep.d
@@ -90,3 +90,9 @@ add content below to ./local/share/applications/mimeapps.list
 inode/directory=thunar.desktop
 x-directory/normal=thunar.desktop
 ```
+
+gnome-keyring-daemon Problems
+-----------------------------
+
+When using unity-greeter with LightDM, there may be some PAM problem causing gnome-keyring-daemon not started after user login. By replacing unity-greeter with lightdm-gtk-greeter, the problem is gone.
+
