@@ -97,3 +97,6 @@ sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urlli
 # wine
 ppa:ubuntu-wine/ppa
 sudo apt-get install wine1.6
+
+# lightdm-gtk-greeter
+ppa:lightdm-gtk-greeter-team/stable
