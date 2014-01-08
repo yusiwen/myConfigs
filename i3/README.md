@@ -1,5 +1,6 @@
-configs
-=======
+i3
+==
+Configurations for i3-wm.
 
 Installation
 ------------

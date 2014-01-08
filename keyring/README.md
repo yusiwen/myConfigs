@@ -4,8 +4,8 @@ Gnome keyring configurations for non-gnome session, for example, i3-wm.
 
 Contents
 --------
-`keyring.sh` Gnome keyring startup script for non-gnome session.
-`keyringrc.cfg` Python keyring library configuration file.
+`keyring.sh` Gnome keyring startup script for non-gnome session.  
+`keyringrc.cfg` Python keyring library configuration file.  
 
 Required packages
 -----------------

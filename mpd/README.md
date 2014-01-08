@@ -10,7 +10,7 @@ sudo apt-get update
 sudo apt-get install mpd ncmpcpp
 ```
 ## Disable mpd system service
-Make mpd as an user service, not a system-wide service.
+Make mpd as an user service, not a system-wide service.  
 Start mpd in i3-wm session startup. see `i3/config`.
 ```
 sudo service mpd stop
