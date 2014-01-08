@@ -16,12 +16,6 @@ ln -sf ~/myConfigs/solarized/mutt-colors-solarized/ mutt-colors-solarized
 ln -sf ~/myConfigs/mutt/mutt_get_imap_passwd.py mutt_get_imap_passwd.py
 
 cd
-cd .local/share
-mkdir python_keyring
-cd python_keyring
-ln -sf ~/myConfigs/mutt/keyringrc.cfg keyringrc.cfg
-
-cd
 ln -sf ~/myConfigs/mutt/goobookrc .goobookrc
 
 # In python shell, use:
