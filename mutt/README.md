@@ -18,7 +18,7 @@ Contents
 Installation
 ------------
 ```
-sudo apt-get install mutt mutt-patched w3m w3m-img
+sudo apt-get install mutt mutt-patched w3m w3m-img notmuch notmuch-mutt
 sudo pip install goobook
 sudo pip install keyring
 ```
