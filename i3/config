@@ -134,7 +134,7 @@ bindsym $mod+4 workspace 4:Book
 bindsym $mod+5 workspace 5:Python
 bindsym $mod+6 workspace 6:Eclipse
 bindsym $mod+7 workspace 7:Office
-bindsym $mod+8 workspace 8:VBox
+bindsym $mod+8 workspace 8:VMs
 bindsym $mod+9 workspace 9:Chat
 bindsym $mod+0 workspace 10
 
