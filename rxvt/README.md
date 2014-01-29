@@ -30,3 +30,6 @@ cd ~/rxvt-unicode
 sudo apt-get install xsel
 sudo cp ~/myConfigs/rxvt/clipboard /usr/local/lib/urxvt/perl/
 ```
+
+Note:  
+After Jan 2014, there is an official clipboard perl script also named `clipboard` in rxvt-unicode sources.
