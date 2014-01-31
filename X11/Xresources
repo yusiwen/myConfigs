@@ -37,12 +37,17 @@ URxvt.scrollTtyOutput: false
 URxvt.scrollWithBuffer: true
 URxvt.scrollTtyKeypress: true
 
-URxvt.perl-ext-common:  default,matcher,clipboard
-URxvt.url-launcher:     /usr/bin/google-chrome
-URxvt.matcher.button:   1
+URxvt.perl-ext-common: default,matcher,clipboard
+URxvt.url-launcher: /usr/bin/google-chrome
+URxvt.matcher.button: 1
 
-URxvt.keysym.C-Delete:  perl:matcher:last
-URxvt.keysym.M-Delete:  perl:matcher:list
+URxvt.keysym.C-Delete: perl:matcher:last
+URxvt.keysym.M-Delete: perl:matcher:list
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+
+URxvt.clipboard.autocopy: true
 
 URxvt.iso14755: False
 
@@ -73,7 +78,7 @@ xscreensaver.Dialog.internalBorderWidth:24
 xscreensaver.Dialog.borderWidth:        0
 xscreensaver.Dialog.shadowThickness:    2
 !timeout bar (background is actually determined by Dialog.text.background)
-xscreensaver.passwd.thermometer.foreground:  #101010
-xscreensaver.passwd.thermometer.background:  #2E2E2E
-xscreensaver.passwd.thermometer.width:       8
+xscreensaver.passwd.thermometer.foreground: #101010
+xscreensaver.passwd.thermometer.background: #2E2E2E
+xscreensaver.passwd.thermometer.width: 8
 
