@@ -83,7 +83,7 @@ Thanks to Charles Bailey's post on [stack overflow](http://stackoverflow.com/que
 
 #Links
 
-[.gitattributes](http://git-scm.com/docs/gitattributes#_checking-out_and_checking-in) man page
-[git-config](http://git-scm.com/docs/git-config) man page
-[Progit: Getting Started - First-Time Git Setup](http://git-scm.com/book/en/Getting-Started-First-Time-Git-Setup)
-[Mind the End of Your Line](http://adaptivepatchwork.com/2012/03/01/mind-the-end-of-your-line/) - The full story of line endings in Git by Tim Clem
+1. [.gitattributes](http://git-scm.com/docs/gitattributes#_checking-out_and_checking-in) man page
+2. [git-config](http://git-scm.com/docs/git-config) man page
+3. [Progit: Getting Started - First-Time Git Setup](http://git-scm.com/book/en/Getting-Started-First-Time-Git-Setup)
+4. [Mind the End of Your Line](http://adaptivepatchwork.com/2012/03/01/mind-the-end-of-your-line/) - The full story of line endings in Git by Tim Clem
