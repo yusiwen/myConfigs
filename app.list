@@ -50,6 +50,8 @@ sudo apt-get install consolekit
 ppa:videolan/master-daily
 or
 ppa:videolan/stable-daily
+or
+ppa:djcj/vlc-stable
 
 # offlineImap
 git clone git://github.com/OfflineIMAP/offlineimap.git
@@ -112,3 +114,8 @@ ppa:xubuntu-dev/xfce-4.10
 sudo apt-get install fbterm
 sudo gpasswd -a YOUR_USERNAME video
 sudo chmod u+s /usr/bin/fbterm
+
+# Sound Switcher Indicator
+sudo apt-add-repository ppa:yktooo/ppa
+sudo apt-get update
+sudo apt-get install indicator-sound-switcher
