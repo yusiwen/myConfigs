@@ -297,6 +297,7 @@ exec --no-startup-id ~/.dropbox-dist/dropboxd
 exec --no-startup-id ~/bin/set_accel.sh
 exec --no-startup-id orage
 exec --no-startup-id indicator-sound-switcher
+exec --no-startup-id gnome-sound-applet
 
 # Assign applications to workspace
 assign [class="Google-chrome"] → 2:Web
