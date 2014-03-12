@@ -298,6 +298,7 @@ exec --no-startup-id ~/bin/set_accel.sh
 exec --no-startup-id orage
 exec --no-startup-id indicator-sound-switcher
 exec --no-startup-id gnome-sound-applet
+exec --no-startup-id classicmenu-indicator
 
 # Assign applications to workspace
 assign [class="Google-chrome"] → 2:Web
