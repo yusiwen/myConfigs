@@ -258,12 +258,12 @@ exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 #exec --no-startup-id indicator-virtualbox
 exec --no-startup-id urxvtd -q -o -f
-exec --no-startup-id volti
 #exec --no-startup-id goldendict
 exec --no-startup-id mpd ~/.mpd/mpd.conf
 #exec --no-startup-id /home/yusiwen/mTouch.py>/dev/null
 exec --no-startup-id parcellite
 exec --no-startup-id orage
+exec --no-startup-id gnome-sound-applet
 
 # Assign applications to workspace
 assign [class="Google-chrome"] → 2:Web
