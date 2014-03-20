@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+
+import pygtk
+pygtk.require('2.0')
+import gtk
+import subprocess
+
+class EclipseChooser:
+    i = 1
+    commands = [
+    ["JDT Indigo SR2", "/opt/eclipse/eclipse-java-indigo-SR2/eclipse"],
+    ["JDT Kepler SR1", "/opt/eclipse/eclipse-java-kepler-SR1/eclipse"],
+    ["RCP/PDE Kepler SR1", "/opt/eclipse/eclipse-rcp-kepler-SR1/eclipse"],
+    ["J2EE Indigo SR2", "/opt/eclipse/eclipse-jee-indigo-SR2/eclipse"],
+    ["J2EE Kepler SR1", "/opt/eclipse/eclipse-jee-kepler-SR1/eclipse"]]
+
+    def callback(self, widget, data):
+        self.i = data
+
+    def __init__(self):
+        dialog = gtk.Dialog("Eclipse Environment Chooser", None, 0, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
+        dialog.set_default_size(250, 300)
+        label = gtk.Label("Choose:")
+
+        dialog.vbox.pack_start(label, True, True, 0)
+
+        button = None
+        offset = 1
+        for x in self.commands:
+            temp_button = gtk.RadioButton(button, x[0])
+            temp_button.connect("toggled", self.callback, offset)
+            dialog.vbox.pack_start(temp_button, True, True, 0)
+            button = temp_button
+            offset = offset + 1
+
+        dialog.show_all()
+
+        response = dialog.run()
+        
+        if response == gtk.RESPONSE_OK:
+            cmd = self.commands[self.i-1][1]
+            subprocess.Popen([cmd])
+        
+        dialog.destroy()
+
+if __name__ == "__main__":
+	EclipseChooser()
