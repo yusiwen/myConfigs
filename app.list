@@ -129,3 +129,10 @@ sudo apt-get install uget
 sudo apt-add-repository ppa:diesch/testing
 sudo apt-get update
 sudo apt-get install classicmenu-indicator
+
+#TLP (Power management tools for laptop)
+# Remove `laptop-mode-tools` first, it conflicts with TLP.
+sudo apt-get remove laptop-mode-tools
+sudo add-apt-repository ppa:linrunner/tlp
+sudo apt-get update
+sudo apt-get install tlp tlp-rdw
