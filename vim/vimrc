@@ -32,7 +32,7 @@ set nocompatible               " be iMproved
   Bundle 'tomtom/tlib_vim'
   Bundle 'tomtom/tcomment_vim'
   Bundle 'tomtom/tselectbuffer_vim'
-  Bundle 'tsaleh/vim-matchit'
+  Bundle 'vim-scripts/matchit.zip'
   Bundle 'vim-scripts/taglist.vim'
   Bundle 'majutsushi/tagbar'
   Bundle 'Townk/vim-autoclose'
