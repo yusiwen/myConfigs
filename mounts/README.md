@@ -1,7 +1,8 @@
 mounts
 ======
 
-Mount point and HHD drive configurations.
+Mount point and HHD drive configurations. 
+using `sudo blkid` to show UUIDs of all attached devices. 
 
 1. fstab
 `fstab` file for laptop.
