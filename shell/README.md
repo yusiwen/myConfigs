@@ -1,6 +1,5 @@
-Change Shell to ZSH
-===================
-Change user's shell to zsh.  
+Shell Scripts
+=============
 
 ##Install oh-my-zsh
 1. Install zsh
