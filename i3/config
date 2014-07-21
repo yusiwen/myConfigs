@@ -247,6 +247,7 @@ exec --no-startup-id xrdb -merge ~/.Xresources
 exec --no-startup-id source ~/bin/keyring.sh
 exec --no-startup-id xcompmgr -n
 exec --no-startup-id dunst
+exec --no-startup-id /usr/bin/xfce4-power-manager
 exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 # ~/goagent is a symbolic link to ~/goagent-x.x.x
 exec python ~/goagent/local/goagent-gtk.py
@@ -264,6 +265,7 @@ exec --no-startup-id mpd ~/.mpd/mpd.conf
 exec --no-startup-id parcellite
 exec --no-startup-id orage
 exec --no-startup-id gnome-sound-applet
+exec --no-startup-id indicator-netspeed
 
 # Assign applications to workspace
 assign [class="Google-chrome"] → 2:Web
@@ -278,7 +280,7 @@ assign [class="Java" title="Eclipse"] → 6:Eclipse
 assign [class="Wps"] → 7:Office
 assign [class="Et"] → 7:Office
 assign [class="Wpp"] → 7:Office
-#assign [class="VirtualBox"] → 8:VMs
+assign [class="Thunderbird"] → 3:Mail
 assign [class="Vmplayer"] → 8:VMs
 assign [class="URxvt" title="weechat"] → 9:Chat
 
