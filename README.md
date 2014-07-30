@@ -20,12 +20,13 @@ Contents
 14. `shell/` shell environments scripts.  
 15. `vim/` VIM configurations.  
 16. `X11/` X11 scripts.  
-17. `route.sh` and `route_iPhone.sh` are routing config files for 3G mobile network when at work.  
-18. `set_dual_monitor.sh` and `projector.sh` are config files for xrandr to work with multiple monitors.  
-19. `color_sampler.perl` shell color sampler script in perl.  
-20. `color_spaces.perl` another shell color sampler script in perl with 256 color.  
-21. `mTouch.py` python script made by me. It enables three fingers swipe cycling within workspaces.  
-22. `rsync_skydrive.sh` shell script made by me. It uses rsync to sync skydrive files to my backup disks. 
+17. `git` Git configurations and scripts.
+18. `route.sh` and `route_iPhone.sh` are routing config files for 3G mobile network when at work.  
+19. `set_dual_monitor.sh` and `projector.sh` are config files for xrandr to work with multiple monitors.  
+20. `color_sampler.perl` shell color sampler script in perl.  
+21. `color_spaces.perl` another shell color sampler script in perl with 256 color.  
+22. `mTouch.py` python script made by me. It enables three fingers swipe cycling within workspaces.  
+23. `rsync_skydrive.sh` shell script made by me. It uses rsync to sync skydrive files to my backup disks.
 
 Softwares
 ------------
