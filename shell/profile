@@ -12,7 +12,7 @@
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
-  . "$HOME/.bashrc"
+	. "$HOME/.bashrc"
     fi
 fi
 
@@ -21,28 +21,14 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-TZ='Asia/Shanghai'
-export TZ
-
 JAVA_HOME=/opt/java/jdk1.7.0_51
 export JAVA_HOME
 
 M2_HOME=/data/apache-maven-2.2.1
 export M2_HOME
 
-PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+PATH=$PATH:$JAVA_HOME/bin:$M2_HOME/bin
 export PATH
-
-QT5_HOME=/home/yusiwen/Qt5.1.0
-export QT5_HOME
-
-# Since Ubuntu 9.04 Jaunty Jackalope, LD_LIBRARY_PATH cannot be set in $HOME/.profile, 
-# /etc/profile, nor /etc/environment files. 
-# You must use /etc/ld.so.conf.d/*.conf configuration files. 
-# See Launchpad bug #366728 for more information.
-# -----------------------------------------------------------
-# LD_LIBRARY_PATH=$QT5_HOME/5.1.0/gcc_64/lib:$LD_LIBRARY_PATH
-# export LD_LIBRARY_PATH
 
 WINEARCH=win32
 export WINEARCH
@@ -50,3 +36,4 @@ export WINEARCH
 # $TERMINAL used in i3-sensible-terminal
 TERMINAL=urxvtc
 export TERMINAL
+
