@@ -36,11 +36,11 @@ Since Jan 2014, there is an official clipboard perl script also named `clipboard
 
 ## Import official CVS repository into GitHub
 
-  # Import CVS repository into current directory. 
-  $ mkdir rxvt-unicode
-  $ cd rxvt-unicode
-  $ git cvsimport -p -x -r cvs -k -v -d :pserver:anonymous@cvs.schmorp.de/schmorpforge rxvt-unicode
-  $ git config cvsimport.module rxvt-unicode
-  $ git config cvsimport.r cvs
-  $ git config cvsimport.d :pserver:anonymous@cvs.schmorp.de/schmorpforge
-  # Import 'libecb' 'libev' 'libptytty' and add them as submodules into project 'rxvt-unicode'
+    # Import CVS repository into current directory. 
+    $ mkdir rxvt-unicode
+    $ cd rxvt-unicode
+    $ git cvsimport -p -x -r cvs -k -v -d :pserver:anonymous@cvs.schmorp.de/schmorpforge rxvt-unicode
+    $ git config cvsimport.module rxvt-unicode
+    $ git config cvsimport.r cvs
+    $ git config cvsimport.d :pserver:anonymous@cvs.schmorp.de/schmorpforge
+    # Import 'libecb' 'libev' 'libptytty' and add them as submodules into project 'rxvt-unicode'
