@@ -8,7 +8,7 @@ import subprocess
 class EclipseChooser:
     i = 1
     eclipse_dir = "/opt/eclipse"
-    eclipse_args = ['eclipse', '-vm', '/opt/java/jdk1.7.0_65/jre/bin/java']
+    eclipse_args = ['eclipse', '-vm', '/opt/java/jdk1.7.0_65/jre/bin/java', '-nosplash']
 
     commands = []
 
