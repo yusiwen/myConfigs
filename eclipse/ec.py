@@ -8,6 +8,7 @@ import subprocess
 class EclipseChooser:
     i = 1
     eclipse_dir = "/opt/eclipse"
+    eclipse_args = ['eclipse', '-vm', '/opt/java/jdk1.7.0_65/jre/bin/java']
 
     commands = []
 
@@ -18,7 +19,8 @@ class EclipseChooser:
             if os.path.isdir(tmp_path):
                 temp_list = []
                 temp_list.append(name)
-                temp_list.append(os.path.join(tmp_path, "eclipse"))
+                self.eclipse_args[0] = os.path.join(tmp_path, self.eclipse_args[0])
+                temp_list.append(self.eclipse_args)
                 self.commands.append(temp_list)
 
     def callback(self, widget, data):
@@ -48,7 +50,7 @@ class EclipseChooser:
         
         if response == gtk.RESPONSE_OK:
             cmd = self.commands[self.i-1][1]
-            subprocess.Popen([cmd])
+            subprocess.Popen(cmd)
         
         dialog.destroy()
 
