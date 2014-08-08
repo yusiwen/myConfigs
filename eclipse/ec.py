@@ -19,8 +19,9 @@ class EclipseChooser:
             if os.path.isdir(tmp_path):
                 temp_list = []
                 temp_list.append(name)
-                self.eclipse_args[0] = os.path.join(tmp_path, self.eclipse_args[0])
-                temp_list.append(self.eclipse_args)
+                temp_args_list = list(self.eclipse_args)
+                temp_args_list[0] = os.path.join(tmp_path, temp_args_list[0])
+                temp_list.append(temp_args_list)
                 self.commands.append(temp_list)
 
     def callback(self, widget, data):
@@ -47,7 +48,7 @@ class EclipseChooser:
         dialog.show_all()
 
         response = dialog.run()
-        
+
         if response == gtk.RESPONSE_OK:
             cmd = self.commands[self.i-1][1]
             subprocess.Popen(cmd)
