@@ -21,18 +21,6 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-JAVA_HOME=/opt/java/jdk1.7.0_51
-export JAVA_HOME
-
-M2_HOME=/data/apache-maven-2.2.1
-export M2_HOME
-
-PATH=$PATH:$JAVA_HOME/bin:$M2_HOME/bin
-export PATH
-
-WINEARCH=win32
-export WINEARCH
-
 # $TERMINAL used in i3-sensible-terminal
 TERMINAL=urxvtc
 export TERMINAL
