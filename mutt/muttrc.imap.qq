@@ -7,21 +7,22 @@ source /home/yusiwen/.mutt/muttrc.general
 
 # Gmail IMAP Account details
 set imap_user = "47390823"
-set smtp_url = "smtp://47390823@smtp.qq.com:587/"
+set smtp_url = "smtp://47390823@smtp.qq.com:465/"
 # use mutt_get_imap_passwd.py script to get password from gnome-keyring
 #   and set "imap_pass" and "smtp_pass"
 # ~/.mutt/mutt_get_imap_passwd.py is a symbolic link to 
 #   ~/myConfigs/mutt/mutt_get_imap_passwd.py
 # see ~/myConfigs/mutt/mutt_get_imap_passwd.py
-source "~/.mutt/mutt_get_qq_passwd.py"|
-
+# source "~/.mutt/mutt_get_imap_passwd.py"|
+set imap_pass = "d81u4u5d13"
+set smtp_pass = "d81u4u5d13"
 
 # IMAP folder settings
 set folder = "imaps://imap.qq.com:993"
 set spoolfile = "+INBOX"
 #set spoolfile = "+[Gmail]/All Mail"
-set postponed = "+[Gmail]/Drafts"
-set trash = "+[Gmail]/Trash"
+#set postponed = "+[Gmail]/Drafts"
+#set trash = "+[Gmail]/Trash"
 # Gmail will automatically save sent mails, no need to record them in +[Gmail]/Sent again.
 set record = ~/.mutt/sent/sent
 set header_cache = ~/.mutt/cache

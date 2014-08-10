@@ -11,6 +11,9 @@
 
 set $mod Mod4
 
+set $left_screen DVI-I-1
+set $right_screen DVI-D-1
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
 #font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -18,7 +21,7 @@ set $mod Mod4
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-font pango:Sans 9
+font pango:Droid Sans 10
 
 # By default, window focus follows your mouse movements. However, if you have a
 # setup where your mouse usually is in your way (like a touchpad on your laptop
@@ -126,32 +129,61 @@ bindsym $mod+u border none
 bindsym $mod+b workspace prev
 bindsym $mod+n workspace next
 
+set $ws1 1:Main
+set $ws2 2:Web
+set $ws3 3:Mail
+set $ws4 4:Book
+set $ws5 5:Python
+set $ws6 6:Eclipse
+set $ws7 7:Office
+set $ws8 8:VMware
+set $ws9 9:Chat
+set $ws10 10
+
 # switch to workspace
-bindsym $mod+1 workspace 1:Main
-bindsym $mod+2 workspace 2:Web
-bindsym $mod+3 workspace 3:Mail
-bindsym $mod+4 workspace 4:Book
-bindsym $mod+5 workspace 5:Python
-bindsym $mod+6 workspace 6:Eclipse
-bindsym $mod+7 workspace 7:Office
-bindsym $mod+8 workspace 8:VMs
-bindsym $mod+9 workspace 9:Chat
-bindsym $mod+0 workspace 10
+#bindsym $mod+1 workspace 1:Main
+#bindsym $mod+2 workspace 2:Web 
+#bindsym $mod+3 workspace 3:Mail 
+#bindsym $mod+4 workspace 4:Book
+#bindsym $mod+5 workspace 5:Python
+#bindsym $mod+6 workspace 6:Eclipse
+#bindsym $mod+7 workspace 7:Office
+#bindsym $mod+8 workspace 8:VMware
+#bindsym $mod+9 workspace 9:Chat
+#bindsym $mod+0 workspace 10
+
+bindsym $mod+1 workspace "$ws1"
+bindsym $mod+2 workspace "$ws2"
+bindsym $mod+3 workspace "$ws3"
+bindsym $mod+4 workspace "$ws4"
+bindsym $mod+5 workspace "$ws5"
+bindsym $mod+6 workspace "$ws6"
+bindsym $mod+7 workspace "$ws7"
+bindsym $mod+8 workspace "$ws8"
+bindsym $mod+9 workspace "$ws9"
+bindsym $mod+0 workspace "$ws10"
+
+workspace "$ws1" output $left_screen
+workspace "$ws2" output $right_screen
+workspace "$ws3" output $right_screen
+workspace "$ws6" output $left_screen
+workspace "$ws7" output $right_screen
+workspace "$ws8" output $left_screen
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1:Main
-bindsym $mod+Shift+2 move container to workspace 2:Web
-bindsym $mod+Shift+3 move container to workspace 3:Mail
-bindsym $mod+Shift+4 move container to workspace 4:Book
-bindsym $mod+Shift+5 move container to workspace 5:Python
-bindsym $mod+Shift+6 move container to workspace 6:Eclipse
-bindsym $mod+Shift+7 move container to workspace 7:Office
-bindsym $mod+Shift+8 move container to workspace 8:VMs
-bindsym $mod+Shift+9 move container to workspace 9:Chat
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+1 move container to workspace "$ws1"
+bindsym $mod+Shift+2 move container to workspace "$ws2"
+bindsym $mod+Shift+3 move container to workspace "$ws3"
+bindsym $mod+Shift+4 move container to workspace "$ws4"
+bindsym $mod+Shift+5 move container to workspace "$ws5"
+bindsym $mod+Shift+6 move container to workspace "$ws6"
+bindsym $mod+Shift+7 move container to workspace "$ws7"
+bindsym $mod+Shift+8 move container to workspace "$ws8"
+bindsym $mod+Shift+9 move container to workspace "$ws9"
+bindsym $mod+Shift+0 move container to workspace "$ws10"
 
 # reload the configuration file
-# bindsym $mod+Shift+c reload
+bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
@@ -199,7 +231,7 @@ mode "Exit >> (L)ogout, (X)Reboot, (P)oweroff  (C)Reload (R)Restart" {
 bindsym $mod+Shift+q mode "Exit >> (L)ogout, (X)Reboot, (P)oweroff  (C)Reload (R)Restart"
 
 # bind key for i3lock
-bindsym $mod+Control+l exec i3lock -i $HOME/.wallpaper/lock.png
+bindsym $mod+Control+l exec i3lock -i ~/.wallpaper/lock.png
 # bind key for pidgin
 bindsym $mod+p exec pidgin
 # bind key for ec.py (Eclipse Environment Chooser)
@@ -207,7 +239,7 @@ bindsym $mod+Shift+p exec ~/bin/ec.py
 # bind key for Google Chrome Browser
 bindsym $mod+z exec google-chrome
 # bind key for Thunderbird mail client
-bindsym $mod+Shift+x exec geary
+bindsym $mod+Shift+x exec thunderbird
 # bind key for Alpine, run in a new urxvt window
 bindsym $mod+x exec urxvtc -e mutt
 # bind key for weechat-curses, run in a new urxvt window
@@ -218,10 +250,8 @@ bindsym $mod+o exec urxvtc -e ncmpcpp
 bindsym $mod+m exec urxvtc -geometry 160x42 -e mc -c
 # bind key for thunar
 bindsym $mod+Shift+m exec thunar
-# bind key for gnome-calculator
-bindsym $mod+c exec gnome-calculator
 # bind key for Catfish
-bindsym $mod+Shift+c exec catfish
+bindsym $mod+c exec catfish
 # bind key for vmplayer winxp
 bindsym $mod+Shift+i exec vmplayer ~/vmwares/winxp/winxp.vmx
 
@@ -242,34 +272,39 @@ bar {
 #        }
 }
 
-exec --no-startup-id xbacklight -set 75
+#exec --no-startup-id xbacklight -set 75
 exec --no-startup-id xrdb -merge ~/.Xresources
-exec --no-startup-id source ~/bin/keyring.sh
+exec --no-startup-id ~/bin/keyring.sh
 exec --no-startup-id xcompmgr -n
 exec --no-startup-id dunst
-exec --no-startup-id /usr/bin/xfce4-power-manager
 exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 # ~/goagent is a symbolic link to ~/goagent-x.x.x
 exec python ~/goagent/local/goagent-gtk.py
 #exec --no-startup-id gnome-settings-daemon
+# The session must have a PolicyKit agent – 
+#   this is the piece of software that displays elevation prompts
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id thunar --daemon
-exec --no-startup-id remmina -i
+#exec --no-startup-id remmina -i
 exec --no-startup-id nm-applet
-exec --no-startup-id blueman-applet
 #exec --no-startup-id indicator-virtualbox
 exec --no-startup-id urxvtd -q -o -f
 #exec --no-startup-id goldendict
 exec --no-startup-id mpd ~/.mpd/mpd.conf
 #exec --no-startup-id /home/yusiwen/mTouch.py>/dev/null
-exec --no-startup-id parcellite
+#exec --no-startup-id parcellite
+#exec --no-startup-id ~/.dropbox-dist/dropboxd
+exec --no-startup-id ~/bin/set_accel.sh
 exec --no-startup-id orage
+exec --no-startup-id indicator-sound-switcher
 exec --no-startup-id gnome-sound-applet
+exec --no-startup-id classicmenu-indicator
 exec --no-startup-id indicator-netspeed
 
 # Assign applications to workspace
 assign [class="Google-chrome"] → 2:Web
 assign [class="Geary"] → 3:Mail
+assign [class="Thunderbird"] → 3:Mail
 assign [class="URxvt" title="mutt"] → 3:Mail
 assign [class="Calibre-gui"] → 4:Book
 assign [class="Wiznote"] → 4:Book
@@ -280,8 +315,8 @@ assign [class="Java" title="Eclipse"] → 6:Eclipse
 assign [class="Wps"] → 7:Office
 assign [class="Et"] → 7:Office
 assign [class="Wpp"] → 7:Office
-assign [class="Thunderbird"] → 3:Mail
-assign [class="Vmplayer"] → 8:VMs
+#assign [class="VirtualBox"] → 8:VMs
+assign [class="Vmplayer"] → 8:VMware
 assign [class="URxvt" title="weechat"] → 9:Chat
 
 for_window [class="Eclipse" title="Workspace Launcher "] floating enable
@@ -301,10 +336,13 @@ for_window [class="Komodo edit" title="Komodo Edit Help"] floating enable
 for_window [class="Komodo edit" title="Software Update"] floating enable
 for_window [class="Font-manager"] floating enable
 for_window [class="Grub-customizer"] floating enable
-for_window [class="Thunar" title="文件操作进度"] floating enable
+for_window [class="^Thunar$"] floating enable
+for_window [class="^Thunar$" title="文件操作进度"] floating enable
 for_window [class="Catfish"] floating enable
-for_window [class="Pidgin"] floating enable
+for_window [class="^Pidgin$"] floating enable
 for_window [class="Steadyflow" title="下载管理器"] floating enable
 for_window [class="cataclysm-tiles"] floating enable
 for_window [class="Orage"] floating enable
-for_window [class="Gnome-calculator"] floating enable
+for_window [class="^Vlc$"] floating enable
+for_window [class="^File-roller$"] floating enable
+

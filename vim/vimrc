@@ -48,6 +48,10 @@ set nocompatible               " be iMproved
 " Bundle 'vim-scripts/TabBar'
 " Bundle 'Lokaltog/vim-powerline'
   Bundle 'bling/vim-airline'
+  Bundle 'moll/vim-node'
+  Bundle 'pangloss/vim-javascript'
+  Bundle 'kchmck/vim-coffee-script'
+  Bundle 'godlygeek/tabular'
 
   " vim-scripts repos
 
@@ -150,15 +154,15 @@ set nocompatible               " be iMproved
 
     set background=dark
 
-"   colorscheme solarized
-    colorscheme base16-default
+    colorscheme solarized
+"   colorscheme base16-default
 
   else
 "   let g:solarized_termcolors=16
 "   let g:solarized_contrast="normal"
 "   let g:solarized_visibility="normal"
-"   colorscheme solarized
-    colorscheme base16-default
+    colorscheme solarized
+"   colorscheme base16-default
   endif
 " }}}
 " Tabstops {{{
