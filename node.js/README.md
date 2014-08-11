@@ -210,7 +210,7 @@ mkdir ~/.npm-packages
 
 2. Reference this directory for future usage in your `.bashrc`/`.zshrc`:
 ```bash
-NPM_PACKAGES="~/.npm-packages"
+NPM_PACKAGES="$HOME/.npm-packages"
 ```
 
 3. Indicate to `npm` where to store your globally installed package. In
