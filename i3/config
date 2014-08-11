@@ -216,19 +216,18 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Create Log out, Reboot, Poweroff bindings
-mode "Exit >> (L)ogout, (X)Reboot, (P)oweroff  (C)Reload (R)Restart" {
+mode "Exit >> (L)ogout, (S)uspend, (X)Reboot, (P)oweroff" {
         bindsym Shift+x exec dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart
+        bindsym Shift+s exec dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
         bindsym Shift+l exit
         bindsym Shift+p exec dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
-        bindsym Shift+c reload
-        bindsym Shift+r restart
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
 
-bindsym $mod+Shift+q mode "Exit >> (L)ogout, (X)Reboot, (P)oweroff  (C)Reload (R)Restart"
+bindsym $mod+Shift+q mode "Exit >> (L)ogout, (S)uspend, (X)Reboot, (P)oweroff"
 
 # bind key for i3lock
 bindsym $mod+Control+l exec i3lock -i ~/.wallpaper/lock.png
