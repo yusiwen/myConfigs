@@ -141,17 +141,6 @@ set $ws9 9:Chat
 set $ws10 10
 
 # switch to workspace
-#bindsym $mod+1 workspace 1:Main
-#bindsym $mod+2 workspace 2:Web 
-#bindsym $mod+3 workspace 3:Mail 
-#bindsym $mod+4 workspace 4:Book
-#bindsym $mod+5 workspace 5:Python
-#bindsym $mod+6 workspace 6:Eclipse
-#bindsym $mod+7 workspace 7:Office
-#bindsym $mod+8 workspace 8:VMware
-#bindsym $mod+9 workspace 9:Chat
-#bindsym $mod+0 workspace 10
-
 bindsym $mod+1 workspace "$ws1"
 bindsym $mod+2 workspace "$ws2"
 bindsym $mod+3 workspace "$ws3"
