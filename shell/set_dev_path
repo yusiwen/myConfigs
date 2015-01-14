@@ -1,4 +1,4 @@
-JAVA_HOME=/opt/java/jdk1.7.0_65
+JAVA_HOME=/opt/java/jdk1.7.0_72
 export JAVA_HOME
 
 M2_HOME=$HOME/maven/apache-maven-2.2.1
