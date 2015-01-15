@@ -278,6 +278,7 @@ assign [class="Wpp"] → 7:Office
 assign [class="Thunderbird"] → 3:Mail
 assign [class="Vmplayer"] → 8:VMs
 assign [class="URxvt" title="weechat"] → 9:Chat
+assign [class="^jetbrains-idea-ce"] → 6:Eclipse
 
 for_window [class="Eclipse" title="Workspace Launcher "] floating enable
 for_window [class="Java" title="Eclipse "] floating enable
