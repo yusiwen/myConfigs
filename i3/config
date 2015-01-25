@@ -304,6 +304,7 @@ assign [class="^jetbrains-idea-"] → 6:Eclipse
 assign [class="Wps"] → 7:Office
 assign [class="Et"] → 7:Office
 assign [class="Wpp"] → 7:Office
+assign [class="^libreoffice"] → 7:Office
 #assign [class="VirtualBox"] → 8:VMs
 assign [class="Vmplayer"] → 8:VMware
 assign [class="URxvt" title="weechat"] → 9:Chat
