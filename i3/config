@@ -294,8 +294,8 @@ assign [class="Google-chrome"] → 2:Web
 assign [class="Geary"] → 3:Mail
 assign [class="Thunderbird"] → 3:Mail
 assign [class="URxvt" title="mutt"] → 3:Mail
-assign [class="calibre-gui"] → 4:Book
-assign [class="Wiznote"] → 4:Book
+assign [class="libprs500"] → 4:Book
+assign [class="WizNote"] → 4:Book
 assign [class="Eric4.py"] → 5:Python
 assign [class="Komodo"] → 5:Python
 assign [class="Eclipse"] → 6:Eclipse
