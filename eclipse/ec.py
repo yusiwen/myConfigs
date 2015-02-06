@@ -9,6 +9,8 @@ class EclipseChooser:
     i = 1
     eclipse_dir = "/opt/eclipse"
     eclipse_args = ['eclipse', '-vm', '/opt/java/jdk1.7.0_72/jre/bin/java', '-nosplash']
+    idea_dir = "/opt/intellij"
+    idea_args = ['bin/idea.sh']
 
     commands = []
 
@@ -24,11 +26,24 @@ class EclipseChooser:
                 temp_list.append(temp_args_list)
                 self.commands.append(temp_list)
 
+    def find_ideas(self, path):
+        names = os.listdir(path)
+        for name in names:
+            tmp_path = os.path.join(path, name)
+            if os.path.isdir(tmp_path):
+                temp_list = []
+                temp_list.append(name)
+                temp_args_list = list(self.idea_args)
+                temp_args_list[0] = os.path.join(tmp_path, temp_args_list[0])
+                temp_list.append(temp_args_list)
+                self.commands.append(temp_list)
+
     def callback(self, widget, data):
         self.i = data
 
     def __init__(self):
         self.find_eclipses(self.eclipse_dir)
+        self.find_ideas(self.idea_dir)
 
         dialog = gtk.Dialog("Eclipse Environment Chooser", None, 0, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
         dialog.set_default_size(250, 300)
