@@ -266,18 +266,20 @@ exec --no-startup-id indicator-netspeed
 assign [class="Google-chrome"] → 2:Web
 assign [class="Geary"] → 3:Mail
 assign [class="URxvt" title="mutt"] → 3:Mail
-assign [class="Calibre-gui"] → 4:Book
+assign [class="calibre-gui"] → 4:Book
 assign [class="Wiznote"] → 4:Book
 assign [class="Eric4.py"] → 5:Python
 assign [class="Komodo"] → 5:Python
 assign [class="Eclipse"] → 6:Eclipse
 assign [class="Java" title="Eclipse"] → 6:Eclipse
+assign [class="^jetbrains-idea-"] → 6:Eclipse
 assign [class="Wps"] → 7:Office
 assign [class="Et"] → 7:Office
 assign [class="Wpp"] → 7:Office
 assign [class="Thunderbird"] → 3:Mail
 assign [class="Vmplayer"] → 8:VMs
 assign [class="URxvt" title="weechat"] → 9:Chat
+assign [class="^jetbrains-idea-ce"] → 6:Eclipse
 
 for_window [class="Eclipse" title="Workspace Launcher "] floating enable
 for_window [class="Java" title="Eclipse "] floating enable

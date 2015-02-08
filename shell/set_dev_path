@@ -1,5 +1,8 @@
-JAVA_HOME=/opt/java/jdk1.7.0_65
+JAVA_HOME=/opt/java/jdk1.7.0_72
 export JAVA_HOME
+
+CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar
+export CLASSPATH
 
 M2_HOME=$HOME/maven/apache-maven-2.2.1
 export M2_HOME

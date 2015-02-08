@@ -141,17 +141,6 @@ set $ws9 9:Chat
 set $ws10 10
 
 # switch to workspace
-#bindsym $mod+1 workspace 1:Main
-#bindsym $mod+2 workspace 2:Web 
-#bindsym $mod+3 workspace 3:Mail 
-#bindsym $mod+4 workspace 4:Book
-#bindsym $mod+5 workspace 5:Python
-#bindsym $mod+6 workspace 6:Eclipse
-#bindsym $mod+7 workspace 7:Office
-#bindsym $mod+8 workspace 8:VMware
-#bindsym $mod+9 workspace 9:Chat
-#bindsym $mod+0 workspace 10
-
 bindsym $mod+1 workspace "$ws1"
 bindsym $mod+2 workspace "$ws2"
 bindsym $mod+3 workspace "$ws3"
@@ -305,15 +294,17 @@ assign [class="Google-chrome"] → 2:Web
 assign [class="Geary"] → 3:Mail
 assign [class="Thunderbird"] → 3:Mail
 assign [class="URxvt" title="mutt"] → 3:Mail
-assign [class="Calibre-gui"] → 4:Book
-assign [class="Wiznote"] → 4:Book
+assign [class="libprs500"] → 4:Book
+assign [class="WizNote"] → 4:Book
 assign [class="Eric4.py"] → 5:Python
 assign [class="Komodo"] → 5:Python
 assign [class="Eclipse"] → 6:Eclipse
 assign [class="Java" title="Eclipse"] → 6:Eclipse
+assign [class="^jetbrains-idea-"] → 6:Eclipse
 assign [class="Wps"] → 7:Office
 assign [class="Et"] → 7:Office
 assign [class="Wpp"] → 7:Office
+assign [class="^libreoffice"] → 7:Office
 #assign [class="VirtualBox"] → 8:VMs
 assign [class="Vmplayer"] → 8:VMware
 assign [class="URxvt" title="weechat"] → 9:Chat
