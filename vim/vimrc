@@ -154,15 +154,18 @@ set nocompatible               " be iMproved
 
     set background=dark
 
-    colorscheme solarized
+"   colorscheme solarized
 "   colorscheme base16-default
+    colorscheme base16-bespin
 
   else
 "   let g:solarized_termcolors=16
 "   let g:solarized_contrast="normal"
 "   let g:solarized_visibility="normal"
-    colorscheme solarized
+"   colorscheme solarized
 "   colorscheme base16-default
+    colorscheme base16-bespin
+
   endif
 " }}}
 " Tabstops {{{
