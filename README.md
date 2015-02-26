@@ -72,7 +72,6 @@ Some important softwares. Needed after re-installing OS.
 		$ cd rxvt-unicode
 		$ ./configure --enable-256-color --enable-unicode3 --enable-combining --enable-xft --enable-font-styles --enable-pixbuf --enable-startup-notification --enable-transparency --enable-fading --enable-rxvt-scroll --enable-perl --enable-iso14755 --enable-keepscrolling --enable-selectionscrolling --enable-mousewheel --enable-slipwheeling --enable-smart-resize --enable-text-blink --enable-pointer-blank --enable-utmp --enable-wtmp --enable-lastlog
 
-
 5. feh
 
 		$ sudo apt-get install libcurl4-openssl-dev libx11-dev libxt-dev libimlib2-dev giblib-dev libxinerama-dev libjpeg-progs
@@ -94,8 +93,6 @@ Some important softwares. Needed after re-installing OS.
 	
 		$ git clone git@github.com:yusiwen/midnight-commander.git
 
-	
-
 7. GoAgent Linux 
 
 		$ sudo apt-get install python-dev python-greenlet python-gevent python-vte python-openssl python-crypto python-appindicator
@@ -112,6 +109,10 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-get --allow-unauthenticated install i3-autobuild-keyring
 		$ sudo apt-get install consolekit
 		$ sudo apt-get install i3
+
+	Then, disable `xfce4-notifyd` because `dunst` is running:
+
+		$ sudo mv /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service.disabled
 
 9. kingsoft-office
 
