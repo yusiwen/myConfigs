@@ -40,7 +40,7 @@ if [[ $(tty) == \/dev\/tty[0-9]* ]] ; then
   fbterm
 fi
 
-. ~/liquidprompt/liquidprompt
+#. ~/liquidprompt/liquidprompt
 
 function pdfpextr()
 {
