@@ -288,6 +288,7 @@ exec --no-startup-id indicator-sound-switcher
 exec --no-startup-id gnome-sound-applet
 exec --no-startup-id classicmenu-indicator
 exec --no-startup-id indicator-netspeed
+exec --no-startup-id sslocal -c ~/myConfigs/shadowsocks.json
 
 # Assign applications to workspace
 assign [class="Google-chrome"] → 2:Web
