@@ -25,3 +25,4 @@ fi
 TERMINAL=urxvtc
 export TERMINAL
 
+source $HOME/myConfigs/shell/set_dev_path
