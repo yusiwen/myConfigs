@@ -8,7 +8,7 @@ import subprocess
 class EclipseChooser:
     i = 1
     eclipse_dir = "/opt/eclipse"
-    eclipse_args = ['eclipse', '-vm', '/opt/java/jdk1.7.0_75/jre/bin/java', '-nosplash']
+    eclipse_args = ['eclipse', '-vm', '/opt/java/jdk1.8.0_45/jre/bin/java', '-nosplash']
     idea_dir = '/opt/intellij'
     idea_args = ['bin/idea.sh']
 
@@ -20,7 +20,7 @@ class EclipseChooser:
         if os.name == 'nt':
             self.eclipse_dir = 'j:/eclipse'
             self.eclipse_args[0] = 'eclipse.exe'
-            self.eclipse_args[2] = 'j:/java/jdk1.7.0_65/jre/bin/javaw.exe'
+            self.eclipse_args[2] = 'j:/java/jdk1.8.0_25/jre/bin/javaw.exe'
             self.idea_dir = 'j:/intellij'
             self.idea_args = ['bin/idea.exe']
 
