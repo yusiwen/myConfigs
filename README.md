@@ -124,7 +124,7 @@ Some important softwares. Needed after re-installing OS.
 
 	Then, install kingsoft-office package using dpkg.
 
-  * Note: Since version A18, kingsoft-office supports x64 architecture, just install the deb directly. No needs for i386 multi-arch supports.
+	* Note: Since version A18, kingsoft-office supports x64 architecture, just install the deb directly. No needs for i386 multi-arch supports.
 
 10. Calibre
 
@@ -237,5 +237,5 @@ Some important softwares. Needed after re-installing OS.
 
 20. font-manager
 
-    $ sudo apt-add-repository ppa:font-manager/staging
+			$ sudo apt-add-repository ppa:font-manager/staging
 
