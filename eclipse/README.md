@@ -4,6 +4,8 @@ Eclipse Setup
 1. Location & Startup
 
   Install eclipse in `/opt/eclipse` directory.
+  
+  Change directory name to version name, such as `/opt/eclipse/eclipse-java-luna-SR2`.
 
   Use `ec.py` script to start eclipse.
 
