@@ -13,21 +13,28 @@ Eclipse Setup
 
   1). Mylyn latest version
 
-    Add this update site url: http://download.eclipse.org/mylyn/releases/latest
+    Update site url: http://download.eclipse.org/mylyn/releases/latest
 
   2). EGit latest version
 
-    Add this update site url: http://download.eclipse.org/egit/updates
+    Update site url: http://download.eclipse.org/egit/updates
 
   3). m2e latest version
 
-    Add this update site url: http://download.eclipse.org/technology/m2e/releases
+    Update site url: http://download.eclipse.org/technology/m2e/releases
 
   4). subclipse
 
-    Add this update site url: http://subclipse.tigris.org/update_1.10.x
+    Update site url: http://subclipse.tigris.org/update_1.10.x
 
   5). eclipse-color-theme
 
-    Add this update site url: http://eclipse-color-theme.github.com/update
+    Update site url: http://eclipse-color-theme.github.com/update
 
+  6). Jeeeyul's theme
+
+    Update site url: http://eclipse.jeeeyul.net/update/
+
+  7). EditBox
+
+    Update site url: http://editbox.sourceforge.net/updates
