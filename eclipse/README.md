@@ -3,9 +3,9 @@ Eclipse Setup
 
 1. Location & Startup
 
-Install eclipse in `/opt/eclipse` directory.
+  Install eclipse in `/opt/eclipse` directory.
 
-Use `ec.py` script to start eclipse.
+  Use `ec.py` script to start eclipse.
 
 2. Upgrade components
 
