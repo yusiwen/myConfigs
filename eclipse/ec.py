@@ -64,6 +64,7 @@ class EclipseChooser:
         self.find(self.idea_dir, self.idea_args)
 
         dialog = gtk.Dialog("Eclipse Environment Chooser", None, 0, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
         dialog.set_default_size(250, 300)
         label = gtk.Label("Choose:")
 
