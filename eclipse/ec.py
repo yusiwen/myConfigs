@@ -8,7 +8,7 @@ import subprocess
 class EclipseChooser:
     i = 1
     eclipse_dir = "/opt/eclipse"
-    eclipse_args = ['eclipse', '-vm', '/opt/java/jdk1.8.0_45/jre/bin/java', '-nosplash']
+    eclipse_args = ['eclipse', '-vm', '/opt/java/jdk1.8.0_45/bin/java', '-nosplash']
     idea_dir = '/opt/intellij'
     idea_args = ['bin/idea.sh']
 
@@ -23,6 +23,9 @@ class EclipseChooser:
             self.eclipse_args[2] = 'j:/java/jdk1.8.0_25/jre/bin/javaw.exe'
             self.idea_dir = 'j:/intellij'
             self.idea_args = ['bin/idea.exe']
+        else:
+            os.environ['SWT_GTK3'] = "0"
+            os.environ['UBUNTU_MENUPROXY'] = "0"
 
     def find(self, path, args):
         if os.path.exists(path):
