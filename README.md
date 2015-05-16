@@ -124,6 +124,8 @@ Some important softwares. Needed after re-installing OS.
 
 	Then, install kingsoft-office package using dpkg.
 
+  * Note: Since version A18, kingsoft-office supports x64 architecture, just install the deb directly. No needs for i386 multi-arch supports.
+
 10. Calibre
 
 		$ sudo python -c "import sys; py3 = sys.version_info[0] > 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()"
@@ -232,3 +234,8 @@ Some important softwares. Needed after re-installing OS.
 	* Faenza icon theme
  
 			$ sudo apt-add-repository ppa:tiheum/equinox
+
+20. font-manager
+
+    $ sudo apt-add-repository ppa:font-manager/staging
+
