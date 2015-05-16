@@ -1,5 +1,5 @@
 # Put or link this file to HOME as file name: .gtkrc-2.0
-#gtk-theme-name = "Numix"
+# gtk-theme-name = "Numix"
 gtk-theme-name = "MediterraneanDarkest"
 gtk-font-name = "Droid Sans 10"
 gtk-icon-theme-name = "Faenza-Darkest"

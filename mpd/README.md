@@ -28,6 +28,12 @@ NOTE: Change `music_directory` path in `mpd.conf` file to music library.
 
 NOTE: In `ncmpcpp`, use `u` key to update library.
 
+## Troubleshooting
+Start mpd in debug mode to see error logs:
+```
+mpd --stdout --no-daemon --verbose ~/.mpd/mpd.conf
+```
+
 ## Reference
 See this [link] for further instructions.
 
