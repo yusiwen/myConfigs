@@ -14,8 +14,8 @@ Xft.rgba: rgb
 
 URxvt.meta8: true
 
-URxvt.font: xft:InputMono-Regular:size=10,xft:WenQuanYi\ Zen\ Hei\ Mono:size=10
-URxvt.boldFont: xft:InputMono-Bold:bold:size=10,xft:WenQuanYi\ Zen\ Hei\ Mono:bold:size=10
+URxvt.font: xft:InputMono-Regular:size=10,xft:MicrosoftYaHei:size=10
+URxvt.boldFont: xft:InputMono:bold:size=10,xft:MicrosoftYaHei:bold:size=10
 
 URxvt.intensityStyles: false
 
