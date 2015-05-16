@@ -2,7 +2,8 @@
 #  ~/.config/gtk-3.0/
 #  as file name: settings.ini
 [Settings]
-gtk-theme-name = Numix Daily
+#gtk-theme-name = Numix Daily
+gtk-theme-name = MediterraneanDarkest
 gtk-font-name = Droid Sans 10
 gtk-fallback-icon-theme = Humanity-Dark
 gtk-icon-theme-name = Faenza-Darkest
