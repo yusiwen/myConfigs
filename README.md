@@ -242,4 +242,5 @@ Some important softwares. Needed after re-installing OS.
 21. shadowsocks-qt5
 
 			$ sudo apt-add-repository ppa:hzwhuang/ss-qt5
+			$ sudo apt-get install shadowsocks-qt5
 			$ ss-qt5
