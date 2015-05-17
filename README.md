@@ -137,6 +137,7 @@ Some important softwares. Needed after re-installing OS.
 			$ git clone git://github.com/OfflineIMAP/offlineimap.git
 
 		Then, run mkenv.sh
+		Note: Using `shadowsocks-qt5` for proxy, see #21 below.
 
 	* sup (need offlineImap)
 
@@ -241,6 +242,20 @@ Some important softwares. Needed after re-installing OS.
 
 21. shadowsocks-qt5
 
-			$ sudo apt-add-repository ppa:hzwhuang/ss-qt5
-			$ sudo apt-get install shadowsocks-qt5
-			$ ss-qt5
+	Install `shadowsocks-qt5`:
+
+		$ sudo apt-add-repository ppa:hzwhuang/ss-qt5
+		$ sudo apt-get install shadowsocks-qt5
+
+	Startup `ss-qt5`:
+
+		$ ss-qt5
+
+	Install `tsocks`:
+
+		$ sudo apt-get install tsocks
+
+	Edit `/etc/tsocks.conf`:
+
+		server = 127.0.0.1
+		server_port = 1088
