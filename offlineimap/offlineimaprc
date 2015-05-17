@@ -5,7 +5,7 @@
 [general]
 ui = ttyui
 accounts = yusiwen
-pythonfile=~/.offlineimap/offlineimap_scripts.py
+pythonfile = ~/.offlineimap/offlineimap_scripts.py
 fsync = False
 
 [Account yusiwen]
@@ -13,6 +13,7 @@ localrepository = yusiwen-Local
 remoterepository = yusiwen-Remote
 status_backend = sqlite
 postsynchook = notmuch new
+proxy = SOCKS5:127.0.0.1:1088
 
 [Repository yusiwen-Local]
 type = Maildir

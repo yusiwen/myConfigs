@@ -239,3 +239,7 @@ Some important softwares. Needed after re-installing OS.
 
 			$ sudo apt-add-repository ppa:font-manager/staging
 
+21. shadowsocks-qt5
+
+			$ sudo apt-add-repository ppa:hzwhuang/ss-qt5
+			$ ss-qt5
