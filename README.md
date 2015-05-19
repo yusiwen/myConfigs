@@ -104,9 +104,9 @@ Some important softwares. Needed after re-installing OS.
 
 8. i3-wm
 
-		$ sudo echo 'deb http://build.i3wm.org/debian/sid sid main' > /etc/apt/sources.list.d/i3-autobuild.list
+		$ sudo echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >> /etc/apt/sources.list
 		$ sudo apt-get update
-		$ sudo apt-get --allow-unauthenticated install i3-autobuild-keyring
+		$ sudo apt-get --allow-unauthenticated install sur5r-keyring
 		$ sudo apt-get install consolekit
 		$ sudo apt-get install i3
 
@@ -172,7 +172,7 @@ Some important softwares. Needed after re-installing OS.
 
 13. Indicators
 
- 	* Sound Switcher Indicator
+	* Sound Switcher Indicator
 
 			$ sudo apt-add-repository ppa:yktooo/ppa
 			$ sudo apt-get update
