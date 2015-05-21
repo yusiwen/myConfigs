@@ -6,7 +6,7 @@
 #
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 # / was on /dev/sdb2 during installation
-UUID=a1ece8f9-c1f0-4e36-8e7c-92be52925ff1 /               ext4    defaults,noatime,errors=remount-ro 0       1
+UUID=3d573a91-71b0-49cf-96e0-2438921514fe /               ext4    defaults,noatime,errors=remount-ro 0       1
 # /home was on /dev/sda7 during installation
 UUID=d08950e2-5344-4b32-b213-308b243ce806 /home           ext4    defaults        0       2
 # /work was on /dev/sda9 during installation
@@ -19,7 +19,9 @@ UUID=6E2CFC5F2CFC242D /work      ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dma
 # DISK0_VOL1 is on /dev/sda5 
 UUID=4C74C17974C165F4 /data      ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
 # DISK1_VOL0 is on /dev/sdc1
-UUID=01CF98E06918C140 /softwares ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
+UUID=01CF98E06918C140 /cloud     ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
+# DISK1_VOL1 is on /dev/sdc2
+UUID=01CF98DFC74F5DB0 /softwares ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
 # DISK1_VOL2 is on /dev/sdc3
 UUID=662A34B22A34815B /documents ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
 # DISK0_VOL2 is on /dev/sda6
