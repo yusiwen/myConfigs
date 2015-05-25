@@ -259,3 +259,7 @@ Some important softwares. Needed after re-installing OS.
 
 		server = 127.0.0.1
 		server_port = 1088
+
+22. UTC problem in dual-boot within Ubuntu and Widnows
+
+	Edit file: `/etc/default/rcS`, set `UTC=yes`
