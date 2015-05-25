@@ -16,3 +16,6 @@
 [submodule "ls--"]
 	path = ls--
 	url = git@github.com:yusiwen/ls--.git
+[submodule "rofi"]
+	path = rofi
+	url = git@github.com:yusiwen/rofi.git
