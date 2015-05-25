@@ -104,9 +104,9 @@ Some important softwares. Needed after re-installing OS.
 
 8. i3-wm
 
-		$ sudo echo 'deb http://build.i3wm.org/debian/sid sid main' > /etc/apt/sources.list.d/i3-autobuild.list
+		$ sudo echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >> /etc/apt/sources.list
 		$ sudo apt-get update
-		$ sudo apt-get --allow-unauthenticated install i3-autobuild-keyring
+		$ sudo apt-get --allow-unauthenticated install sur5r-keyring
 		$ sudo apt-get install consolekit
 		$ sudo apt-get install i3
 
@@ -125,6 +125,10 @@ Some important softwares. Needed after re-installing OS.
 	Then, install kingsoft-office package using dpkg.
 
 	* Note: Since version A18, kingsoft-office supports x64 architecture, just install the deb directly. No needs for i386 multi-arch supports.
+
+	Install windows fonts:
+
+		$ sudo apt-get install ttf-mscorefonts-installer
 
 10. Calibre
 
@@ -172,7 +176,7 @@ Some important softwares. Needed after re-installing OS.
 
 13. Indicators
 
- 	* Sound Switcher Indicator
+	* Sound Switcher Indicator
 
 			$ sudo apt-add-repository ppa:yktooo/ppa
 			$ sudo apt-get update
@@ -259,3 +263,20 @@ Some important softwares. Needed after re-installing OS.
 
 		server = 127.0.0.1
 		server_port = 1088
+
+22. UTC problem in dual-boot within Ubuntu and Widnows
+
+	Edit file: `/etc/default/rcS`, set `UTC=yes`
+
+23. rofi (A window switcher, run dialog and dmenu replacement)
+
+	Replace `dmenu` by `rofi`
+
+		$ git clone git@github.com:yusiwen/rofi.git
+		$ cd rofi
+		$ git remote add upstream git@github.com:DaveDavenport/rofi.git
+		$ autoreconf -i
+		$ mkdir build/;cd build/
+		$ ../configure
+		$ make
+		$ sudo make install
