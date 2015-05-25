@@ -56,6 +56,8 @@ source /etc/zsh_command_not_found
 source ~/myConfigs/node.js/set_npm_path
 source ~/myConfigs/shell/set_dev_path
 
+source ~/.bash_aliases
+
 if [[ $(tty) == \/dev\/tty[0-9]* ]] ; then
   fbterm
 fi
