@@ -267,3 +267,16 @@ Some important softwares. Needed after re-installing OS.
 22. UTC problem in dual-boot within Ubuntu and Widnows
 
 	Edit file: `/etc/default/rcS`, set `UTC=yes`
+
+23. rofi (A window switcher, run dialog and dmenu replacement)
+
+	Replace `dmenu` by `rofi`
+
+		$ git clone git@github.com:yusiwen/rofi.git
+		$ cd rofi
+		$ git remote add upstream git@github.com:DaveDavenport/rofi.git
+		$ autoreconf -i
+		$ mkdir build/;cd build/
+		$ ../configure
+		$ make
+		$ sudo make install

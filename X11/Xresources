@@ -12,6 +12,30 @@ Xft.antialias: true
 Xft.dpi: 96
 Xft.rgba: rgb
 
+rofi.opacity: 85
+rofi.width: 100
+rofi.lines: 7
+rofi.columns: 4
+rofi.font: InputMono-Regular 10
+rofi.fg: #E5DBCF
+rofi.bg: #0F3B5F
+rofi.hlfg: #0F3B5F
+rofi.hlbg: #CC9752
+rofi.bc: #CC9752
+rofi.bw: 2
+rofi.location: 6
+rofi.padding: 2
+rofi.yoffset: -22
+rofi.xoffset: 0
+rofi.fixed-num-lines: true
+rofi.hmode: false
+rofi.terminal: x-terminal-emulator
+rofi.ssh-set-title: true
+rofi.disable-history: true
+rofi.key-window: mod4+Tab
+rofi.key-run: mod4+d
+rofi.key-ssh: mod1+F3
+
 URxvt.meta8: true
 
 URxvt.font: xft:InputMono-Regular:size=10,xft:MicrosoftYaHei:size=10
