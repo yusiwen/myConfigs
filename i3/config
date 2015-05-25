@@ -229,7 +229,7 @@ bindsym $mod+z exec google-chrome
 # bind key for Thunderbird mail client
 bindsym $mod+Shift+x exec thunderbird
 # bind key for Alpine, run in a new urxvt window
-bindsym $mod+x exec urxvtc -e mutt
+bindsym $mod+x exec urxvtc -title mutt -e tsocks mutt
 # bind key for weechat-curses, run in a new urxvt window
 bindsym $mod+Shift+o exec urxvtc -e weechat-curses
 # bind key for ncmpcpp, run in a new urxvt window
