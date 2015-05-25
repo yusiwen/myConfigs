@@ -337,4 +337,5 @@ for_window [class="cataclysm-tiles"] floating enable
 for_window [class="Orage"] floating enable
 for_window [class="^Vlc$"] floating enable
 for_window [class="^File-roller$"] floating enable
+for_window [class="^shadowsocks-qt5$"] floating enable
 
