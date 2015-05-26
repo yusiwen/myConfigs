@@ -24,11 +24,11 @@ Installation
 		$ sudo apt-get update
 		$ sudo apt-get install i3
 
-- (Optional) Remove unity.
+1. (Optional) Remove unity.
 
 		$ sudo apt-get remove nautilus gnome-power-manager compiz compiz-gnome unity unity-* unity8* hud zeitgeist zeitgeist-core python-zeitgeist libzeitgeist* activity-log-manager-common gnome-control-center gnome-screenshot
 
-- (Optional) Cleanup.
+1. (Optional) Cleanup.
 
 		$ sudo dpkg --list |grep "^rc" | cut -d " " -f 3 | xargs sudo dpkg --purge
 
@@ -40,28 +40,28 @@ Configuration
 		$ ln -sf ~/myConfigs/i3/config ~/.i3/config
 		$ ln -sf ~/myConfigs/i3/i3status ~/.i3/i3status
 
-- (Optional) Change i3-wm session icon used by LightDM. Only applicable for unity-greeter.
+1. (Optional) Change i3-wm session icon used by LightDM. Only applicable for unity-greeter.
 
 		$ cd /usr/share/unity-greeter
 		$ sudo cp /home/yusiwen/myConfigs/i3/i3.png custom_i3_badge.png
 
-- (Optional) Set lock screen when restoring from suspension using i3lock.
+1. (Optional) Set lock screen when restoring from suspension using i3lock.
    see `pm-utils` and `xautolock`.
 
 		$ cd /etc/pm/sleep.d
 		$ sudo cp /home/yusiwen/myConfigs/i3/i3lock.pm 66_i3lock
 
-- (Optional) Add a custom i3 session in lightdm/gdm:
+1. (Optional) Add a custom i3 session in lightdm/gdm:
 
 		$ sudo cp i3.desktop /usr/share/xsessions
 
-- Config `dunst`
+1. Config `dunst`
 
 	`dunstrc` should be copied to `~/.config/dunst/` or linked to that folder.
 
 		$ ln -sf ~/myConfigs/i3/dunstrc ~/.config/dunst/dunstrc
 
-- Make thunar as default file manager.
+1. Make thunar as default file manager.
 
 		$ vim ./local/share/applications/thunar.desktop
 
@@ -83,7 +83,7 @@ Configuration
 		inode/directory=thunar.desktop
 		x-directory/normal=thunar.desktop
 
-gnome-keyring-daemon Problems
+`gnome-keyring-daemon` Problems
 -----------------------------
 
 When using unity-greeter with LightDM, there may be some PAM problem causing gnome-keyring-daemon not started after user login. By replacing unity-greeter with lightdm-gtk-greeter, the problem is gone.
