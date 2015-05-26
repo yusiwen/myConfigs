@@ -37,48 +37,36 @@ Configuration
 
 1. Make links of i3-wm config files.
 
-		```
 		$ ln -sf ~/myConfigs/i3/config ~/.i3/config
 		$ ln -sf ~/myConfigs/i3/i3status ~/.i3/i3status
-		```
 
 - (Optional) Change i3-wm session icon used by LightDM. Only applicable for unity-greeter.
 
-		```
 		$ cd /usr/share/unity-greeter
 		$ sudo cp /home/yusiwen/myConfigs/i3/i3.png custom_i3_badge.png
-		```
 
 - (Optional) Set lock screen when restoring from suspension using i3lock.
    see `pm-utils` and `xautolock`.
 
-		```
 		$ cd /etc/pm/sleep.d
 		$ sudo cp /home/yusiwen/myConfigs/i3/i3lock.pm 66_i3lock
-		```
 
 - (Optional) Add a custom i3 session in lightdm/gdm:
-```
-sudo cp i3.desktop /usr/share/xsessions
-```
+
+		$ sudo cp i3.desktop /usr/share/xsessions
 
 - Config `dunst`
 
 	`dunstrc` should be copied to `~/.config/dunst/` or linked to that folder.
 
-		```
 		$ ln -sf ~/myConfigs/i3/dunstrc ~/.config/dunst/dunstrc
-		```
 
 - Make thunar as default file manager.
 
-		```
 		$ vim ./local/share/applications/thunar.desktop
-		```
 
 	paste content as below:
 
-		```
 		[Desktop Entry]
 		Name=Open Folder
 		TryExec=thunar
@@ -89,14 +77,11 @@ sudo cp i3.desktop /usr/share/xsessions
 		StartupNotify=true
 		Type=Application
 		MimeType=x-directory/gnome-default-handler;x-directory/normal;inode/directory;application/x-gnome-saved-search;
-		```
 
 	add content below to ./local/share/applications/mimeapps.list
 
-		```
 		inode/directory=thunar.desktop
 		x-directory/normal=thunar.desktop
-		```
 
 gnome-keyring-daemon Problems
 -----------------------------
