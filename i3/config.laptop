@@ -259,7 +259,7 @@ exec --no-startup-id dunst
 exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 exec python ~/goagent/local/goagent-gtk.py
 #exec --no-startup-id gnome-settings-daemon
-exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+#exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id thunar --daemon
 exec --no-startup-id remmina -i
 exec --no-startup-id nm-applet
@@ -268,7 +268,6 @@ exec --no-startup-id urxvtd -q -o -f
 exec --no-startup-id mpd ~/.mpd/mpd.conf
 exec --no-startup-id parcellite
 exec --no-startup-id orage
-exec --no-startup-id gnome-sound-applet
 exec --no-startup-id indicator-netspeed
 exec --no-startup-id ss-qt5
 exec --no-startup-id rofi
