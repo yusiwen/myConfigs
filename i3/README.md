@@ -5,31 +5,32 @@ Configurations for i3-wm.
 Installation
 ------------
 
-1. Add `deb http://build.i3wm.org/debian/sid sid main` to `/etc/apt/sources.list`.
+1. Using Debian repository:
 
-2. Install `libxcb-cursor0_0.1.1-1_amd64.deb` manually.
-```
-sudo dpkg --install libxcb-cursor0_0.1.1-1_amd64.deb
-```
+	Add `deb http://build.i3wm.org/debian/sid sid main` to `/etc/apt/sources.list`.
 
-3. Update repository and install i3-keyring.
-```
-sudo apt-get update
-sudo apt-get --allow-unauthenticated install i3-autobuild-keyring
-sudo apt-get update
-sudo apt-get install i3
-```
+	Then,
 
-4. (Optional) Remove unity.
-On Ubuntu 13.10
-```
-sudo apt-get remove nautilus gnome-power-manager compiz compiz-gnome unity unity-* unity8* hud zeitgeist zeitgeist-core python-zeitgeist libzeitgeist* activity-log-manager-common gnome-control-center gnome-screenshot
-```
+		$ sudo apt-get update
+		$ sudo apt-get --allow-unauthenticated install i3-autobuild-keyring
+		$ sudo apt-get update
+		$ sudo apt-get install i3
 
-5. (Optional) Cleanup.
-```
-sudo dpkg --list |grep "^rc" | cut -d " " -f 3 | xargs sudo dpkg --purge
-```
+	Or, using Ubuntu repository:
+
+		$ sudo echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >> /etc/apt/sources.list
+		$ sudo apt-get update
+		$ sudo apt-get --allow-unauthenticated install sur5r-keyring
+		$ sudo apt-get update
+		$ sudo apt-get install i3
+
+- (Optional) Remove unity.
+
+		$ sudo apt-get remove nautilus gnome-power-manager compiz compiz-gnome unity unity-* unity8* hud zeitgeist zeitgeist-core python-zeitgeist libzeitgeist* activity-log-manager-common gnome-control-center gnome-screenshot
+
+- (Optional) Cleanup.
+
+		$ sudo dpkg --list |grep "^rc" | cut -d " " -f 3 | xargs sudo dpkg --purge
 
 Configuration
 -------------
@@ -48,7 +49,7 @@ ln -sf ~/myConfigs/i3/i3status.home-ubuntu ~/.i3/i3status
 2. (Optional) Change i3-wm session icon used by LightDM. Only applicable for unity-greeter.
 ```
 cd /usr/share/unity-greeter
-sudo cp /home/yusiwen/myConfigs/i3/i3.png custom_i3_badge.png 
+sudo cp /home/yusiwen/myConfigs/i3/i3.png custom_i3_badge.png
 ```
 
 3. (Optional) Set lock screen when restoring from suspension using i3lock.
@@ -96,4 +97,3 @@ gnome-keyring-daemon Problems
 -----------------------------
 
 When using unity-greeter with LightDM, there may be some PAM problem causing gnome-keyring-daemon not started after user login. By replacing unity-greeter with lightdm-gtk-greeter, the problem is gone.
-
