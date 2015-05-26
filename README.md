@@ -10,23 +10,25 @@ Contents
 4. `eclipse/` Eclipse configurations under linux.  
 5. `i3/` i3-wm configurations.  
 6. `keyring` keyring confiurations for i3 and mutt.  
-7. `mounts/` fstab configurations for home-ubuntu.  
-8. `mpd/` mpd configurations.  
-9. `mutt/` mutt mail client configurations.  
-10. `offlineimap/` offlineimap, sup, and notmuch configurations.  
-11. `razer/` Razer DeathAdder mouse polling rate configurations.  
-12. `rxvt/` rxvt-unicode terminal configurations.  
-13. `screen/` screen configurations.  
-14. `shell/` shell environments scripts.  
-15. `vim/` VIM configurations.  
-16. `X11/` X11 scripts.  
-17. `git` Git configurations and scripts.
-18. `route.sh` and `route_iPhone.sh` are routing config files for 3G mobile network when at work.  
-19. `set_dual_monitor.sh` and `projector.sh` are config files for xrandr to work with multiple monitors.  
-20. `color_sampler.perl` shell color sampler script in perl.  
-21. `color_spaces.perl` another shell color sampler script in perl with 256 color.  
-22. `mTouch.py` python script made by me. It enables three fingers swipe cycling within workspaces.  
-23. `rsync_skydrive.sh` shell script made by me. It uses rsync to sync skydrive files to my backup disks.
+7. `ls--/` ls++ - colorized ls on steroids.
+8. `mounts/` fstab configurations for home-ubuntu.  
+9. `mpd/` mpd configurations.  
+10. `mutt/` mutt mail client configurations.  
+11. `offlineimap/` offlineimap, sup, and notmuch configurations.  
+12. `razer/` Razer DeathAdder mouse polling rate configurations.  
+13. `rofi/` A popup window switcher roughly based on superswitcher, requiring only xlib and pango.
+14. `rxvt/` rxvt-unicode terminal configurations.  
+15. `screen/` screen configurations.  
+16. `shell/` shell environments scripts.  
+17. `vim/` VIM configurations.  
+18. `X11/` X11 scripts.  
+19. `git/` Git configurations and scripts.
+20. `route.sh` and `route_iPhone.sh` are routing config files for 3G mobile network when at work.  
+21. `set_dual_monitor.sh` and `projector.sh` are config files for xrandr to work with multiple monitors.  
+22. `color_sampler.perl` shell color sampler script in perl.  
+23. `color_spaces.perl` another shell color sampler script in perl with 256 color.  
+24. `mTouch.py` python script made by me. It enables three fingers swipe cycling within workspaces.  
+25. `rsync_skydrive.sh` shell script made by me. It uses rsync to sync skydrive files to my backup disks.
 
 Softwares
 ------------
@@ -87,11 +89,7 @@ Some important softwares. Needed after re-installing OS.
 
 	To get the source:
 
-		$ git clone git://repo.or.cz/midnight-commander.git
-	
-	or
-	
-		$ git clone git@github.com:yusiwen/midnight-commander.git
+		$ git clone git@github.com:yusiwen/mc.git
 
 7. GoAgent Linux 
 

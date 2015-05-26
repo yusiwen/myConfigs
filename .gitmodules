@@ -19,3 +19,6 @@
 [submodule "rofi"]
 	path = rofi
 	url = git@github.com:yusiwen/rofi.git
+[submodule "mc"]
+	path = mc
+	url = git@github.com:yusiwen/mc.git
