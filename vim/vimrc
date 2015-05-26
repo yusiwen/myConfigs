@@ -156,7 +156,7 @@ set nocompatible               " be iMproved
 
 "   colorscheme solarized
 "   colorscheme base16-default
-    colorscheme base16-bespin
+    colorscheme base16-tomorrow
 
   else
 "   let g:solarized_termcolors=16
@@ -164,7 +164,7 @@ set nocompatible               " be iMproved
 "   let g:solarized_visibility="normal"
 "   colorscheme solarized
 "   colorscheme base16-default
-    colorscheme base16-bespin
+    colorscheme base16-tomorrow
 
   endif
 " }}}
