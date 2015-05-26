@@ -33,14 +33,14 @@ floating_modifier $mod
 
 # colors
 
-#class                  border  backgr.text
-#client.focused          #121212 #101010 #9e8a8e
-#client.focused          #121212 #101010 #cfcfcf
-#client.focused_inactive #101010 #191919 #999999
-#client.unfocused        #101010 #191919 #999999
-#client.urgent           #cd989a #cd989a #2e3436
+#class                  border  backgr  text
+client.focused          #121212 #101010 #9e8a8e
+client.focused          #121212 #101010 #cfcfcf
+client.focused_inactive #101010 #191919 #999999
+client.unfocused        #101010 #191919 #999999
+client.urgent           #cd989a #cd989a #2e3436
 
-#client.background       #1d1d1d
+client.background	#1d1d1d
 
 # start a terminal
 # If want i3-sensible-terminal to start urxvtc instead of urxvt,
@@ -169,40 +169,40 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+	# These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+	# Pressing left will shrink the window’s width.
+	# Pressing right will grow the window’s width.
+	# Pressing up will shrink the window’s height.
+	# Pressing down will grow the window’s height.
+	bindsym j resize shrink width 10 px or 10 ppt
+	bindsym k resize grow height 10 px or 10 ppt
+	bindsym l resize shrink height 10 px or 10 ppt
+	bindsym semicolon resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+	# same bindings, but for the arrow keys
+	bindsym Left resize shrink width 10 px or 10 ppt
+	bindsym Down resize grow height 10 px or 10 ppt
+	bindsym Up resize shrink height 10 px or 10 ppt
+	bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+	# back to normal: Enter or Escape
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
 
 # Create Log out, Reboot, Poweroff bindings
 mode "Exit >> (L)ogout, (S)uspend, (X)Reboot, (P)oweroff" {
-        bindsym Shift+x exec dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart
-        bindsym Shift+s exec dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
-        bindsym Shift+l exit
-        bindsym Shift+p exec dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
+	bindsym Shift+x exec dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart
+	bindsym Shift+s exec dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
+	bindsym Shift+l exit
+	bindsym Shift+p exec dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
 
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+	# back to normal: Enter or Escape
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
 }
 
 bindsym $mod+Shift+q mode "Exit >> (L)ogout, (S)uspend, (X)Reboot, (P)oweroff"
@@ -238,17 +238,17 @@ bindsym $mod+Shift+i exec vmplayer ~/vmwares/winxp/winxp.vmx
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status --config ~/.i3/i3status.config
-#        colors {
-#                background #101010
-#                statusline #999999
-#                focused_workspace #825969 #191919
-#                active_workspace #825969 #101010
-#                focused_workspace #cfcfcf #191919
-#                active_workspace #cfcfcf #101010
-#                inactive_workspace #9a878f #191919
-#                urgent_workspace #2e3436 #9a878f
-#        }
+	status_command i3status --config ~/.i3/i3status.config
+	colors {
+		background #101010
+		statusline #999999
+		focused_workspace #825969 #191919
+		active_workspace #825969 #101010
+		focused_workspace #cfcfcf #191919
+		active_workspace #cfcfcf #101010
+		inactive_workspace #9a878f #191919
+		urgent_workspace #2e3436 #9a878f
+	}
 }
 
 exec --no-startup-id xbacklight -set 75
@@ -256,7 +256,6 @@ exec --no-startup-id xrdb -merge ~/.Xresources
 exec --no-startup-id source ~/bin/keyring.sh
 exec --no-startup-id xcompmgr -n
 exec --no-startup-id dunst
-#exec --no-startup-id /usr/bin/xfce4-power-manager
 exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 exec python ~/goagent/local/goagent-gtk.py
 #exec --no-startup-id gnome-settings-daemon
@@ -271,7 +270,6 @@ exec --no-startup-id parcellite
 exec --no-startup-id orage
 exec --no-startup-id gnome-sound-applet
 exec --no-startup-id indicator-netspeed
-#exec --no-startup-id sslocal -c ~/myConfigs/shadowsocks.json
 exec --no-startup-id ss-qt5
 exec --no-startup-id rofi
 
