@@ -238,13 +238,13 @@ Some important softwares. Needed after re-installing OS.
 
 1. Themes
 
-	* Numix theme
+	* [Numix theme](https://numixproject.org/)
 
 			$ sudo apt-add-repository ppa:numix/ppa
 
-	* Faenza icon theme
+	* [Faenza icon theme](http://tiheum.deviantart.com/art/Faenza-Icons-173323228)
  
-			$ sudo apt-add-repository ppa:tiheum/equinox
+			$ sudo apt-add-repository ppa:webupd8team/themes
 
 1. font-manager
 
