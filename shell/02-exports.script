@@ -1,0 +1,31 @@
+#!/bin/sh
+
+#{{{ Java
+# find newest Java SDK version under /opt/java
+JDK_INSTALLATION_PATH='/opt/java'
+JAVA_NAME=`/bin/ls -r $JDK_INSTALLATION_PATH | head -1`
+# set JAVA_HOME
+JAVA_HOME=$JDK_INSTALLATION_PATH/$JAVA_NAME
+export JAVA_HOME
+export JDK_HOME=$JAVA_HOME
+export CLASSPATH=.:$JDK_HOME/lib/tools.jar:$JAVA_HOME/jre/lib/rt.jar
+
+export M2_HOME=$HOME/maven/apache-maven-2.2.1
+
+export PATH=$PATH:$JAVA_HOME/bin:$M2_HOME/bin
+#}}}
+
+#{{{ Node.js
+export NPM_PACKAGES="$HOME/.npm-packages"
+export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+export PATH="$NPM_PACKAGES/bin:$PATH"
+# Unset manpath so we can inherit from /etc/manpath via the `manpath`
+# command
+unset MANPATH  # delete if you already modified MANPATH elsewhere in your config
+export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+#}}}
+
+#{{{ Misc
+export EDITOR=vim
+export GIT_EDITOR="${EDITOR} -X"
+#}}}

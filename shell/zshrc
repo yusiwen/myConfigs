@@ -51,12 +51,13 @@ KEYTIMEOUT=5
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
+
+eval $( dircolors -b $HOME/myConfigs/LS_COLORS/LS_COLORS )
+
 source /etc/zsh_command_not_found
 
-source ~/myConfigs/node.js/set_npm_path
-source ~/myConfigs/shell/set_dev_path
-
-source ~/.bash_aliases
+source $HOME/myConfigs/shell/01-aliases.script
+source $HOME/myConfigs/shell/02-exports.script
 
 if [[ $(tty) == \/dev\/tty[0-9]* ]] ; then
   fbterm
