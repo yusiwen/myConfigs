@@ -22,3 +22,6 @@
 [submodule "mc"]
 	path = mc
 	url = git@github.com:yusiwen/mc.git
+[submodule "LS_COLORS"]
+	path = LS_COLORS
+	url = git@github.com:yusiwen/LS_COLORS.git
