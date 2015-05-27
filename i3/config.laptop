@@ -234,11 +234,15 @@ bindsym $mod+Shift+c exec catfish
 # bind key for vmplayer winxp
 bindsym $mod+Shift+i exec vmplayer ~/vmwares/winxp/winxp.vmx
 
+# Bind CAPS & NUM key to fire a signal to i3blocks
+bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
+bindsym --release Num_Lock  exec pkill -SIGRTMIN+11 i3blocks
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-	status_command i3status --config ~/.i3/i3status.config
+#	status_command i3status --config ~/.i3/i3status.config
+	status_command i3blocks -c ~/.i3/i3blocks.conf
 	colors {
 		background #101010
 		statusline #999999
@@ -268,7 +272,6 @@ exec --no-startup-id urxvtd -q -o -f
 exec --no-startup-id mpd ~/.mpd/mpd.conf
 exec --no-startup-id parcellite
 exec --no-startup-id orage
-exec --no-startup-id indicator-netspeed
 exec --no-startup-id ss-qt5
 exec --no-startup-id rofi
 

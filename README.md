@@ -127,6 +127,11 @@ Some important softwares. Needed after re-installing OS.
 
 		$ sudo mv /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service.disabled
 
+	Install i3blocks to replace i3status for better status display:
+
+		$ sudo apt-get install i3blocks
+		$ ln -s ~/myConfigs/i3/i3blocks.conf ~/.i3/i3blocks.conf
+
 1. kingsoft-office
 
 	To install kingsoft-office on 13.10+, which has removed ia32-libs package:
