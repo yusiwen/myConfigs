@@ -52,6 +52,7 @@ set nocompatible               " be iMproved
   Bundle 'pangloss/vim-javascript'
   Bundle 'kchmck/vim-coffee-script'
   Bundle 'godlygeek/tabular'
+	Bundle 'nanotech/jellybeans.vim'
 
   " vim-scripts repos
 
@@ -156,7 +157,8 @@ set nocompatible               " be iMproved
 
 "   colorscheme solarized
 "   colorscheme base16-default
-    colorscheme base16-tomorrow
+"   colorscheme base16-tomorrow
+    colorscheme jellybeans
 
   else
 "   let g:solarized_termcolors=16
@@ -164,7 +166,8 @@ set nocompatible               " be iMproved
 "   let g:solarized_visibility="normal"
 "   colorscheme solarized
 "   colorscheme base16-default
-    colorscheme base16-tomorrow
+"   colorscheme base16-tomorrow
+    colorscheme jellybeans
 
   endif
 " }}}

@@ -1,7 +1,8 @@
 ! ~/.Xresources is a symbolic link to ~/myConfigs/Xresources
 
 ! #include "myConfigs/solarized/xresources/solarized"
-#include "myConfigs/base16/base16-xresources/base16-tomorrow.dark.xresources"
+! #include "myConfigs/base16/base16-xresources/base16-tomorrow.dark.xresources"
+#include "myConfigs/X11/themes/jellybeans.xresources"
 
 Xft.autohint: true
 Xft.lcdfilter: lcddefault
