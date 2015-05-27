@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Version=1.0
-Name=Eclipse Java Kepler SR1
-Exec=$HOME/eclipse/eclipse-java-kepler-SR1/eclipse
-Icon=$HOME/eclipse/eclipse-java-kepler-SR1/icon.xpm
-Terminal=false
-Categories=GTK;Development;IDE;
-StartupNotify=true
