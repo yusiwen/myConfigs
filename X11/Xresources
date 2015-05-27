@@ -50,7 +50,7 @@ URxvt.scrollTtyOutput: false
 URxvt.scrollWithBuffer: true
 URxvt.scrollTtyKeypress: true
 
-URxvt.perl-ext-common:  default,matcher,clipboard
+URxvt.perl-ext-common:  default,matcher,clipboard,tabbed
 URxvt.url-launcher:     /usr/bin/google-chrome
 URxvt.matcher.button:   1
 
