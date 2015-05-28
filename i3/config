@@ -259,8 +259,6 @@ bar {
 		statusline #999999
 		focused_workspace #825969 #191919
 		active_workspace #825969 #101010
-		focused_workspace #cfcfcf #191919
-		active_workspace #cfcfcf #101010
 		inactive_workspace #9a878f #191919
 		urgent_workspace #2e3436 #9a878f
 	}
