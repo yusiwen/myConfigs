@@ -52,12 +52,13 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
-eval $( dircolors -b $HOME/myConfigs/LS_COLORS/LS_COLORS )
+source $HOME/myConfigs/shell/01-colors.script
+source $HOME/myConfigs/shell/02-aliases.script
+source $HOME/myConfigs/shell/02-completions.script
+source $HOME/myConfigs/shell/02-exports.script
+source $HOME/myConfigs/shell/03-functions.script
 
 source /etc/zsh_command_not_found
-
-source $HOME/myConfigs/shell/01-aliases.script
-source $HOME/myConfigs/shell/02-exports.script
 
 if [[ $(tty) == \/dev\/tty[0-9]* ]] ; then
   fbterm

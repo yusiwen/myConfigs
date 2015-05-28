@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [[ -z $LS_COLORS ]]; then
+  eval $( dircolors -b $HOME/myConfigs/LS_COLORS/LS_COLORS )
+fi
+

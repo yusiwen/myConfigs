@@ -13,6 +13,13 @@ alias ls='ls++ -F'
 # Make grep more user friendly by highlighting matches
 # and exclude grepping through .svn folders.
 alias grep='grep -I --color=auto --exclude-dir={.git,.svn,CVS}'
+
+alias df='df -h --total'
  
 # Shortcut for using the Kdiff3 tool for svn diffs.
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
+
+# Git commands aliases
+alias gits='git status --short'
+alias gitd='git diff --submodule'
+alias gitlg='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'

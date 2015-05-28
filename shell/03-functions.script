@@ -1,0 +1,24 @@
+#!/bin/sh
+
+which() {
+  printf '\e[?7t'
+
+  TYPE=`builtin type $@`
+  builtin which "$@" \
+    && echo $TYPE \
+    && whereis "$@"
+
+  ALIAS='alias'
+  FUNCTION='function'
+  if [[ "$TYPE" =~ "$ALIAS" ]]; then
+  elif [[ "$TYPE" =~ "$FUNCTION" ]]; then
+  else
+    file $(builtin type "$@" | awk '{print $3}')
+  fi
+
+  printf '\e[?7t'
+}
+
+du1() { du -h --max-depth=1 "$@" | sort -k 1,1hr -k 2,2f; }
+
+

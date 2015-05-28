@@ -1,0 +1,65 @@
+#!/usr/bin/zsh
+
+### zstyle :completion:<function>:<completer>:<command>:<argument>:<tag> _settings_
+
+#{{{ make use of LS_COLORS
+zstyle ':completion:*:default'               list-colors ${(s.:.)LS_COLORS}
+#}}}
+
+#{{{ cd
+zstyle ':completion:*:(cd):*'           group-order 'named-directories'
+zstyle ':completion:*:(cd):*'           ignore-parents parent pwd
+zstyle ':completion:*:*:(cd):*'         completer _history
+zstyle ':completion:*:*:(cd):*'         menu select auto
+#zstyle ':completion:*:*:(cd):*:*files' ignored-patterns '*~' file-sort access
+zstyle ':completion:*:cd:*'             ignored-patterns '(*/)#lost+found'
+#zstyle ':completion:*:*:(cd):*'        file-sort access
+#}}}
+
+#{{{ vim
+zstyle ':completion:*:*:(vim|rview|vimdiff|xxd):*' file-sort name
+zstyle ':completion:*:*:(vim|rview|vimdiff|xxd):*' tag-order files
+zstyle ':completion:*:*:(vim|rview|vimdiff|xxd):*:*files' \
+  ignored-patterns '*~|*.(old|bak|zwc|viminfo|rxvt-*|zcompdump)|pm_to_blib|cover_db|blib' \
+  file-sort modification
+#zstyle ':completion:*:vim:*:directories'           ignored-patterns \*
+#}}}
+
+#{{{ compdef
+autoload -U age compinit relative
+compinit -u
+compdef     _gnu_generic c256 cc256 ln file vnstat vnstati lscpu lsb_release
+compdef     _files       mkdir mkdr
+compdef     _mkdir       mkdr
+compdef     _hosts       ping 
+compdef  -p _rm          rmc
+compdef     _ls          vdir l ls++
+
+() {
+  compinit -u
+  local -a coreutils
+  coreutils=(
+    # /bin
+    cat chgrp chmod chown cp date dd df dir ln ls mkdir mknod mv readlink
+    rm rmdir vdir sleep stty sync touch uname mktemp
+    # /usr/bin
+    install hostid nice who users pinky stdbuf base64 basename chcon cksum
+    comm csplit cut dircolors dirname du env expand factor fmt fold groups
+    head id join link logname md5sum mkfifo nl nproc nohup od paste pathchk
+    pr printenv ptx runcon seq sha1sum sha224sum sha256sum sha384sum
+    sha512sum shred shuf sort split stat sum tac tail tee timeout tr
+    truncate tsort tty unexpand uniq unlink wc whoami yes arch touch
+  )
+  for i in $coreutils; do
+    # all which don't already have one
+    # at time of this writing, those are:
+    # /bin
+    # chgrp chmod chown cp date dd df ln ls mkdir rm rmdir stty sync
+    # touch uname
+    # /usr/bin
+    # nice comm cut du env groups id join logname md5sum nohup printenv
+    # sort stat unexpand uniq whoami
+    (( $+_comps[$i] )) || compdef _gnu_generic $i
+  done
+}
+#}}}
