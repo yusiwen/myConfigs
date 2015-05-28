@@ -31,23 +31,21 @@ focus_follows_mouse no
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# colors
-
+#{{{ Colors
 #class                  border  backgr  text
 client.focused          #121212 #101010 #9e8a8e
-client.focused          #121212 #101010 #cfcfcf
 client.focused_inactive #101010 #191919 #999999
 client.unfocused        #101010 #191919 #999999
 client.urgent           #cd989a #cd989a #2e3436
 
-client.background	#1d1d1d
+client.background       #1d1d1d
+#}}}
 
+#{{{ General settings
 # start a terminal
 # If want i3-sensible-terminal to start urxvtc instead of urxvt,
 #  should either change it's content, or set $TERMINAL to urxvtc in .profile.
 bindsym $mod+Return exec i3-sensible-terminal
-#bindsym $mod+Return exec urxvtc
-bindsym $mod+Shift+Return exec gnome-terminal
 
 # kill focused window
 bindsym $mod+q kill
@@ -58,7 +56,6 @@ bindsym $mod+q kill
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+Shift+d exec xfce4-appfinder
 
 # Screen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
@@ -132,41 +129,15 @@ bindsym $mod+t border normal
 bindsym $mod+y border 1pixel
 bindsym $mod+u border none
 
-# switch between the current and the previously focused one
-bindsym $mod+b workspace prev
-bindsym $mod+n workspace next
-
-# switch to workspace
-bindsym $mod+1 workspace 1:Main
-bindsym $mod+2 workspace 2:Web
-bindsym $mod+3 workspace 3:Mail
-bindsym $mod+4 workspace 4:Book
-bindsym $mod+5 workspace 5:Python
-bindsym $mod+6 workspace 6:Eclipse
-bindsym $mod+7 workspace 7:Office
-bindsym $mod+8 workspace 8:VMs
-bindsym $mod+9 workspace 9:Chat
-bindsym $mod+0 workspace 10
-
-# move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1:Main
-bindsym $mod+Shift+2 move container to workspace 2:Web
-bindsym $mod+Shift+3 move container to workspace 3:Mail
-bindsym $mod+Shift+4 move container to workspace 4:Book
-bindsym $mod+Shift+5 move container to workspace 5:Python
-bindsym $mod+Shift+6 move container to workspace 6:Eclipse
-bindsym $mod+Shift+7 move container to workspace 7:Office
-bindsym $mod+Shift+8 move container to workspace 8:VMs
-bindsym $mod+Shift+9 move container to workspace 9:Chat
-bindsym $mod+Shift+0 move container to workspace 10
-
 # reload the configuration file
 # bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+#}}}
 
+#{{{ Mode settings
 # resize window (you can also use the mouse for that)
 mode "resize" {
 	# These bindings trigger as soon as you enter the resize mode
@@ -206,34 +177,9 @@ mode "Exit >> (L)ogout, (S)uspend, (X)Reboot, (P)oweroff" {
 }
 
 bindsym $mod+Shift+q mode "Exit >> (L)ogout, (S)uspend, (X)Reboot, (P)oweroff"
+#}}}
 
-# bind key for i3lock
-bindsym $mod+Control+l exec i3lock -i $HOME/.wallpaper/lock.png
-# bind key for pidgin
-bindsym $mod+p exec pidgin
-# bind key for ec.py (Eclipse Environment Chooser)
-bindsym $mod+Shift+p exec ~/bin/ec.py
-# bind key for Google Chrome Browser
-bindsym $mod+z exec google-chrome
-# bind key for Thunderbird mail client
-bindsym $mod+Shift+x exec geary
-# bind key for Alpine, run in a new urxvt window
-bindsym $mod+x exec urxvtc -title mutt -e tsocks mutt
-# bind key for weechat-curses, run in a new urxvt window
-bindsym $mod+Shift+o exec urxvtc -e weechat-curses
-# bind key for ncmpcpp, run in a new urxvt window
-bindsym $mod+o exec urxvtc -e ncmpcpp
-# bind key for MidnightCommander, run in a new urxvt window
-bindsym $mod+m exec urxvtc -geometry 160x42 -e mc -c
-# bind key for thunar
-bindsym $mod+Shift+m exec thunar
-# bind key for gnome-calculator
-bindsym $mod+c exec gnome-calculator
-# bind key for Catfish
-bindsym $mod+Shift+c exec catfish
-# bind key for vmplayer winxp
-bindsym $mod+Shift+i exec vmplayer ~/vmwares/winxp/winxp.vmx
-
+#{{{ Statusbar settings
 # Bind CAPS & NUM key to fire a signal to i3blocks
 bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym --release Num_Lock  exec pkill -SIGRTMIN+11 i3blocks
@@ -252,7 +198,38 @@ bar {
 		urgent_workspace #2e3436 #9a878f
 	}
 }
+#}}}
 
+#{{{ Custom keybindings
+# bind key for i3lock
+bindsym $mod+Control+l exec i3lock -i $HOME/.wallpaper/lock.png
+# bind key for pidgin
+bindsym $mod+p exec pidgin
+# bind key for ec.py (Eclipse Environment Chooser)
+bindsym $mod+Shift+p exec ~/bin/ec.py
+# bind key for Google Chrome Browser
+bindsym $mod+z exec google-chrome
+# bind key for Thunderbird mail client
+bindsym $mod+Shift+x exec geary
+# bind key for Alpine, run in a new urxvt window
+bindsym $mod+x exec urxvtc -name mutt -title mutt -e tsocks mutt
+# bind key for weechat-curses, run in a new urxvt window
+bindsym $mod+Shift+o exec urxvtc -e weechat-curses
+# bind key for ncmpcpp, run in a new urxvt window
+bindsym $mod+o exec urxvtc -name ncmpcpp -title ncmpcpp -e ncmpcpp
+# bind key for MidnightCommander, run in a new urxvt window
+bindsym $mod+m exec urxvtc -geometry 160x42 -e mc -c
+# bind key for thunar
+bindsym $mod+Shift+m exec thunar
+# bind key for gnome-calculator
+bindsym $mod+c exec gnome-calculator
+# bind key for Catfish
+bindsym $mod+Shift+c exec catfish
+# bind key for vmplayer winxp
+bindsym $mod+Shift+i exec vmplayer ~/vmwares/winxp/winxp.vmx
+#}}}
+
+#{{{ Auto-startup settings
 exec --no-startup-id xbacklight -set 75
 exec --no-startup-id xrdb -merge ~/.Xresources
 exec --no-startup-id source ~/bin/keyring.sh
@@ -274,43 +251,70 @@ exec --no-startup-id parcellite
 exec --no-startup-id orage
 exec --no-startup-id ss-qt5
 exec --no-startup-id rofi
+#}}}
+
+#{{{ Workspace settings
+# define workspaces
+set $ws1 1:Main
+set $ws2 2:Web
+set $ws3 3:Mail
+set $ws4 4:Book
+set $ws5 5:VMs
+set $ws6 6:Dev
+set $ws7 7:Office
+set $ws8 8:Chat
+set $ws9 9
+set $ws10 10
+
+# switch between the current and the previously focused one
+bindsym $mod+b workspace prev
+bindsym $mod+n workspace next
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
 
 # Assign applications to workspace
-assign [class="Google-chrome"] → 2:Web
-assign [class="Geary"] → 3:Mail
-assign [class="URxvt" title="mutt"] → 3:Mail
-assign [class="calibre-gui"] → 4:Book
-assign [class="Wiznote"] → 4:Book
-assign [class="Eric4.py"] → 5:Python
-assign [class="Komodo"] → 5:Python
-assign [class="Eclipse"] → 6:Eclipse
-assign [class="Java" title="Eclipse"] → 6:Eclipse
-assign [class="^jetbrains-idea-"] → 6:Eclipse
-assign [class="Wps"] → 7:Office
-assign [class="Et"] → 7:Office
-assign [class="Wpp"] → 7:Office
-assign [class="libreoffice"] → 7:Office
-assign [class="soffice"] → 7:Office
-assign [class="Thunderbird"] → 3:Mail
-assign [class="Vmplayer"] → 8:VMs
-assign [class="URxvt" title="weechat"] → 9:Chat
-assign [class="^jetbrains-idea-ce"] → 6:Eclipse
+assign [class="Google-chrome"] $ws2
+assign [class="Geary|Thunderbird"] $ws3
+assign [class="URxvt" instance="mutt" title="mutt"] $ws3
+assign [class="calibre-gui|WizNote"] $ws4
+assign [class="Vmplayer"] $ws5
+assign [class="Eclipse|i^jetbrains-idea-"] $ws6
+assign [class="Java" title="Eclipse"] $ws6
+assign [class="Wps|Et|Wpp|^libreoffice"] $ws7
+assign [class="URxvt" title="weechat"] $ws8
+#}}}
 
+#{{{ Floating settings
 for_window [class="Eclipse" title="Workspace Launcher "] floating enable
 for_window [class="Java" title="Eclipse "] floating enable
 for_window [class="Gimp"] floating enable
 for_window [class="Gpick"] floating enable
-for_window [class="Volti"] floating enable
-for_window [class="Volti-mixer"] floating enable
 for_window [class="KeePass2"] floating enable
 for_window [class="Goldendict"] floating enable
-for_window [class="URxvt" title="^ncmpcpp"] floating enable
-for_window [class="URxvt" title="^mc"] floating enable
-for_window [class="Komodo edit" title="About Komodo"] floating enable
-for_window [class="Komodo edit" title="Preferences"] floating enable
-for_window [class="Komodo edit" title="Stackato Interface"] floating enable
-for_window [class="Komodo edit" title="Komodo Edit Help"] floating enable
-for_window [class="Komodo edit" title="Software Update"] floating enable
+for_window [class="URxvt" instance="^ncmpcpp$" title="^ncmpcpp$"] floating enable
+for_window [class="URxvt" instance="^mc$" title="^mc$"] floating enable
 for_window [class="Font-manager"] floating enable
 for_window [class="Grub-customizer"] floating enable
 for_window [class="Thunar" title="文件操作进度"] floating enable
@@ -323,3 +327,4 @@ for_window [class="Gnome-calculator"] floating enable
 for_window [class="xfce4-appfinder"] floating enable
 for_window [class="^File-roller$"] floating enable
 for_window [class="^shadowsocks-qt5$"] floating enable
+#}}}
