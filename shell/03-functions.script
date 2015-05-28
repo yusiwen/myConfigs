@@ -5,14 +5,16 @@ which() {
 
   TYPE=`builtin type $@`
   builtin which "$@" \
-    && echo $TYPE \
-    && whereis "$@"
+    && echo $TYPE
 
   ALIAS='alias'
   FUNCTION='function'
+  BUILTIN='builtin'
   if [[ "$TYPE" =~ "$ALIAS" ]]; then
   elif [[ "$TYPE" =~ "$FUNCTION" ]]; then
+  elif [[ "$TYPE" =~ "$BUILTIN" ]]; then
   else
+    whereis "$@"
     file $(builtin type "$@" | awk '{print $3}')
   fi
 
