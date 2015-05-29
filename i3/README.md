@@ -1,11 +1,14 @@
 i3
 ==
+
 Configurations for i3-wm.
 
 Installation
 ------------
 
-1. Using Debian repository:
+1. Installing from official repository.
+
+	Debian repository:
 
 	Add `deb http://build.i3wm.org/debian/sid sid main` to `/etc/apt/sources.list`.
 
@@ -16,13 +19,19 @@ Installation
 		$ sudo apt-get update
 		$ sudo apt-get install i3
 
-	Or, using Ubuntu repository:
+	Or, Ubuntu repository:
 
 		$ sudo echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >> /etc/apt/sources.list
 		$ sudo apt-get update
 		$ sudo apt-get --allow-unauthenticated install sur5r-keyring
 		$ sudo apt-get update
 		$ sudo apt-get install i3
+
+1. Install `i3blocks`.
+
+	For better i3bar status informations.
+
+		$ sudo apt-get install i3blocks
 
 1. (Optional) Remove unity.
 
@@ -38,7 +47,8 @@ Configuration
 1. Make links of i3-wm config files.
 
 		$ ln -sf ~/myConfigs/i3/config ~/.i3/config
-		$ ln -sf ~/myConfigs/i3/i3status ~/.i3/i3status
+		$ ln -sf ~/myConfigs/i3/i3status.config ~/.i3/i3status
+		$ ln -sf ~/myConfigs/i3/i3blocks.conf ~/.i3/i3blocks.conf
 
 1. (Optional) Change i3-wm session icon used by LightDM. Only applicable for unity-greeter.
 

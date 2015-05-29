@@ -9,13 +9,22 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+#{{{ Global variables
 set $mod Mod4
+
+set $TERM urxvtc
+set $BROWSER google-chrome
+set $FM thunar
+set $FM_CMD mc
+set $PLAYER ncmpcpp
+#}}}
 
 #{{{ Screens
 set $left_screen DVI-I-1
 set $right_screen DVI-D-1
 #}}}
 
+#{{{ Font settings
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
 #font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -24,7 +33,9 @@ set $right_screen DVI-D-1
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
 font pango:Droid Sans 10
+#}}}
 
+#{{{ General Options
 # By default, window focus follows your mouse movements. However, if you have a
 # setup where your mouse usually is in your way (like a touchpad on your laptop
 # which you do not want to disable completely), you might want to disable focus
@@ -35,6 +46,7 @@ focus_follows_mouse no
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+#}}}
 
 #{{{ Colors
 #                       border  backgr  text
@@ -129,8 +141,6 @@ bindsym $mod+u border none
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 #}}}
 
 #{{{ Mode settings
@@ -161,18 +171,19 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Create Log out, Reboot, Poweroff bindings
-mode "Exit >> (L)ogout, (S)uspend, (X)Reboot, (P)oweroff" {
-	bindsym Shift+x exec dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart
-	bindsym Shift+s exec dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
-	bindsym Shift+l exit
-	bindsym Shift+p exec dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
+mode "Exit >> (L)ogout, (S)uspend, (R)eboot, (P)oweroff, Loc(K)" {
+  bindsym Shift+l exit
+  bindsym Shift+s exec --no-startup-id $HOME/myConfigs/i3/i3exit.sh suspend, mode "default"
+  bindsym Shift+r exec --no-startup-id $HOME/myConfigs/i3/i3exit.sh reboot, mode "default"
+  bindsym Shift+p exec --no-startup-id $HOME/myConfigs/i3/i3exit.sh shutdown, mode "default"
+  bindsym Shift+k exec --no-startup-id $HOME/myConfigs/i3/i3exit.sh lock, mode "default"
 
-	# back to normal: Enter or Escape
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
+  # back to normal: Enter or Escape
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
 }
 
-bindsym $mod+Shift+q mode "Exit >> (L)ogout, (S)uspend, (X)Reboot, (P)oweroff"
+bindsym $mod+Shift+q mode "Exit >> (L)ogout, (S)uspend, (R)eboot, (P)oweroff, Loc(K)"
 #}}}
 
 #{{{ Statusbar settings
@@ -189,35 +200,36 @@ bar {
 	colors {
 		background #101010
 		statusline #999999
-		focused_workspace #825969 #191919
-		active_workspace #825969 #101010
-		inactive_workspace #9a878f #191919
-		urgent_workspace #2e3436 #9a878f
+#		focused_workspace #825969 #191919
+#		active_workspace #825969 #101010
+#		inactive_workspace #9a878f #191919
+#		urgent_workspace #2e3436 #9a878f
+		focused_workspace #0080ff #0080ff #000000
+		inactive_workspace #00000 #000000 #AAAAAA
+		urgent_workspace #d33682 #d33682 #fdf6e3
 	}
 }
 #}}}
 
 #{{{ Custom keybindings
-# bind key for i3lock
-bindsym $mod+Control+l exec i3lock -i ~/.wallpaper/lock.png
 # bind key for pidgin
 bindsym $mod+p exec pidgin
 # bind key for ec.py (Eclipse Environment Chooser)
 bindsym $mod+Shift+p exec ~/bin/ec.py
-# bind key for Google Chrome Browser
-bindsym $mod+z exec google-chrome
+# bind key for Browser
+bindsym $mod+z exec $BROWSER
 # bind key for Thunderbird mail client
 bindsym $mod+Shift+x exec thunderbird
-# bind key for Alpine, run in a new urxvt window
-bindsym $mod+x exec urxvtc -name mutt -title mutt -e tsocks mutt
-# bind key for weechat-curses, run in a new urxvt window
-bindsym $mod+Shift+o exec urxvtc -e weechat-curses
-# bind key for ncmpcpp, run in a new urxvt window
-bindsym $mod+o exec urxvtc -name ncmpcpp -title ncmpcpp -e ncmpcpp
-# bind key for MidnightCommander, run in a new urxvt window
-bindsym $mod+m exec urxvtc -name mc -title mc -geometry 160x42 -e mc -c
-# bind key for thunar
-bindsym $mod+Shift+m exec thunar
+# bind key for Alpine, run in a new TERM window
+bindsym $mod+x exec $TERM -name mutt -title mutt -e tsocks mutt
+# bind key for weechat-curses, run in a new TERM window
+bindsym $mod+Shift+o exec $TERM -e weechat-curses
+# bind key for PLAYER, run in a new TERM window
+bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -e $PLAYER
+# bind key for FM_CMD, run in a new TERM window
+bindsym $mod+m exec $TERM -name $FM_CMD -title $FM_CMD -geometry 160x42 -e $FM_CMD -c
+# bind key for FM
+bindsym $mod+Shift+m exec $FM
 # bind key for Catfish
 bindsym $mod+c exec catfish
 # bind key for vmplayer winxp
@@ -309,10 +321,11 @@ assign [class="URxvt" title="weechat"] $ws8
 #}}}
 
 #{{{ Floating settings
+for_window [window_role="pop-up"] floating enable border normal
 for_window [class="Eclipse" title="Workspace Launcher "] floating enable
 for_window [class="Java" title="Eclipse "] floating enable
 for_window [class="Gimp"] floating enable
-for_window [class="Gpick"] floating enable
+for_window [class="Gpick|feh"] floating enable
 for_window [class="KeePass2"] floating enable
 for_window [class="Goldendict"] floating enable
 for_window [class="URxvt" instance="^ncmpcpp$" title="^ncmpcpp$"] floating enable
