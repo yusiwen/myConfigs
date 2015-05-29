@@ -231,17 +231,17 @@ Some important softwares. Needed after re-installing OS.
 1. Download managers
 
 	* uGet 
-```
-$ sudo apt-add-repository ppa:plushuang-tw/uget-stable
-$ sudo apt-get update
-$ sudo apt-get install uget
-```
+	```
+	$ sudo apt-add-repository ppa:plushuang-tw/uget-stable
+	$ sudo apt-get update
+	$ sudo apt-get install uget
+	```
 
 	* xunlei-lixian 迅雷离线下载
-```
-$ git clone git@github.com:yusiwen/xunlei-lixian.git
-$ ln -sf xunlei-lixian/lixian_cli.py ~/bin/xllx
-```
+	```
+	$ git clone git@github.com:yusiwen/xunlei-lixian.git
+	$ ln -sf xunlei-lixian/lixian_cli.py ~/bin/xllx
+	```
 
 1. TLP (Power management tools for laptop)
 
