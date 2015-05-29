@@ -63,19 +63,27 @@ Some important softwares. Needed after re-installing OS.
 
 1. rxvt-unicode
 
+	* Installing from Ubuntu official repository:
+
+		$ sudo apt-get install rxvt-unicode-256color
+
+	* Building from source:
+
 		$ cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
 
-	Or
+		Or
 
 		$ git clone git@github.com:yusiwen/rxvt-unicode.git
 		$ git submodule init
 		$ git submodule update
 
-	Then
+		Then
 
 		$ sudo apt-get install libperl-dev libstartup-notification0-dev libgdk-pixbuf2.0-dev libxft-dev xsel
 		$ cd rxvt-unicode
 		$ ./configure --enable-256-color --enable-unicode3 --enable-combining --enable-xft --enable-font-styles --enable-pixbuf --enable-startup-notification --enable-transparency --enable-fading --enable-rxvt-scroll --enable-perl --enable-iso14755 --enable-keepscrolling --enable-selectionscrolling --enable-mousewheel --enable-slipwheeling --enable-smart-resize --enable-text-blink --enable-pointer-blank --enable-utmp --enable-wtmp --enable-lastlog
+
+	See `rxvt/README.md` for more details.
 
 1. feh
 
@@ -220,11 +228,18 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo gpasswd -a YOUR_USERNAME video
 		$ sudo chmod u+s /usr/bin/fbterm
 
-1. uGet
+1. Download managers
+
+	* uGet 
 
 		$ sudo apt-add-repository ppa:plushuang-tw/uget-stable
 		$ sudo apt-get update
 		$ sudo apt-get install uget
+
+	* xunlei-lixian 迅雷离线下载
+
+		$ git clone git@github.com:yusiwen/xunlei-lixian.git
+		$ ln -sf xunlei-lixian/lixian_cli.py ~/bin/xllx
 
 1. TLP (Power management tools for laptop)
 
