@@ -275,9 +275,13 @@ set $ws10 10
 workspace "$ws1" output $left_screen
 workspace "$ws2" output $right_screen
 workspace "$ws3" output $right_screen
+workspace "$ws4" output $right_screen
+workspace "$ws5" output $left_screen
 workspace "$ws6" output $left_screen
 workspace "$ws7" output $right_screen
 workspace "$ws8" output $left_screen
+workspace "$ws9" output $left_screen
+workspace "$ws10" output $left_screen
 
 # switch to workspace
 bindsym $mod+1 workspace "$ws1"
