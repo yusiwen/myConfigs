@@ -32,8 +32,6 @@ set nocompatible               " be iMproved
   Bundle 'tomtom/tlib_vim'
   Bundle 'tomtom/tcomment_vim'
   Bundle 'tomtom/tselectbuffer_vim'
-  Bundle 'vim-scripts/matchit.zip'
-  Bundle 'vim-scripts/taglist.vim'
   Bundle 'majutsushi/tagbar'
   Bundle 'Townk/vim-autoclose'
   Bundle 'trapd00r/x11colors.vim'
@@ -41,22 +39,27 @@ set nocompatible               " be iMproved
 " Bundle 'fholgado/minibufexpl.vim'
   Bundle 'shemerey/vim-project'
   Bundle 'kien/ctrlp.vim'
-  Bundle 'altercation/vim-colors-solarized'
-  Bundle 'chriskempson/base16-vim'
 " Bundle 'Twinside/vim-codeoverview'
-  Bundle 'vim-scripts/fcitx.vim'
 " Bundle 'vim-scripts/TabBar'
-" Bundle 'Lokaltog/vim-powerline'
-  Bundle 'bling/vim-airline'
   Bundle 'moll/vim-node'
   Bundle 'pangloss/vim-javascript'
   Bundle 'kchmck/vim-coffee-script'
   Bundle 'godlygeek/tabular'
-	Bundle 'nanotech/jellybeans.vim'
 
   " vim-scripts repos
+  Bundle 'vim-scripts/fcitx.vim'
+  Bundle 'vim-scripts/matchit.zip'
+  Bundle 'vim-scripts/taglist.vim'
+  Bundle 'vim-scripts/instant-markdown.vim'
 
   " non github repos
+
+  " themes repos
+  Bundle 'altercation/vim-colors-solarized'
+  Bundle 'chriskempson/base16-vim'
+  Bundle 'nanotech/jellybeans.vim'
+" Bundle 'Lokaltog/vim-powerline'
+  Bundle 'bling/vim-airline'
 
 " }}}
 " General settings {{{
@@ -161,10 +164,10 @@ set nocompatible               " be iMproved
     colorscheme jellybeans
 
   else
+"   colorscheme solarized
 "   let g:solarized_termcolors=16
 "   let g:solarized_contrast="normal"
 "   let g:solarized_visibility="normal"
-"   colorscheme solarized
 "   colorscheme base16-default
 "   colorscheme base16-tomorrow
     colorscheme jellybeans
@@ -246,10 +249,6 @@ set nocompatible               " be iMproved
   vmap <C-up> [egv
   vmap <C-down> ]egv
 " }}}
-" Formatting with Par (gqip) {{{
-  set formatprg=par\ -req
-  nmap <F9> gqip
-" }}}
 " Pasting {{{
   set paste
   nnoremap p ]p
@@ -295,4 +294,9 @@ set nocompatible               " be iMproved
   let g:airline_symbols.branch = ''
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
+" }}}
+" Instant-Markdown {{{
+  let g:instant_markdown_slow = 1
+  let g:instant_markdown_autostart = 0
+  nmap <F9> <Esc>:InstantMarkdownPreview<CR>
 " }}}

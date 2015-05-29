@@ -3,19 +3,42 @@ VIM Installation
 
 1. Install vim:
 
-   `sudo apt-get install vim`
+	```text
+	sudo apt-get install vim-gtk
+	```
 
-2. Install vundle
+1. Install vundle
 
-   `git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/vundle`
+	```text
+	git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/vundle
+	```
 
-3. Link vimrc to ~/.vimrc
+1. Link vimrc to ~/.vimrc
 
-   `ln -sf ~/git/myConfigs/vim/vimrc ~/.vimrc`
+	```text
+	ln -sf ~/git/myConfigs/vim/vimrc ~/.vimrc
+	```
 
-4. Install plugins:
+1. Install plugins:
 
-   Launch `vim` and run `:PluginInstall`
+	 Launch `vim` and run `:PluginInstall`
 
-   To install from command line: `vim +PluginInstall +qall`
+	 To install from command line: `vim +PluginInstall +qall`
 
+1. Install vim-instant-markdown plugin
+
+	- Required libraries: `ruby`, `xdg-utils`, `nodejs`
+
+	- Add `Bundle 'vim-scripts/instant-markdown.vim'` in `.vimrc` to let `vundle` get this plugin
+
+	- Get `instant-markdown-d` in npm: 
+
+		```text
+		$ npm -g install instant-markdown-d
+		```
+
+	- Install ruby libraries:
+
+		```text
+		$ sudo gem install redcarpet pygments.rb
+		```
