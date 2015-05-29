@@ -34,7 +34,7 @@ set nocompatible               " be iMproved
   Bundle 'tomtom/tselectbuffer_vim'
   Bundle 'majutsushi/tagbar'
   Bundle 'Townk/vim-autoclose'
-  Bundle 'trapd00r/x11colors.vim'
+" Bundle 'trapd00r/x11colors.vim'
   Bundle 'lilydjwg/colorizer'
 " Bundle 'fholgado/minibufexpl.vim'
   Bundle 'shemerey/vim-project'
@@ -49,7 +49,6 @@ set nocompatible               " be iMproved
   " vim-scripts repos
   Bundle 'vim-scripts/fcitx.vim'
   Bundle 'vim-scripts/matchit.zip'
-  Bundle 'vim-scripts/taglist.vim'
   Bundle 'vim-scripts/instant-markdown.vim'
 
   " non github repos
@@ -271,15 +270,8 @@ set nocompatible               " be iMproved
   map <C-Tab> <Esc>:tabnext<CR>
   map <C-S-Tab> <Esc>:tabpreviuos<CR>
 " }}}
-" TagList {{{
-  map <F4> <Esc>:TlistToggle<CR>
-  let g:Tlist_WinWidth = 40
-  let g:Tlist_Exit_OnlyWindow = 1
-  let g:Tlist_Sort_Type = "name"
-  let g:Tlist_Ctags_Cmd = '/usr/bin/ctags-exuberant'
-" }}}
 " TagBar {{{
-  map <F8> <Esc>:TagbarToggle<CR>
+  map <F4> <Esc>:TagbarToggle<CR>
 " }}}
 " Airline {{{
   if !exists('g:airline_symbols')
