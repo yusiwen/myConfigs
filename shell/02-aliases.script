@@ -15,6 +15,7 @@ alias ls='ls++ -F'
 alias grep='grep -I --color=auto --exclude-dir={.git,.svn,CVS}'
 
 alias df='df -h --total'
+alias pgrep='pgrep -a'
  
 # Shortcut for using the Kdiff3 tool for svn diffs.
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
