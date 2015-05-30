@@ -7,8 +7,9 @@ Configuration files for X11 softwares.
 
 ### Xresources and Xinit Files
 
-`Xresources` and `Xresoruces.home-ubuntu` are Xresources file for URxvt.
-`xinitrc` is xinitrc file for custom i3-wm xsession. If i3-wm is started from LightDM, this file is not used.
+`Xresources` is user's .Xresources file for X. It contains configurations for xterm, urxvt, rofi, etc.
+
+`xinitrc` is user's .xinitrc file for custom i3-wm xsession. If i3-wm is started from LightDM by `/usr/share/xsessions/i3.desktop`, this file is not used.
 
 Usage:
 ```
