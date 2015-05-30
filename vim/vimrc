@@ -1,8 +1,7 @@
 "
 "   V I M R C
 "
-"   @updated:   Mi 29 Jun 2012
-"   @revision:  3
+"   @author: yusiwen@gmail.com
 "   ~/.vimrc is a symbolic link to ~/myConfigs/vim/vimrc
 
 set nocompatible               " be iMproved
