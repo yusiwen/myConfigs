@@ -2,12 +2,8 @@
 # basic mutt configuration file.
 
 # Colour
-# ~/.mutt/mutt-colors-solarized/ is a symbolic link to
-#    ~/myConfigs/mutt/mutt-colors-solarized/
-
 #uncomment the colorscheme you want to use, and comment out the others
-#source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
-source ~/myConfigs/mutt/jellybeans.muttrc
+source ~/myConfigs/mutt/themes/jellybeans.muttrc
 
 # Basic config, you can leave this as is
 set hostname = "gmail.com"

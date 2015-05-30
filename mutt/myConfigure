@@ -1,1 +1,0 @@
-./prepare --enable-pop --enable-imap --with-ssl --enable-nfs-fix --enable-smtp --enable-hcache --enable-gpgme --with-sasl --with-gss --with-idn --without-qdbm --without-gdbm

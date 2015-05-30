@@ -11,7 +11,6 @@ Contents
 `mutt_get_passwd.py` another script for mutt to get password from gnome-keyring.  
 `muttrc.general` general mutt configuration parts, to be included in the final configuration file.  
 `muttrc.imap.gmail` mutt configuration file for gmail accounts.  
-`muttrc.imap.qq` mutt configuration file for QQ accounts.  
 `muttrc.local` mutt configuration file for local mbox.  
 `signature` my signature for mutt.  
 
