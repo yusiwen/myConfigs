@@ -8,18 +8,14 @@ set nocompatible               " be iMproved
 
 " Vundle {{{
   filetype off
-  set rtp+=~/.vim/bundle/vundle/
-  call vundle#rc()
+  set rtp+=~/.vim/bundle/Vundle.vim/
+  call vundle#begin()
 
   " let Vundle manage Vundle
-  Plugin 'gmarik/vundle'
+  Plugin 'gmarik/Vundle.vim'
 
   " Vundles
   " Libraris bundles
-    " utility functions
-  Plugin 'tomtom/tlib_vim'
-    " interpret file by function and cache file
-  Plugin 'MarcWeber/vim-addon-mw-utils'
 
   " Github repos
     " git wrapper
@@ -32,16 +28,12 @@ set nocompatible               " be iMproved
   Plugin 'Townk/vim-autoclose'
     " tree explorer plugin for vim
   Plugin 'scrooloose/nerdtree'
-    " TextMate-style snippets for Vim
-  Plugin 'garbas/vim-snipmate'
+    " ultimate snippet solution
+  Plugin 'SirVer/ultisnips'
     " snippets repos
   Plugin 'honza/vim-snippets'
-    " vim insert mode completions with Tab
-  Plugin 'ervandew/supertab'
     " extensible & universal comment
   Plugin 'tomtom/tcomment_vim'
-    " quick buffer selector/switcher
-  Plugin 'tomtom/tselectbuffer_vim'
     " displays tags in a window
   Plugin 'majutsushi/tagbar'
     " colorize text in the form #rrggbb or #rgb
@@ -82,15 +74,13 @@ set nocompatible               " be iMproved
   " non github repos
 
   " themes repos
-  Plugin 'altercation/vim-colors-solarized'
-  Plugin 'chriskempson/base16-vim'
   Plugin 'nanotech/jellybeans.vim'
-" Plugin 'Lokaltog/vim-powerline'
   Plugin 'bling/vim-airline'
 
+  call vundle#end()
 " }}}
+
 " General settings {{{
-  filetype on
   filetype plugin indent on
   syntax on
 
@@ -130,44 +120,13 @@ set nocompatible               " be iMproved
 
   let mapleader=","
   let maplocalleader=","
-
 " }}}
+
 " General Keybinds {{{
-
-  " Set MapLeader
-  let mapleader = ","
-
-  " Delete previous word with C-BS
-  imap <C-BS> <C-W>
-
-  " Toggle Buffer Selection
-  map <F2> <Esc>:TSelectBuffer<CR>
-
-
   " Set text wrapping toggles
   nmap <silent> <leader>w :set invwrap<CR>:set wrap?<CR>
-
-  " Set up retabbing on a source file
-  nmap <silent> <leader>rr :1,$retab<CR>
-
-  " cd to the directory containing the file in the buffer
-  nmap <silent> <leader>cd :lcd %:h<CR>
-
-  " Make the directory that contains the file in the current buffer.
-  " This is useful when you edit a file in a directory that doesn't
-  " (yet) exist
-  nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
-
-  " Increase @revision # by 1
-  nmap <silent> <leader>incr /@updated wwwd$"=strftime("%a %d %b %Y") p/@revision$
-
 " }}}
-" {{{ Window movement
-  nmap <M-h> :winc h<CR>
-  nmap <M-j> :winc j<CR>
-  nmap <M-k> :winc k<CR>
-  nmap <M-l> :winc l<CR>
-" }}}
+
 " GUI or no GUI, that's the question {{{
   if has('gui_running')
     set guicursor+=a:blinkon0       " Cursor doesn't blink - it's annoying
@@ -185,22 +144,13 @@ set nocompatible               " be iMproved
 
     set background=dark
 
-"   colorscheme solarized
-"   colorscheme base16-default
-"   colorscheme base16-tomorrow
     colorscheme jellybeans
 
   else
-"   colorscheme solarized
-"   let g:solarized_termcolors=16
-"   let g:solarized_contrast="normal"
-"   let g:solarized_visibility="normal"
-"   colorscheme base16-default
-"   colorscheme base16-tomorrow
     colorscheme jellybeans
-
   endif
 " }}}
+
 " Tabstops {{{
   set tabstop=2
   set shiftwidth=2
@@ -209,24 +159,27 @@ set nocompatible               " be iMproved
   set smartindent
   set expandtab
 " }}}
+
 " Invisibles {{{
   set listchars=tab:▸\ ,eol:¬
   set list
   nmap <silent> <F5> :set list!<CR>
 " }}}
+
 " Folds {{{
   set foldmethod=marker
   set foldcolumn=1
-  " au BufWinLeave * mkview
-  " au BufWinEnter * silent loadview
 " }}}
+
 " Pairings {{{
   set showmatch
 " }}}
+
 " Margins {{{
   set scrolloff=5
   set sidescroll=5
 " }}}
+
 " Search {{{
   set incsearch
   set ignorecase
@@ -234,42 +187,35 @@ set nocompatible               " be iMproved
   " Toggle that stupid highlight search
   nmap <silent> ,n :set invhls<CR>:set hls?<CR>
 " }}}
+
 " Backup files {{{
   set nobackup
   set nowb
   set noswapfile
 " }}}
+
 " Completion {{{
   set wildmenu
   set wildmode=longest,full,list
 
   set ofu=syntaxcomplete#Complete
 " }}}
-" Snipmate {{{
-" imap <tab> <C-r>=TriggerSnippet()<CR>
-" }}}
+
 " Wrapping {{{
   set linebreak
   set showbreak=↳\
 " toggle wrapping
   nmap <silent> <F12> :let &wrap = !&wrap<CR>
 " }}}
-" Bubbling {{{
-  nmap <C-up> [e
-  nmap <C-down> ]e
-  vmap <C-up> [egv
-  vmap <C-down> ]egv
-" }}}
-" Pasting {{{
-  set paste
-  nnoremap p ]p
-  nnoremap <c-p> p
-" }}}
+
 " Macros {{{
-  " Execute macro "q" with space
-  nmap <Space> @q
-  " Map @ to + for more comfortable macros on DE kb layout
-  nmap + @
+" }}}
+
+" Snipmate {{{
+  " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+  let g:UltiSnipsExpandTrigger="<tab>"
+  let g:UltiSnipsJumpForwardTrigger="<c-b>"
+  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " }}}
 " Colorizer {{{
   let g:colorizer_nomap = 1
