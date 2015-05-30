@@ -68,6 +68,11 @@ URxvt.iso14755: False
 URxvt.cursorBlink: true
 URxvt.saveLines: 1000
 
+URxvt.tabbed.tabbar-fg: 3
+URxvt.tabbed.tabbar-bg: 0
+URxvt.tabbed.tab-fg:    0
+URxvt.tabbed.tab-bg:    6
+
 ! xscreensaver ---------------------------------------------------------------
 
 !font settings
