@@ -211,16 +211,19 @@ set nocompatible               " be iMproved
 " Macros {{{
 " }}}
 
+" Plugins {{{
 " Snipmate {{{
   " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
   let g:UltiSnipsExpandTrigger="<tab>"
   let g:UltiSnipsJumpForwardTrigger="<c-b>"
   let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " }}}
+
 " Colorizer {{{
   let g:colorizer_nomap = 1
   let g:colorizer_startup = 0
 " }}}
+
 " RagTag {{{
   imap <M-O> <Esc>o
   imap <C-J> <Down>
@@ -229,6 +232,7 @@ set nocompatible               " be iMproved
   imap <C-Space> <C-X><Space>
   imap <C-CR> <C-X><CR>
 " }}}
+
 " CTags {{{
   map <C-\> <Esc>:tab split<CR>:exec("tag ".expand("<cword>"))<CR>
   map <C-T> <Esc>:tabnew<CR>
@@ -236,9 +240,11 @@ set nocompatible               " be iMproved
   map <C-Tab> <Esc>:tabnext<CR>
   map <C-S-Tab> <Esc>:tabpreviuos<CR>
 " }}}
+
 " TagBar {{{
   nnoremap <silent> <F4> <Esc>:TagbarToggle<CR>
 " }}}
+
 " NERDTree {{{
   nnoremap <silent> <F3> :NERDTreeToggle<CR>
 
@@ -247,6 +253,7 @@ set nocompatible               " be iMproved
   let g:NERDTreeWinPos = "left"
   let g:NERDTreeShowHidden = 1
 " }}}
+
 " Airline {{{
   if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -261,8 +268,10 @@ set nocompatible               " be iMproved
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
 " }}}
+
 " Instant-Markdown {{{
   let g:instant_markdown_slow = 1
   let g:instant_markdown_autostart = 0
   nmap <F9> <Esc>:InstantMarkdownPreview<CR>
+" }}}
 " }}}
