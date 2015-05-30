@@ -13,52 +13,81 @@ set nocompatible               " be iMproved
   call vundle#rc()
 
   " let Vundle manage Vundle
-  Bundle 'gmarik/vundle'
+  Plugin 'gmarik/vundle'
 
   " Vundles
-  "
-  " github repos
-  Bundle 'tpope/vim-fugitive'
-  Bundle 'tpope/vim-rails'
-  Bundle 'tpope/vim-haml'
-  Bundle 'tpope/vim-endwise'
-  Bundle 'tpope/vim-surround'
-  Bundle 'tpope/vim-ragtag'
-  Bundle 'tpope/vim-markdown'
-  Bundle 'tpope/vim-unimpaired'
-  Bundle 'scrooloose/nerdtree'
-  Bundle 'msanders/snipmate.vim'
-  Bundle 'ervandew/supertab'
-  Bundle 'tomtom/tlib_vim'
-  Bundle 'tomtom/tcomment_vim'
-  Bundle 'tomtom/tselectbuffer_vim'
-  Bundle 'majutsushi/tagbar'
-  Bundle 'Townk/vim-autoclose'
-" Bundle 'trapd00r/x11colors.vim'
-  Bundle 'lilydjwg/colorizer'
-" Bundle 'fholgado/minibufexpl.vim'
-  Bundle 'shemerey/vim-project'
-  Bundle 'kien/ctrlp.vim'
-" Bundle 'Twinside/vim-codeoverview'
-" Bundle 'vim-scripts/TabBar'
-  Bundle 'moll/vim-node'
-  Bundle 'pangloss/vim-javascript'
-  Bundle 'kchmck/vim-coffee-script'
-  Bundle 'godlygeek/tabular'
+  " Libraris bundles
+    " utility functions
+  Plugin 'tomtom/tlib_vim'
+    " interpret file by function and cache file
+  Plugin 'MarcWeber/vim-addon-mw-utils'
+
+  " Github repos
+    " git wrapper
+  Plugin 'tpope/vim-fugitive'
+    " quoting/parenthesizing made simple
+  Plugin 'tpope/vim-surround'
+    " pairs of handy bracket mappings
+  Plugin 'tpope/vim-unimpaired'
+    " auto-close chars
+  Plugin 'Townk/vim-autoclose'
+    " tree explorer plugin for vim
+  Plugin 'scrooloose/nerdtree'
+    " TextMate-style snippets for Vim
+  Plugin 'garbas/vim-snipmate'
+    " snippets repos
+  Plugin 'honza/vim-snippets'
+    " vim insert mode completions with Tab
+  Plugin 'ervandew/supertab'
+    " extensible & universal comment
+  Plugin 'tomtom/tcomment_vim'
+    " quick buffer selector/switcher
+  Plugin 'tomtom/tselectbuffer_vim'
+    " displays tags in a window
+  Plugin 'majutsushi/tagbar'
+    " colorize text in the form #rrggbb or #rgb
+  Plugin 'lilydjwg/colorizer'
+" Plugin 'fholgado/minibufexpl.vim'
+    " full path fuzzy finder
+  Plugin 'kien/ctrlp.vim'
+    " text filtering and alignment
+  Plugin 'godlygeek/tabular'
+
+  " Language specific repos
+  " wisely add 'end' in ruby, vim script, etc
+  Plugin 'tpope/vim-endwise'
+  " Ruby on Rails power tools
+  Plugin 'tpope/vim-rails'
+  " mappings for HTML, XML, PHP, eRuby, JSP, etc
+  Plugin 'tpope/vim-ragtag'
+  " runtime files for Haml, Sass, and SCSS
+  Plugin 'tpope/vim-haml'
+  " runtime files for Markdown
+  Plugin 'tpope/vim-markdown'
+  " tools for developing Node.js
+  Plugin 'moll/vim-node'
+  " improved Javascript indentation and syntax
+  Plugin 'pangloss/vim-javascript'
+  " CoffeeScript support
+  Plugin 'kchmck/vim-coffee-script'
 
   " vim-scripts repos
-  Bundle 'vim-scripts/fcitx.vim'
-  Bundle 'vim-scripts/matchit.zip'
-  Bundle 'vim-scripts/instant-markdown.vim'
+" Plugin 'vim-scripts/TabBar'
+    " keep/restore fcitx state when toggling insert mode
+  Plugin 'vim-scripts/fcitx.vim'
+    " extended % matching for HTML, LaTeX, etc
+  Plugin 'vim-scripts/matchit.zip'
+    " Markdown preview instantly
+  Plugin 'vim-scripts/instant-markdown.vim'
 
   " non github repos
 
   " themes repos
-  Bundle 'altercation/vim-colors-solarized'
-  Bundle 'chriskempson/base16-vim'
-  Bundle 'nanotech/jellybeans.vim'
-" Bundle 'Lokaltog/vim-powerline'
-  Bundle 'bling/vim-airline'
+  Plugin 'altercation/vim-colors-solarized'
+  Plugin 'chriskempson/base16-vim'
+  Plugin 'nanotech/jellybeans.vim'
+" Plugin 'Lokaltog/vim-powerline'
+  Plugin 'bling/vim-airline'
 
 " }}}
 " General settings {{{
@@ -102,7 +131,7 @@ set nocompatible               " be iMproved
 
   let mapleader=","
   let maplocalleader=","
-  
+
 " }}}
 " General Keybinds {{{
 
@@ -115,16 +144,16 @@ set nocompatible               " be iMproved
   " Toggle Buffer Selection
   map <F2> <Esc>:TSelectBuffer<CR>
 
-   
+
   " Set text wrapping toggles
-  nmap <silent> <leader>w :set invwrap<CR>:set wrap?<CR> 
-   
+  nmap <silent> <leader>w :set invwrap<CR>:set wrap?<CR>
+
   " Set up retabbing on a source file
-  nmap <silent> <leader>rr :1,$retab<CR> 
-   
+  nmap <silent> <leader>rr :1,$retab<CR>
+
   " cd to the directory containing the file in the buffer
-  nmap <silent> <leader>cd :lcd %:h<CR> 
-   
+  nmap <silent> <leader>cd :lcd %:h<CR>
+
   " Make the directory that contains the file in the current buffer.
   " This is useful when you edit a file in a directory that doesn't
   " (yet) exist
@@ -204,7 +233,7 @@ set nocompatible               " be iMproved
   set ignorecase
 
   " Toggle that stupid highlight search
-  nmap <silent> ,n :set invhls<CR>:set hls?<CR> 
+  nmap <silent> ,n :set invhls<CR>:set hls?<CR>
 " }}}
 " Backup files {{{
   set nobackup
@@ -218,29 +247,13 @@ set nocompatible               " be iMproved
   set ofu=syntaxcomplete#Complete
 " }}}
 " Snipmate {{{
-  imap <tab> <C-r>=TriggerSnippet()<CR>
-" }}}
-" NERDTree {{{
-  map <F3> :NERDTreeToggle<CR>
-
-  let g:NERDTreeChDirMode = 2
-  let g:NERDTreeShowBookmarks = 1
-  let g:NERDTreeWinPos = "right"
-  let g:NERDTreeShowHidden = 1
+" imap <tab> <C-r>=TriggerSnippet()<CR>
 " }}}
 " Wrapping {{{
   set linebreak
-  set showbreak=↳\ 
+  set showbreak=↳\
 " toggle wrapping
   nmap <silent> <F12> :let &wrap = !&wrap<CR>
-" }}}
-" RagTag {{{
-  imap <M-O> <Esc>o
-  imap <C-J> <Down>
-  let g:ragtag_global_maps = 1
-
-  imap <C-Space> <C-X><Space>
-  imap <C-CR> <C-X><CR>
 " }}}
 " Bubbling {{{
   nmap <C-up> [e
@@ -263,6 +276,14 @@ set nocompatible               " be iMproved
   let g:colorizer_nomap = 1
   let g:colorizer_startup = 0
 " }}}
+" RagTag {{{
+  imap <M-O> <Esc>o
+  imap <C-J> <Down>
+  let g:ragtag_global_maps = 1
+
+  imap <C-Space> <C-X><Space>
+  imap <C-CR> <C-X><CR>
+" }}}
 " CTags {{{
   map <C-\> <Esc>:tab split<CR>:exec("tag ".expand("<cword>"))<CR>
   map <C-T> <Esc>:tabnew<CR>
@@ -271,7 +292,15 @@ set nocompatible               " be iMproved
   map <C-S-Tab> <Esc>:tabpreviuos<CR>
 " }}}
 " TagBar {{{
-  map <F4> <Esc>:TagbarToggle<CR>
+  nnoremap <silent> <F4> <Esc>:TagbarToggle<CR>
+" }}}
+" NERDTree {{{
+  nnoremap <silent> <F3> :NERDTreeToggle<CR>
+
+  let g:NERDTreeChDirMode = 2
+  let g:NERDTreeShowBookmarks = 1
+  let g:NERDTreeWinPos = "left"
+  let g:NERDTreeShowHidden = 1
 " }}}
 " Airline {{{
   if !exists('g:airline_symbols')
