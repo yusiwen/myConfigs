@@ -9,9 +9,17 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+#{{{ Global variables
 set $mod Mod4
 
-#{{{
+set $TERM urxvtc
+set $BROWSER google-chrome
+set $FM thunar
+set $FM_CMD mc
+set $PLAYER ncmpcpp
+#}}}
+
+#{{{ Font settings
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
 #font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -212,17 +220,17 @@ bindsym $mod+p exec pidgin
 # bind key for ec.py (Eclipse Environment Chooser)
 bindsym $mod+Shift+p exec ~/bin/ec.py
 # bind key for Google Chrome Browser
-bindsym $mod+z exec google-chrome
+bindsym $mod+z exec $BROWSER
 # bind key for Thunderbird mail client
 bindsym $mod+Shift+x exec geary
 # bind key for Alpine, run in a new urxvt window
-bindsym $mod+x exec urxvtc -name mutt -title mutt -e tsocks mutt
+bindsym $mod+x exec $TERM -name mutt -title mutt -e tsocks mutt
 # bind key for weechat-curses, run in a new urxvt window
-bindsym $mod+Shift+o exec urxvtc -e weechat-curses
+bindsym $mod+Shift+o exec $TERM -e weechat-curses
 # bind key for ncmpcpp, run in a new urxvt window
-bindsym $mod+o exec urxvtc -name ncmpcpp -title ncmpcpp -e ncmpcpp
+bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -e $PLAYER
 # bind key for MidnightCommander, run in a new urxvt window
-bindsym $mod+m exec urxvtc -geometry 160x42 -e mc -c
+bindsym $mod+m exec $TERM -geometry 160x42 -e mc -c
 # bind key for thunar
 bindsym $mod+Shift+m exec thunar
 # bind key for gnome-calculator
