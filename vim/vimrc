@@ -18,35 +18,41 @@ set nocompatible               " be iMproved
   " Libraris bundles
 
   " Github repos
-    " git wrapper
+  " git wrapper
   Plugin 'tpope/vim-fugitive'
-    " quoting/parenthesizing made simple
+  " quoting/parenthesizing made simple
   Plugin 'tpope/vim-surround'
-    " pairs of handy bracket mappings
+  " pairs of handy bracket mappings
   Plugin 'tpope/vim-unimpaired'
-    " insert or delete brackets, parens, quotes in pair
+  " insert or delete brackets, parens, quotes in pair
   Plugin 'jiangmiao/auto-pairs'
-    " tree explorer plugin for vim
+  " tree explorer plugin for vim
   Plugin 'scrooloose/nerdtree'
+  " changes working dir to project's root
+  Plugin 'airblade/vim-rooter'
 
   Plugin 'Shougo/neocomplete.vim'
   Plugin 'Shougo/neosnippet.vim'
   Plugin 'Shougo/neosnippet-snippets'
   Plugin 'honza/vim-snippets'
 
-    " extensible & universal comment
+  " extensible & universal comment
   Plugin 'tomtom/tcomment_vim'
-    " displays tags in a window
+  " displays tags in a window
   Plugin 'majutsushi/tagbar'
-    " colorize text in the form #rrggbb or #rgb
+  " colorize text in the form #rrggbb or #rgb
   Plugin 'lilydjwg/colorizer'
 " Plugin 'fholgado/minibufexpl.vim'
-    " full path fuzzy finder
+  " full path fuzzy finder
   Plugin 'kien/ctrlp.vim'
-    " text filtering and alignment
+  " text filtering and alignment
   Plugin 'godlygeek/tabular'
 
   " Language specific repos
+  " groovy
+  Plugin 'vim-scripts/groovy.vim'
+  " grade support
+  Plugin 'tfnico/vim-gradle'
   " wisely add 'end' in ruby, vim script, etc
   Plugin 'tpope/vim-endwise'
   " Ruby on Rails power tools
@@ -66,11 +72,11 @@ set nocompatible               " be iMproved
 
   " vim-scripts repos
 " Plugin 'vim-scripts/TabBar'
-    " keep/restore fcitx state when toggling insert mode
+  " keep/restore fcitx state when toggling insert mode
   Plugin 'vim-scripts/fcitx.vim'
-    " extended % matching for HTML, LaTeX, etc
+  " extended % matching for HTML, LaTeX, etc
   Plugin 'vim-scripts/matchit.zip'
-    " Markdown preview instantly
+  " Markdown preview instantly
   Plugin 'vim-scripts/instant-markdown.vim'
 
   " non github repos
@@ -83,6 +89,7 @@ set nocompatible               " be iMproved
 " }}}
 
 " General settings {{{
+
   filetype plugin indent on
   syntax on
 
@@ -119,16 +126,14 @@ set nocompatible               " be iMproved
 
   set timeoutlen=1000
   set ttimeoutlen=50
-
-  let mapleader=","
-  let maplocalleader=","
 " }}}
 
 " General Keybindings {{{
-  " Set text wrapping toggles
-  nmap <silent> <leader>w :set invwrap<CR>:set wrap?<CR>
 
-  set pastetoggle=<F2>
+  let mapleader=","
+  let maplocalleader=","
+
+  set pastetoggle=<F10>
 " }}}
 
 " GUI or no GUI, that's the question {{{
@@ -167,7 +172,7 @@ set nocompatible               " be iMproved
 " Invisibles {{{
   set listchars=tab:▸\ ,eol:¬
   set list
-  nmap <silent> <F5> :set list!<CR>
+  nmap <silent> <F11> :set list!<CR>
 " }}}
 
 " Folds {{{
@@ -213,15 +218,19 @@ set nocompatible               " be iMproved
 " }}}
 
 " Tabs Navigatoin {{{
-  map <C-\> <Esc>:tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-  nnoremap <C-S-tab> :tabprevious<CR>
-  nnoremap <C-tab> :tabnext<CR>
-  nnoremap <C-T> :tabnew<CR>
 
-  map <C-W> <Esc>:confirm bdelete<CR>
+" Since most terminal emulators do not intercept Ctrl-Tab, they just send the
+" same code as for Tab, use <Leader>(which is ',' by default) intead of <C>
+" If want to change that, please checkout this post below:
+" http://www.staldal.nu/tech/2009/01/10/how-to-use-ctrl-tab-in-gnu-screen/
+  nnoremap <Leader><S-Tab> :tabprevious<CR>
+  nnoremap <Leader><Tab> :tabnext<CR>
+  nnoremap <C-t> :tabnew<CR>
 
-  inoremap <C-Tab> <Esc>:tabnext<CR>
-  inoremap <C-S-Tab> <Esc>:tabpreviuos<CR>
+  "map <C-W> <Esc>:confirm bdelete<CR>
+
+  inoremap <Leader><Tab> <Esc>:tabnext<CR>
+  inoremap <Leader><S-Tab> <Esc>:tabpreviuos<CR>
   inoremap <C-t> <Esc>:tabnew<CR>
 " }}}
 
@@ -355,16 +364,25 @@ set nocompatible               " be iMproved
 " }}}
 
 " TagBar {{{
-  nnoremap <silent> <F4> <Esc>:TagbarToggle<CR>
+  nnoremap <silent> <Leader>t <Esc>:TagbarToggle<CR>
 " }}}
 
 " NERDTree {{{
-  nnoremap <silent> <F3> :NERDTreeToggle<CR>
+  nnoremap <silent> <Leader>n :NERDTreeToggle<CR>
 
   let g:NERDTreeChDirMode = 2
   let g:NERDTreeShowBookmarks = 1
   let g:NERDTreeWinPos = "left"
   let g:NERDTreeShowHidden = 1
+" }}}
+
+" ctrlp {{{
+  let g:ctrlp_map = '<leader>c'
+  " Ignore these directories
+  set wildignore+=*/build/**,*/tmp/*,*.so,*.swp,*.zip
+  let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+  " disable caching
+  let g:ctrlp_use_caching=0
 " }}}
 
 " Airline {{{
@@ -375,7 +393,7 @@ set nocompatible               " be iMproved
   " powerline symbols
   let g:airline_left_sep = ''
   let g:airline_right_sep = ''
-  
+
   let g:airline_symbols.paste = 'ρ'
   let g:airline_symbols.branch = ''
   let g:airline_symbols.readonly = ''
@@ -383,11 +401,14 @@ set nocompatible               " be iMproved
   let g:airline_symbols.whitespace = 'Ξ'
 
   let g:airline#extensions#tabline#enabled = 1
+
+  let g:airline#extensions#whitespace#trailing_format = 'TR[%s]'
+  let g:airline#extensions#whitespace#mixed_indent_format = 'MI[%s]'
 " }}}
 
 " Instant-Markdown {{{
   let g:instant_markdown_slow = 1
   let g:instant_markdown_autostart = 0
-  nmap <F9> <Esc>:InstantMarkdownPreview<CR>
+  nmap <F8> <Esc>:InstantMarkdownPreview<CR>
 " }}}
 " }}}
