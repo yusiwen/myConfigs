@@ -24,14 +24,16 @@ set nocompatible               " be iMproved
   Plugin 'tpope/vim-surround'
     " pairs of handy bracket mappings
   Plugin 'tpope/vim-unimpaired'
-    " auto-close chars
-  Plugin 'Townk/vim-autoclose'
+    " insert or delete brackets, parens, quotes in pair
+  Plugin 'jiangmiao/auto-pairs'
     " tree explorer plugin for vim
   Plugin 'scrooloose/nerdtree'
-    " ultimate snippet solution
-  Plugin 'SirVer/ultisnips'
-    " snippets repos
+
+  Plugin 'Shougo/neocomplete.vim'
+  Plugin 'Shougo/neosnippet.vim'
+  Plugin 'Shougo/neosnippet-snippets'
   Plugin 'honza/vim-snippets'
+
     " extensible & universal comment
   Plugin 'tomtom/tcomment_vim'
     " displays tags in a window
@@ -122,9 +124,11 @@ set nocompatible               " be iMproved
   let maplocalleader=","
 " }}}
 
-" General Keybinds {{{
+" General Keybindings {{{
   " Set text wrapping toggles
   nmap <silent> <leader>w :set invwrap<CR>:set wrap?<CR>
+
+  set pastetoggle=<F2>
 " }}}
 
 " GUI or no GUI, that's the question {{{
@@ -208,15 +212,132 @@ set nocompatible               " be iMproved
   nmap <silent> <F12> :let &wrap = !&wrap<CR>
 " }}}
 
+" Tabs Navigatoin {{{
+  map <C-\> <Esc>:tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+  nnoremap <C-S-tab> :tabprevious<CR>
+  nnoremap <C-tab> :tabnext<CR>
+  nnoremap <C-T> :tabnew<CR>
+
+  map <C-W> <Esc>:confirm bdelete<CR>
+
+  inoremap <C-Tab> <Esc>:tabnext<CR>
+  inoremap <C-S-Tab> <Esc>:tabpreviuos<CR>
+  inoremap <C-t> <Esc>:tabnew<CR>
+" }}}
+
 " Macros {{{
 " }}}
 
 " Plugins {{{
-" Snipmate {{{
-  " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-  let g:UltiSnipsExpandTrigger="<tab>"
-  let g:UltiSnipsJumpForwardTrigger="<c-b>"
-  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" neocomplete {{{
+  " Disable AutoComplPop.
+  let g:acp_enableAtStartup = 0
+  " Use neocomplete.
+  let g:neocomplete#enable_at_startup = 1
+  " Use smartcase.
+  let g:neocomplete#enable_smart_case = 1
+  " Set minimum syntax keyword length.
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+  let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+  " Define dictionary.
+  let g:neocomplete#sources#dictionary#dictionaries = {
+      \ 'default' : '',
+      \ 'vimshell' : $HOME.'/.vimshell_hist',
+      \ 'scheme' : $HOME.'/.gosh_completions'
+          \ }
+
+  " Define keyword.
+  if !exists('g:neocomplete#keyword_patterns')
+      let g:neocomplete#keyword_patterns = {}
+  endif
+  let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+  " Plugin key-mappings.
+  inoremap <expr><C-g>     neocomplete#undo_completion()
+  inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+  " Recommended key-mappings.
+  " <CR>: close popup and save indent.
+  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function()
+    " return neocomplete#close_popup() . "\<CR>"
+    " For no inserting <CR> key.
+    return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  endfunction
+  " <TAB>: completion.
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  " <C-h>, <BS>: close popup and delete backword char.
+  inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+  inoremap <expr><C-y> neocomplete#close_popup()
+  inoremap <expr><C-e> neocomplete#cancel_popup()
+  " Close popup by <Space>.
+  "inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+
+  " For cursor moving in insert mode(Not recommended)
+  "inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
+  "inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
+  "inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
+  "inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
+  " Or set this.
+  "let g:neocomplete#enable_cursor_hold_i = 1
+  " Or set this.
+  "let g:neocomplete#enable_insert_char_pre = 1
+
+  " AutoComplPop like behavior.
+  let g:neocomplete#enable_auto_select = 1
+
+  " Shell like behavior(not recommended).
+  "set completeopt+=longest
+  "let g:neocomplete#enable_auto_select = 1
+  "let g:neocomplete#disable_auto_complete = 1
+  "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+  " Enable omni completion.
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+  " Enable heavy omni completion.
+  if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+  endif
+  "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+  "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+  "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+  " For perlomni.vim setting.
+  " https://github.com/c9s/perlomni.vim
+  let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+  " Prevent neocomplete to close DiffGitCached window from vim-fugitive
+  let g:neocomplete#enable_auto_close_preview = 0
+" }}}
+
+" neosnippet {{{
+  " Plugin key-mappings.
+  imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  xmap <C-k>     <Plug>(neosnippet_expand_target)
+ 
+  " SuperTab like snippets behavior.
+  imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  \ "\<Plug>(neosnippet_expand_or_jump)"
+  \: pumvisible() ? "\<C-n>" : "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  \ "\<Plug>(neosnippet_expand_or_jump)"
+  \: "\<TAB>"
+
+  " For snippet_complete marker.
+  if has('conceal')
+    set conceallevel=2 concealcursor=niv
+  endif
+
+  " Tell Neosnippet about the other snippets
+  let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 " }}}
 
 " Colorizer {{{
@@ -231,14 +352,6 @@ set nocompatible               " be iMproved
 
   imap <C-Space> <C-X><Space>
   imap <C-CR> <C-X><CR>
-" }}}
-
-" CTags {{{
-  map <C-\> <Esc>:tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-  map <C-T> <Esc>:tabnew<CR>
-  map <C-W> <Esc>:confirm bdelete<CR>
-  map <C-Tab> <Esc>:tabnext<CR>
-  map <C-S-Tab> <Esc>:tabpreviuos<CR>
 " }}}
 
 " TagBar {{{
@@ -260,13 +373,17 @@ set nocompatible               " be iMproved
   endif
 
   " powerline symbols
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
+"  let g:airline_left_sep = ''
+  let g:airline_left_sep = ''
+"  let g:airline_left_alt_sep = ''
+"  let g:airline_right_sep = ''
+  let g:airline_right_sep = ''
+"  let g:airline_right_alt_sep = ''
   let g:airline_symbols.branch = ''
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
+
+  let g:airline#extensions#tabline#enabled = 1
 " }}}
 
 " Instant-Markdown {{{
