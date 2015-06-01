@@ -390,6 +390,14 @@ Some important softwares. Needed after re-installing OS.
 	$ sudo make install
 	```
 
+1. smplayer
+
+	```text
+	$ sudo apt-add-repository ppa:rvm/smplayer
+	$ sudo apt-get update
+	$ sudo apt-get install smplayer smtube smplayer-themes smplayer-skins
+	```
+
 Troubleshooting
 ---------------
 
