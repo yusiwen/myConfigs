@@ -7,6 +7,8 @@ VIM Installation
 	sudo apt-get install vim-gtk
 	```
 
+  As for windows, check out [kybu Windows build](https://bitbucket.org/kybu/vim-for-windows-single-drop), it supports `ruby`, `python`, `perl`, `lua`, etc.
+
 1. Install vundle
 
 	```text
