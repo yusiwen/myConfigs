@@ -5,34 +5,34 @@ Configuration files of my linux boxes: laptop and desktop (home-ubuntu).
 
 Contents
 --------
-1. `base16/` `solarized/` are submodules. Both are color themes.  
-1. `oh-my-zsh/` is a submodule. It's configurations for ZSH.  
-1. `dual-monitor/` dual-monitor configurations for home-ubuntu.  
-1. `eclipse/` Eclipse configurations under linux.  
-1. `i3/` i3-wm configurations.  
+1. `base16/` `solarized/` are submodules. Both are color themes.
+1. `oh-my-zsh/` is a submodule. It's configurations for ZSH.
+1. `dual-monitor/` dual-monitor configurations for home-ubuntu.
+1. `eclipse/` Eclipse configurations under linux.
+1. `i3/` i3-wm configurations.
 1. `git/` Git configurations and scripts.
-1. `keyring` keyring confiurations for i3 and mutt.  
+1. `keyring` keyring confiurations for i3 and mutt.
 1. `ls--/` submodule. ls++ - colorized ls on steroids.
 1. `mc` submodule. MidnightCommander file manager.
-1. `mounts/` fstab configurations for home-ubuntu.  
-1. `mpd/` mpd configurations.  
-1. `mutt/` mutt mail client configurations.  
-1. `offlineimap/` offlineimap, sup, and notmuch configurations.  
-1. `razer/` Razer DeathAdder mouse polling rate configurations.  
+1. `mounts/` fstab configurations for home-ubuntu.
+1. `mpd/` mpd configurations.
+1. `mutt/` mutt mail client configurations.
+1. `offlineimap/` offlineimap, sup, and notmuch configurations.
+1. `razer/` Razer DeathAdder mouse polling rate configurations.
 1. `rofi/` submodule. A popup window switcher roughly based on superswitcher, requiring only xlib and pango.
-1. `rxvt/` rxvt-unicode terminal configurations.  
-1. `screen/` screen configurations.  
-1. `shell/` shell environments scripts.  
-1. `vim/` VIM configurations.  
-1. `X11/` X11 scripts.  
-1. `route.sh` and `route_iPhone.sh` are routing config files for 3G mobile network when at work.  
-1. `set_dual_monitor.sh` and `projector.sh` are config files for xrandr to work with multiple monitors.  
-1. `mTouch.py` python script made by me. It enables three fingers swipe cycling within workspaces.  
+1. `rxvt/` rxvt-unicode terminal configurations.
+1. `screen/` screen configurations.
+1. `shell/` shell environments scripts.
+1. `vim/` VIM configurations.
+1. `X11/` X11 scripts.
+1. `route.sh` and `route_iPhone.sh` are routing config files for 3G mobile network when at work.
+1. `set_dual_monitor.sh` and `projector.sh` are config files for xrandr to work with multiple monitors.
+1. `mTouch.py` python script made by me. It enables three fingers swipe cycling within workspaces.
 
 Softwares
 ---------
 
-Some important softwares. Needed after re-installing OS.  
+Some important softwares. Needed after re-installing OS.
 
 1. Git
 
@@ -48,13 +48,13 @@ Some important softwares. Needed after re-installing OS.
 	$ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
 	$ sudo apt-get install google-chrome-stable
 	```
-	
+
 	To solve the missing download page icons:
 
 	```text
 	$ sudo apt-get install gnome-icon-theme-full
 	```
-	
+
 	or install faenza icon theme.
 
 1. Vim
@@ -137,7 +137,7 @@ Some important softwares. Needed after re-installing OS.
 	$ git clone git@github.com:yusiwen/mc.git
 	```
 
-1. GoAgent Linux 
+1. GoAgent Linux
 
 	```text
 	$ sudo apt-get install python-dev python-greenlet python-gevent python-vte python-openssl python-crypto python-appindicator
@@ -180,7 +180,7 @@ Some important softwares. Needed after re-installing OS.
 	```text
 	$ sudo dpkg --add-architecture i386
 	$ sudo apt-get update
-	$ sudo apt-get install libc6:i386 libstdc++6:i386 libfreetype6:i386 libglu1-mesa:i386 libcups2:i386 libglib2.0-0:i386 libpng12-0:i386 libsm6:i386 libxrender1:i386 libfontconfig1:i386 
+	$ sudo apt-get install libc6:i386 libstdc++6:i386 libfreetype6:i386 libglu1-mesa:i386 libcups2:i386 libglib2.0-0:i386 libpng12-0:i386 libsm6:i386 libxrender1:i386 libfontconfig1:i386
 	```
 
 	Then, install kingsoft-office package using dpkg.
@@ -225,7 +225,7 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-get install mutt-patched
 		$ sudo apt-get install w3m w3m-img
 		```
-		
+
 		Run ~/myConfigs/mutt/mkenv.sh
 
 		```text
@@ -233,7 +233,7 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo pip install keyring
 		```
 
-	* Geary 
+	* Geary
 
 		```text
 		$ sudo apt-add-repository ppa:yorba/ppa
@@ -245,7 +245,7 @@ Some important softwares. Needed after re-installing OS.
 	```text
 	$ sudo apt-add-repository ppa:gmpc-trunk/mpd-trunk
 	```
-	
+
 	Run ~/myConfigs/mpd/mkenv.sh
 
 	```text
@@ -296,7 +296,7 @@ Some important softwares. Needed after re-installing OS.
 
 1. Download managers
 
-	* uGet 
+	* uGet
 
 		```
 		$ sudo apt-add-repository ppa:plushuang-tw/uget-stable
@@ -336,7 +336,7 @@ Some important softwares. Needed after re-installing OS.
 		```
 
 	* [Faenza icon theme](http://tiheum.deviantart.com/art/Faenza-Icons-173323228)
- 
+
 		```text
 		$ sudo apt-add-repository ppa:webupd8team/themes
 		```
