@@ -405,3 +405,13 @@ Troubleshooting
 
 	Edit file: `/etc/default/rcS`, set `UTC=yes`
 
+1. Qt applications in GTK+ looks ugly
+
+	After setting gtk+ themes by `$HOME/.gtkrc-2.0` (see `X11/README.md`), install `qt4-qtconfig`:
+
+	```text
+	$ sudo apt-get install qt4-qtconfig
+	$ qtconfig
+	```
+
+	Choose 'GUI style' to 'GTK+', this will unify the style between Qt and GTK+.
