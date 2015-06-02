@@ -50,6 +50,7 @@ set nocompatible               " be iMproved
   Plugin 'godlygeek/tabular'
   " accelerated smooth scroll
   Plugin 'yonchu/accelerated-smooth-scroll'
+  Plugin 'ntpeters/vim-better-whitespace'
 
   " Language & Develop specific repos
   " git wrapper
