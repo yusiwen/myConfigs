@@ -16,10 +16,14 @@ Contents
 
 Installation
 ------------
+
+Install [`mutt`](http://www.mutt.org/), `mutt-patched`, [`w3m`](http://w3m.sourceforge.net/), [`goobook`](https://pypi.python.org/pypi/goobook), [`keyring`](https://pypi.python.org/pypi/keyring)
+
 ```
 sudo apt-get install mutt mutt-patched w3m w3m-img notmuch notmuch-mutt
 sudo pip install goobook
 sudo pip install keyring
 ```
+
 Run mkenv.sh script to establish environments for mutt.
 
