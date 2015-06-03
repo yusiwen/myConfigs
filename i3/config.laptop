@@ -324,7 +324,7 @@ for_window [class="Eclipse" title="Workspace Launcher "] floating enable
 for_window [class="Java" title="Eclipse "] floating enable
 for_window [class="Gimp"] floating enable
 for_window [class="Gpick|feh"] floating enable
-for_window [class="KeePass2"] floating enable
+for_window [class="^Keepassx$" intance="^keepassx$"] floating enable
 for_window [class="Goldendict"] floating enable
 for_window [class="URxvt" instance="^ncmpcpp$" title="^ncmpcpp$"] floating enable
 for_window [class="URxvt" instance="^mc$" title="^mc$"] floating enable
