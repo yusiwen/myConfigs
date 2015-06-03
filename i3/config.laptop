@@ -312,7 +312,7 @@ assign [class="Geary|Thunderbird"] $ws3
 assign [class="URxvt" instance="mutt" title="mutt"] $ws3
 assign [class="calibre-gui|WizNote"] $ws4
 assign [class="Vmplayer"] $ws5
-assign [class="Eclipse|i^jetbrains-idea-"] $ws6
+assign [class="Eclipse|^jetbrains-idea-|^Atom$"] $ws6
 assign [class="Java" title="Eclipse"] $ws6
 assign [class="Wps|Et|Wpp|^libreoffice"] $ws7
 assign [class="URxvt" title="weechat"] $ws8

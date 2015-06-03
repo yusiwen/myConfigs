@@ -319,7 +319,7 @@ assign [class="libprs500|WizNote"] $ws4
 assign [class="Vmplayer"] $ws5
 assign [class="^Eclipse$" instance="^Eclipse$"] $ws6
 #assign [class="Java" title="Eclipse"] $ws6
-assign [class="^jetbrains-idea-"] $ws6
+assign [class="^jetbrains-idea-|^Atom$"] $ws6
 assign [class="Wps|Et|Wpp|^libreoffice"] $ws7
 assign [class="URxvt" title="weechat"] $ws8
 #}}}
