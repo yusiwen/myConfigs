@@ -141,12 +141,13 @@ Some important softwares. Needed after re-installing OS.
 
 	```text
 	$ sudo apt-get install python-dev python-greenlet python-gevent python-vte python-openssl python-crypto python-appindicator
-	$ wget https://github.com/surfly/gevent/releases/download/1.0/gevent-1.0.tar.gz && tar xvzpf gevent-1.0.tar.gz && cd gevent-1.0 && sudo python setup.py install
 	$ sudo apt-get install python-pip
 	$ sudo pip install gevent --upgrade
 	```
 
 	Then, download GoAgent client from [here](https://code.google.com/p/goagent/).
+
+	For more python package & pip installation notes, please check out `python/README.md`.
 
 1. i3-wm
 
