@@ -174,7 +174,7 @@ Some important softwares. Needed after re-installing OS.
 	$ ln -s ~/myConfigs/i3/i3blocks.conf ~/.i3/i3blocks.conf
 	```
 
-1. kingsoft-office (a.k.a: WPS)
+1. kingsoft-office (aka 'WPS')
 
 	To install kingsoft-office on 13.10+, which has removed ia32-libs package:
 
