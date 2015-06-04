@@ -276,13 +276,13 @@ set nocompatible               " be iMproved
   nmap <space> [unite]
 
   " General fuzzy search
-  nnoremap <silent> [unite]<space> :<C-u>Unite
-        \ -no-split -auto-preview -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+  "nnoremap <silent> [unite]<space> :<C-u>Unite
+  "      \ -no-split -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
 
   " Quick registers
   nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 
-  nnoremap <silent> [unite]u :<C-u>Unite -no-split -auto-preview -buffer-name=buffers file_mru buffer<CR>
+  nnoremap <silent> [unite]u :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
   " Quick buffer and mru
 
   " Quick yank history
@@ -305,10 +305,10 @@ set nocompatible               " be iMproved
         \ :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async<CR>
 
   " Quick file search
-  nnoremap <silent> [unite]f :<C-u>Unite -no-split -auto-preview -buffer-name=files file_rec/async file/new<CR>
+  nnoremap <silent> [unite]f :<C-u>Unite -no-split -buffer-name=files file_rec/async file/new<CR>
 
   " Quick grep from cwd
-  nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
+  nnoremap <silent> [unite]g :<C-u>Unite -no-split -buffer-name=grep grep:.<CR>
 
   " Quick help
   nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
