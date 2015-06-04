@@ -174,7 +174,7 @@ Some important softwares. Needed after re-installing OS.
 	$ ln -s ~/myConfigs/i3/i3blocks.conf ~/.i3/i3blocks.conf
 	```
 
-1. kingsoft-office
+1. kingsoft-office (a.k.a: WPS)
 
 	To install kingsoft-office on 13.10+, which has removed ia32-libs package:
 
@@ -193,6 +193,8 @@ Some important softwares. Needed after re-installing OS.
 	```text
 	$ sudo apt-get install ttf-mscorefonts-installer
 	```
+
+	Then, extract files from `wps_symbol_fonts.zip`, install them in `Font-Manager`.
 
 1. Calibre
 
