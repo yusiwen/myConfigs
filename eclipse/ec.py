@@ -13,7 +13,7 @@ class EclipseChooser:
 	idea_args = ['bin/idea.sh']
 
 	commands = []
-	
+
 	def check_env(self):
 		javahome = os.environ['JAVA_HOME']
 		# Linux is the default os
@@ -60,9 +60,9 @@ class EclipseChooser:
 		self.i = data
 
 	def __init__(self):
-		
+
 		self.check_env()
-		
+
 		self.find(self.eclipse_dir, self.eclipse_args)
 		self.find(self.idea_dir, self.idea_args)
 
@@ -89,7 +89,7 @@ class EclipseChooser:
 		if response == gtk.RESPONSE_OK:
 			cmd = self.commands[self.i-1][1]
 			subprocess.Popen(cmd)
-		
+
 		dialog.destroy()
 
 if __name__ == "__main__":
