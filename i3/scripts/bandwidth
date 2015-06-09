@@ -17,19 +17,26 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Use the provided interface, otherwise the device used for the default route.
+USING_VPN=false
 if [[ -n $BLOCK_INSTANCE ]]; then
   INTERFACE=$BLOCK_INSTANCE
 else
   INTERFACE=$(ip route | awk '/^default/ { print $5 ; exit }')
+  if [ "${INTERFACE}" = "static" ]; then
+    INTERFACE=$(ip route | awk '/^default/ { print $3 ; exit  }')
+    $USING_VPN=true
+  fi
 fi
 
 # Issue #36 compliant.
 if ! [ -e "/sys/class/net/${INTERFACE}/operstate" ] || ! [ "`cat /sys/class/net/${INTERFACE}/operstate`" = "up" ]
 then
+  if [ "$USING_VPN"=false ]; then
     echo "$INTERFACE down"
     echo "$INTERFACE down"
     echo "#FF0000"
     exit 0
+  fi
 fi
 
 # path to store the old results in
