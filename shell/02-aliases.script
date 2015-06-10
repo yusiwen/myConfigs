@@ -4,19 +4,20 @@
 alias rm='rm -iv'
 alias mv='mv -iv'
 alias cp='cp -iv'
- 
+
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
 alias l='vdir -h --format=across --color'
 alias la='ls++ -aF'
 alias ls='ls++ -F'
- 
+alias dir='dir -l --color'
+
 # Make grep more user friendly by highlighting matches
 # and exclude grepping through .svn folders.
 alias grep='grep -I --color=auto --exclude-dir={.git,.svn,CVS}'
 
 alias df='df -h --total'
 alias pgrep='pgrep -a'
- 
+
 # Shortcut for using the Kdiff3 tool for svn diffs.
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
 
