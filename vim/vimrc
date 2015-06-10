@@ -36,6 +36,9 @@ set nocompatible               " be iMproved
   Plugin 'xolox/vim-misc'
   Plugin 'xolox/vim-notes'
 
+  " sublime text style multiple selection
+  Plugin 'terryma/vim-multiple-cursors'
+
   " Shuogo's neo packages
   Plugin 'Shougo/vimproc.vim'
   Plugin 'Shougo/unite.vim'
@@ -116,6 +119,8 @@ set nocompatible               " be iMproved
 
   set modeline          " enable modelines
   set modelines=5
+
+  set selection=inclusive
 
   set number            " enable line numbers
   set ruler             " enable something
