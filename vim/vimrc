@@ -24,11 +24,17 @@ set nocompatible               " be iMproved
   Plugin 'tpope/vim-unimpaired'
   " insert or delete brackets, parens, quotes in pair
   Plugin 'jiangmiao/auto-pairs'
+
   " displays tags in a window
   Plugin 'majutsushi/tagbar'
+
   " tree explorer plugin for vim
   Plugin 'scrooloose/nerdtree'
   Plugin 'Xuyuanp/nerdtree-git-plugin'
+
+  " easy note taking in Vim
+  Plugin 'xolox/vim-misc'
+  Plugin 'xolox/vim-notes'
 
   " Shuogo's neo packages
   Plugin 'Shougo/vimproc.vim'
@@ -456,6 +462,11 @@ set nocompatible               " be iMproved
 
 " TagBar {{{
   nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
+" }}}
+
+" vim-notes {{{
+  let g:notes_directories = ['~/notes']
+
 " }}}
 
 " Airline {{{
