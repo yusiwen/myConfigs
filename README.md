@@ -202,6 +202,12 @@ Some important softwares. Needed after re-installing OS.
 	$ sudo -v && wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
 	```
 
+	Or, installing manually (changing the path to `calibre-tarball.txz` below as appropriate):
+
+	```text
+	$ sudo mkdir -p /opt/calibre && sudo rm -rf /opt/calibre/* && sudo tar xvf /path/to/downloaded/calibre-tarball.txz -C /opt/calibre && sudo /opt/calibre/calibre_postinstall
+	```
+
 1. Mail Clients
 
 	* offlineImap
