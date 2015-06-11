@@ -26,19 +26,20 @@ Configuration files for rxvt/rxvt-unicode.
 ## Install clipboard support
 
   `clipboard` is a perl script for rxvt to copy/paste text in both X primary selection and clipboard.
-  
+
   In `~/.Xresources`, add 'clipboard' to URxvt.perl-ext-common string. see `X11/Xresources` for details.
 
   Need xsel package.
-  
+
   ```
   sudo apt-get install xsel
   sudo cp ~/myConfigs/rxvt/clipboard /usr/local/lib/urxvt/perl/
   ```
 
-#### Note:  
+#### Note:
 
   Since Jan 2014, there is an official clipboard perl script also named `clipboard` in rxvt-unicode sources.
+  If installed by Ubuntu's official repository, it seems that there's still no `clipboard` module, so still needed to manually copy `clipboard` to `/usr/lib/urxvt/perl` folder.
 
 ## Import official CVS repository into GitHub
 
