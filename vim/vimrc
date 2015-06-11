@@ -101,6 +101,7 @@ set nocompatible               " be iMproved
   " themes repos
   Plugin 'nanotech/jellybeans.vim'
   Plugin 'jnurmine/Zenburn'
+  Plugin 'morhetz/gruvbox'
   Plugin 'chriskempson/base16-vim'
   Plugin 'bling/vim-airline'
 
