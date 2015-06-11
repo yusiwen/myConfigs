@@ -101,6 +101,7 @@ set nocompatible               " be iMproved
   " themes repos
   Plugin 'nanotech/jellybeans.vim'
   Plugin 'jnurmine/Zenburn'
+  Plugin 'chriskempson/base16-vim'
   Plugin 'bling/vim-airline'
 
   call vundle#end()
@@ -181,6 +182,8 @@ set nocompatible               " be iMproved
 
   else
     colorscheme jellybeans
+"    colorscheme base16-default
+"    let base16colorspace=256
     set t_Co=256
   endif
 " }}}

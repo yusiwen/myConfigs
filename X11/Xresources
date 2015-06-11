@@ -1,6 +1,7 @@
 ! ~/.Xresources is a symbolic link to ~/myConfigs/Xresources
 
 #include "myConfigs/X11/themes/jellybeans.xresources"
+!#include "myConfigs/base16/base16-xresources/base16-default.dark.256.xresources"
 
 Xft.autohint: true
 Xft.lcdfilter: lcddefault
