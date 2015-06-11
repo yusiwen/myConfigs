@@ -44,13 +44,16 @@ font pango:Droid Sans 10
 # links in your browser window).
 focus_follows_mouse no
 
+new_window pixel 1
+hide_edge_borders none
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 #}}}
 
 #{{{ Colors
 #                       border  backgr  text
-client.focused          #121212 #101010 #9e8a8e
+client.focused          #121212 #121212 #9e8a8e
 client.focused_inactive #101010 #191919 #999999
 client.unfocused        #101010 #191919 #999999
 client.urgent           #cd989a #cd989a #2e3436
@@ -132,7 +135,6 @@ bindsym $mod+a focus parent
 
 # Window border style: normal: border normal, with window title bar;
 # none: no border or window title bar; 1pixel: 1 pixel border.
-new_window 1pixel
 bindsym $mod+t border normal
 bindsym $mod+y border 1pixel
 bindsym $mod+u border none
@@ -242,7 +244,7 @@ exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 # ~/goagent is a symbolic link to ~/goagent-x.x.x
 exec python ~/goagent/local/goagent-gtk.py
 #exec --no-startup-id gnome-settings-daemon
-# The session must have a PolicyKit agent – 
+# The session must have a PolicyKit agent –
 #   this is the piece of software that displays elevation prompts
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id thunar --daemon
