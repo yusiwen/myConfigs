@@ -171,7 +171,7 @@ set nocompatible               " be iMproved
     set guioptions-=r               " No Scrollbar right
     set guioptions-=r               " No Scrollbar right when split
 
-    set gfn=Meslo\ LG\ S\ DZ\ for\ Powerline\ 10
+    set gfn=InputMono-Regular\ 10
 
     set lines=40                    " Height
     set columns=85                  " Width
@@ -179,11 +179,8 @@ set nocompatible               " be iMproved
     set background=dark
 
     colorscheme jellybeans
-
   else
     colorscheme jellybeans
-"    colorscheme base16-default
-"    let base16colorspace=256
     set t_Co=256
   endif
 " }}}

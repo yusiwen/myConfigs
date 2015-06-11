@@ -145,7 +145,7 @@ bindsym $mod+Shift+r restart
 
 #{{{ Mode settings
 # resize window (you can also use the mouse for that)
-mode "resize" {
+mode "RESIZE" {
 	# These bindings trigger as soon as you enter the resize mode
 
 	# Pressing left will shrink the window’s width.
@@ -168,7 +168,7 @@ mode "resize" {
 	bindsym Escape mode "default"
 }
 
-bindsym $mod+r mode "resize"
+bindsym $mod+r mode "RESIZE"
 
 # Create Log out, Reboot, Poweroff bindings
 mode "Exit >> (L)ogout, (S)uspend, (R)eboot, (P)oweroff, Loc(K)" {
@@ -198,15 +198,12 @@ bar {
 #	status_command i3status --config ~/.i3/i3status.config
 	status_command i3blocks -c ~/.i3/i3blocks.conf
 	colors {
-		background #101010
+		background #121212
 		statusline #999999
-#		focused_workspace #825969 #191919
-#		active_workspace #825969 #101010
-#		inactive_workspace #9a878f #191919
-#		urgent_workspace #2e3436 #9a878f
-		focused_workspace #0080ff #0080ff #000000
+		focused_workspace #5f8787 #5f8787 #1a1a1a
+		active_workspace #3f3f3f #3f3f3f #ffcfaf
 		inactive_workspace #00000 #000000 #AAAAAA
-		urgent_workspace #d33682 #d33682 #fdf6e3
+		urgent_workspace #d75f5f #d75f5f #fdf6e3
 	}
 }
 #}}}
