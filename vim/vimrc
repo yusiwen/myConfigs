@@ -150,7 +150,7 @@ set nocompatible               " be iMproved
   set encoding=utf-8    " Necessary to show Unicode glyphs
   set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 
-  set timeoutlen=1000
+  set timeoutlen=500
   set ttimeoutlen=50
 " }}}
 
