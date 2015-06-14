@@ -152,6 +152,8 @@ set nocompatible               " be iMproved
 
   set timeoutlen=500
   set ttimeoutlen=50
+
+  set fillchars=""
 " }}}
 
 " General Keybindings {{{
@@ -179,9 +181,15 @@ set nocompatible               " be iMproved
 
     set background=dark
 
-    colorscheme jellybeans
+    colorscheme gruvbox
   else
-    colorscheme jellybeans
+    colorscheme gruvbox
+" Make italic comments in gruvbox possible
+    set t_ZH=[3m
+    set t_ZR=[23m
+    let g:gruvbox_italic=1
+    highlight Comment cterm=italic
+
     set t_Co=256
   endif
 " }}}

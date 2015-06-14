@@ -1,6 +1,6 @@
 ! ~/.Xresources is a symbolic link to ~/myConfigs/Xresources
 
-#include "myConfigs/X11/themes/jellybeans.xresources"
+#include "myConfigs/X11/themes/gruvbox-dark.xresources"
 
 Xft.autohint: true
 Xft.lcdfilter: lcddefault
