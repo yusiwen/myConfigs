@@ -172,7 +172,7 @@ set nocompatible               " be iMproved
     set guioptions-=r               " No Scrollbar right
     set guioptions-=r               " No Scrollbar right when split
 
-    set gfn=InputMono-Regular\ 10
+    set guifont=Input\ Mono\ 10
 
     set lines=40                    " Height
     set columns=85                  " Width
