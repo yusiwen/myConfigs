@@ -321,8 +321,7 @@ assign [class="URxvt" title="weechat"] $ws8
 for_window [window_role="pop-up"] floating enable border normal
 for_window [class="Eclipse" title="Workspace Launcher "] floating enable
 for_window [class="Java" title="Eclipse "] floating enable
-for_window [class="Gimp"] floating enable
-for_window [class="Gpick|feh|^Fcitx-config-gtk3$"] floating enable
+for_window [class="^Gimp$|^Gpick$|^feh$|^Fcitx-config-gtk3$|^Telegram$"] floating enable
 for_window [class="^Keepassx$" instance="^keepassx$"] floating enable
 for_window [class="Goldendict"] floating enable
 for_window [class="URxvt" instance="^ncmpcpp$" title="^ncmpcpp$"] floating enable
