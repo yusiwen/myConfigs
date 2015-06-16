@@ -238,7 +238,7 @@ bindsym $mod+c exec gnome-calculator
 # bind key for Catfish
 bindsym $mod+Shift+c exec catfish
 # bind key for vmplayer winxp
-bindsym $mod+Shift+i exec vmplayer ~/vmwares/winxp/winxp.vmx
+bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWorks
 #}}}
 
 #{{{ Auto-startup settings
@@ -250,7 +250,7 @@ exec --no-startup-id dunst
 exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 exec python ~/goagent/local/goagent-gtk.py
 #exec --no-startup-id gnome-settings-daemon
-# The session must have a PolicyKit agent – 
+# The session must have a PolicyKit agent –
 #   this is the piece of software that displays elevation prompts
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id thunar --daemon
@@ -311,7 +311,7 @@ assign [class="Google-chrome"] $ws2
 assign [class="Geary|Thunderbird"] $ws3
 assign [class="URxvt" instance="mutt" title="mutt"] $ws3
 assign [class="calibre-gui|WizNote"] $ws4
-assign [class="Vmplayer"] $ws5
+assign [class="^Vmplayer$|^VirtualBox$"] $ws5
 assign [class="Eclipse|^jetbrains-idea-|^Atom$"] $ws6
 assign [class="Java" title="Eclipse"] $ws6
 assign [class="Wps|Et|Wpp|^libreoffice"] $ws7
