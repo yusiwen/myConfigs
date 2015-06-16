@@ -21,7 +21,9 @@ set $PLAYER ncmpcpp
 
 #{{{ Screens
 set $left_screen DVI-I-1
-set $right_screen DVI-D-1
+# When using nouveau driver, the second screen is 'DVI-D-1'
+#   after switched to nvidia-346 driver, it's 'DVI-D-0'
+set $right_screen DVI-D-0
 #}}}
 
 #{{{ Font settings
