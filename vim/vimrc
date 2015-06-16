@@ -101,6 +101,8 @@ set nocompatible               " be iMproved
   " themes repos
   Plugin 'nanotech/jellybeans.vim'
   Plugin 'jnurmine/Zenburn'
+  Plugin 'morhetz/gruvbox'
+  Plugin 'chriskempson/base16-vim'
   Plugin 'bling/vim-airline'
 
   call vundle#end()
@@ -148,8 +150,10 @@ set nocompatible               " be iMproved
   set encoding=utf-8    " Necessary to show Unicode glyphs
   set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 
-  set timeoutlen=1000
+  set timeoutlen=500
   set ttimeoutlen=50
+
+  set fillchars=""
 " }}}
 
 " General Keybindings {{{
@@ -170,17 +174,22 @@ set nocompatible               " be iMproved
     set guioptions-=r               " No Scrollbar right
     set guioptions-=r               " No Scrollbar right when split
 
-    set gfn=Meslo\ LG\ S\ DZ\ for\ Powerline\ 10
+    set guifont=Input\ Mono\ 10
 
     set lines=40                    " Height
     set columns=85                  " Width
 
     set background=dark
 
-    colorscheme jellybeans
-
+    colorscheme gruvbox
   else
-    colorscheme jellybeans
+    colorscheme gruvbox
+" Make italic comments in gruvbox possible
+    set t_ZH=[3m
+    set t_ZR=[23m
+    let g:gruvbox_italic=1
+    highlight Comment cterm=italic
+
     set t_Co=256
   endif
 " }}}

@@ -21,7 +21,9 @@ set $PLAYER ncmpcpp
 
 #{{{ Screens
 set $left_screen DVI-I-1
-set $right_screen DVI-D-1
+# When using nouveau driver, the second screen is 'DVI-D-1'
+#   after switched to nvidia-346 driver, it's 'DVI-D-0'
+set $right_screen DVI-D-0
 #}}}
 
 #{{{ Font settings
@@ -44,13 +46,16 @@ font pango:Droid Sans 10
 # links in your browser window).
 focus_follows_mouse no
 
+new_window pixel 1
+hide_edge_borders none
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 #}}}
 
 #{{{ Colors
 #                       border  backgr  text
-client.focused          #121212 #101010 #9e8a8e
+client.focused          #121212 #121212 #9e8a8e
 client.focused_inactive #101010 #191919 #999999
 client.unfocused        #101010 #191919 #999999
 client.urgent           #cd989a #cd989a #2e3436
@@ -132,7 +137,6 @@ bindsym $mod+a focus parent
 
 # Window border style: normal: border normal, with window title bar;
 # none: no border or window title bar; 1pixel: 1 pixel border.
-new_window 1pixel
 bindsym $mod+t border normal
 bindsym $mod+y border 1pixel
 bindsym $mod+u border none
@@ -145,7 +149,7 @@ bindsym $mod+Shift+r restart
 
 #{{{ Mode settings
 # resize window (you can also use the mouse for that)
-mode "resize" {
+mode "RESIZE" {
 	# These bindings trigger as soon as you enter the resize mode
 
 	# Pressing left will shrink the window’s width.
@@ -168,7 +172,7 @@ mode "resize" {
 	bindsym Escape mode "default"
 }
 
-bindsym $mod+r mode "resize"
+bindsym $mod+r mode "RESIZE"
 
 # Create Log out, Reboot, Poweroff bindings
 mode "Exit >> (L)ogout, (S)uspend, (R)eboot, (P)oweroff, Loc(K)" {
@@ -198,15 +202,20 @@ bar {
 #	status_command i3status --config ~/.i3/i3status.config
 	status_command i3blocks -c ~/.i3/i3blocks.conf
 	colors {
-		background #101010
-		statusline #999999
-#		focused_workspace #825969 #191919
-#		active_workspace #825969 #101010
-#		inactive_workspace #9a878f #191919
-#		urgent_workspace #2e3436 #9a878f
-		focused_workspace #0080ff #0080ff #000000
-		inactive_workspace #00000 #000000 #AAAAAA
-		urgent_workspace #d33682 #d33682 #fdf6e3
+#		background #121212
+#		statusline #999999
+#		focused_workspace #5f8787 #5f8787 #1a1a1a
+#		active_workspace #3f3f3f #3f3f3f #ffcfaf
+#		inactive_workspace #00000 #000000 #AAAAAA
+#		urgent_workspace #d75f5f #d75f5f #fdf6e3
+		background #2d2d2d
+		statusline #dedede
+		separator #2d2d2d
+
+		focused_workspace  #d64937 #d64937 #dedede
+		active_workspace   #2d2d2d #5f676a #dedede
+		inactive_workspace #2d2d2d #2d2d2d #888888
+		urgent_workspace   #333333 #900000 #ffffff
 	}
 }
 #}}}
@@ -245,7 +254,7 @@ exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 # ~/goagent is a symbolic link to ~/goagent-x.x.x
 exec python ~/goagent/local/goagent-gtk.py
 #exec --no-startup-id gnome-settings-daemon
-# The session must have a PolicyKit agent – 
+# The session must have a PolicyKit agent –
 #   this is the piece of software that displays elevation prompts
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id thunar --daemon
@@ -325,25 +334,14 @@ assign [class="URxvt" title="weechat"] $ws8
 #}}}
 
 #{{{ Floating settings
-for_window [window_role="pop-up"] floating enable border normal
+for_window [window_role="pop-up|bubble"] floating enable
 for_window [class="^Eclipse$" instance="^Eclipse$" title="^Workspace Launcher "] floating enable
-#for_window [class="Java" title="Eclipse "] floating enable
-for_window [class="Gimp"] floating enable
-for_window [class="Gpick|feh"] floating enable
+for_window [class="^Gimp$|^Gpick$|^feh$|^Fcitx-config-gtk3$|^Telegram$"] floating enable
+for_window [class="^Goldendict$|^Font-manager$|^Grub-customizer$|^Catfish$|^Orage$"] floating enable
+for_window [class="^Pidgin$|^File-roller$|^shadowsocks-qt5$|^Nvidia-settings$"] floating enable
 for_window [class="^Keepassx$" instance="^keepassx$"] floating enable
-for_window [class="Goldendict"] floating enable
 for_window [class="^URxvt$" instance="^ncmpcpp$" title="^ncmpcpp$"] floating enable
 for_window [class="^URxvt$" instance="^mc$" title="^mc$"] floating enable
-for_window [class="Font-manager"] floating enable
-for_window [class="Grub-customizer"] floating enable
 for_window [class="^Thunar$" instance="^thunar$"] floating enable
-#for_window [class="^Thunar$" title="文件操作进度"] floating enable
-for_window [class="Catfish"] floating enable
-for_window [class="^Pidgin$"] floating enable
-for_window [class="Steadyflow" title="下载管理器"] floating enable
-for_window [class="cataclysm-tiles"] floating enable
-for_window [class="Orage"] floating enable
 for_window [class="^Smplayer$" instance="^smplayer$"] floating enable
-for_window [class="^File-roller$"] floating enable
-for_window [class="^shadowsocks-qt5$"] floating enable
 #}}}

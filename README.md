@@ -34,6 +34,31 @@ Softwares
 
 Some important softwares. Needed after re-installing OS.
 
+1. i3-wm
+
+	Installation from official repository:
+
+	```text
+	$ sudo echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >> /etc/apt/sources.list
+	$ sudo apt-get update
+	$ sudo apt-get --allow-unauthenticated install sur5r-keyring
+	$ sudo apt-get install consolekit
+	$ sudo apt-get install i3
+	```
+
+	Then, disable `xfce4-notifyd` because `dunst` is running:
+
+	```text
+	$ sudo mv /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service.disabled
+	```
+
+	Install i3blocks to replace i3status for better status display:
+
+	```text
+	$ sudo apt-get install i3blocks
+	$ ln -s ~/myConfigs/i3/i3blocks.conf ~/.i3/i3blocks.conf
+	```
+
 1. Git
 
 	```text
@@ -71,15 +96,17 @@ Some important softwares. Needed after re-installing OS.
 	$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 	```
 
-1. rxvt-unicode
+1. Terminal tools
 
-	* Installing from Ubuntu official repository:
+	* [rxvt-unicode](http://software.schmorp.de/pkg/rxvt-unicode.html)
+
+		Installing from Ubuntu official repository:
 
 		```text
 		$ sudo apt-get install rxvt-unicode-256color
 		```
 
-	* Building from source:
+		Building from source:
 
 		```text
 		$ cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
@@ -101,7 +128,44 @@ Some important softwares. Needed after re-installing OS.
 		$ ./configure --enable-256-color --enable-unicode3 --enable-combining --enable-xft --enable-font-styles --enable-pixbuf --enable-startup-notification --enable-transparency --enable-fading --enable-rxvt-scroll --enable-perl --enable-iso14755 --enable-keepscrolling --enable-selectionscrolling --enable-mousewheel --enable-slipwheeling --enable-smart-resize --enable-text-blink --enable-pointer-blank --enable-utmp --enable-wtmp --enable-lastlog
 		```
 
-	See `rxvt/README.md` for more details.
+		See `rxvt/README.md` for more details.
+
+	* fbterm
+
+		```text
+		$ sudo apt-get install fbterm
+		$ sudo gpasswd -a YOUR_USERNAME video
+		$ sudo chmod u+s /usr/bin/fbterm
+		```
+
+	* [rofi](https://davedavenport.github.io/rofi/) (A window switcher, run dialog and dmenu replacement)
+
+		Replace `dmenu` by `rofi`
+
+		```text
+		$ git clone git@github.com:yusiwen/rofi.git
+		$ cd rofi
+		$ git remote add upstream git@github.com:DaveDavenport/rofi.git
+		$ autoreconf -i
+		$ mkdir build/;cd build/
+		$ ../configure
+		$ make
+		$ sudo make install
+		```
+
+	* Midnight Commander
+
+		To get prerequisites:
+
+		```text
+		$ sudo apt-get build-dep mc
+		```
+
+		To get the source:
+
+		```text
+		$ git clone git@github.com:yusiwen/mc.git
+		```
 
 1. feh
 
@@ -123,58 +187,49 @@ Some important softwares. Needed after re-installing OS.
 	$ git clone git@github.com:yusiwen/feh.git
 	```
 
-1. Midnight Commander
+1. GFW tools
 
-	To get prerequisites:
+	* [GoAgent](https://github.com/goagent/goagent) Linux
 
-	```text
-	$ sudo apt-get build-dep mc
-	```
+		```text
+		$ sudo apt-get install python-dev python-greenlet python-gevent python-vte python-openssl python-crypto python-appindicator
+		$ sudo apt-get install python-pip
+		$ sudo pip install gevent --upgrade
+		```
 
-	To get the source:
+		Then, download GoAgent client from [here](https://code.google.com/p/goagent/).
 
-	```text
-	$ git clone git@github.com:yusiwen/mc.git
-	```
+		For more python package & pip installation notes, please check out `python/README.md`.
 
-1. GoAgent Linux
+	* [shadowsocks-qt5](https://github.com/librehat/shadowsocks-qt5)
 
-	```text
-	$ sudo apt-get install python-dev python-greenlet python-gevent python-vte python-openssl python-crypto python-appindicator
-	$ sudo apt-get install python-pip
-	$ sudo pip install gevent --upgrade
-	```
+		Install `shadowsocks-qt5`:
 
-	Then, download GoAgent client from [here](https://code.google.com/p/goagent/).
+		```text
+		$ sudo apt-add-repository ppa:hzwhuang/ss-qt5
+		$ sudo apt-get install shadowsocks-qt5
+		```
 
-	For more python package & pip installation notes, please check out `python/README.md`.
+		Go to [shadowsocks.com](https://portal.shadowsocks.com/clientarea.php) to get server information.
 
-1. i3-wm
+		Manually add server to shadowsocks-qt5, set the port to `1088`.
 
-	Installation from official repository:
+		Install `tsocks`:
 
-	```text
-	$ sudo echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >> /etc/apt/sources.list
-	$ sudo apt-get update
-	$ sudo apt-get --allow-unauthenticated install sur5r-keyring
-	$ sudo apt-get install consolekit
-	$ sudo apt-get install i3
-	```
+		```text
+		$ sudo apt-get install tsocks
+		```
 
-	Then, disable `xfce4-notifyd` because `dunst` is running:
+		Edit `/etc/tsocks.conf`:
 
-	```text
-	$ sudo mv /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service.disabled
-	```
+		```text
+		...
+		server = 127.0.0.1
+		server_port = 1088
+		...
+		```
 
-	Install i3blocks to replace i3status for better status display:
-
-	```text
-	$ sudo apt-get install i3blocks
-	$ ln -s ~/myConfigs/i3/i3blocks.conf ~/.i3/i3blocks.conf
-	```
-
-1. kingsoft-office (aka 'WPS')
+1. [kingsoft-office](http://linux.wps.cn/) (aka 'WPS')
 
 	To install kingsoft-office on 13.10+, which has removed ia32-libs package:
 
@@ -249,18 +304,28 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-get install geary
 		```
 
-1. MPD
+1. Media tools
 
-	```text
-	$ sudo apt-add-repository ppa:gmpc-trunk/mpd-trunk
-	```
+	* MPD
 
-	Run ~/myConfigs/mpd/mkenv.sh
+		```text
+		$ sudo apt-add-repository ppa:gmpc-trunk/mpd-trunk
+		```
 
-	```text
-	$ sudo apt-get update
-	$ sudo apt-get install mpd ncmpcpp
-	```
+		Run ~/myConfigs/mpd/mkenv.sh
+
+		```text
+		$ sudo apt-get update
+		$ sudo apt-get install mpd ncmpcpp
+		```
+
+	* smplayer
+
+		```text
+		$ sudo apt-add-repository ppa:rvm/smplayer
+		$ sudo apt-get update
+		$ sudo apt-get install smplayer smtube smplayer-themes smplayer-skins
+		```
 
 1. Indicators
 
@@ -293,14 +358,6 @@ Some important softwares. Needed after re-installing OS.
 	```text
 	$ sudo apt-add-repository ppa:wiznote-team/ppa
 	$ sudo apt-get install wiznote
-	```
-
-1. fbterm
-
-	```text
-	$ sudo apt-get install fbterm
-	$ sudo gpasswd -a YOUR_USERNAME video
-	$ sudo chmod u+s /usr/bin/fbterm
 	```
 
 1. Download managers
@@ -354,57 +411,6 @@ Some important softwares. Needed after re-installing OS.
 
 	```text
 	$ sudo apt-add-repository ppa:font-manager/staging
-	```
-
-1. shadowsocks-qt5
-
-	- Install `shadowsocks-qt5`:
-
-		```text
-		$ sudo apt-add-repository ppa:hzwhuang/ss-qt5
-		$ sudo apt-get install shadowsocks-qt5
-		```
-
-	- Go to [shadowsocks.com](https://portal.shadowsocks.com/clientarea.php) to get server information.
-
-		Manually add server to shadowsocks-qt5, set the port to `1088`.
-
-	- Install `tsocks`:
-
-		```text
-		$ sudo apt-get install tsocks
-		```
-
-		Edit `/etc/tsocks.conf`:
-
-		```text
-		...
-		server = 127.0.0.1
-		server_port = 1088
-		...
-		```
-
-1. rofi (A window switcher, run dialog and dmenu replacement)
-
-	Replace `dmenu` by `rofi`
-
-	```text
-	$ git clone git@github.com:yusiwen/rofi.git
-	$ cd rofi
-	$ git remote add upstream git@github.com:DaveDavenport/rofi.git
-	$ autoreconf -i
-	$ mkdir build/;cd build/
-	$ ../configure
-	$ make
-	$ sudo make install
-	```
-
-1. smplayer
-
-	```text
-	$ sudo apt-add-repository ppa:rvm/smplayer
-	$ sudo apt-get update
-	$ sudo apt-get install smplayer smtube smplayer-themes smplayer-skins
 	```
 
 Troubleshooting

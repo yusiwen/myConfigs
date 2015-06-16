@@ -58,6 +58,10 @@ source $HOME/myConfigs/shell/02-completions.script
 source $HOME/myConfigs/shell/02-exports.script
 source $HOME/myConfigs/shell/03-functions.script
 
+# Base16 Shell
+#BASE16_SHELL="$HOME/myConfigs/base16/base16-shell/base16-tomorrow.dark.sh"
+#[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
 source /etc/zsh_command_not_found
 
 if [[ $(tty) == \/dev\/tty[0-9]* ]] ; then
