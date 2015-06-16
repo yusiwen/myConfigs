@@ -332,22 +332,14 @@ assign [class="URxvt" title="weechat"] $ws8
 #}}}
 
 #{{{ Floating settings
-for_window [window_role="pop-up"] floating enable border normal
+for_window [window_role="pop-up|bubble"] floating enable
 for_window [class="^Eclipse$" instance="^Eclipse$" title="^Workspace Launcher "] floating enable
 for_window [class="^Gimp$|^Gpick$|^feh$|^Fcitx-config-gtk3$|^Telegram$"] floating enable
+for_window [class="^Goldendict$|^Font-manager$|^Grub-customizer$|^Catfish$|^Orage$"] floating enable
+for_window [class="^Pidgin$|^File-roller$|^shadowsocks-qt5$"] floating enable
 for_window [class="^Keepassx$" instance="^keepassx$"] floating enable
-for_window [class="Goldendict"] floating enable
 for_window [class="^URxvt$" instance="^ncmpcpp$" title="^ncmpcpp$"] floating enable
 for_window [class="^URxvt$" instance="^mc$" title="^mc$"] floating enable
-for_window [class="Font-manager"] floating enable
-for_window [class="Grub-customizer"] floating enable
 for_window [class="^Thunar$" instance="^thunar$"] floating enable
-for_window [class="Catfish"] floating enable
-for_window [class="^Pidgin$"] floating enable
-for_window [class="Steadyflow" title="下载管理器"] floating enable
-for_window [class="cataclysm-tiles"] floating enable
-for_window [class="Orage"] floating enable
 for_window [class="^Smplayer$" instance="^smplayer$"] floating enable
-for_window [class="^File-roller$"] floating enable
-for_window [class="^shadowsocks-qt5$"] floating enable
 #}}}
