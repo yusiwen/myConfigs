@@ -230,13 +230,13 @@ bindsym $mod+z exec $BROWSER
 # bind key for Thunderbird mail client
 bindsym $mod+Shift+x exec thunderbird
 # bind key for Alpine, run in a new TERM window
-bindsym $mod+x exec $TERM -name mutt -title mutt -e tsocks mutt
+bindsym $mod+x exec $TERM -name mutt -title mutt -pe -tabbed -e tsocks mutt
 # bind key for weechat-curses, run in a new TERM window
 bindsym $mod+Shift+o exec $TERM -e weechat-curses
 # bind key for PLAYER, run in a new TERM window
-bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -e $PLAYER
+bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -pe -tabbed -e $PLAYER
 # bind key for FM_CMD, run in a new TERM window
-bindsym $mod+m exec $TERM -name $FM_CMD -title $FM_CMD -geometry 160x42 -e $FM_CMD -c
+bindsym $mod+m exec $TERM -name $FM_CMD -title $FM_CMD -geometry 160x42 -pe -tabbed -e $FM_CMD -c
 # bind key for FM
 bindsym $mod+Shift+m exec $FM
 # bind key for Catfish
