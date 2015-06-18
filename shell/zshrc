@@ -57,6 +57,7 @@ source $HOME/myConfigs/shell/02-aliases.script
 source $HOME/myConfigs/shell/02-completions.script
 source $HOME/myConfigs/shell/02-exports.script
 source $HOME/myConfigs/shell/03-functions.script
+source $HOME/myConfigs/shell/04-keybindings.script
 
 # Base16 Shell
 #BASE16_SHELL="$HOME/myConfigs/base16/base16-shell/base16-tomorrow.dark.sh"
