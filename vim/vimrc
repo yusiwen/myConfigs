@@ -44,6 +44,7 @@ set nocompatible               " be iMproved
   Plugin 'Shougo/unite.vim'
   Plugin 'Shougo/unite-session'
   Plugin 'Shougo/neomru.vim'
+  "Plugin 'Shougo/vimfiler.vim'
   "Plugin 'Shougo/neocomplete.vim'
   "Plugin 'Shougo/neosnippet.vim'
   "Plugin 'Shougo/neosnippet-snippets'
@@ -473,7 +474,7 @@ set nocompatible               " be iMproved
   let g:NERDTreeChDirMode = 2
   let g:NERDTreeShowBookmarks = 1
   let g:NERDTreeWinPos = "left"
-  let g:NERDTreeShowHidden = 1
+  let g:NERDTreeShowHidden = 0
 " }}}
 
 " TagBar {{{
@@ -482,7 +483,6 @@ set nocompatible               " be iMproved
 
 " vim-notes {{{
   let g:notes_directories = ['~/notes']
-
 " }}}
 
 " Airline {{{
@@ -516,5 +516,9 @@ set nocompatible               " be iMproved
   let g:instant_markdown_slow = 1
   let g:instant_markdown_autostart = 0
   nmap <F8> <Esc>:InstantMarkdownPreview<CR>
+" }}}
+
+" vim-better-whitespace {{{
+  let g:better_whitespace_enabled=0
 " }}}
 " }}}
