@@ -22,7 +22,7 @@ use Getopt::Long;
 use File::Basename;
 
 # Default values
-my $indicator = $ENV{BLOCK_INSTANCE} || "CAPS";
+my $indicator = $ENV{BLOCK_INSTANCE} || "C";
 my $color_on  = "#00FF00";
 my $color_off = "#222222";
 
@@ -33,7 +33,7 @@ sub help {
     printf "  -C <color off>: hex color to use when indicator is off\n";
     printf "\n";
     printf "Note: environment variable \$BLOCK_INSTANCE should be one of:\n";
-    printf "  CAPS, NUM (default is CAPS).\n";
+    printf "  (C)aps, (N)um (default is C).\n";
     exit 0;
 }
 
@@ -44,8 +44,8 @@ GetOptions("help|h" => \&help,
 
 # Key mapping
 my %indicators = (
-    CAPS => 0x00000001,
-    NUM  => 0x00000002,
+    C => 0x00000001,
+    N  => 0x00000002,
 );
 
 # Retrieve key flags
