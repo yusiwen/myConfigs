@@ -17,11 +17,21 @@ export VISUAL=vim
 export EDITOR=vim
 ```
 
-# Proxy
+### Proxy
 
-Using shadowsocks-qt5 as SOCKS5 proxy:
+1. Using shadowsocks-qt5 as SOCKS5 proxy:
 
 ```text
 $ git config --global http.proxy 'socks5://127.0.0.1:1088'
 $ git config --global https.proxy 'socks5://127.0.0.1:1088'
+```
+
+2. Set shadowsocks-qt5 as proxy for SSH protocol:
+
+In `~/.ssh/config` file, add following settings
+
+```text
+Host github.com
+  User git
+  ProxyCommand nc -x 127.0.0.1:1088 %h %p
 ```
