@@ -336,7 +336,7 @@ assign [class="URxvt" title="weechat"] $ws8
 #{{{ Floating settings
 for_window [window_role="pop-up|bubble"] floating enable
 for_window [class="^Eclipse$" instance="^Eclipse$" title="^Workspace Launcher "] floating enable
-for_window [class="^Gimp$|^Gpick$|^feh$|^Fcitx-config-gtk3$|^Telegram$"] floating enable
+for_window [class="^Gimp$|^Gpick$|^feh$|^Fcitx-config-gtk3$|^Telegram$|^Y-PPA-Manager$"] floating enable
 for_window [class="^Goldendict$|^Font-manager$|^Grub-customizer$|^Catfish$|^Orage$"] floating enable
 for_window [class="^Pidgin$|^File-roller$|^shadowsocks-qt5$|^Nvidia-settings$"] floating enable
 for_window [class="^Keepassx$" instance="^keepassx$"] floating enable
