@@ -9,6 +9,8 @@ VIM Installation
 
   As for windows, check out [kybu Windows build](https://bitbucket.org/kybu/vim-for-windows-single-drop), it supports `ruby`, `python`, `perl`, `lua`, etc.
 
+  As for the latest build, try `ppa:pkg-vim/vim-daily`.
+
 1. Install vundle
 
 	```text
