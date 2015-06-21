@@ -15,7 +15,7 @@ UUID=0e2df002-045a-4e3b-8b70-a65c7cf08f4e /vms            ext4    defaults      
 UUID=186e3028-9ad1-4bac-8070-c77ee9c40d43 none            swap    sw              0       0
 
 # DISK0_VOL0(Work) is on /dev/sda1
-UUID=6E2CFC5F2CFC242D /work      ntfs-3g  permissions,windows_names,locale=zh_CN.utf8  0 0
+UUID=6E2CFC5F2CFC242D /work      ntfs-3g  users,uid=1000,gid=1000,umask=0022,exec,windows_names,locale=zh_CN.utf8  0 0
 # DISK0_VOL1 is on /dev/sda5 
 UUID=4C74C17974C165F4 /data      ntfs-3g  users,uid=1000,gid=1000,fmask=0113,dmask=0002,windows_names,locale=zh_CN.utf8  0 0
 # DISK1_VOL0 is on /dev/sdc1
