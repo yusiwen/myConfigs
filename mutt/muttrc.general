@@ -3,7 +3,8 @@
 
 # Colour
 #uncomment the colorscheme you want to use, and comment out the others
-source ~/myConfigs/mutt/themes/jellybeans.muttrc
+#source ~/myConfigs/mutt/themes/jellybeans.muttrc
+source ~/myConfigs/solarized/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
 
 # Basic config, you can leave this as is
 set hostname = "gmail.com"

@@ -48,9 +48,14 @@ floating_modifier $mod
 
 #{{{ Colors
 #class                  border  backgr  text
-client.focused          #121212 #121212 #9e8a8e
-client.focused_inactive #101010 #191919 #999999
-client.unfocused        #101010 #191919 #999999
+#client.focused          #121212 #121212 #9e8a8e
+#client.focused_inactive #101010 #191919 #999999
+#client.unfocused        #101010 #191919 #999999
+#client.urgent           #cd989a #cd989a #2e3436
+
+client.focused          #082029 #082029 #cccccc
+client.focused_inactive #223136 #223136 #555555
+client.unfocused        #001010 #002222 #999999
 client.urgent           #cd989a #cd989a #2e3436
 
 client.background       #1d1d1d
@@ -203,20 +208,19 @@ bar {
 #	status_command i3status --config ~/.i3/i3status.config
 	status_command i3blocks -c ~/.i3/i3blocks.conf
 	colors {
-#		background #121212
-#		statusline #999999
-#		focused_workspace #5f8787 #5f8787 #1a1a1a
-#		active_workspace #3f3f3f #3f3f3f #ffcfaf
-#		inactive_workspace #00000 #000000 #AAAAAA
-#		urgent_workspace #d75f5f #d75f5f #fdf6e3
-		background #2d2d2d
-		statusline #dedede
-		separator #2d2d2d
+#		background #2d2d2d
+#		statusline #dedede
+#		separator #2d2d2d
 
-		focused_workspace  #d64937 #d64937 #dedede
-		active_workspace   #2d2d2d #5f676a #dedede
-		inactive_workspace #2d2d2d #2d2d2d #888888
-		urgent_workspace   #333333 #900000 #ffffff
+#		focused_workspace  #d64937 #d64937 #dedede
+#		active_workspace   #2d2d2d #5f676a #dedede
+#		inactive_workspace #2d2d2d #2d2d2d #888888
+#		urgent_workspace   #333333 #900000 #ffffff
+		background #082029
+		statusline #eee8d5
+		focused_workspace  #cb4b16 #cb4b16 #eee8d5
+		active_workspace   #cb4b16 #cb4b16 #eee8d5
+		inactive_workspace #b58900 #b58900 #eee8d5
 	}
 }
 #}}}

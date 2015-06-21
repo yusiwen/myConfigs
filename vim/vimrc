@@ -60,6 +60,7 @@ set nocompatible               " be iMproved
   Plugin 'godlygeek/tabular'
   " accelerated smooth scroll
   Plugin 'yonchu/accelerated-smooth-scroll'
+  " better whitespace highlighting
   Plugin 'ntpeters/vim-better-whitespace'
 
   " Language & Develop specific repos
@@ -100,6 +101,7 @@ set nocompatible               " be iMproved
   " non github repos
 
   " themes repos
+  Plugin 'altercation/vim-colors-solarized'
   Plugin 'nanotech/jellybeans.vim'
   Plugin 'jnurmine/Zenburn'
   Plugin 'morhetz/gruvbox'
@@ -182,13 +184,13 @@ set nocompatible               " be iMproved
 
     set background=dark
 
-    colorscheme gruvbox
+    colorscheme solarized
   else
-    colorscheme gruvbox
+    colorscheme solarized
 " Make italic comments in gruvbox possible
     set t_ZH=[3m
     set t_ZR=[23m
-    let g:gruvbox_italic=1
+    "let g:gruvbox_italic=1
     highlight Comment cterm=italic
 
     set t_Co=256
