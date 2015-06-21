@@ -10,9 +10,12 @@ which() {
   ALIAS='alias'
   FUNCTION='function'
   BUILTIN='builtin'
+  NOTFOUND='not found'
   if [[ "$TYPE" =~ "$ALIAS" ]]; then
   elif [[ "$TYPE" =~ "$FUNCTION" ]]; then
   elif [[ "$TYPE" =~ "$BUILTIN" ]]; then
+  elif [[ "$TYPE" =~ "$NOTFOUND" ]]; then
+    whereis "$@"
   else
     whereis "$@"
     file $(builtin type "$@" | awk '{print $3}')
