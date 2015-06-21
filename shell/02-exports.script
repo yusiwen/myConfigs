@@ -5,9 +5,9 @@ if [ -z "$JAVA_HOME" ]; then
   # find newest Java SDK version under /opt/java
   JDK_INSTALLATION_PATH='/opt/java'
   # select the newest version of JDK to be JAVA_HOME
-  JAVA_NAME=`/bin/ls -dr $JDK_INSTALLATION_PATH/j* | head -1`
-  # set JAVA_HOME
-  JAVA_HOME=$JAVA_NAME
+  JAVA_NAME=`/bin/ls -dr $JDK_INSTALLATION_PATH/j*/ | head -1`
+  # set JAVA_HOME (truncated trailing '/')
+  JAVA_HOME=`printf '%s' "${JAVA_NAME%/}"`
   export JAVA_HOME
   export JDK_HOME=$JAVA_HOME
   export CLASSPATH=.:$JDK_HOME/lib/tools.jar:$JAVA_HOME/jre/lib/rt.jar
@@ -17,7 +17,9 @@ fi
 if [ -z "$M2_HOME" ]; then
   MVN_INSTALLATION_PATH="$HOME/maven"
   MVN_NAME=`/bin/ls -dr $MVN_INSTALLATION_PATH/*-maven-*/ | head -1`
-  export M2_HOME=$MVN_NAME
+  # set M2_HOME (truncated trailing '/')
+  M2_HOME=`printf '%s' "${MVN_NAME%/}"`
+  export M2_HOME
   export M2=$M2_HOME/bin
   export MAVEN_OPTS="-Xms64m -Xmx256m"
   export PATH=$PATH:$M2
