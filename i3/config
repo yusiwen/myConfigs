@@ -54,15 +54,30 @@ floating_modifier $mod
 #}}}
 
 #{{{ Colors
-#                       border  backgr  text
-#client.focused          #121212 #121212 #9e8a8e
-#client.focused_inactive #101010 #191919 #999999
-#client.unfocused        #101010 #191919 #999999
-#client.urgent           #cd989a #cd989a #2e3436
-
-client.focused          #082029 #082029 #cccccc
-client.focused_inactive #223136 #223136 #555555
-client.unfocused        #001010 #002222 #999999
+#{{{ dark theme (like jellybeans)
+#set $FOCUSED #121212
+#set $FOCUSED_TEXT #9e8a8e
+#set $INACTIVE #191919
+#set $INACTIVE_TEXT #999999
+#set $BAR_FOCUSED #2aa198
+#set $BAR_FOCUSED_TEXT #eee8d5
+#set $BAR_ACTIVE #5f676a
+#set $BAR_INACTIVE #2d2d2d
+#}}}
+#{{{ solarized theme
+set $FOCUSED #082029
+set $FOCUSED_TEXT #cccccc
+set $INACTIVE #223136
+set $INACTIVE_TEXT #555555
+set $BAR_FOCUSED #2aa198
+set $BAR_FOCUSED_TEXT #eee8d5
+set $BAR_ACTIVE #cb4b16
+set $BAR_INACTIVE #b58900
+#}}}
+#                       border    backgr    text
+client.focused          $FOCUSED  $FOCUSED  $FOCUSED_TEXT
+client.focused_inactive $INACTIVE $INACTIVE $INACTIVE_TEXT
+client.unfocused        #001010 #191919 #999999
 client.urgent           #cd989a #cd989a #2e3436
 
 client.background       #1d1d1d
@@ -204,22 +219,15 @@ bindsym --release Num_Lock  exec pkill -SIGRTMIN+11 i3blocks
 # finds out, if available)
 bar {
 	tray_output DVI-I-1
-#	status_command i3status --config ~/.i3/i3status.config
 	status_command i3blocks -c ~/.i3/i3blocks.conf
-	colors {
-#		background #121212
-#		statusline #dedede
-#		separator #2d2d2d
 
-#		focused_workspace  #2aa198 #2aa198 #dedede
-#		active_workspace   #2d2d2d #5f676a #dedede
-#		inactive_workspace #2d2d2d #2d2d2d #888888
-#		urgent_workspace   #333333 #900000 #ffffff
-		background #082029
-		statusline #eee8d5
-		focused_workspace  #cb4b16 #cb4b16 #eee8d5
-		active_workspace   #cb4b16 #cb4b16 #eee8d5
-		inactive_workspace #b58900 #b58900 #eee8d5
+	colors {
+		background $FOCUSED
+		statusline $BAR_FOCUSED_TEXT
+		separator  $INACTIVE_TEXT
+		focused_workspace  $BAR_FOCUSED  $BAR_FOCUSED  $BAR_FOCUSED_TEXT
+		active_workspace   $BAR_ACTIVE   $BAR_ACTIVE   $INACTIVE_TEXT
+		inactive_workspace $BAR_INACTIVE $BAR_INACTIVE $INACTIVE_TEXT
 	}
 }
 #}}}
