@@ -60,9 +60,12 @@ source $HOME/myConfigs/shell/03-functions.script
 source $HOME/myConfigs/shell/04-keybindings.script
 source $HOME/myConfigs/shell/05-themes.script
 
-# Base16 Shell
-#BASE16_SHELL="$HOME/myConfigs/base16/base16-shell/base16-tomorrow.dark.sh"
-#[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+# Custom completion settings
+fpath=(~/myConfigs/shell/completion $fpath)
+autoload -U compinit
+compinit
+# show completion menu when number of options is at least 2
+zstyle ':completion:*' menu select=2
 
 source /etc/zsh_command_not_found
 

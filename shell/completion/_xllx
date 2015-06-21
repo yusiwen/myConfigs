@@ -1,0 +1,3 @@
+#compdef xllx
+
+_arguments "1: :(help login download list add delete pause restart rename readd config info logout)"
