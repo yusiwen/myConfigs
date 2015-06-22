@@ -16,13 +16,16 @@ Contents
 1. `mc` submodule. MidnightCommander file manager.
 1. `mounts/` fstab configurations for home-ubuntu.
 1. `mpd/` mpd configurations.
+1. `msmtp/` msmtp configurations for sending mails in Sup mua.
 1. `mutt/` mutt mail client configurations.
-1. `offlineimap/` offlineimap, sup, and notmuch configurations.
+1. `offlineimap/` offlineimap and notmuch configurations.
 1. `razer/` Razer DeathAdder mouse polling rate configurations.
 1. `rofi/` submodule. A popup window switcher roughly based on superswitcher, requiring only xlib and pango.
 1. `rxvt/` rxvt-unicode terminal configurations.
 1. `screen/` screen configurations.
 1. `shell/` shell environments scripts.
+1. `solarized/` submodule. Solarized themes.
+1. `sup/` Sup mua configurations.
 1. `vim/` VIM configurations.
 1. `X11/` X11 scripts.
 1. `route.sh` and `route_iPhone.sh` are routing config files for 3G mobile network when at work.
