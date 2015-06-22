@@ -266,7 +266,6 @@ exec --no-startup-id xcompmgr -n
 exec --no-startup-id dunst
 exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
 exec python ~/goagent/local/goagent-gtk.py
-#exec --no-startup-id gnome-settings-daemon
 # The session must have a PolicyKit agent –
 #   this is the piece of software that displays elevation prompts
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
@@ -280,6 +279,7 @@ exec --no-startup-id parcellite
 exec --no-startup-id orage
 exec --no-startup-id ss-qt5
 exec --no-startup-id rofi
+exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
 #}}}
 
 #{{{ Workspace settings
