@@ -32,7 +32,7 @@ $ sudo apt-get install mutt mutt-patched w3m w3m-img notmuch notmuch-mutt
 $ sudo pip install goobook
 $ sudo pip install keyring
 
-#Configure goobook
+# Configure goobook
 $ goobook authenticate
 $ goobook config-template > ~/.goobookrc
 # Or, ln -sf ~/myConfigs/mutt/goobookrc .goobookrc
