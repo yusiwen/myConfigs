@@ -285,7 +285,7 @@ set nocompatible               " be iMproved
 " }}}
 
 " {{{ Eclim
-  let g:SuperTabDefaultCompletionType = 'context'
+  let g:EclimCompletionMethod = 'omnifunc'
 " }}}
 
 " Colorizer {{{
