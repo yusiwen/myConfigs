@@ -34,4 +34,8 @@ In `~/.ssh/config` file, add following settings
 Host github.com
   User git
   ProxyCommand nc -x 127.0.0.1:1088 %h %p
+
+Host bitbucket.org
+  User git
+  ProxyCommand nc -x 127.0.0.1:1088 %h %p
 ```
