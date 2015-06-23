@@ -27,7 +27,7 @@ type = Gmail
 remoteuser = yusiwen@gmail.com
 # remote password saved in gnome-keyring, using python keyring module:
 # keyring.set_password(SERVICENAME, USERNAME, PASSWORD)
-#   SERVICENAME = offlineimap
+#   SERVICENAME = gmail 
 #   USERNAME    = yusiwen@gmail.com
 #   PASSWORD    = xxxx
 remotepasseval = keyring.get_password("gmail","yusiwen@gmail.com") 
