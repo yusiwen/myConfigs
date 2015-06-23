@@ -244,7 +244,7 @@ bindsym $mod+Shift+x exec thunderbird
 # bind key for Alpine, run in a new TERM window
 bindsym $mod+x exec $TERM -name mutt -title mutt -pe -tabbed -e tsocks mutt
 # bind key for weechat-curses, run in a new TERM window
-bindsym $mod+Shift+o exec $TERM -e weechat-curses
+bindsym $mod+Shift+o exec $TERM -pe tabbed -e weechat-curses
 # bind key for PLAYER, run in a new TERM window
 bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -pe -tabbed -e $PLAYER
 # bind key for FM_CMD, run in a new TERM window
