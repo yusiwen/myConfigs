@@ -14,6 +14,7 @@ Contents
 1. `keyring` keyring confiurations for i3 and mutt.
 1. `ls--/` submodule. ls++ - colorized ls on steroids.
 1. `mc` submodule. MidnightCommander file manager.
+1. `mc.conf/` confiurations for MidnightCommander.
 1. `mounts/` fstab configurations for home-ubuntu.
 1. `mpd/` mpd configurations.
 1. `msmtp/` msmtp configurations for sending mails in Sup mua.
