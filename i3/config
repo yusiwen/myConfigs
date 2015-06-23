@@ -17,6 +17,8 @@ set $BROWSER google-chrome
 set $FM thunar
 set $FM_CMD mc
 set $PLAYER ncmpcpp
+set $MUA mutt
+set $IRC weechat
 #}}}
 
 #{{{ Screens
@@ -242,9 +244,9 @@ bindsym $mod+z exec $BROWSER
 # bind key for Thunderbird mail client
 bindsym $mod+Shift+x exec thunderbird
 # bind key for Alpine, run in a new TERM window
-bindsym $mod+x exec $TERM -name mutt -title mutt -pe -tabbed -e tsocks mutt
-# bind key for weechat-curses, run in a new TERM window
-bindsym $mod+Shift+o exec $TERM -pe tabbed -e weechat-curses
+bindsym $mod+x exec $TERM -name $MUA -title $MUA -pe -tabbed -e tsocks $MUA
+# bind key for weechat, run in a new TERM window
+bindsym $mod+Shift+o exec $TERM -name $IRC -title $IRC -pe tabbed -e $IRC
 # bind key for PLAYER, run in a new TERM window
 bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -pe -tabbed -e $PLAYER
 # bind key for FM_CMD, run in a new TERM window
@@ -335,14 +337,14 @@ bindsym $mod+Shift+0 move container to workspace "$ws10"
 # Assign applications to workspace
 assign [class="Google-chrome"] $ws2
 assign [class="Geary|Thunderbird"] $ws3
-assign [class="URxvt" instance="mutt" title="mutt"] $ws3
+assign [class="URxvt" instance="$MUA" title="$MUA"] $ws3
 assign [class="libprs500|WizNote"] $ws4
 assign [class="^Vmplayer$|^VirtualBox$"] $ws5
 assign [class="^Eclipse$" instance="^Eclipse$"] $ws6
 #assign [class="Java" title="Eclipse"] $ws6
 assign [class="^jetbrains-idea-|^Atom$"] $ws6
 assign [class="Wps|Et|Wpp|^libreoffice"] $ws7
-assign [class="URxvt" title="weechat"] $ws8
+assign [class="URxvt" instance="$IRC" title="$IRC"] $ws8
 #}}}
 
 #{{{ Floating settings
