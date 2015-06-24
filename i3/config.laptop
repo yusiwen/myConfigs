@@ -17,6 +17,8 @@ set $BROWSER google-chrome
 set $FM thunar
 set $FM_CMD mc
 set $PLAYER ncmpcpp
+set $MUA mutt
+set $IRC weechat
 #}}}
 
 #{{{ Font settings
@@ -241,15 +243,15 @@ bindsym $mod+z exec $BROWSER
 # bind key for Thunderbird mail client
 bindsym $mod+Shift+x exec geary
 # bind key for Alpine, run in a new urxvt window
-bindsym $mod+x exec $TERM -name mutt -title mutt -pe -tabbed -e tsocks mutt
+bindsym $mod+x exec $TERM -name $MUA -title $MUA -pe -tabbed -e tsocks $MUA
 # bind key for weechat-curses, run in a new urxvt window
-bindsym $mod+Shift+o exec $TERM -e weechat-curses
+bindsym $mod+Shift+o exec $TERM -name $IRC -title $IRC -pe -tabbed -e $IRC
 # bind key for ncmpcpp, run in a new urxvt window
 bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -pe -tabbed -e $PLAYER
 # bind key for MidnightCommander, run in a new urxvt window
 bindsym $mod+m exec $TERM -name $FM_CMD -title $FM_CMD -geometry 160x42 -pe -tabbed -e $FM_CMD -c
 # bind key for thunar
-bindsym $mod+Shift+m exec thunar
+bindsym $mod+Shift+m exec $FM
 # bind key for gnome-calculator
 bindsym $mod+c exec gnome-calculator
 # bind key for Catfish
@@ -261,7 +263,6 @@ bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWorks
 #{{{ Auto-startup settings
 exec --no-startup-id xbacklight -set 75
 exec --no-startup-id xrdb -merge ~/.Xresources
-exec --no-startup-id source ~/bin/keyring.sh
 exec --no-startup-id xcompmgr -n
 exec --no-startup-id dunst
 exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
@@ -326,13 +327,13 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 # Assign applications to workspace
 assign [class="Google-chrome"] $ws2
 assign [class="Geary|Thunderbird"] $ws3
-assign [class="URxvt" instance="mutt" title="mutt"] $ws3
+assign [class="URxvt" instance="$MUA" title="$MUA"] $ws3
 assign [class="calibre-gui|WizNote"] $ws4
 assign [class="^Vmplayer$|^VirtualBox$"] $ws5
 assign [class="Eclipse|^jetbrains-idea-|^Atom$"] $ws6
 assign [class="Java" title="Eclipse"] $ws6
 assign [class="Wps|Et|Wpp|^libreoffice"] $ws7
-assign [class="URxvt" title="weechat"] $ws8
+assign [class="URxvt" instance="$IRC" title="$IRC"] $ws8
 #}}}
 
 #{{{ Floating settings

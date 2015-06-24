@@ -246,7 +246,7 @@ bindsym $mod+Shift+x exec thunderbird
 # bind key for Alpine, run in a new TERM window
 bindsym $mod+x exec $TERM -name $MUA -title $MUA -pe -tabbed -e tsocks $MUA
 # bind key for weechat, run in a new TERM window
-bindsym $mod+Shift+o exec $TERM -name $IRC -title $IRC -pe tabbed -e $IRC
+bindsym $mod+Shift+o exec $TERM -name $IRC -title $IRC -pe -tabbed -e $IRC
 # bind key for PLAYER, run in a new TERM window
 bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -pe -tabbed -e $PLAYER
 # bind key for FM_CMD, run in a new TERM window
@@ -261,7 +261,6 @@ bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWork
 
 #{{{ Auto-startup settings
 exec --no-startup-id xrdb -merge ~/.Xresources
-exec --no-startup-id ~/bin/keyring.sh
 exec --no-startup-id xcompmgr -n
 exec --no-startup-id dunst
 exec feh --bg-scale ~/.wallpaper/wallpaper.jpg
@@ -352,7 +351,7 @@ for_window [window_role="pop-up|bubble"] floating enable
 for_window [class="^Eclipse$" instance="^Eclipse$" title="^Workspace Launcher "] floating enable
 for_window [class="^Gimp$|^Gpick$|^feh$|^Fcitx-config-gtk3$|^Telegram$|^Y-PPA-Manager$"] floating enable
 for_window [class="^Goldendict$|^Font-manager$|^Grub-customizer$|^Catfish$|^Orage$"] floating enable
-for_window [class="^Pidgin$|^File-roller$|^shadowsocks-qt5$|^Nvidia-settings$"] floating enable
+for_window [class="^Pidgin$|^File-roller$|^shadowsocks-qt5$|^Nvidia-settings$|^Seahorse$"] floating enable
 for_window [class="^Keepassx$" instance="^keepassx$"] floating enable
 for_window [class="^URxvt$" instance="^ncmpcpp$" title="^ncmpcpp$"] floating enable
 for_window [class="^URxvt$" instance="^mc$" title="^mc$"] floating enable

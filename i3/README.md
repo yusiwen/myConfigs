@@ -27,6 +27,12 @@ Installation
 		$ sudo apt-get update
 		$ sudo apt-get install i3
 
+	For better session management, using ConsoleKit to start i3wm:
+
+		$ sudo cp ~/myConfigs/i3/i3.desktop /usr/share/xsessions/i3.desktop
+		# or just edit following line to /usr/share/xsessions/i3.desktop
+		# Exec=ck-launch-session dbus-launch --sh-syntax --exit-with-session i3
+
 1. Install `i3blocks`.
 
 	For better i3bar status informations.
