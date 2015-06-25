@@ -228,20 +228,13 @@ bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWork
 # {{{ Auto-startup settings
 exec --no-startup-id !!<\
   xrdb -merge ~/.Xresources,\
-  xcompmgr -n,\
-  dunst,\
+  xcompmgr -n,dunst,\
   feh --bg-scale ~/.wallpaper/wallpaper.jpg,\
   python ~/goagent/local/goagent-gtk.py,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
-  thunar --daemon,\
-  nm-applet,\
-  urxvtd -q -o -f,\
-  mpd ~/.mpd/mpd.conf,\
-  orage,\
-  indicator-sound-switcher,\
-  ss-qt5,\
-  rofi,\
-  ~/myConfigs/i3/i3.autostart.sh\
+  thunar --daemon,nm-applet,urxvtd -q -o -f,\
+  mpd ~/.mpd/mpd.conf,orage,indicator-sound-switcher,\
+  ss-qt5,rofi,~/myConfigs/i3/i3.autostart.sh\
 >
 !?<HOSTNAME=yusiwen-Aspire-S3
 exec --no-startup-id !!<\
