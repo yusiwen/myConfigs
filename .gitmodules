@@ -25,3 +25,6 @@
 [submodule "LS_COLORS"]
 	path = LS_COLORS
 	url = git@github.com:yusiwen/LS_COLORS.git
+[submodule "i3/i3bang"]
+	path = i3/i3bang
+	url = git@github.com:yusiwen/i3bang.git
