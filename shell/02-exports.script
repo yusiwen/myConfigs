@@ -43,4 +43,9 @@ if [ -z "$EDITOR" ]; then
   export EDITOR=vim
   export GIT_EDITOR="${EDITOR} -X"
 fi
+
+if [ -z "$HOSTNAME" ]; then
+  HOSTNAME=`hostname`
+  export HOSTNAME
+fi
 #}}}
