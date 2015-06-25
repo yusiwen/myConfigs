@@ -48,4 +48,9 @@ if [ -z "$HOSTNAME" ]; then
   HOSTNAME=`hostname`
   export HOSTNAME
 fi
+
+if [ -z "$I3_COLOR_THEME" ]; then
+  I3_COLOR_THEME=solarized
+  export I3_COLOR_THEME
+fi
 #}}}
