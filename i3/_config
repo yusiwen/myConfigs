@@ -133,14 +133,14 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 !?<HOSTNAME=yusiwen-Aspire-S3
-  # Screen brightness controls
-  bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
-  bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
+# Screen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
 
-  # Pulse Audio controls
-  bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +1% #increase sound volume
-  bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -1% #decrease sound volume
-  bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +1% #increase sound volume
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -1% #decrease sound volume
+bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
 >
 # }}}
 
@@ -219,8 +219,6 @@ bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -pe -tabbed -e $PLAYER
 bindsym $mod+m exec $TERM -name $FM_CMD -title $FM_CMD -geometry 160x42 -pe -tabbed -e $FM_CMD -c
 # bind key for FM
 bindsym $mod+Shift+m exec $FM
-# bind key for gnome-calculator
-bindsym $mod+c exec gnome-calculator
 # bind key for Catfish
 bindsym $mod+c exec catfish
 # bind key for vmplayer winxp
@@ -246,8 +244,8 @@ exec --no-startup-id !!<\
   ~/myConfigs/i3/i3.autostart.sh\
 >
 !?<HOSTNAME=yusiwen-Aspire-S3
-  exec --no-startup-id !!<\
-    xbacklight -set 75,remmina -i,blueman-applet,parcellite>
+exec --no-startup-id !!<\
+  xbacklight -set 75,remmina -i,blueman-applet,parcellite>
 >
 # }}}
 
