@@ -320,6 +320,10 @@ set nocompatible               " be iMproved
 
 " vim-notes {{{
   let g:notes_directories = ['~/notes']
+  let g:notes_suffix = '.note'
+  let g:notes_title_sync = 'change_title'
+  let g:notes_tab_indents = 0
+
 " }}}
 
 " Airline {{{
