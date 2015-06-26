@@ -2,6 +2,11 @@
 
 ### zstyle :completion:<function>:<completer>:<command>:<argument>:<tag> _settings_
 
+#{{{ general settings
+# show completion menu when number of options is at least 2
+zstyle ':completion:*'                  menu select=2
+#}}}
+
 #{{{ make use of LS_COLORS
 zstyle ':completion:*:default'          list-colors ${(s.:.)LS_COLORS}
 #}}}
@@ -26,12 +31,13 @@ zstyle ':completion:*:*:(vim|rview|vimdiff|xxd):*:*files' \
 #}}}
 
 #{{{ compdef
+fpath=(~/myConfigs/shell/completion $fpath)
 autoload -U age compinit relative
 compinit -u
 compdef     _gnu_generic c256 cc256 ln file vnstat vnstati lscpu lsb_release
 compdef     _files       mkdir mkdr
 compdef     _mkdir       mkdr
-compdef     _hosts       ping 
+compdef     _hosts       ping
 compdef  -p _rm          rmc
 compdef     _ls          vdir l ls++
 
