@@ -34,6 +34,10 @@ bindkey -M vicmd 'v' edit-command-line
 bindkey '^P' up-history
 bindkey '^N' down-history
 
+# allow UP, DOWN keys for history search based upon previously entered parts
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+
 # ctrl-w removed word backwards
 bindkey '^w' backward-kill-word
 
