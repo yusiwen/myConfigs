@@ -314,6 +314,11 @@ set nocompatible               " be iMproved
   let g:NERDTreeShowHidden = 0
 " }}}
 
+" Fugitive {{{
+  let FugitiveIgnoreBufferTitles = ['NERDTree']
+  let FugitivePreferFileBuffers = 1
+" }}}
+
 " TagBar {{{
   nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
 " }}}
