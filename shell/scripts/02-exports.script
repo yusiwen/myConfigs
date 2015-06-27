@@ -39,6 +39,12 @@ fi
 #}}}
 
 #{{{ Misc
+# TERMINAL used in i3-sensible-terminal
+if [ -z "$TERMINAL" ]; then
+  TERMINAL=urxvtc
+  export TERMINAL
+fi
+
 if [ -z "$EDITOR" ]; then
   export EDITOR=vim
   export GIT_EDITOR="${EDITOR} -X"

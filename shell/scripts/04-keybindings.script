@@ -1,3 +1,5 @@
+#!/usr/bin/zsh
+
 # Ensures that $terminfo values are valid and updates editor information when
 # the keymap changes.
 function zle-keymap-select zle-line-init zle-line-finish {

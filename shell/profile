@@ -21,9 +21,5 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-# $TERMINAL used in i3-sensible-terminal
-TERMINAL=urxvtc
-export TERMINAL
-
-source $HOME/myConfigs/shell/02-exports.script
+source $HOME/myConfigs/shell/scripts/02-exports.script
 

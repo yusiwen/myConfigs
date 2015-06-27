@@ -1,0 +1,54 @@
+#!/bin/sh
+
+which() {
+  printf '\e[?7t'
+
+  TYPE=`builtin type $@`
+  builtin which "$@" \
+    && echo $TYPE
+
+  ALIAS='alias'
+  FUNCTION='function'
+  BUILTIN='builtin'
+  NOTFOUND='not found'
+  if [[ "$TYPE" =~ "$ALIAS" ]]; then
+  elif [[ "$TYPE" =~ "$FUNCTION" ]]; then
+  elif [[ "$TYPE" =~ "$BUILTIN" ]]; then
+  elif [[ "$TYPE" =~ "$NOTFOUND" ]]; then
+    whereis "$@"
+  else
+    whereis "$@"
+    file $(builtin type "$@" | awk '{print $3}')
+  fi
+
+  printf '\e[?7t'
+}
+
+du1() { du -h --max-depth=1 "$@" | sort -k 1,1hr -k 2,2f; }
+
+# Extract some pages from a PDF file.
+pdfpextr() {
+  # this function uses 3 arguments:
+  #   $1 is the first page of the range to extract
+  #   $2 is the last page of the range to extract
+  #   $3 is the input file
+  #   output file will be named "inputfile_pXX-pYY.pdf"
+  gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
+     -dFirstPage=${1} \
+     -dLastPage=${2} \
+     -sOutputFile=${3%.pdf}_p${1}-p${2}.pdf \
+     ${3}
+}
+
+# Fix pdf embedded fonts problem
+#   see: http://stackoverflow.com/a/10282269/3387137
+pdffixfont() {
+  # this function uses 2 arguments:
+  #   $1 is the original file with embedded fonts problem
+  #   $2 is the output file
+  gs -o ${2} \
+     -dPDFSETTINGS=/prepress \
+     -sDEVICE=pdfwrite \
+     ${1}
+}
+

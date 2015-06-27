@@ -52,13 +52,11 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
-source $HOME/myConfigs/shell/01-colors.script
-source $HOME/myConfigs/shell/02-aliases.script
-source $HOME/myConfigs/shell/02-completions.script
-source $HOME/myConfigs/shell/02-exports.script
-source $HOME/myConfigs/shell/03-functions.script
-source $HOME/myConfigs/shell/04-keybindings.script
-source $HOME/myConfigs/shell/05-themes.script
+# Load all of my custom scripts
+ZSH_CUSTOM_SCRIPTS=$HOME/myConfigs/shell/scripts
+for script ($ZSH_CUSTOM_SCRIPTS/*.script); do
+  source $script
+done
 
 source /etc/zsh_command_not_found
 

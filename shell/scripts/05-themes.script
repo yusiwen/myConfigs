@@ -1,3 +1,5 @@
+#!/usr/bin/zsh
+
 autoload -Uz vcs_info
 
 zstyle ':vcs_info:*' stagedstr '%F{green}●'
