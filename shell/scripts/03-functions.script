@@ -33,6 +33,11 @@ pdfpextr() {
   #   $2 is the last page of the range to extract
   #   $3 is the input file
   #   output file will be named "inputfile_pXX-pYY.pdf"
+  if [ $# -ne 2 ]; then
+    echo 'Usage: pdfpextr start_page end_page input_file'
+    echo '  output file wille be named "{input_file}_pXX-pYY.pdf"'
+    return 1
+  fi
   gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
      -dFirstPage=${1} \
      -dLastPage=${2} \
@@ -46,10 +51,29 @@ pdffixfont() {
   # this function uses 2 arguments:
   #   $1 is the original file with embedded fonts problem
   #   $2 is the output file
+  if [ $# -ne 2 ]; then
+    echo 'Usage: pdffixfont input_file output_file'
+    return 1
+  fi
   gs -o ${2} \
      -dPDFSETTINGS=/prepress \
      -sDEVICE=pdfwrite \
      ${1}
+}
+
+# Split media file by cue
+#   see: http://en.linuxreviews.org/HOWTO_splitt_lossless_audio_files_(ape,_flac,_wv,_wav)_using_.cue_files
+splitbycue() {
+  # this function uses 3 arguments:
+  #   $1 is the cue file
+  #   $2 is the media file, can be .ape/.flac/.wav
+  #   $3 is the output format, can be 'wav','flac'...
+  if [ $# -ne 3 ]; then
+    echo 'Usage: splitbycue cue_file media_file output_format'
+    return 1
+  fi
+
+  cuebreakpoints ${1} | shnsplit -o ${3} ${2}
 }
 
 # Convert all FLAC files in current directory to ALAC
