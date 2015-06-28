@@ -65,8 +65,8 @@ set !!<$FOCUSED,$FOCUSED_TEXT,$INACTIVE,$INACTIVE_TEXT,$BAR_FOCUSED,$BAR_FOCUSED
 #                       border    backgr    text
 client.focused          $FOCUSED  $FOCUSED  $FOCUSED_TEXT
 client.focused_inactive $INACTIVE $INACTIVE $INACTIVE_TEXT
-client.unfocused        #001010 #191919 #999999
-client.urgent           #cd989a #cd989a #2e3436
+client.unfocused        #001010   #191919   #999999
+client.urgent           #cd989a   #cd989a   #2e3436
 
 client.background       #1d1d1d
 # }}}
@@ -229,6 +229,12 @@ bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWork
 !?<HOSTNAME=home-ubuntu
 bindsym $mod+Shift+u exec VBoxManage startvm win8.1-DailyWork
 >
+# bind key for an emergence terminal in floating mode
+bindsym $mod+Shift+Return exec $TERM -name emergence_terminal && i3-msg '[instance="^emergence_terminal$"] floating enable'
+# bind key(grave: "`") for marking the current window
+bindsym $mod+grave exec i3-input -F 'mark %s' -P 'Mark name: '
+# bind key for jumping to the previously marked window
+bindsym $mod+Shift+grave exec i3-input -F '[con_mark=%s] focus' -P 'Go to mark: '
 # }}}
 
 # {{{ Auto-startup settings
