@@ -26,6 +26,26 @@ which() {
 
 du1() { du -h --max-depth=1 "$@" | sort -k 1,1hr -k 2,2f; }
 
+# Purge all rc packages
+purgerc() {
+  RC=`dpkg -l | grep "^rc" | cut -d ' ' -f 3`
+  if [ -z $RC ]; then
+    echo "rc pakage not found."
+    return 1
+  fi
+  echo "$RC"
+  printf "Purge all [Y/n]? "
+  read -s choice
+  case $choice in
+    Y|""|y)
+      echo "$RC" | xargs sudo dpkg --purge
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
 # Extract some pages from a PDF file.
 pdfpextr() {
   # this function uses 3 arguments:
