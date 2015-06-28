@@ -52,3 +52,12 @@ pdffixfont() {
      ${1}
 }
 
+# Convert all FLAC files in current directory to ALAC
+#   see: https://gist.github.com/vol4ok/2587886
+flac2alac() {
+  for f in *.flac
+  do
+    ffmpeg -i "$f" -acodec alac "${f%.falc}.m4a";
+  done
+}
+
