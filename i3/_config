@@ -223,8 +223,12 @@ bindsym $mod+m exec $TERM -name $FM_CMD -title $FM_CMD -geometry 160x42 -pe -tab
 bindsym $mod+Shift+m exec $FM
 # bind key for Catfish
 bindsym $mod+c exec catfish
-# bind key for vmplayer winxp
+# bind key for Windows XP guest
 bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWork
+# bind key for Windows 8.1 guest
+!?<HOSTNAME=home-ubuntu
+bindsym $mod+Shift+u exec VBoxManage startvm win8.1-DailyWork
+>
 # }}}
 
 # {{{ Auto-startup settings
