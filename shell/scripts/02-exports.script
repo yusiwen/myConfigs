@@ -55,8 +55,10 @@ if [ -z "$HOSTNAME" ]; then
   export HOSTNAME
 fi
 
+# i3wm color scheme
+#   dark or solarized
 if [ -z "$I3_COLOR_THEME" ]; then
-  I3_COLOR_THEME=solarized
+  I3_COLOR_THEME=dark
   export I3_COLOR_THEME
 fi
 #}}}

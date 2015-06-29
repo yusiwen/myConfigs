@@ -29,7 +29,7 @@ if __name__ == "__main__":
 	start_x = 0
 	start_y = 0
 	diff_x = 0
-	diff_y = 0	
+	diff_y = 0
 	try:
 		while True:
 			line = p.stdout.readline()
@@ -38,7 +38,7 @@ if __name__ == "__main__":
 			try:
 				tokens = [x for x in re.split('([^0-9\.])+', line.strip()) if x.strip()]
 				x, y, fingers = int(tokens[1]), int(tokens[2]), int(tokens[4])
-				
+
 				if fingers==3:
 					if not start:
 						start_x = x

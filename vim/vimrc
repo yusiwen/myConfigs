@@ -101,12 +101,13 @@ set nocompatible               " be iMproved
   " non github repos
 
   " themes repos
-  Plugin 'altercation/vim-colors-solarized'
-  Plugin 'nanotech/jellybeans.vim'
-  Plugin 'jnurmine/Zenburn'
-  Plugin 'morhetz/gruvbox'
-  Plugin 'chriskempson/base16-vim'
+  "Plugin 'altercation/vim-colors-solarized'
+  "Plugin 'nanotech/jellybeans.vim'
+  "Plugin 'jnurmine/Zenburn'
+  "Plugin 'morhetz/gruvbox'
+  "Plugin 'chriskempson/base16-vim'
   Plugin 'bling/vim-airline'
+  "Plugin 'itchyny/lightline.vim'
 
   call vundle#end()
 " }}}
@@ -167,7 +168,7 @@ set nocompatible               " be iMproved
   set pastetoggle=<F10>
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
-  command W w !sudo tee % > /dev/null
+"  command W w !sudo tee % > /dev/null
 " }}}
 
 " GUI or no GUI, that's the question {{{
@@ -189,13 +190,7 @@ set nocompatible               " be iMproved
 
     colorscheme solarized
   else
-    colorscheme solarized
-" Make italic comments in gruvbox possible
-    set t_ZH=[3m
-    set t_ZR=[23m
-    "let g:gruvbox_italic=1
-    highlight Comment cterm=italic
-
+    colorscheme sourcerer
     set t_Co=256
   endif
 " }}}
@@ -319,6 +314,10 @@ set nocompatible               " be iMproved
   let FugitivePreferFileBuffers = 1
 " }}}
 
+" GitGutter {{{
+  source ~/myConfigs/vim/vimrc.gitgutter
+" }}}
+
 " TagBar {{{
   nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
 " }}}
@@ -332,30 +331,11 @@ set nocompatible               " be iMproved
 " }}}
 
 " Airline {{{
-  if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-  endif
+  source ~/myConfigs/vim/vimrc.airline
+" }}}
 
-  " powerline symbols
-  let g:airline_left_sep = ''
-  let g:airline_right_sep = ''
-
-  let g:airline_symbols.paste = 'ρ'
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
-  let g:airline_symbols.whitespace = 'Ξ'
-
-  " turn tabline on
-  let g:airline#extensions#tabline#enabled = 1
-
-  " other plugins integretion options
-  let g:airline#extensions#syntastic#enabled = 1
-  let g:airline#extensions#tagbar#enabled = 1
-  let g:airline#extensions#eclim#enabled = 1
-
-  let g:airline#extensions#whitespace#trailing_format = 'TR[%s]'
-  let g:airline#extensions#whitespace#mixed_indent_format = 'MI[%s]'
+" Lightline {{{
+"  source ~/myConfigs/vim/vimrc.lightline
 " }}}
 
 " Instant-Markdown {{{
