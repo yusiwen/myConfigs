@@ -185,32 +185,31 @@ bindsym $mod+Shift+q mode "Exit >> (L)ogout, (S)uspend, (R)eboot, (P)oweroff, Lo
 # {{{ Jump mode settings
 mode "Jump" {
   # hardcoded focus keybindings
-  bindsym b [class="^Google-chrome$"] focus
-  bindsym w [class="^URxvt$" instance="$IRC"] focus
-  bindsym m [class="^URxvt$" instance="$MUA"] focus
-  bindsym f [class="^Thunar$"] focus
+  bindsym b [class="^Google-chrome$"] focus, mode "default"
+  bindsym w [class="^URxvt$" instance="$IRC"] focus, mode "default"
+  bindsym m [class="^URxvt$" instance="$MUA"] focus, mode "default"
+  bindsym f [class="^Thunar$"] focus, mode "default"
 
   # keybindings for marking and jumping to clients
   bindsym a exec i3-input -F 'mark %s' -P 'Mark name: '
   bindsym g exec i3-input -F '[con_mark=%s] focus' -P 'Go to mark: '
 
   # Assign marks to keys 1-5
-  bindsym Shift+1 mark mark1
-  bindsym Shift+2 mark mark2
-  bindsym Shift+3 mark mark3
-  bindsym Shift+4 mark mark4
-  bindsym Shift+5 mark mark5
+  bindsym Shift+1 mark mark1, mode "default"
+  bindsym Shift+2 mark mark2, mode "default"
+  bindsym Shift+3 mark mark3, mode "default"
+  bindsym Shift+4 mark mark4, mode "default"
+  bindsym Shift+5 mark mark5, mode "default"
 
   # Jump to clients marked 1-5
-  bindsym 1 [con_mark="mark1"] focus
-  bindsym 2 [con_mark="mark2"] focus
-  bindsym 3 [con_mark="mark3"] focus
-  bindsym 4 [con_mark="mark4"] focus
-  bindsym 5 [con_mark="mark5"] focus
+  bindsym 1 [con_mark="mark1"] focus, mode "default"
+  bindsym 2 [con_mark="mark2"] focus, mode "default"
+  bindsym 3 [con_mark="mark3"] focus, mode "default"
+  bindsym 4 [con_mark="mark4"] focus, mode "default"
+  bindsym 5 [con_mark="mark5"] focus, mode "default"
 
   # Exit to the default mode
-  bindsym Return mode "default"
-  bindsym Escape mode "default"
+  bindsym !!<Return,Escape> mode "default"
 }
 
 bindsym $mod+grave mode "Jump"
