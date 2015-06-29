@@ -1,7 +1,18 @@
 myConfigs
 =========
 
-Configuration files of my linux boxes: laptop and desktop (home-ubuntu).
+```text
+███╗   ███╗██╗   ██╗ ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗ ███████╗
+████╗ ████║╚██╗ ██╔╝██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝ ██╔════╝
+██╔████╔██║ ╚████╔╝ ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗███████╗
+██║╚██╔╝██║  ╚██╔╝  ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║╚════██║
+██║ ╚═╝ ██║   ██║   ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝███████║
+╚═╝     ╚═╝   ╚═╝    ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝
+
+Configuration files of my linux boxes: laptop and desktop (home-ubuntu)
+http://git.io/vtVXR
+yusiwen@gmail.com
+```
 
 Contents
 --------
@@ -9,8 +20,9 @@ Contents
 1. `oh-my-zsh/` is a submodule. It's configurations for ZSH.
 1. `dual-monitor/` dual-monitor configurations for home-ubuntu.
 1. `eclipse/` Eclipse configurations under linux.
-1. `i3/` i3-wm configurations.
+1. `figlet/` figlet fonts for ascii art.
 1. `git/` Git configurations and scripts.
+1. `i3/` i3-wm configurations.
 1. `keyring` keyring confiurations for i3 and mutt.
 1. `ls--/` submodule. ls++ - colorized ls on steroids.
 1. `mc` submodule. MidnightCommander file manager.

@@ -7,9 +7,9 @@ VIM Installation
 	sudo apt-get install vim-gtk
 	```
 
-  As for windows, check out [kybu Windows build](https://bitbucket.org/kybu/vim-for-windows-single-drop), it supports `ruby`, `python`, `perl`, `lua`, etc.
+	As for windows, check out [kybu Windows build](https://bitbucket.org/kybu/vim-for-windows-single-drop), it supports `ruby`, `python`, `perl`, `lua`, etc.
 
-  As for the latest build, try `ppa:pkg-vim/vim-daily`.
+	As for the latest build, try `ppa:pkg-vim/vim-daily`.
 
 1. Install vundle
 
@@ -25,9 +25,9 @@ VIM Installation
 
 1. Install plugins:
 
-	 Launch `vim` and run `:PluginInstall`
+	Launch `vim` and run `:PluginInstall`
 
-	 To install from command line: `vim +PluginInstall +qall`
+	To install from command line: `vim +PluginInstall +qall`
 
 1. Install vim-instant-markdown plugin
 
@@ -35,7 +35,7 @@ VIM Installation
 
 	- Add `Bundle 'vim-scripts/instant-markdown.vim'` in `.vimrc` to let `vundle` get this plugin
 
-	- Get `instant-markdown-d` in npm: 
+	- Get `instant-markdown-d` in npm:
 
 		```text
 		$ npm -g install instant-markdown-d

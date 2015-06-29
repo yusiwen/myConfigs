@@ -1,8 +1,13 @@
 "
-"   V I M R C
+" ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
+" ██║   ██║██║████╗ ████║██╔══██╗██╔════╝
+" ██║   ██║██║██╔████╔██║██████╔╝██║
+" ╚██╗ ██╔╝██║██║╚██╔╝██║██╔══██╗██║
+"  ╚████╔╝ ██║██║ ╚═╝ ██║██║  ██║╚██████╗
+"   ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝
 "
-"   @author: yusiwen@gmail.com
-"   ~/.vimrc is a symbolic link to ~/myConfigs/vim/vimrc
+"  @author: yusiwen@gmail.com
+"  ~/.vimrc is a symbolic link to ~/myConfigs/vim/vimrc
 
 set nocompatible               " be iMproved
 
