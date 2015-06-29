@@ -52,14 +52,16 @@ floating_modifier $mod
 # {{{ Colors
 # {{{ dark theme (like jellybeans)
 !?<I3_COLOR_THEME=dark
-set !!<$FOCUSED,$FOCUSED_TEXT,$INACTIVE,$INACTIVE_TEXT,$BAR_FOCUSED,$BAR_FOCUSED_TEXT,$BAR_ACTIVE,$BAR_INACTIVE> \
-  !!<#121212,#9e8a8e,#191919,#999999,#2aa198,#eee8d5,#5f676a,#2d2d2d>
+set !!<$FOCUSED,$FOCUSED_TEXT,$INACTIVE,$INACTIVE_TEXT,\
+  $BAR_FOCUSED,$BAR_FOCUSED_TEXT,$BAR_ACTIVE,$BAR_INACTIVE,$BAR_URGENT> \
+  !!<#121212,#9e8a8e,#191919,#999999,#2aa198,#eee8d5,#5f676a,#2d2d2d,#709030>
 >
 # }}}
 # {{{ solarized theme
 !?<I3_COLOR_THEME=solarized
-set !!<$FOCUSED,$FOCUSED_TEXT,$INACTIVE,$INACTIVE_TEXT,$BAR_FOCUSED,$BAR_FOCUSED_TEXT,$BAR_ACTIVE,$BAR_INACTIVE> \
-  !!<#082029,#cccccc,#223136,#555555,#2aa198,#eee8d5,#cb4b16,#b58900>
+set !!<$FOCUSED,$FOCUSED_TEXT,$INACTIVE,$INACTIVE_TEXT,\
+  $BAR_FOCUSED,$BAR_FOCUSED_TEXT,$BAR_ACTIVE,$BAR_INACTIVE,$BAR_URGENT> \
+  !!<#082029,#cccccc,#223136,#555555,#2aa198,#eee8d5,#709030,#b58900,#cb4b16>
 >
 # }}}
 #                       border    backgr    text
@@ -236,6 +238,7 @@ bar {
     focused_workspace  $BAR_FOCUSED  $BAR_FOCUSED  $BAR_FOCUSED_TEXT
     active_workspace   $BAR_ACTIVE   $BAR_ACTIVE   $INACTIVE_TEXT
     inactive_workspace $BAR_INACTIVE $BAR_INACTIVE $INACTIVE_TEXT
+    urgent_workspace   $BAR_URGENT   $BAR_URGENT   $BAR_FOCUSED_TEXT
   }
 }
 # }}}
