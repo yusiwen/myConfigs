@@ -9,6 +9,9 @@
 " sourcerer by xero harrison (http://xero.nu)
 "  ├─ based on sorcerer by Jeet Sukumaran (http://jeetworks.org)
 "  └─ based on mustang by Henrique C. Alves (hcarvalhoalves@gmail.com)
+"
+" put this file in: ~/.vim/colors/
+"   or make linke `ln -sf ~/myConfigs/vim/colors ~/.vim/colors`
 
 set background=dark
 hi clear
@@ -118,7 +121,7 @@ hi DiffChange             cterm=NONE             ctermbg=68    ctermfg=16
 hi DiffText               cterm=NONE             ctermbg=117   ctermfg=16
 hi Directory              cterm=bold             ctermbg=NONE  ctermfg=33
 hi ErrorMsg               cterm=bold             ctermbg=NONE  ctermfg=203
-hi FoldColumn             cterm=bold             ctermbg=239   ctermfg=66
+hi FoldColumn             cterm=bold             ctermbg=239   ctermfg=243
 hi Folded                 cterm=NONE             ctermbg=239   ctermfg=fg
 hi IncSearch              cterm=bold             ctermbg=202   ctermfg=231
 hi LineNr                 cterm=NONE             ctermbg=237   ctermfg=102
