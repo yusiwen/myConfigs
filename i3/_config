@@ -38,7 +38,7 @@ set !!<$left_screen,$right_screen> \
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-font pango:Droid Sans 10
+font pango:Terminus 10
 # }}}
 
 # {{{ General Options

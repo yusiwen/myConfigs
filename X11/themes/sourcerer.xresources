@@ -9,11 +9,14 @@
 ! sourcerer by xero harrison (http://xero.nu)
 !  ├─ based on sorcerer by Jeet Sukumaran (http://jeetworks.org)
 !  └─ based on mustang by Henrique C. Alves (hcarvalhoalves@gmail.com)
+! adjusted by Siwen Yu (yusiwen@gmail.com)
 
 ! █▓▒░ scorcerer colors
 *.foreground:   #c2c2b0
 *.background:   #222222
 *.cursorColor:  #c2c2b0
+*.fading:       40
+*.fadeColor:    #222222
 ! black
 *.color0:       #222222
 *.color8:       #272822

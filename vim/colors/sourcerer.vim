@@ -141,7 +141,7 @@ hi SpellCap               cterm=undercurl        ctermbg=NONE  ctermfg=21
 hi SpellLocal             cterm=undercurl        ctermbg=NONE  ctermfg=30
 hi SpellRare              cterm=undercurl        ctermbg=NONE  ctermfg=201
 hi StatusLine             cterm=bold             ctermbg=234   ctermfg=13
-hi StatusLineNC           cterm=NONE             ctermbg=102   ctermfg=16
+hi StatusLineNC           cterm=NONE             ctermbg=239   ctermfg=235
 hi VertSplit              cterm=NONE             ctermbg=102   ctermfg=102
 hi TabLine                cterm=bold             ctermbg=102   ctermfg=16
 hi TabLineFill            cterm=NONE             ctermbg=102   ctermfg=16
