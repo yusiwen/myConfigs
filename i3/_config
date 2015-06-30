@@ -38,7 +38,8 @@ set !!<$left_screen,$right_screen> \
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-font pango:Terminus 10
+# font pango:[family list] [style options] [size]
+font pango:Impact 10
 # }}}
 
 # {{{ General Options
@@ -62,7 +63,7 @@ floating_modifier $mod
 !?<I3_COLOR_THEME=dark
 set !!<$FOCUSED,$FOCUSED_TEXT,$INACTIVE,$INACTIVE_TEXT,\
   $BAR_FOCUSED,$BAR_FOCUSED_TEXT,$BAR_ACTIVE,$BAR_INACTIVE,$BAR_URGENT> \
-  !!<#121212,#9e8a8e,#191919,#999999,#2aa198,#eee8d5,#5f676a,#2d2d2d,#709030>
+  !!<#121212,#9e8a8e,#191919,#999999,#2aa198,#999999,#5f676a,#2d2d2d,#709030>
 >
 # }}}
 # {{{ solarized theme
