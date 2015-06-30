@@ -38,7 +38,8 @@ set !!<$left_screen,$right_screen> \
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-font pango:Terminus 10
+# font pango:[family list] [style options] [size]
+font pango:InputMono 9
 # }}}
 
 # {{{ General Options
@@ -241,7 +242,7 @@ bar {
 
   colors {
     background $FOCUSED
-    statusline $BAR_FOCUSED_TEXT
+    statusline $INACTIVE_TEXT
     separator  $INACTIVE_TEXT
     focused_workspace  $BAR_FOCUSED  $BAR_FOCUSED  $BAR_FOCUSED_TEXT
     active_workspace   $BAR_ACTIVE   $BAR_ACTIVE   $INACTIVE_TEXT
