@@ -298,6 +298,9 @@ exec --no-startup-id !!<\
 exec --no-startup-id !!<\
   xbacklight -set 75,remmina -i,blueman-applet,parcellite>
 >
+!?<HOSTNAME=home-ubuntu
+exec --no-startup-id dropboxd
+>
 # }}}
 
 # {{{ Workspace settings
