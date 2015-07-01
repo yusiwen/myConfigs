@@ -32,17 +32,17 @@ bindkey -v
 autoload -Uz edit-command-line
 bindkey -M vicmd 'v' edit-command-line
 
-# allow ctrl-p, ctrl-n for navigate history (standard behaviour)
-bindkey '^P' up-history
-bindkey '^N' down-history
+# allow UP, DOWN for navigate history (standard behaviour)
+bindkey "^[[A" up-history
+bindkey "^[[B" down-history
 
-# allow UP, DOWN keys for history search based upon previously entered parts
+# allow Ctrl+p, Ctrl+n keys for history search based upon previously entered parts
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-bindkey "^[[A" up-line-or-beginning-search # Up
-bindkey "^[[B" down-line-or-beginning-search # Down
+bindkey "^P" up-line-or-beginning-search
+bindkey "^N" down-line-or-beginning-search
 
 # ctrl-w removed word backwards
 bindkey '^w' backward-kill-word
