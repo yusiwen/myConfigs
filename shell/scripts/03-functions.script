@@ -101,7 +101,7 @@ splitbycue() {
 flac2alac() {
   for f in *.flac
   do
-    ffmpeg -i "$f" -acodec alac "${f%.falc}.m4a";
+    ffmpeg -i "./$f" -acodec alac "./${f%.flac}.m4a";
   done
 }
 
