@@ -133,7 +133,7 @@ hi Pmenu                  cterm=NONE             ctermbg=238   ctermfg=231
 hi PmenuSbar              cterm=NONE             ctermbg=250   ctermfg=fg
 hi PmenuSel               cterm=NONE             ctermbg=149   ctermfg=16
 hi Question               cterm=bold             ctermbg=NONE  ctermfg=46
-hi Search                 cterm=bold             ctermbg=185   ctermfg=16
+hi Search                 cterm=bold             ctermbg=11    ctermfg=16
 hi SignColumn             cterm=NONE             ctermbg=NONE  ctermfg=231
 hi SpecialKey             cterm=NONE             ctermbg=NONE  ctermfg=59
 hi SpellBad               cterm=undercurl        ctermbg=NONE  ctermfg=196

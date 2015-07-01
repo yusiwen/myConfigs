@@ -55,8 +55,6 @@ set nocompatible               " be iMproved
   "Plugin 'Shougo/neosnippet-snippets'
   "Plugin 'honza/vim-snippets'
 
-  "Plugin 'ervandew/supertab'
-
   " extensible & universal comment
   Plugin 'tomtom/tcomment_vim'
   " colorize text in the form #rrggbb or #rgb
@@ -67,6 +65,10 @@ set nocompatible               " be iMproved
   Plugin 'yonchu/accelerated-smooth-scroll'
   " better whitespace highlighting
   Plugin 'ntpeters/vim-better-whitespace'
+  " Vim motions on speed!
+  Plugin 'easymotion/vim-easymotion'
+  " enable repeating supported plugin maps with "."
+  Plugin 'tpope/vim-repeat'
 
   " Language & Develop specific repos
   " git wrapper
@@ -112,7 +114,6 @@ set nocompatible               " be iMproved
   "Plugin 'morhetz/gruvbox'
   "Plugin 'chriskempson/base16-vim'
   Plugin 'bling/vim-airline'
-  "Plugin 'itchyny/lightline.vim'
 
   call vundle#end()
 " }}}
@@ -332,15 +333,10 @@ set nocompatible               " be iMproved
   let g:notes_suffix = '.note'
   let g:notes_title_sync = 'change_title'
   let g:notes_tab_indents = 0
-
 " }}}
 
 " Airline {{{
   source ~/myConfigs/vim/vimrc.airline
-" }}}
-
-" Lightline {{{
-"  source ~/myConfigs/vim/vimrc.lightline
 " }}}
 
 " Instant-Markdown {{{
@@ -351,5 +347,40 @@ set nocompatible               " be iMproved
 
 " vim-better-whitespace {{{
   let g:better_whitespace_enabled=0
+" }}}
+
+" vim-easymotion {{{
+  let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Bi-directional find motion
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+" nmap s <Plug>(easymotion-s)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+  nmap <Leader>s <Plug>(easymotion-s2)
+  nmap <Leader>t <Plug>(easymotion-t2)
+
+  map  / <Plug>(easymotion-sn)
+  omap / <Plug>(easymotion-tn)
+
+" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+" Without these mappings, `n` & `N` works fine. (These mappings just provide
+" different highlight method and have some other features )
+  map  n <Plug>(easymotion-next)
+  map  N <Plug>(easymotion-prev)
+
+" Turn on case insensitive feature
+  let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+  map <Leader>l <Plug>(easymotion-lineforward)
+  map <Leader>j <Plug>(easymotion-j)
+  map <Leader>k <Plug>(easymotion-k)
+  map <Leader>h <Plug>(easymotion-linebackward)
+
+  let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+  hi link EasyMotionMoveHL Search
 " }}}
 " }}}
