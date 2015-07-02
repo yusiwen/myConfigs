@@ -39,7 +39,7 @@ set !!<$left_screen,$right_screen> \
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
 # font pango:[family list] [style options] [size]
-font pango:InputMono 9
+font pango:PragmataPro 9
 # }}}
 
 # {{{ General Options
