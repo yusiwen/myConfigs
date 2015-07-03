@@ -47,18 +47,6 @@ class EclipseChooser:
           # print(temp_args_list)
           self.commands.append(temp_list)
 
-  def find_ideas(self, path):
-    names = os.listdir(path)
-    for name in names:
-      tmp_path = os.path.join(path, name)
-      if os.path.isdir(tmp_path):
-        temp_list = []
-        temp_list.append(name)
-        temp_args_list = list(self.idea_args)
-        temp_args_list[0] = os.path.join(tmp_path, temp_args_list[0])
-        temp_list.append(temp_args_list)
-        self.commands.append(temp_list)
-
   def callback(self, widget, data):
     self.i = data
 
