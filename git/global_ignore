@@ -1,0 +1,7 @@
+# Global ignore config for Git
+#   git config --global core.excludesfile $HOME/myConfigs/git/global_ignore
+# 
+# yusiwen@gmail.com
+
+# Ignore all ctags files
+tags

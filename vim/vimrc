@@ -32,7 +32,10 @@ set nocompatible               " be iMproved
 
   " displays tags in a window
   Plugin 'majutsushi/tagbar'
-
+  " Ctags generator for Vim
+  Plugin 'szw/vim-tags'
+  " Automatically discover and update ctags files on save
+  Plugin 'craigemery/vim-autotag'
   " tree explorer plugin for vim
   Plugin 'scrooloose/nerdtree'
   Plugin 'Xuyuanp/nerdtree-git-plugin'
@@ -54,6 +57,7 @@ set nocompatible               " be iMproved
   "Plugin 'Shougo/neosnippet.vim'
   "Plugin 'Shougo/neosnippet-snippets'
   "Plugin 'honza/vim-snippets'
+  Plugin 'tsukkee/unite-tag'
 
   " extensible & universal comment
   Plugin 'tomtom/tcomment_vim'
@@ -211,7 +215,7 @@ set nocompatible               " be iMproved
 " }}}
 
 " Invisibles {{{
-  set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:␣,eol:¬
+  set listchars=tab:⊳\ ,extends:❯,precedes:❮,trail:␣,eol:¬
   set list
   nmap <silent> <F11> :set list!<CR>
 " }}}
@@ -326,6 +330,12 @@ set nocompatible               " be iMproved
 
 " TagBar {{{
   nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
+" }}}
+
+" vim-tags {{{
+" do not let vim-tags auto generate tags on save
+" use vim-autotag plugin to do this instead
+  let g:vim_tags_auto_generate = 1
 " }}}
 
 " vim-notes {{{

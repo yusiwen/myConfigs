@@ -29,8 +29,8 @@ nmap <space> [unite]
 " Quick registers
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 
-nnoremap <silent> [unite]u :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
 " Quick buffer and mru
+nnoremap <silent> [unite]u :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
 
 " Quick yank history
 nnoremap <silent> [unite]y :<C-u>Unite -no-split -auto-preview -buffer-name=yanks history/yank<CR>
@@ -84,6 +84,9 @@ nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
 
 " Quick commands
 nnoremap <silent> [unite]; :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
+
+" Quick tags (Need tsukkee/unite-tag installed)
+nnoremap <silent> [unite]t :<C-u>Unite -no-split -buffer-name=tags -default-action=edit tag<CR>
 
 augroup MyAutoCmd
 augroup END
