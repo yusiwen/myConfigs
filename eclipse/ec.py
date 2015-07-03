@@ -50,6 +50,19 @@ class EclipseChooser:
   def callback(self, widget, data):
     self.i = data
 
+  def create_radio_box(self):
+    radio_box = gtk.VBox()
+    button = None
+    offset = 1
+    for x in self.commands:
+      temp_button = gtk.RadioButton(button, x[0])
+      temp_button.connect("toggled", self.callback, offset)
+      radio_box.pack_start(temp_button, True, True, 0)
+      temp_button.show()
+      button = temp_button
+      offset = offset + 1
+    return radio_box
+
   def __init__(self):
 
     self.check_env()
@@ -59,24 +72,19 @@ class EclipseChooser:
 
     dialog = gtk.Dialog("Eclipse Environment Chooser", None, 0, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
     dialog.set_default_response(gtk.RESPONSE_OK)
-    dialog.set_default_size(250, 300)
-    label = gtk.Label("Choose:")
 
-    dialog.vbox.pack_start(label, True, True, 0)
+    frame = gtk.Frame("Choose:")
+    frame.set_label_align(0, 0.5)
+    dialog.vbox.pack_start(frame, False, True, 10)
+    frame.show()
 
-    button = None
-    offset = 1
-    for x in self.commands:
-      temp_button = gtk.RadioButton(button, x[0])
-      temp_button.connect("toggled", self.callback, offset)
-      dialog.vbox.pack_start(temp_button, True, True, 0)
-      button = temp_button
-      offset = offset + 1
+    radio_box = self.create_radio_box()
+    frame.add(radio_box)
+    radio_box.show()
 
     dialog.show_all()
 
     response = dialog.run()
-
     if response == gtk.RESPONSE_OK:
       cmd = self.commands[self.i-1][1]
       subprocess.Popen(cmd)
