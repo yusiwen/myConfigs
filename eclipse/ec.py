@@ -10,11 +10,17 @@ import subprocess
 
 class EclipseChooser:
   i = 1
+  # default eclipse installation dir
   eclipse_dir = "/opt/eclipse"
+  # default eclipse command and arguments
   eclipse_args = ['eclipse', '-vm', '', '-nosplash']
+  # default ideas installation dir
   idea_dir = '/opt/intellij'
+  # default ideas command and arguments
   idea_args = ['bin/idea.sh']
 
+  # commands to run eclipse or ideas
+  # a list consists of some sublists like [DIRNAME, [COMMANDS, ARGS1, ARGS2, ...]]
   commands = []
 
   def check_env(self):
@@ -29,9 +35,8 @@ class EclipseChooser:
       self.idea_args = ['bin/idea.exe']
     else:
       self.eclipse_args[2] = os.path.join(javahome, 'bin/java')
-      print self.eclipse_args[2]
-      os.environ['SWT_GTK3'] = "0"
-      os.environ['UBUNTU_MENUPROXY'] = "0"
+      os.environ['SWT_GTK3'] = "0" # Do not use GTK3
+      os.environ['UBUNTU_MENUPROXY'] = "0" # Do not use global menu on Ubuntu
 
   def find(self, path, args):
     if os.path.exists(path):
@@ -44,7 +49,6 @@ class EclipseChooser:
           temp_args_list = list(args)
           temp_args_list[0] = os.path.join(tmp_path, temp_args_list[0])
           temp_list.append(temp_args_list)
-          # print(temp_args_list)
           self.commands.append(temp_list)
 
   def callback(self, widget, data):
