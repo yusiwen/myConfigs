@@ -11,9 +11,12 @@ let g:airline_right_sep = '▒'
 let g:airline_right_sep = '░'
 
 let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.branch = '⌥'
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '№'
+"branch symbol = U+E0A0
+let g:airline_symbols.branch = ''
+"linenr symbol = U+E0A1
+let g:airline_symbols.linenr = ''
+"readonly symbol = U+E0A2
+let g:airline_symbols.readonly = ''
 let g:airline_symbols.whitespace = 'Ξ'
 
 " turn tabline on

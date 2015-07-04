@@ -39,7 +39,7 @@ set !!<$left_screen,$right_screen> \
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
 # font pango:[family list] [style options] [size]
-font pango:PragmataPro 9
+font pango:Input Mono Compressed 9
 # }}}
 
 # {{{ General Options
@@ -343,7 +343,7 @@ for_window [class="^Thunar$" instance="^thunar$"] floating enable
 for_window [class="!!<\
   ^Gimp$,^Gpick$,^feh$,^Fcitx-config-gtk3$,^Telegram$,\
   ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,\
-  ^Grub-customizer$,^Catfish$,^Orage$,\
+  ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,\
   ^Pidgin$,^File-roller$,^shadowsocks-qt5$,\
   ^Nvidia-settings$,^Seahorse$,^Keepassx$,^Xfce4-appfinder$\
   >"] floating enable

@@ -37,8 +37,10 @@ rofi.key-ssh: mod1+F3
 
 URxvt.meta8: true
 
-URxvt.font: xft:PragmataPro:size=10,xft:MicrosoftYaHei:size=10
-URxvt.boldFont: xft:PragmataPro:bold:size=10,xft:MicrosoftYaHei:bold:size=10
+URxvt.font: xft:Input Mono Compressed:Regular:size=10,xft:MicrosoftYaHei:Regular:size=10
+URxvt.boldFont: xft:Input Mono Compressed:Bold:size=10,xft:MicrosoftYaHei:Bold:size=10
+URxvt.italicFont: xft:Input Mono Compressed:Italic:size=10,xft:MicrosoftYaHei:Italic:size=10
+URxvt.boldItalicFont: xft:Input Mono Compressed:Bold Italic:size=10,xft:MicrosoftYaHei:Bold Italic:size=10
 
 URxvt.intensityStyles: false
 

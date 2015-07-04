@@ -44,7 +44,7 @@ hi LineNr               cterm=NONE      ctermbg=237  ctermfg=102  guifg=#878787 
 hi MatchParen           cterm=bold      ctermbg=NONE ctermfg=226  guifg=#fff000 guibg=NONE    gui=bold
 hi ModeMsg              cterm=bold      ctermbg=NONE ctermfg=145  guifg=#afafaf guibg=#222222 gui=bold
 hi MoreMsg              cterm=bold      ctermbg=NONE ctermfg=29   guifg=#2e8b57 guibg=NONE    gui=bold
-hi NonText              cterm=NONE      ctermbg=NONE ctermfg=59   guifg=#404050 guibg=NONE    gui=NONE
+hi NonText              cterm=NONE      ctermbg=NONE ctermfg=237  guifg=#404050 guibg=NONE    gui=NONE
 hi Pmenu                cterm=NONE      ctermbg=238  ctermfg=231  guifg=#ffffff guibg=#444444
 hi PmenuSbar            cterm=NONE      ctermbg=250  ctermfg=fg   guifg=#ffffff guibg=$444444
 hi PmenuSel             cterm=NONE      ctermbg=149  ctermfg=16   guifg=#000000 guibg=#b1d631
@@ -52,7 +52,7 @@ hi PmenuThumb           cterm=reverse   ctermbg=NONE ctermfg=fg
 hi Question             cterm=bold      ctermbg=NONE ctermfg=46   guifg=#00ee00 guibg=NONE    gui=bold
 hi Search               cterm=bold      ctermbg=11   ctermfg=16   guifg=#000000 guibg=#d6e770 gui=bold
 hi SignColumn           cterm=NONE      ctermbg=NONE ctermfg=231  guifg=#ffffff guibg=NONE    gui=NONE
-hi SpecialKey           cterm=NONE      ctermbg=NONE ctermfg=59   guifg=#505060 guibg=NONE    gui=NONE
+hi SpecialKey           cterm=NONE      ctermbg=NONE ctermfg=237  guifg=#505060 guibg=NONE    gui=NONE
 hi SpellBad             cterm=underline ctermbg=NONE ctermfg=196  guisp=#ee2c2c gui=undercurl
 hi SpellCap             cterm=underline ctermbg=NONE ctermfg=21   guisp=#0000ff gui=undercurl
 hi SpellLocal           cterm=underline ctermbg=NONE ctermfg=30   guisp=#008b8b gui=undercurl

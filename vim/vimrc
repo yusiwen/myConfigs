@@ -215,7 +215,8 @@ set nocompatible               " be iMproved
 " }}}
 
 " Invisibles {{{
-  set listchars=tab:⊳\ ,extends:❯,precedes:❮,trail:␣,eol:¬
+" tab: U+25BA, extends: U+00BB, precedes:U+00AB, trail:U+2017, eol:U+00AC
+  set listchars=tab:►\ ,extends:»,precedes:«,trail:_,eol:¬
   set list
   nmap <silent> <F11> :set list!<CR>
 " }}}
@@ -257,7 +258,7 @@ set nocompatible               " be iMproved
 
 " Wrapping {{{
   set linebreak
-  set showbreak=↳\
+  set showbreak=∟\
 " toggle wrapping
   nmap <silent> <F12> :let &wrap = !&wrap<CR>
 " }}}
