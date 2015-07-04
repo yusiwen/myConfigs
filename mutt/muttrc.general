@@ -3,8 +3,7 @@
 
 # Colour
 #uncomment the colorscheme you want to use, and comment out the others
-#source ~/myConfigs/mutt/themes/jellybeans.muttrc
-source ~/myConfigs/solarized/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
+source ~/myConfigs/mutt/themes/jellybeans.muttrc
 
 # Basic config, you can leave this as is
 set hostname = "gmail.com"
@@ -45,7 +44,7 @@ set assumed_charset="gb2312:utf-8"
 
 bind editor <Tab> complete-query
 bind editor ^T complete
-bind editor <space> noop 
+bind editor <space> noop
 
 # Index Key Bindings ---------------------------------
 bind index gg first-entry

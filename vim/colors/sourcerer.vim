@@ -105,21 +105,21 @@ hi link diffNoEOL       Constant
 hi link diffCommon      Constant
 hi link diffComment     Constant
 
-hi pythonClass          cterm=NONE      ctermbg=NONE  ctermfg=fg
-hi pythonDecorator      cterm=NONE      ctermbg=NONE  ctermfg=101
-hi pythonExClass        cterm=NONE      ctermbg=NONE  ctermfg=95
-hi pythonException      cterm=NONE      ctermbg=NONE  ctermfg=110
-hi pythonFunc           cterm=NONE      ctermbg=NONE  ctermfg=fg
-hi pythonFuncParams     cterm=NONE      ctermbg=NONE  ctermfg=fg
-hi pythonKeyword        cterm=NONE      ctermbg=NONE  ctermfg=fg
-hi pythonParam          cterm=NONE      ctermbg=NONE  ctermfg=fg
-hi pythonRawEscape      cterm=NONE      ctermbg=NONE  ctermfg=fg
-hi pythonSuperclasses   cterm=NONE      ctermbg=NONE  ctermfg=fg
-hi pythonSync           cterm=NONE      ctermbg=NONE  ctermfg=fg
+hi pythonClass          cterm=NONE      ctermbg=NONE ctermfg=fg
+hi pythonDecorator      cterm=NONE      ctermbg=NONE ctermfg=101
+hi pythonExClass        cterm=NONE      ctermbg=NONE ctermfg=95
+hi pythonException      cterm=NONE      ctermbg=NONE ctermfg=110
+hi pythonFunc           cterm=NONE      ctermbg=NONE ctermfg=fg
+hi pythonFuncParams     cterm=NONE      ctermbg=NONE ctermfg=fg
+hi pythonKeyword        cterm=NONE      ctermbg=NONE ctermfg=fg
+hi pythonParam          cterm=NONE      ctermbg=NONE ctermfg=fg
+hi pythonRawEscape      cterm=NONE      ctermbg=NONE ctermfg=fg
+hi pythonSuperclasses   cterm=NONE      ctermbg=NONE ctermfg=fg
+hi pythonSync           cterm=NONE      ctermbg=NONE ctermfg=fg
 
-hi Test                 cterm=NONE      ctermbg=NONE  ctermfg=fg
-hi cCursor              cterm=reverse   ctermbg=NONE  ctermfg=fg
-hi iCursor              cterm=NONE      ctermbg=210   ctermfg=16
-hi lCursor              cterm=NONE      ctermbg=145   ctermfg=234
-hi nCursor              cterm=NONE      ctermbg=NONE  ctermfg=145
-hi vCursor              cterm=NONE      ctermbg=201   ctermfg=16
+hi Test                 cterm=NONE      ctermbg=NONE ctermfg=fg
+hi cCursor              cterm=reverse   ctermbg=NONE ctermfg=fg
+hi iCursor              cterm=NONE      ctermbg=210  ctermfg=16
+hi lCursor              cterm=NONE      ctermbg=145  ctermfg=234
+hi nCursor              cterm=NONE      ctermbg=NONE ctermfg=145
+hi vCursor              cterm=NONE      ctermbg=201  ctermfg=16

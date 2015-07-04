@@ -10,7 +10,7 @@ set imap_user = "yusiwen@gmail.com"
 set smtp_url = "smtp://yusiwen@smtp.gmail.com:587/"
 # use mutt_get_imap_passwd.py script to get password from gnome-keyring
 #   and set "imap_pass" and "smtp_pass"
-# ~/.mutt/mutt_get_imap_passwd.py is a symbolic link to 
+# ~/.mutt/mutt_get_imap_passwd.py is a symbolic link to
 #   ~/myConfigs/mutt/mutt_get_imap_passwd.py
 # see ~/myConfigs/mutt/mutt_get_imap_passwd.py
 source ~/.mutt/mutt_get_imap_passwd.py|

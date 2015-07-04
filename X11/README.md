@@ -47,4 +47,4 @@ $ sudo apt-get install qt4-qtconfig
 $ qtconfig
 ```
 
-Change the appearance to the same theme in GTK.
+Change the appearance to the same theme in GTK. See [Uniform Look for Qt and GTK Applications](https://wiki.archlinux.org/index.php/Uniform_Look_for_Qt_and_GTK_Applications) and [this answer](http://askubuntu.com/a/22319) on [AskUbuntu](http://askubuntu.com/)
