@@ -4,12 +4,6 @@
 [submodule "ls--"]
 	path = ls--
 	url = git@github.com:yusiwen/ls--.git
-[submodule "rofi"]
-	path = rofi
-	url = git@github.com:yusiwen/rofi.git
-[submodule "mc"]
-	path = mc
-	url = git@github.com:yusiwen/mc.git
 [submodule "LS_COLORS"]
 	path = LS_COLORS
 	url = git@github.com:yusiwen/LS_COLORS.git
