@@ -5,6 +5,12 @@
 #{{{ general settings
 # show completion menu when number of options is at least 2
 zstyle ':completion:*'                  menu select=2
+
+zstyle ':completion:*'                  verbose no
+zstyle ':completion:*:descriptions'     format '%B%d%b'
+zstyle ':completion:*:messages'         format '%d'
+zstyle ':completion:*:warnings'         format 'No matches for: %d'
+zstyle ':completion:*'                  group-name ”
 #}}}
 
 #{{{ make use of LS_COLORS
