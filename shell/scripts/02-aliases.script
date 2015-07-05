@@ -22,9 +22,9 @@ alias pgrep='pgrep -a'
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
 
 # Git commands aliases
-alias gits='git status --short'
-alias gitd='git diff --submodule'
-alias gitds='git diff --submodule --staged'
+alias gits='git status --short --branch'
+alias gitd='git diff --submodule --word-diff'
+alias gitds='git diff --submodule --word-diff --staged'
 alias gitl='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"'
 alias gitll='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --stat'
 alias gitlp='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%b" -p'
