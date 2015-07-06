@@ -243,10 +243,12 @@ set nocompatible               " be iMproved
   nmap <silent> ,n :set invhls<CR>:set hls?<CR>
 " }}}
 
-" Backup files {{{
+" Backup and Recovery {{{
   set nobackup
-  set nowb
-  set noswapfile
+  set writebackup
+" set swap file directory to ~/.vim/swap, need to mkdir it first
+  set directory=~/.vim/swap,.
+  set swapfile
 " }}}
 
 " Completion {{{
