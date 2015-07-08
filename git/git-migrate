@@ -5,6 +5,16 @@ if [ "$#" -ne 2 ]; then
   exit 1
 fi
 
+if [ -z $(git remote | grep "^${1}$") ]; then
+  echo "Remote '${1}' does not exist!"
+  exit 2
+fi
+
+if [ -z $(git remote | grep "^${2}$") ]; then
+  echo "Remote '${2}' does not exist!"
+  exit 3
+fi
+
 git fetch ${1}
 git checkout master
 git merge ${1}/master
