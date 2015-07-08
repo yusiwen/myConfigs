@@ -16,8 +16,19 @@ if [ -z $(git remote | grep "^${2}$") ]; then
 fi
 
 git fetch ${1}
+if [ $? -ne 0  ]; then
+  exit 1
+fi
+
 git checkout master
+if [ $? -ne 0  ]; then
+  exit 1
+fi
+
 git merge ${1}/master
+if [ $? -ne 0  ]; then
+  exit 1
+fi
 
 BRANCHES=`git branch -r | grep ${1}`
 for b in $BRANCHES; do
@@ -28,6 +39,9 @@ for b in $BRANCHES; do
   fi
   echo "fetching '$branch' ..."
   git fetch ${1} $branch:$branch
+  if [ $? -ne 0  ]; then
+    exit 1
+  fi
 done
 
 git push --all ${2}
