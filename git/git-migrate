@@ -1,0 +1,24 @@
+#!/bin/sh
+
+if [ "$#" -ne 2 ]; then
+  echo 'Usage: git-migrate remote1 remote2\n  Migrate all of remote1 to remote2'
+  exit 1
+fi
+
+git fetch ${1}
+git checkout master
+git merge ${1}/master
+
+BRANCHES=`git branch -r | grep ${1}`
+for b in $BRANCHES; do
+  echo $b
+  branch=$(echo "$b" | sed -e "s/${1}\///")
+  if [ $branch = 'master' ]; then
+    continue;
+  fi
+  echo "fetching '$branch' ..."
+  git fetch ${1} $branch:$branch
+done
+
+git push --all ${2}
+git push --tags ${2}
