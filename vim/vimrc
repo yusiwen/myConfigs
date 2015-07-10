@@ -91,8 +91,6 @@ set nocompatible               " be iMproved
   Plugin 'tpope/vim-ragtag'
   " runtime files for Haml, Sass, and SCSS
   Plugin 'tpope/vim-haml'
-  " runtime files for Markdown
-  Plugin 'tpope/vim-markdown'
   " tools for developing Node.js
   Plugin 'moll/vim-node'
   " improved Javascript indentation and syntax
