@@ -296,7 +296,7 @@ exec --no-startup-id !!<\
 >
 !?<HOSTNAME=yusiwen-Aspire-S3
 exec --no-startup-id !!<\
-  xbacklight -set 75,remmina -i,blueman-applet,parcellite>
+  xbacklight -set 75,remmina -i,blueman-applet>
 >
 !?<HOSTNAME=home-ubuntu
 exec --no-startup-id dropboxd
