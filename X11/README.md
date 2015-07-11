@@ -5,6 +5,11 @@ Configuration files for X11 softwares.
 
 ## Contents
 
+1. `dual-monitor/` contains script for dual monitor settings
+1. `fonts/` contains script for edit truetype fonts by fontforge
+1. `gtk/` contains gtk themes settings
+1. `themes` contains X color themes
+
 ### Xresources and Xinit Files
 
 `Xresources` is user's .Xresources file for X. It contains configurations for xterm, urxvt, rofi, etc.
@@ -15,12 +20,6 @@ Usage:
 
 ```sh
 $ ln -sf ~/myConfigs/X11/Xresources ~/.Xresources
-```
-
-or (on home-ubuntu)
-
-```sh
-$ ln -sf ~/myConfigs/X11/Xresources.home-ubuntu ~/.Xresources
 ```
 
 ### GTK Configuration Files
