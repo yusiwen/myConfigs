@@ -2,8 +2,9 @@
 # basic mutt configuration file.
 
 # Colour
-#uncomment the colorscheme you want to use, and comment out the others
-source ~/myConfigs/mutt/themes/jellybeans.muttrc
+# make link of your themes to ~/.mutt/theme.muttrc
+#   default theme is ~/myConfigs/mail/mutt/themes/jellybeans.muttrc
+source ~/.mutt/theme.muttrc
 
 # Basic config, you can leave this as is
 set hostname = "gmail.com"
