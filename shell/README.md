@@ -2,17 +2,33 @@ Shell Scripts
 =============
 
 ##Install oh-my-zsh
-1. Install zsh
 
-   `sudo apt-get install zsh`
-2. Clone the repository of `oh-my-zsh`
+1. Install `zsh`
 
-   `git clone git://github.com/yusiwen/oh-my-zsh.git ~/.oh-my-zsh`
-3. Create a new zsh config by copying the zsh template of `oh-my-zsh`
+```sh
+$ sudo apt-get install zsh
+```
 
-   `cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc`
+2. Install `oh-my-zsh`
+
+```sh
+$ ln -sf $HOME/myConfigs/shell/oh-my-zsh $HOME/.oh-my-zsh
+$ ln -sf $HOME/myConfigs/shell/zshrc $HOME/.zshrc
+```
+
 4. Set zsh as default shell:
 
-   `chsh -s /bin/zsh`
-5. logoff and login
+```sh
+$ chsh -s /bin/zsh
+```
+
+5. Logoff and login again
+
+6. Install [`ls--`](https://github.com/yusiwen/ls--)
+
+```sh
+$ git clone https://github.com/yusiwen/ls--
+$ cd ls-- && cp ls++.conf $HOME/.ls++.conf
+$ sudo cp ls++ /usr/local/bin/ls++
+```
 

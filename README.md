@@ -16,22 +16,19 @@ yusiwen@gmail.com
 
 Contents
 --------
-1. `oh-my-zsh/` is a submodule. It's configurations for ZSH.
-1. `dual-monitor/` dual-monitor configurations for home-ubuntu.
 1. `eclipse/` Eclipse configurations under linux.
 1. `figlet/` figlet fonts for ascii art.
 1. `git/` Git configurations and scripts.
 1. `i3/` i3-wm configurations.
 1. `keyring` keyring confiurations for i3 and mutt.
-1. `ls--/` submodule. ls++ - colorized ls on steroids.
 1. `mail/` settings for all mail clients.
 1. `mc.conf/` confiurations for MidnightCommander.
 1. `mounts/` fstab configurations for home-ubuntu.
 1. `mpd/` mpd configurations.
-1. `mutt/` mutt mail client configurations.
+1. `node.js/` Node.js settings.
+1. `python/` Python settings.
 1. `razer/` Razer DeathAdder mouse polling rate configurations.
 1. `rxvt/` rxvt-unicode terminal configurations.
-1. `screen/` screen configurations.
 1. `shell/` shell environments scripts.
 1. `vim/` VIM configurations.
 1. `X11/` X11 scripts.

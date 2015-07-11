@@ -1,11 +1,8 @@
 [submodule "oh-my-zsh"]
-	path = oh-my-zsh
+	path = shell/oh-my-zsh
 	url = git@github.com:yusiwen/oh-my-zsh.git
-[submodule "ls--"]
-	path = ls--
-	url = git@github.com:yusiwen/ls--.git
 [submodule "LS_COLORS"]
-	path = LS_COLORS
+	path = shell/LS_COLORS
 	url = git@github.com:yusiwen/LS_COLORS.git
 [submodule "i3/i3bang"]
 	path = i3/i3bang
