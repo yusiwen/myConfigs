@@ -4,7 +4,7 @@ VIM Installation
 1. Install vim:
 
 	```text
-	sudo apt-get install vim-gtk
+	$ sudo apt-get install vim-gtk
 	```
 
 	As for windows, check out [kybu Windows build](https://bitbucket.org/kybu/vim-for-windows-single-drop), it supports `ruby`, `python`, `perl`, `lua`, etc.
@@ -14,13 +14,13 @@ VIM Installation
 1. Install vundle
 
 	```text
-	git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/vundle
+	$ git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	```
 
 1. Link vimrc to ~/.vimrc
 
 	```text
-	ln -sf ~/git/myConfigs/vim/vimrc ~/.vimrc
+	$ ln -sf ~/git/myConfigs/vim/vimrc ~/.vimrc
 	```
 
 1. Install plugins:
