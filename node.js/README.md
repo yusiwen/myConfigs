@@ -14,13 +14,13 @@ Node.js is available from the [NodeSource](https://nodesource.com) official Debi
 Setup with:
 
 ```text
-curl -sL https://deb.nodesource.com/setup | sudo bash -
+$ curl -sL https://deb.nodesource.com/setup | sudo bash -
 ```
 
 Then install:
 
 ```text
-sudo apt-get install nodejs
+$ sudo apt-get install nodejs
 ```
 
 **Available architectures:**
@@ -51,7 +51,7 @@ A Node.js package is also available in [official repo](http://packages.debian.or
 Node.js is available in the portage tree.
 
 ```text
-emerge nodejs
+$ emerge nodejs
 ```
 
 ## openSUSE & SLE
@@ -63,10 +63,10 @@ Available RPM packages for: openSUSE 11.4, 12.1, 12.2, 12.3, 13.1, Factory and T
 Example install on openSUSE 13.1:
 
 ```text
-sudo zypper ar \
+$ sudo zypper ar \
   http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/ \
   Node.js
-sudo zypper in nodejs nodejs-devel
+$ sudo zypper in nodejs nodejs-devel
 ```
 
 ## Fedora
@@ -74,7 +74,7 @@ sudo zypper in nodejs nodejs-devel
 [Node.js](https://apps.fedoraproject.org/packages/nodejs) and [npm](https://apps.fedoraproject.org/packages/npm) are available in Fedora 18 and later. Just use your favorite graphical package manager or run this on a terminal to install both node and npm:
 
 ```text
-sudo yum install nodejs npm
+$ sudo yum install nodejs npm
 ```
 
 ## Enterprise Linux (RHEL, CentOS, Fedora, etc.)
@@ -84,7 +84,7 @@ Node.js and npm are available from the [Extra Packages for Enterprise Linux](htt
 To check if you have EPEL registered, run:
 
 ```text
-yum repolist
+$ yum repolist
 ```
 
 If you don't see EPEL, [install it](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F
@@ -93,21 +93,21 @@ If you don't see EPEL, [install it](https://fedoraproject.org/wiki/EPEL#How_can_
 For **Enterprise Linux version 6** (EPEL version 6.8 at the time of writing):
 
 ```text
-yum install \
+$ yum install \
   http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 ```
 
 For **Enterprise Linux version 7 Beta**:
 
 ```text
-yum install \
+$ yum install \
   http://dl.fedoraproject.org/pub/epel/beta/7/x86_64/epel-release-7-0.2.noarch.rpm
 ```
 
 Then install the **nodejs** and **npm** packages:
 
 ```text
-sudo yum install nodejs npm --enablerepo=epel
+$ sudo yum install nodejs npm --enablerepo=epel
 ```
 
 ## Arch Linux
@@ -115,7 +115,7 @@ sudo yum install nodejs npm --enablerepo=epel
 Node.js is available in the Community Repository.
 
 ```text
-pacman -S nodejs
+$ pacman -S nodejs
 ```
 
 ## FreeBSD and OpenBSD
@@ -129,25 +129,25 @@ Node.js is available through the ports system.
 Development versions are also available using ports
 
 ```text
-cd /usr/ports/www/node-devel/ && make install clean
+$ cd /usr/ports/www/node-devel/ && make install clean
 ```
 
 Or packages on FreeBSD:
 
 ```text
-pkg_add -r node-devel
+$ pkg_add -r node-devel
 ```
 
 Using [pkg-ng](https://wiki.freebsd.org/pkgng) on FreeBSD
 
 ```text
-pkg install node
+$ pkg install node
 ```
 
 Or the development versions:
 
 ```text
-pkg install node-devel
+$ pkg install node-devel
 ```
 
 ## OSX
@@ -159,19 +159,19 @@ Simply download the [Macintosh Installer](http://nodejs.org/#download) direct fr
 Using **[Homebrew](http://brew.sh/)**:
 
 ```text
-brew install node
+$ brew install node
 ```
 
 Using **[Fink](http://www.finkproject.org)**:
 
 ```text
-fink install nodejs
+$ fink install nodejs
 ```
 
 Using **[MacPorts](http://www.macports.org/)**:
 
 ```text
-port install nodejs
+$ port install nodejs
 ```
 
 ## Windows
@@ -183,15 +183,15 @@ Simply download the [Windows Installer](http://nodejs.org/#download) directly fr
 Using **[Chocolatey](http://chocolatey.org)**:
 
 ```text
-cinst nodejs
+$ cinst nodejs
 # or for full install with npm
-cinst nodejs.install
+$ cinst nodejs.install
 ```
 
 Using **[Scoop](http://scoop.sh/)**:
 
 ```text
-scoop install nodejs
+$ scoop install nodejs
 ```
 
 # Install npm packages globally on Linux without sudo
@@ -204,8 +204,8 @@ able to install globally.
 Here is a way to install packages globally for a given user.
 
 1. Create a directory for your global packages
-```bash 
-mkdir ~/.npm-packages
+```bash
+$ mkdir ~/.npm-packages
 ```
 
 2. Reference this directory for future usage in your `.bashrc`/`.zshrc`:

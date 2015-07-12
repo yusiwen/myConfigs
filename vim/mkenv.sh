@@ -3,17 +3,6 @@
 CONFIG_VIM=$HOME/myConfigs/vim
 VIM_HOME=$HOME/.vim
 
-# Check if the latest vim ppa is added or not
-PPA=$(grep ^ /etc/apt/sources.list /etc/apt/sources.list.d/*.list | grep pi-rho/dev)
-if [ -z "$PPA" ]; then
-  echo 'Add latest vim ppa ...'
-  sudo apt-add-repository ppa:pi-rho/dev
-  sudo apt-get update
-  sudo apt-get upgrade
-  sudo apt-get clean
-  echo 'Add latest vim ppa ... done'
-fi
-
 # Check if vim-gtk is installed or not
 PACKAGE=$(dpkg -l | grep vim-gtk)
 if [ -z "$PACKAGE" ]; then
