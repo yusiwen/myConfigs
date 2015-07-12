@@ -19,7 +19,7 @@ Configuration files for X11 softwares.
 Usage:
 
 ```sh
-$ ln -sf ~/myConfigs/X11/Xresources ~/.Xresources
+ln -sf ~/myConfigs/X11/Xresources ~/.Xresources
 ```
 
 ### GTK Configuration Files
@@ -33,8 +33,8 @@ Both files set theme and icon theme for GTK environment.
 Usage:
 
 ```sh
-$ ln -sf ~/myConfigs/X11/gtk/gtkrc-2.0 ~/.gtkrc-2.0
-$ ln -sf ~/myConfigs/X11/gtk/gtkrc-3.0 ~/.config/gtk-3.0/settings
+ln -sf ~/myConfigs/X11/gtk/gtkrc-2.0 ~/.gtkrc-2.0
+ln -sf ~/myConfigs/X11/gtk/gtkrc-3.0 ~/.config/gtk-3.0/settings
 ```
 
 ### Qt Configuration
@@ -42,8 +42,8 @@ $ ln -sf ~/myConfigs/X11/gtk/gtkrc-3.0 ~/.config/gtk-3.0/settings
 To unify appearance of Qt applications with GTK ones, install `qt4-qtconfig` by:
 
 ```sh
-$ sudo apt-get install qt4-qtconfig
-$ qtconfig
+sudo apt-get install qt4-qtconfig
+qtconfig
 ```
 
 Change the appearance to the same theme in GTK. See [Uniform Look for Qt and GTK Applications](https://wiki.archlinux.org/index.php/Uniform_Look_for_Qt_and_GTK_Applications) and [this answer](http://askubuntu.com/a/22319) on [AskUbuntu](http://askubuntu.com/)
