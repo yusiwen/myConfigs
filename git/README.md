@@ -40,8 +40,8 @@ Host bitbucket.org
   ProxyCommand nc -x 127.0.0.1:1088 %h %p
 ```
 
-or use `core.gitProxy` setting:
+or use `core.gitProxy` setting (recommanded for global proxying):
 
 ```sh
-$ git config --global core.gitProxy ~/myConfigs/git/gitproxy
+$ git config --global core.gitproxy ~/myConfigs/git/gitproxy
 ```
