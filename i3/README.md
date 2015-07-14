@@ -59,7 +59,7 @@ Configuration
 1. (Optional) Change i3-wm session icon used by LightDM. Only applicable for unity-greeter.
 
 		$ cd /usr/share/unity-greeter
-		$ sudo cp /home/yusiwen/myConfigs/i3/i3.png custom_i3_badge.png
+		$ sudo cp /home/yusiwen/myConfigs/i3/xsessioins/i3.png custom_i3_badge.png
 
 1. (Optional) Set lock screen when restoring from suspension using i3lock.
    see `pm-utils` and `xautolock`.
@@ -69,13 +69,13 @@ Configuration
 
 1. (Optional) Add a custom i3 session in lightdm/gdm:
 
-		$ sudo cp i3.desktop /usr/share/xsessions
+		$ sudo cp xsessions/i3.desktop /usr/share/xsessions
 
 1. Config `dunst`
 
 	`dunstrc` should be copied to `~/.config/dunst/` or linked to that folder.
 
-		$ ln -sf ~/myConfigs/i3/dunstrc ~/.config/dunst/dunstrc
+		$ ln -sf ~/myConfigs/i3/dunst/dunstrc ~/.config/dunst/dunstrc
 
 1. Make thunar as default file manager.
 

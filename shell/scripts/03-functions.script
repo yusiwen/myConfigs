@@ -30,7 +30,7 @@ du1() { du -h --max-depth=1 "$@" | sort -k 1,1hr -k 2,2f; }
 purgerc() {
   RC=`dpkg -l | grep "^rc" | cut -d ' ' -f 3`
   if [ -z $RC ]; then
-    echo "rc pakage not found."
+    echo "No 'rc' status package was found."
     return 1
   fi
   echo "$RC"
