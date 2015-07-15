@@ -59,8 +59,7 @@ Configuration
 1. Make links of i3-wm config files.
   ```sh
   $ ln -sf ~/myConfigs/i3/_config ~/.i3/_config
-  $ ln -sf ~/myConfigs/i3/i3status.config ~/.i3/i3status
-  $ ln -sf ~/myConfigs/i3/i3blocks.conf ~/.i3/i3blocks.conf
+  $ ln -sf ~/myConfigs/i3/i3blocks/i3blocks.conf ~/.i3/i3blocks.conf
   $ ln -sf ~/myConfigs/i3/i3bang/i3bang.rb ~/bin/i3bang
   ```
 
