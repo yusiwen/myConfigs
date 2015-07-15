@@ -13,6 +13,12 @@ Configurations for Python environment.
 
   For more details, check out this [official page](https://pip.pypa.io/en/latest/installing.html#install-pip)
 
+## Using Pip behind a proxy
+
+  ```sh
+  pip --proxy host:port install XXX
+  ```
+
 ## Virtualenv
 
   Virtualenv allows you to create local, isolated Python environments, each with a different set of installed packages. As a bonus, virtualenv installs pip into each new environment that you create, so you don’t even need to install pip globally.
@@ -27,5 +33,5 @@ Configurations for Python environment.
   ```text
   source ~/venv/base/bin/activate
   ```
-  
+
   For more details, check out this [blog post](http://dubroy.com/blog/so-you-want-to-install-a-python-package/#the-better-way)
