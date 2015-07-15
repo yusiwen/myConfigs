@@ -104,8 +104,6 @@ set nocompatible               " be iMproved
   Plugin 'vim-scripts/fcitx.vim'
   " extended % matching for HTML, LaTeX, etc
   Plugin 'vim-scripts/matchit.zip'
-  " Markdown preview instantly
-  Plugin 'vim-scripts/instant-markdown.vim'
 
   " non github repos
 
@@ -348,12 +346,6 @@ set nocompatible               " be iMproved
 
 " Airline {{{
   source ~/myConfigs/vim/vimrc.airline
-" }}}
-
-" Instant-Markdown {{{
-  let g:instant_markdown_slow = 1
-  let g:instant_markdown_autostart = 0
-  nmap <F8> <Esc>:InstantMarkdownPreview<CR>
 " }}}
 
 " vim-better-whitespace {{{
