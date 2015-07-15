@@ -40,7 +40,7 @@ if [ ! -d "$MUSIC_LIBRARY" ]; then
     music_location=$DEFAULT_LOCATION
   fi
 
-  ln -sf $music_library $MUSIC_LIBRARY
+  ln -sf $music_location $MUSIC_LIBRARY
 fi
 
 mkdir -p $NCMPCPP_HOME
