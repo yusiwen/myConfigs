@@ -63,7 +63,7 @@ Configuration
   $ ln -sf ~/myConfigs/i3/i3bang/i3bang.rb ~/bin/i3bang
   ```
 
-  Use `i3bang` to generate the config file in `~/.i3i/`
+  Use `i3bang` to generate the config file in `~/.i3/`
 
 1. (Optional) Change i3-wm session icon used by LightDM. Only applicable for unity-greeter.
   ```sh
