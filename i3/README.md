@@ -110,7 +110,6 @@ Configuration
   ```
 
   add content below to ./local/share/applications/mimeapps.list
-
   ```text
   inode/directory=thunar.desktop
   x-directory/normal=thunar.desktop
