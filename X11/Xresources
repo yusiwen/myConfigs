@@ -1,7 +1,17 @@
+!  ██     ██
+! ░░██   ██
+!  ░░██ ██   ██████  █████   ██████  ██████  ██   ██ ██████  █████   █████   ██████
+!   ░░███   ░░██░░█ ██░░░██ ██░░░░  ██░░░░██░██  ░██░░██░░█ ██░░░██ ██░░░██ ██░░░░
+!    ██░██   ░██ ░ ░███████░░█████ ░██   ░██░██  ░██ ░██ ░ ░██  ░░ ░███████░░█████
+!   ██ ░░██  ░██   ░██░░░░  ░░░░░██░██   ░██░██  ░██ ░██   ░██   ██░██░░░░  ░░░░░██
+!  ██   ░░██░███   ░░██████ ██████ ░░██████ ░░██████░███   ░░█████ ░░██████ ██████
+! ░░     ░░ ░░░     ░░░░░░ ░░░░░░   ░░░░░░   ░░░░░░ ░░░     ░░░░░   ░░░░░░ ░░░░░░
+!
+! author: yusiwen@gmail.com
 ! ~/.Xresources is a symbolic link to ~/myConfigs/Xresources
 
+! Color themes
 #include "myConfigs/X11/themes/sourcerer.xresources"
-!#include "myConfigs/solarized/xresources/solarized"
 
 Xft.autohint: true
 Xft.lcdfilter: lcddefault
@@ -11,6 +21,7 @@ Xft.antialias: true
 Xft.dpi: 96
 Xft.rgba: rgb
 
+! rofi  ---------------------------------------------------------------
 rofi.opacity: 85
 rofi.width: 100
 rofi.lines: 7
@@ -35,6 +46,7 @@ rofi.key-window: mod4+Tab
 rofi.key-run: mod4+d
 rofi.key-ssh: mod1+F3
 
+! URxvt  ---------------------------------------------------------------
 URxvt.meta8: true
 
 URxvt.font: xft:Input Mono Compressed:Regular:size=10,xft:MicrosoftYaHei:Regular:size=10
