@@ -439,7 +439,7 @@ Troubleshooting
 
 	Choose 'GUI style' to 'GTK+', this will unify the style between Qt and GTK+.
 
-2. Fix apt-get GPG error “NO_PUBKEY”
+1. Fix apt-get GPG error “NO_PUBKEY”
 
 	This problem is caused by [bug #1263540](https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1263540), it occurs if there are more than 40 keys (*.gpg) in /etc/apt/trusted.gpg.d/. Try below:
 
