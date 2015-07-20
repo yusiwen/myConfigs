@@ -19,10 +19,6 @@ set nocompatible               " be iMproved
   " let Vundle manage Vundle
   Plugin 'gmarik/Vundle.vim'
 
-  " Vundles
-  " Libraris bundles
-
-  " Github repos
   " quoting/parenthesizing made simple
   Plugin 'tpope/vim-surround'
   " pairs of handy bracket mappings
@@ -39,6 +35,7 @@ set nocompatible               " be iMproved
   " tree explorer plugin for vim
   Plugin 'scrooloose/nerdtree'
   Plugin 'Xuyuanp/nerdtree-git-plugin'
+  Plugin 'bling/vim-airline'
 
   " easy note taking in Vim
   Plugin 'xolox/vim-misc'
@@ -46,6 +43,8 @@ set nocompatible               " be iMproved
 
   " sublime text style multiple selection
   Plugin 'terryma/vim-multiple-cursors'
+  " visually select increasingly larger regions
+  Plugin 'terryma/vim-expand-region'
 
   " Shuogo's neo packages
   Plugin 'Shougo/vimproc.vim'
@@ -77,6 +76,8 @@ set nocompatible               " be iMproved
   " Language & Develop specific repos
   " git wrapper
   Plugin 'tpope/vim-fugitive'
+  " gitk for Vim
+  Plugin 'gregsexton/gitv'
   " shows a git diff in the gutter
   Plugin 'airblade/vim-gitgutter'
   " groovy
@@ -97,15 +98,15 @@ set nocompatible               " be iMproved
   Plugin 'pangloss/vim-javascript'
   " CoffeeScript support
   Plugin 'kchmck/vim-coffee-script'
+  " markdown extensions
+  Plugin 'plasticboy/vim-markdown'
+  " view man pages in vim
+  Plugin 'bruno-/vim-man'
 
-  " vim-scripts repos
-" Plugin 'vim-scripts/TabBar'
   " keep/restore fcitx state when toggling insert mode
   Plugin 'vim-scripts/fcitx.vim'
   " extended % matching for HTML, LaTeX, etc
   Plugin 'vim-scripts/matchit.zip'
-
-  " non github repos
 
   " themes repos
   "Plugin 'altercation/vim-colors-solarized'
@@ -113,7 +114,6 @@ set nocompatible               " be iMproved
   "Plugin 'jnurmine/Zenburn'
   "Plugin 'morhetz/gruvbox'
   "Plugin 'chriskempson/base16-vim'
-  Plugin 'bling/vim-airline'
 
   call vundle#end()
 " }}}
