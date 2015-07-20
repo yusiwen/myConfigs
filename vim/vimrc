@@ -283,12 +283,27 @@ set nocompatible               " be iMproved
 
 " Plugins {{{
 
+" Airline {{{
+  source ~/myConfigs/vim/vimrc.airline
+" }}}
+
 " unite {{{
   source ~/myConfigs/vim/vimrc.unite
 " }}}
 
 " neocomplete {{{
   source ~/myConfigs/vim/vimrc.neocomplete
+" }}}
+
+" vim-multiple_cursors {{{
+" make NeoComplete compatible with vim-multiple-cursors
+  function! Multiple_cursors_before()
+    exe 'NeoCompleteLock'
+  endfunction
+
+  function! Multiple_cursors_after()
+    exe 'NeoCompleteUnlock'
+  endfunction
 " }}}
 
 " {{{ Eclim
@@ -342,10 +357,6 @@ set nocompatible               " be iMproved
   let g:notes_suffix = '.note'
   let g:notes_title_sync = 'change_title'
   let g:notes_tab_indents = 0
-" }}}
-
-" Airline {{{
-  source ~/myConfigs/vim/vimrc.airline
 " }}}
 
 " vim-better-whitespace {{{
