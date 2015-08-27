@@ -58,7 +58,9 @@ for script ($ZSH_CUSTOM_SCRIPTS/*.script); do
   source $script
 done
 
-source /etc/zsh_command_not_found
+if [ $(uname) != 'Darwin' ]; then
+  source /etc/zsh_command_not_found
+fi
 
 if [[ $(tty) == \/dev\/tty[0-9]* ]] ; then
   fbterm

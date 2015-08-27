@@ -6,10 +6,22 @@ alias mv='mv -iv'
 alias cp='cp -iv'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
-alias l='vdir -h --format=across --color'
-alias la='ls++ -aF'
-alias ls='ls++ -F'
-alias dir='dir -l --color'
+if [ $(uname) = 'Darwin' ]; then
+  alias l='ls -G'
+  alias la='ls -G -aF'
+  alias ll='ls -G -alf'
+  alias dir='ls -G'
+else
+  alias l='vdir -h --format=across --color'
+  alias la='ls++ -aF'
+  alias ls='ls++ -F'
+  alias dir='dir -l --color'
+fi
+
+if [ $(uname) = 'Darwin' ]; then
+  alias vi='/usr/local/bin/vi'
+  alias vim='/usr/local/bin/vim'
+fi
 
 # Make grep more user friendly by highlighting matches
 # and exclude grepping through .svn folders.

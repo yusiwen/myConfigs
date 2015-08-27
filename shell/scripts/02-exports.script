@@ -2,12 +2,18 @@
 
 #{{{ Java
 if [ -z "$JAVA_HOME" ]; then
-  # find newest Java SDK version under /opt/java
-  JDK_INSTALLATION_PATH='/opt/java'
-  # select the newest version of JDK to be JAVA_HOME
-  JAVA_NAME=`/bin/ls -dr $JDK_INSTALLATION_PATH/j*/ | head -1`
-  # set JAVA_HOME (truncated trailing '/')
-  JAVA_HOME=`printf '%s' "${JAVA_NAME%/}"`
+  if [ $(uname) = 'Darwin' ]; then
+    # MacOS
+    JAVA_HOME=$(/usr/libexec/java_home)
+  else
+    # Linux
+    # find newest Java SDK version under /opt/java
+    JDK_INSTALLATION_PATH='/opt/java'
+    # select the newest version of JDK to be JAVA_HOME
+    JAVA_NAME=`/bin/ls -dr $JDK_INSTALLATION_PATH/j*/ | head -1`
+    # set JAVA_HOME (truncated trailing '/')
+    JAVA_HOME=`printf '%s' "${JAVA_NAME%/}"`
+  fi
   export JAVA_HOME
   export JDK_HOME=$JAVA_HOME
   export CLASSPATH=.:$JDK_HOME/lib/tools.jar:$JAVA_HOME/jre/lib/rt.jar
