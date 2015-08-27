@@ -46,7 +46,7 @@ hi ModeMsg              cterm=bold      ctermbg=NONE ctermfg=145  guifg=#afafaf 
 hi MoreMsg              cterm=bold      ctermbg=NONE ctermfg=29   guifg=#2e8b57 guibg=NONE    gui=bold
 hi NonText              cterm=NONE      ctermbg=NONE ctermfg=237  guifg=#404050 guibg=NONE    gui=NONE
 hi Pmenu                cterm=NONE      ctermbg=238  ctermfg=231  guifg=#ffffff guibg=#444444
-hi PmenuSbar            cterm=NONE      ctermbg=250  ctermfg=fg   guifg=#ffffff guibg=$444444
+hi PmenuSbar            cterm=NONE      ctermbg=250  ctermfg=fg   guifg=#ffffff guibg=#444444
 hi PmenuSel             cterm=NONE      ctermbg=149  ctermfg=16   guifg=#000000 guibg=#b1d631
 hi PmenuThumb           cterm=reverse   ctermbg=NONE ctermfg=fg
 hi Question             cterm=bold      ctermbg=NONE ctermfg=46   guifg=#00ee00 guibg=NONE    gui=bold
