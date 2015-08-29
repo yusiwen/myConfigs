@@ -5,10 +5,10 @@ endif
 let g:airline_theme = 'lucius'
 
 " powerline symbols
-let g:airline_left_sep = '▓▒░'
-let g:airline_right_sep = '░▒▓'
-let g:airline_right_sep = '▒'
-let g:airline_right_sep = '░'
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_sep = ''
 
 let g:airline_symbols.paste = 'ρ'
 "branch symbol = U+E0A0
