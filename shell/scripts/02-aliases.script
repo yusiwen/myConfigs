@@ -23,6 +23,14 @@ if [ $(uname) = 'Darwin' ]; then
   alias vim='/usr/local/bin/vim'
 fi
 
+# On Mac, to enable italic fonts in iTerm2, TERM must be set to 'xterm-256color-italic'.
+# If ssh to a remote server, the environment may be passed on the remote and it will probable don't know this custom terminal.
+# A possible solution on the local host is to alias ssh
+# See 'https://gist.github.com/sos4nt/3187620' for detail
+if [ $(uname) = 'Darwin' ]; then
+  alias ssh='TERM=xterm-256color ssh'
+fi
+
 # Make grep more user friendly by highlighting matches
 # and exclude grepping through .svn folders.
 alias grep='grep -I --color=auto --exclude-dir={.git,.svn,CVS}'
