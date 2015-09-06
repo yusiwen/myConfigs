@@ -7,9 +7,9 @@ alias cp='cp -iv'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
 if [ $(uname) = 'Darwin' ]; then
-  alias l='ls -G'
+  alias l='ls -GF'
   alias la='ls -G -aF'
-  alias ll='ls -G -alf'
+  alias ll='ls -G -alF'
   alias dir='ls -G'
 else
   alias l='vdir -h --format=across --color'

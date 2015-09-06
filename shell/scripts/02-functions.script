@@ -105,3 +105,11 @@ flac2alac() {
   done
 }
 
+# Add folder to $PATH if it doesn't exist in it
+#   see: http://superuser.com/questions/39751/add-directory-to-path-if-its-not-already-there
+addpath() {
+  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+    PATH="${PATH:+"$PATH:"}$1"
+  fi
+}
+

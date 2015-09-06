@@ -67,4 +67,7 @@ if [ -z "$I3_COLOR_THEME" ]; then
   I3_COLOR_THEME=dark
   export I3_COLOR_THEME
 fi
+
+addpath "$HOME/bin"
+export PATH
 #}}}
