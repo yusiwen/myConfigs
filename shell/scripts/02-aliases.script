@@ -35,7 +35,11 @@ fi
 # and exclude grepping through .svn folders.
 alias grep='grep -I --color=auto --exclude-dir={.git,.svn,CVS}'
 
-alias df='df -h --total'
+if [ $(uname) = 'Darwin' ]; then
+  alias df='df -h'
+else
+  alias df='df -h --total'
+fi
 alias pgrep='pgrep -a'
 
 # Shortcut for using the Kdiff3 tool for svn diffs.
