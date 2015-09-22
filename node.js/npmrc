@@ -1,1 +1,3 @@
-prefix=${HOME}/.npm-packages
+prefix=/Users/yusiwen/.npm-packages
+proxy=http://b.qypac.net:15355/
+https-proxy=https://b.qypac.net:15355
