@@ -322,7 +322,7 @@ bindsym $mod!!<1!,+Shift>+!!<2!1..9,0> \
 bindsym $mod+!!<b,n> workspace !!<prev,next>
 
 # Assign applications to workspace
-assign [class="^Google-chrome$"] $ws2
+assign [class="^google-chrome$"] $ws2
 assign [class="^Geary$|^Thunderbird$"] $ws3
 assign [class="^URxvt$" instance="$MUA" title="$MUA"] $ws3
 assign [class="^WizNote$|^Evince$"] $ws4
