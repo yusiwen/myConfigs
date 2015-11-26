@@ -31,4 +31,7 @@ $ git clone https://github.com/yusiwen/ls--
 $ cd ls-- && cp ls++.conf $HOME/.ls++.conf
 $ sudo cp ls++ /usr/local/bin/ls++
 ```
+##Note:
+
+`Term::ExtendedColor` may be needed when using terminal other than `urxvt-256color`. See [this](https://github.com/trapd00r/Term-ExtendedColor).
 
