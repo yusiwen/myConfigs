@@ -301,6 +301,12 @@ exec --no-startup-id !!<\
 !?<HOSTNAME=home-ubuntu
 exec --no-startup-id dropboxd
 >
+!?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
+exec --no-startup-id !!<\
+  /usr/bin/prlcc,\
+  sh -c 'LD_LIBRARY_PATH=/usr/lib/parallels-tools/lib:$LD_LIBRARY_PATH /usr/bin/prl_wmouse_d -d',\
+  /usr/bin/ptiagent --info>
+>
 # }}}
 
 # {{{ Workspace settings
