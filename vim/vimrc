@@ -344,6 +344,12 @@ set nocompatible               " be iMproved
 
 " TagBar {{{
   nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
+  if has("unix")
+    let s:uname = system("uname -s")
+      if s:uname == "Darwin\n"
+        let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+      endif
+  endif
 " }}}
 
 " vim-tags {{{
