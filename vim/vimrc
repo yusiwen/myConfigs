@@ -170,6 +170,14 @@ set nocompatible               " be iMproved
   set ttimeoutlen=50
 
   set fillchars=""
+
+  " set italic codes under Mac
+  if has("unix")
+    let s:uname = substitute(system('uname'), '\n', '', '')
+      if s:uname == "Darwin"
+        set t_ZH=[3m t_ZR=[23m
+      endif
+  endif
 " }}}
 
 " General Keybindings & Mappings {{{
