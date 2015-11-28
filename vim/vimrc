@@ -103,8 +103,14 @@ set nocompatible               " be iMproved
   " view man pages in vim
   Plugin 'bruno-/vim-man'
 
-  " keep/restore fcitx state when toggling insert mode
-  Plugin 'vim-scripts/fcitx.vim'
+  " 'fcitx.vim' is only needed under Linux
+  if has("unix")
+    let s:uname = substitute(system('uname'), '\n', '', '')
+      if s:uname == "Linux"
+        " keep/restore fcitx state when toggling insert mode
+        Plugin 'vim-scripts/fcitx.vim'
+      endif
+  endif
   " extended % matching for HTML, LaTeX, etc
   Plugin 'vim-scripts/matchit.zip'
 
@@ -347,8 +353,8 @@ set nocompatible               " be iMproved
 " on mac, default '/bin/ctags' provided by Apple is not exuberant ctags,
 " homebrew's ctags is installed under '/usr/local/bin'
   if has("unix")
-    let s:uname = system("uname -s")
-      if s:uname == "Darwin\n"
+    let s:uname = substitute(system('uname'), '\n', '', '')
+      if s:uname == "Darwin"
         let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
       endif
   endif
