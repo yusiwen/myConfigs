@@ -9,7 +9,12 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 # {{{ Global variables
+!?<HOSTNAME=home-ubuntu
 set $mod Mod4
+>
+!?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
+set $mod Mod1
+>
 
 set $TERM urxvtc
 set $BROWSER google-chrome
