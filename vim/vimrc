@@ -344,6 +344,8 @@ set nocompatible               " be iMproved
 
 " TagBar {{{
   nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
+" on mac, default '/bin/ctags' provided by Apple is not exuberant ctags,
+" homebrew's ctags is installed under '/usr/local/bin'
   if has("unix")
     let s:uname = system("uname -s")
       if s:uname == "Darwin\n"
