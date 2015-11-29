@@ -9,7 +9,12 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 # {{{ Global variables
+!?<HOSTNAME=home-ubuntu
 set $mod Mod4
+>
+!?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
+set $mod Mod1
+>
 
 set $TERM urxvtc
 set $BROWSER google-chrome
@@ -300,6 +305,12 @@ exec --no-startup-id !!<\
 >
 !?<HOSTNAME=home-ubuntu
 exec --no-startup-id dropboxd
+>
+!?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
+exec --no-startup-id !!<\
+  /usr/bin/prlcc,\
+  sh -c 'LD_LIBRARY_PATH=/usr/lib/parallels-tools/lib:$LD_LIBRARY_PATH /usr/bin/prl_wmouse_d -d',\
+  /usr/bin/ptiagent --info>
 >
 # }}}
 
