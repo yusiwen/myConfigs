@@ -113,6 +113,8 @@ set nocompatible               " be iMproved
   endif
   " extended % matching for HTML, LaTeX, etc
   Plugin 'vim-scripts/matchit.zip'
+  " easy code formatting in Vim by integrating existing code formatters
+  Plugin 'Chiel92/vim-autoformat'
 
   " themes repos
   "Plugin 'altercation/vim-colors-solarized'
@@ -418,5 +420,9 @@ set nocompatible               " be iMproved
 
   let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
   hi link EasyMotionMoveHL Search
+" }}}
+
+" vim-autoformat {{{
+  noremap <F3> :Autoformat<CR>
 " }}}
 " }}}
