@@ -127,7 +127,6 @@ set nocompatible               " be iMproved
 " }}}
 
 " General settings {{{
-
   filetype plugin indent on
   syntax on
 
@@ -173,17 +172,20 @@ set nocompatible               " be iMproved
 
   set fillchars=""
 
-  " set italic codes under Mac
+  " Mac OSX specific settings {{{
   if has("unix")
     let s:uname = substitute(system('uname'), '\n', '', '')
       if s:uname == "Darwin"
+        " set italic codes under Mac
         set t_ZH=[3m t_ZR=[23m
+        " using OSX system clipboard
+        set clipboard=unnamed
       endif
   endif
+  " }}}
 " }}}
 
 " General Keybindings & Mappings {{{
-
   let mapleader=","
   let maplocalleader=","
 
@@ -281,7 +283,6 @@ set nocompatible               " be iMproved
 " }}}
 
 " Tabs Navigatoin {{{
-
   " Since most terminal emulators do not intercept Ctrl-Tab, they just send the
   " same code as for Tab, use <Leader>(which is ',' by default) intead of <C>
   " If want to change that, please checkout this post below:
@@ -301,7 +302,6 @@ set nocompatible               " be iMproved
 " }}}
 
 " Plugins {{{
-
 " Airline {{{
   source ~/myConfigs/vim/vimrc.airline
 " }}}
