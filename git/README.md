@@ -3,7 +3,7 @@ GIT
 
 Git configuration scripts.
 
-# Editor
+### Editor
 
 ```
 $ git config --global core.editor "vim"
@@ -15,6 +15,16 @@ Or set the GIT_EDITOR, VISUAL, or EDITOR environment variables.
 export GIT_EDITOR=vim
 export VISUAL=vim
 export EDITOR=vim
+```
+
+### Mergetool
+
+Using `vimdiff` as git's Mergetool, see [this post](http://www.rosipov.com/blog/use-vimdiff-as-git-mergetool/) for more details.
+
+```
+git config merge.tool vimdiff
+git config merge.conflictstyle diff3
+git config mergetool.prompt false
 ```
 
 ### Proxy
