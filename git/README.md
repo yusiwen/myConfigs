@@ -27,6 +27,14 @@ git config merge.conflictstyle diff3
 git config mergetool.prompt false
 ```
 
+or
+
+```
+git config --global merge.tool vimdiff
+git config --global merge.conflictstyle diff3
+git config --global mergetool.prompt false
+```
+
 ### Proxy
 
 1. Using shadowsocks-qt5 as SOCKS5 proxy:
