@@ -29,10 +29,10 @@ $ cd ~/rxvt-unicode
 
   In `~/.Xresources`, add 'clipboard' to URxvt.perl-ext-common string. see `X11/Xresources` for details.
 
-  Need xsel package.
+  Need xclip package.
 
 ```
-$ sudo apt-get install xsel
+$ sudo apt-get install xclip
 $ sudo cp ~/myConfigs/rxvt/clipboard /usr/local/lib/urxvt/perl/
 ```
 
