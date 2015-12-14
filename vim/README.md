@@ -17,10 +17,16 @@ VIM Installation
 
 	As for the latest build, try `ppa:pkg-vim/vim-daily`.
 
-1. Install vundle
+1. Install Vundle or NeoBundle
 
 	```text
 	$ git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+	```
+
+	or
+
+	```text
+	$ git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
 	```
 
 1. Link vimrc to ~/.vimrc
@@ -31,9 +37,9 @@ VIM Installation
 
 1. Install plugins:
 
-	Launch `vim` and run `:PluginInstall`
+	Launch `vim` and run `:PluginInstall`(Vundle) or `:NeoBundleInstall`(NeoBundle)
 
-	To install from command line: `vim +PluginInstall +qall`
+	To install from command line: `vim +PluginInstall +qall` or `vim +NeoBundleInstall +qall`
 
 1. Install vim-instant-markdown plugin
 
