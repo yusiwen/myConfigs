@@ -1,0 +1,10 @@
+#script to copy/paste text in URXVT
+
+#! /usr/bin/perl
+
+sub on_sel_grab {
+    my $query = quotemeta $_[0]->selection;
+    $query =~ s/\n/\\n/g;
+    $query =~ s/\r/\\r/g;
+    system( "/bin/echo -n -e " . $query . " | xsel -ibp" );
+}
