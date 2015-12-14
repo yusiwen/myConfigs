@@ -9,293 +9,308 @@
 "  @author: yusiwen@gmail.com
 "  ~/.vimrc is a symbolic link to ~/myConfigs/vim/vimrc
 
-set nocompatible               " be iMproved
+set nocompatible               " Be iMproved
 
-" Vundle {{{
-  filetype off
-  set rtp+=~/.vim/bundle/Vundle.vim/
-  call vundle#begin()
+" Local variables {{{
+let s:is_windows = has('win16') || has('win32') || has('win64')
+let s:is_cygwin = has('win32unix')
+let s:is_mac = !s:is_windows && !s:is_cygwin
+      \ && (has('mac') || has('macunix') || has('gui_macvim') ||
+      \   (!executable('xdg-open') &&
+      \     system('uname') =~? '^darwin'))
+let s:is_linux = !s:is_windows && !s:is_cygwin && !s:is_mac
+      \ && (has('unix') && system('uname') =~? '^linux')
+" }}}
 
-  " let Vundle manage Vundle
-  Plugin 'gmarik/Vundle.vim'
+" NeoBundle {{{
+filetype off
+set runtimepath+=~/.vim/bundle/neobundle.vim/
+call neobundle#begin(expand('~/.vim/bundle/'))
 
-  " quoting/parenthesizing made simple
-  Plugin 'tpope/vim-surround'
-  " pairs of handy bracket mappings
-  Plugin 'tpope/vim-unimpaired'
-  " insert or delete brackets, parens, quotes in pair
-  Plugin 'jiangmiao/auto-pairs'
+" Let NeoBundle manage NeoBundle
+NeoBundleFetch 'Shougo/neobundle.vim'
+" quoting/parenthesizing made simple
+NeoBundle 'tpope/vim-surround'
+" pairs of handy bracket mappings
+NeoBundle 'tpope/vim-unimpaired'
+" insert or delete brackets, parens, quotes in pair
+NeoBundle 'jiangmiao/auto-pairs'
 
-  " displays tags in a window
-  Plugin 'majutsushi/tagbar'
-  " Ctags generator for Vim
-  Plugin 'szw/vim-tags'
-  " Automatically discover and update ctags files on save
-  Plugin 'craigemery/vim-autotag'
-  " tree explorer plugin for vim
-  Plugin 'scrooloose/nerdtree'
-  Plugin 'Xuyuanp/nerdtree-git-plugin'
-  Plugin 'bling/vim-airline'
+" displays tags in a window
+"NeoBundle 'majutsushi/tagbar'
+" Ctags generator for Vim
+NeoBundle 'szw/vim-tags'
+" Automatically discover and update ctags files on save
+NeoBundle 'craigemery/vim-autotag'
+" tree explorer for vim
+"NeoBundle 'scrooloose/nerdtree'
+"NeoBundle 'Xuyuanp/nerdtree-git-NeoBundle'
+NeoBundle 'bling/vim-airline'
 
-  " easy note taking in Vim
-  Plugin 'xolox/vim-misc'
-  Plugin 'xolox/vim-notes'
+" easy note taking in Vim
+NeoBundle 'xolox/vim-misc'
+NeoBundle 'xolox/vim-notes'
 
-  " sublime text style multiple selection
-  Plugin 'terryma/vim-multiple-cursors'
-  " visually select increasingly larger regions
-  Plugin 'terryma/vim-expand-region'
+" sublime text style multiple selection
+NeoBundle 'terryma/vim-multiple-cursors'
+" visually select increasingly larger regions
+NeoBundle 'terryma/vim-expand-region'
 
-  " Shuogo's neo packages
-  Plugin 'Shougo/vimproc.vim'
-  Plugin 'Shougo/unite.vim'
-  Plugin 'Shougo/unite-session'
-  Plugin 'Shougo/neomru.vim'
-  "Plugin 'Shougo/vimfiler.vim'
-  Plugin 'Shougo/neocomplete.vim'
-  "Plugin 'Shougo/neosnippet.vim'
-  "Plugin 'Shougo/neosnippet-snippets'
-  "Plugin 'honza/vim-snippets'
-  Plugin 'tsukkee/unite-tag'
+" Shuogo's neo packages
+NeoBundle 'Shougo/vimproc.vim'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/unite-session'
+NeoBundle 'Shougo/unite-outline'
+NeoBundle 'Shougo/neoyank.vim'
+NeoBundle 'Shougo/unite-help'
+NeoBundle 'tsukkee/unite-tag'
+NeoBundle 'Shougo/neomru.vim'
+NeoBundle 'Shougo/vimfiler.vim'
+NeoBundle 'Shougo/neocomplete.vim'
+"NeoBundle 'Shougo/neosnippet.vim'
+"NeoBundle 'Shougo/neosnippet-snippets'
+"NeoBundle 'honza/vim-snippets'
 
-  " extensible & universal comment
-  Plugin 'tomtom/tcomment_vim'
-  " colorize text in the form #rrggbb or #rgb
-  Plugin 'lilydjwg/colorizer'
-  " text filtering and alignment
-  Plugin 'godlygeek/tabular'
-  " accelerated smooth scroll
-  Plugin 'yonchu/accelerated-smooth-scroll'
-  " better whitespace highlighting
-  Plugin 'ntpeters/vim-better-whitespace'
-  " Vim motions on speed!
-  Plugin 'easymotion/vim-easymotion'
-  " enable repeating supported plugin maps with "."
-  Plugin 'tpope/vim-repeat'
+" extensible & universal comment
+NeoBundle 'tomtom/tcomment_vim'
+" colorize text in the form #rrggbb or #rgb
+NeoBundle 'lilydjwg/colorizer'
+" text filtering and alignment
+NeoBundle 'godlygeek/tabular'
+" accelerated smooth scroll
+NeoBundle 'yonchu/accelerated-smooth-scroll'
+" better whitespace highlighting
+NeoBundle 'ntpeters/vim-better-whitespace'
+" Vim motions on speed!
+NeoBundle 'easymotion/vim-easymotion'
+" enable repeating supported NeoBundle maps with "."
+NeoBundle 'tpope/vim-repeat'
 
-  " Language & Develop specific repos
-  " git wrapper
-  Plugin 'tpope/vim-fugitive'
-  " gitk for Vim
-  Plugin 'gregsexton/gitv'
-  " shows a git diff in the gutter
-  Plugin 'airblade/vim-gitgutter'
-  " groovy
-  Plugin 'vim-scripts/groovy.vim'
-  " gradle support
-  Plugin 'tfnico/vim-gradle'
-  " wisely add 'end' in ruby, vim script, etc
-  Plugin 'tpope/vim-endwise'
-  " Ruby on Rails power tools
-  Plugin 'tpope/vim-rails'
-  " mappings for HTML, XML, PHP, eRuby, JSP, etc
-  Plugin 'tpope/vim-ragtag'
-  " runtime files for Haml, Sass, and SCSS
-  Plugin 'tpope/vim-haml'
-  " tools for developing Node.js
-  Plugin 'moll/vim-node'
-  " improved Javascript indentation and syntax
-  Plugin 'pangloss/vim-javascript'
-  " CoffeeScript support
-  Plugin 'kchmck/vim-coffee-script'
-  " markdown extensions
-  Plugin 'plasticboy/vim-markdown'
-  " view man pages in vim
-  Plugin 'bruno-/vim-man'
+" Language & Develop specific repos
+" git wrapper
+NeoBundle 'tpope/vim-fugitive'
+" gitk for Vim
+NeoBundle 'gregsexton/gitv'
+" shows a git diff in the gutter
+NeoBundle 'airblade/vim-gitgutter'
+" groovy
+NeoBundle 'vim-scripts/groovy.vim'
+" gradle support
+NeoBundle 'tfnico/vim-gradle'
+" wisely add 'end' in ruby, vim script, etc
+NeoBundle 'tpope/vim-endwise'
+" Ruby on Rails power tools
+NeoBundle 'tpope/vim-rails'
+" mappings for HTML, XML, PHP, eRuby, JSP, etc
+NeoBundle 'tpope/vim-ragtag'
+" runtime files for Haml, Sass, and SCSS
+NeoBundle 'tpope/vim-haml'
+" tools for developing Node.js
+NeoBundle 'moll/vim-node'
+" improved Javascript indentation and syntax
+NeoBundle 'pangloss/vim-javascript'
+" CoffeeScript support
+NeoBundle 'kchmck/vim-coffee-script'
+" markdown extensions
+NeoBundle 'plasticboy/vim-markdown'
+" view man pages in vim
+NeoBundle 'bruno-/vim-man'
 
-  " 'fcitx.vim' is only needed under Linux
-  if has("unix")
-    let s:uname = substitute(system('uname'), '\n', '', '')
-      if s:uname == "Linux"
-        " keep/restore fcitx state when toggling insert mode
-        Plugin 'vim-scripts/fcitx.vim'
-      endif
-  endif
-  " extended % matching for HTML, LaTeX, etc
-  Plugin 'vim-scripts/matchit.zip'
-  " easy code formatting in Vim by integrating existing code formatters
-  Plugin 'Chiel92/vim-autoformat'
+" 'fcitx.vim' is only needed under Linux
+if s:is_linux
+   " keep/restore fcitx state when toggling insert mode
+   NeoBundle 'vim-scripts/fcitx.vim'
+endif
+" extended % matching for HTML, LaTeX, etc
+NeoBundle 'vim-scripts/matchit.zip'
+" easy code formatting in Vim by integrating existing code formatters
+NeoBundle 'Chiel92/vim-autoformat'
 
-  " themes repos
-  "Plugin 'altercation/vim-colors-solarized'
-  "Plugin 'nanotech/jellybeans.vim'
-  "Plugin 'jnurmine/Zenburn'
-  "Plugin 'morhetz/gruvbox'
-  "Plugin 'chriskempson/base16-vim'
+" themes repos
+"NeoBundle 'altercation/vim-colors-solarized'
+"NeoBundle 'nanotech/jellybeans.vim'
+"NeoBundle 'jnurmine/Zenburn'
+"NeoBundle 'morhetz/gruvbox'
+"NeoBundle 'chriskempson/base16-vim'
 
-  call vundle#end()
+call neobundle#end()
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
 " }}}
 
 " General settings {{{
-  filetype plugin indent on
-  syntax on
+filetype plugin indent on
+syntax on
 
-  set title
-  set mouse=a
+set title
+set mouse=a
 
-  set shortmess=at      " shorten error messages
+set shortmess=at      " shorten error messages
 
-  set nrformats+=alpha  " in-/decrease letters with C-a/C-x
+set nrformats+=alpha  " in-/decrease letters with C-a/C-x
 
-  set modeline          " enable modelines
-  set modelines=5
+set modeline          " enable modelines
+set modelines=5
 
-  set selection=inclusive
+set selection=inclusive
 
-  set number            " enable line numbers
-  set ruler             " enable something
-  set cursorline        " enable hiliting of cursor line
+set number            " enable line numbers
+set ruler             " enable something
+set cursorline        " enable hiliting of cursor line
 
-  set backspace=2       " backspace over EOL etc.
+set backspace=2       " backspace over EOL etc.
 
-  set background=dark   " i prefer dark backgrounds
+set background=dark   " i prefer dark backgrounds
 
-  set hidden            " buffer switching should be quick
-  set confirm           " ask instead of just print errors
+set hidden            " buffer switching should be quick
+set confirm           " ask instead of just print errors
 
-  set equalalways       " make splits equal size
-  " Always splits to the right and below
-  set splitright
-  set splitbelow
+set equalalways       " make splits equal size
+" Always splits to the right and below
+set splitright
+set splitbelow
 
-  set lazyredraw        " don't redraw while executing macros
+set lazyredraw        " don't redraw while executing macros
 
-  set noshowmode        " don't display mode, it's already in the status line
+set noshowmode        " don't display mode, it's already in the status line
 
-  set laststatus=2      " always show statusline
+set laststatus=2      " always show statusline
 
-  set encoding=utf-8    " Necessary to show Unicode glyphs
-  set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+set encoding=utf-8    " Necessary to show Unicode glyphs
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 
-  set timeoutlen=500
-  set ttimeoutlen=50
+set timeoutlen=1000
+set ttimeoutlen=0
 
-  set fillchars=""
+set fillchars=""
 
-  " Mac OSX specific settings {{{
-  if has("unix")
-    let s:uname = substitute(system('uname'), '\n', '', '')
-      if s:uname == "Darwin"
-        " set italic codes under Mac
-        set t_ZH=[3m t_ZR=[23m
-        " using OSX system clipboard
-        set clipboard=unnamed
-      endif
-  endif
-  " }}}
+" Mac OSX specific settings {{{
+if s:is_mac
+   " set italic codes under Mac
+   set t_ZH=[3m t_ZR=[23m
+   " using OSX system clipboard
+   set clipboard=unnamed
+endif
+" }}}
 " }}}
 
 " General Keybindings & Mappings {{{
-  let mapleader=","
-  let maplocalleader=","
+let mapleader=","
+let maplocalleader=","
 
-  set pastetoggle=<F10>
+set pastetoggle=<F10>
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
-"  command W w !sudo tee % > /dev/null
+"command W w !sudo tee % > /dev/null
 " }}}
 
 " GUI or no GUI, that's the question {{{
-  if has('gui_running')
-    set guicursor+=a:blinkon0       " Cursor doesn't blink - it's annoying
-    set guioptions-=m               " No Menubar
-    set guioptions-=T               " No Toolbar
-    set guioptions-=l               " No Scrollbar left
-    set guioptions-=L               " No Scrollbar left when split
-    set guioptions-=r               " No Scrollbar right
-    set guioptions-=r               " No Scrollbar right when split
+if has('gui_running')
+  set guicursor+=a:blinkon0       " Cursor doesn't blink - it's annoying
+  set guioptions-=m               " No Menubar
+  set guioptions-=T               " No Toolbar
+  set guioptions-=l               " No Scrollbar left
+  set guioptions-=L               " No Scrollbar left when split
+  set guioptions-=r               " No Scrollbar right
+  set guioptions-=r               " No Scrollbar right when split
 
-    set guifont=Input\ Mono\ 10
+  set guifont=Input\ Mono\ 10
 
-    set lines=40                    " Height
-    set columns=85                  " Width
+  set lines=40                    " Height
+  set columns=85                  " Width
 
-    set background=dark
+  set background=dark
 
-    colorscheme sourcerer
-  else
-    colorscheme sourcerer
-    set t_Co=256
-  endif
+  colorscheme sourcerer
+else
+  colorscheme sourcerer
+  set t_Co=256
+endif
 " }}}
 
 " Tabstops {{{
-  set tabstop=2
-  set shiftwidth=2
-  set softtabstop=2
-  set autoindent
-  set smartindent
-  set expandtab
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set autoindent
+set smartindent
+set expandtab
 
-  " turn off expandtab for editing makefiles
-  autocmd FileType make setlocal noexpandtab
+" turn off expandtab for editing makefiles
+autocmd FileType make setlocal noexpandtab
 " }}}
 
 " Invisibles {{{
 " tab: U+25BA, extends: U+00BB, precedes:U+00AB, trail:U+2017, eol:U+00AC
-  set listchars=tab:►\ ,extends:»,precedes:«,trail:_,eol:¬
-  set list
-  nmap <silent> <F11> :set list!<CR>
+set listchars=tab:►\ ,extends:»,precedes:«,trail:_,eol:¬
+set list
+nmap <silent> <F11> :set list!<CR>
 " }}}
 
 " Folds {{{
-  set foldmethod=marker
-  set foldcolumn=1
+set foldmethod=marker
+set foldcolumn=1
 " }}}
 
 " Pairings {{{
-  set showmatch
+set showmatch
 " }}}
 
 " Margins {{{
-  set scrolloff=5
-  set sidescroll=5
+set scrolloff=5
+set sidescroll=5
 " }}}
 
 " Search {{{
-  set incsearch
-  set ignorecase
+set incsearch
+set ignorecase
 
-  " Toggle that stupid highlight search
-  nmap <silent> ,n :set invhls<CR>:set hls?<CR>
+" Toggle that stupid highlight search
+nmap <silent> ,n :set invhls<CR>:set hls?<CR>
 " }}}
 
 " Backup and Recovery {{{
-  set nobackup
-  set writebackup
+set nobackup
+set writebackup
 " set swap file directory to ~/.vim/swap, need to mkdir it first
-  set directory=~/.vim/swap,.
-  set swapfile
+set directory=~/.vim/swap,.
+set swapfile
 " }}}
 
 " Completion {{{
-  set wildmenu
-  set wildmode=longest,full,list
+set wildmenu
+set wildmode=longest,full,list
 
-  set ofu=syntaxcomplete#Complete
+set ofu=syntaxcomplete#Complete
 " }}}
 
 " Wrapping {{{
-  set linebreak
-  set showbreak=∟\
+set linebreak
+set showbreak=∟\
 " toggle wrapping
-  nmap <silent> <F12> :let &wrap = !&wrap<CR>
+nmap <silent> <F12> :let &wrap = !&wrap<CR>
 " }}}
 
 " Tabs Navigatoin {{{
-  " Since most terminal emulators do not intercept Ctrl-Tab, they just send the
-  " same code as for Tab, use <Leader>(which is ',' by default) intead of <C>
-  " If want to change that, please checkout this post below:
-  " http://www.staldal.nu/tech/2009/01/10/how-to-use-ctrl-tab-in-gnu-screen/
-  nnoremap <Leader><S-Tab> :tabprevious<CR>
-  nnoremap <Leader><Tab> :tabnext<CR>
-  nnoremap <Leader>nt :tabnew<CR>
+" Since most terminal emulators do not intercept Ctrl-Tab, they just send the
+" same code as for Tab, use <Leader>(which is ',' by default) intead of <C>
+" If want to change that, please checkout this post below:
+" http://www.staldal.nu/tech/2009/01/10/how-to-use-ctrl-tab-in-gnu-screen/
+nnoremap <Leader><S-Tab> :tabprevious<CR>
+nnoremap <Leader><Tab> :tabnext<CR>
+nnoremap <Leader>nt :tabnew<CR>
 
-  "map <C-W> <Esc>:confirm bdelete<CR>
+"map <C-W> <Esc>:confirm bdelete<CR>
 
-  inoremap <Leader><Tab> <Esc>:tabnext<CR>
-  inoremap <Leader><S-Tab> <Esc>:tabpreviuos<CR>
-  inoremap <C-t> <Esc>:tabnew<CR>
+inoremap <Leader><Tab> <Esc>:tabnext<CR>
+inoremap <Leader><S-Tab> <Esc>:tabpreviuos<CR>
+inoremap <C-t> <Esc>:tabnew<CR>
+" }}}
+
+" Tags {{{
+set tags=./tags;
 " }}}
 
 " Macros {{{
@@ -303,7 +318,7 @@ set nocompatible               " be iMproved
 
 " Plugins {{{
 " Airline {{{
-  source ~/myConfigs/vim/vimrc.airline
+source ~/myConfigs/vim/vimrc.airline
 " }}}
 
 " unite {{{
@@ -312,6 +327,14 @@ set nocompatible               " be iMproved
 
 " neocomplete {{{
   source ~/myConfigs/vim/vimrc.neocomplete
+" }}}
+
+" vimfiler {{{
+  let g:vimfiler_as_default_explorer = 1
+  let g:vimfiler_enable_clipboard = 0
+  " [unite] is difined in 'unite.vim' setting above, which is included in
+  " separated file 'vimrc.unite'
+  nnoremap <silent> [unite]q :<C-u>VimFiler -buffer-name=files -split -simple -winwidth=40 -toggle -no-quit<CR>
 " }}}
 
 " vim-multiple_cursors {{{
@@ -344,12 +367,18 @@ set nocompatible               " be iMproved
 " }}}
 
 " NERDTree {{{
+let bundle = neobundle#tap('nerdtree')
+if bundle
   nnoremap <silent> <Leader>1 :NERDTreeToggle<CR>
+  function! neobundle#hooks.on_source(bundle)
+    let g:NERDTreeChDirMode = 2
+    let g:NERDTreeShowBookmarks = 1
+    let g:NERDTreeWinPos = "left"
+    let g:NERDTreeShowHidden = 0
+  endfunction
 
-  let g:NERDTreeChDirMode = 2
-  let g:NERDTreeShowBookmarks = 1
-  let g:NERDTreeWinPos = "left"
-  let g:NERDTreeShowHidden = 0
+  call neobundle#untap()
+endif
 " }}}
 
 " Fugitive {{{
@@ -362,15 +391,19 @@ set nocompatible               " be iMproved
 " }}}
 
 " TagBar {{{
+let bundle = neobundle#tap('tagbar')
+if bundle
   nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
-" on mac, default '/bin/ctags' provided by Apple is not exuberant ctags,
-" homebrew's ctags is installed under '/usr/local/bin'
-  if has("unix")
-    let s:uname = substitute(system('uname'), '\n', '', '')
-      if s:uname == "Darwin"
-        let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
-      endif
-  endif
+  function! neobundle#hooks.on_source(bundle)
+    " on mac, default '/bin/ctags' provided by Apple is not exuberant ctags,
+    " homebrew's ctags is installed under '/usr/local/bin'
+    if s:is_mac
+      let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+    endif
+  endfunction
+
+  call neobundle#untap()
+endif
 " }}}
 
 " vim-tags {{{

@@ -27,6 +27,10 @@ let g:unite_cursor_line_highlight = 'TabLineSel'
 " let g:unite_abbr_highlight = 'TabLine'
 let g:unite_source_file_mru_filename_format = ':~:.'
 let g:unite_source_file_mru_time_format = ''
+" Max length of tag name field
+let g:unite_source_tag_max_name_length = 30
+" Max length of file name field
+let g:unite_source_tag_max_fname_length = 40
 
 " Use the fuzzy matcher for everything
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -57,16 +61,16 @@ nmap <space> [unite]
 "      \ -no-split -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
 
 " Quick registers
-nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+nnoremap <silent> [unite]r :<C-u>Unite -quick-match -buffer-name=register register<CR>
 
 " Quick buffer and mru
-nnoremap <silent> [unite]u :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
+nnoremap <silent> [unite]u :<C-u>Unite -quick-match -buffer-name=buffers buffer<CR>
 
 " Quick yank history
-nnoremap <silent> [unite]y :<C-u>Unite -no-split -auto-preview -buffer-name=yanks history/yank<CR>
+nnoremap <silent> [unite]y :<C-u>Unite -quick-match -auto-preview -buffer-name=yanks history/yank<CR>
 
-" Quick outline
-nnoremap <silent> [unite]o :<C-u>Unite -no-split -auto-preview -buffer-name=outline -vertical outline<CR>
+" Quick outline (Need 'Shougo/unite-outline' installed)
+nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
 
 " Quick sessions (projects)
 nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session<CR>
@@ -116,7 +120,7 @@ nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
 nnoremap <silent> [unite]; :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
 
 " Quick tags (Need tsukkee/unite-tag installed)
-nnoremap <silent> [unite]t :<C-u>Unite -no-split -buffer-name=tags -default-action=edit tag<CR>
+nnoremap <silent> [unite]t :<C-u>Unite -buffer-name=tags tag<CR>
 
 augroup MyAutoCmd
 augroup END
