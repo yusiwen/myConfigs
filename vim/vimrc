@@ -334,7 +334,8 @@ source ~/myConfigs/vim/vimrc.airline
   let g:vimfiler_enable_clipboard = 0
   " [unite] is difined in 'unite.vim' setting above, which is included in
   " separated file 'vimrc.unite'
-  nnoremap <silent> [unite]q :<C-u>VimFiler -buffer-name=files -split -simple -winwidth=40 -toggle -no-quit<CR>
+  nnoremap <silent> [unite]q :<C-u>VimFilerExplorer -buffer-name=explorer -split -simple -winwidth=40 -toggle -no-quit<CR>
+  nnoremap <silent> [unite]w :<C-u>VimFiler -buffer-name=files -no-split<CR>
 " }}}
 
 " vim-multiple_cursors {{{
@@ -460,5 +461,20 @@ endif
 
 " vim-autoformat {{{
   noremap <F3> :Autoformat<CR>
+  " Custom formatters {{{
+  " -p = --pad-oper
+  " -c = --convert-tabs
+  " -H = --pad-header
+  " -s# = --indent=spaces=#
+  " -t = --indent=tab
+  " -k1 = --align-pointer=type
+  " -W1 = --align-reference=type
+  " -xd = --pad-first-paren-out
+  let g:formatdef_my_astyle_c = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
+  let g:formatters_c = ['my_astyle_c']
+
+  let g:formatdef_my_astyle_cpp = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
+  let g:formatters_cpp = ['my_astyle_cpp']
+  "}}}
 " }}}
 " }}}
