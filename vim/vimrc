@@ -67,8 +67,8 @@ NeoBundle 'tsukkee/unite-tag'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/vimfiler.vim'
 NeoBundle 'Shougo/neocomplete.vim'
-"NeoBundle 'Shougo/neosnippet.vim'
-"NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
 "NeoBundle 'honza/vim-snippets'
 
 " extensible & universal comment
@@ -329,42 +329,63 @@ source ~/myConfigs/vim/vimrc.airline
   source ~/myConfigs/vim/vimrc.neocomplete
 " }}}
 
+" neosnippet {{{
+let g:neosnippet#snippets_directory='~/myConfigs/vim/snippets'
+
+" Plugin key-mappings.
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ neosnippet#expandable_or_jumpable() ?
+  \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
+" }}}
+
 " vimfiler {{{
-  let g:vimfiler_as_default_explorer = 1
-  let g:vimfiler_enable_clipboard = 0
-  " [unite] is difined in 'unite.vim' setting above, which is included in
-  " separated file 'vimrc.unite'
-  nnoremap <silent> [unite]q :<C-u>VimFilerExplorer -buffer-name=explorer -split -simple -winwidth=40 -toggle -no-quit<CR>
-  nnoremap <silent> [unite]w :<C-u>VimFiler -buffer-name=files -no-split<CR>
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_enable_clipboard = 0
+" [unite] is difined in 'unite.vim' setting above, which is included in
+" separated file 'vimrc.unite'
+nnoremap <silent> [unite]q :<C-u>VimFilerExplorer -buffer-name=explorer -split -simple -winwidth=40 -toggle -no-quit<CR>
+nnoremap <silent> [unite]w :<C-u>VimFiler -buffer-name=files -no-split<CR>
 " }}}
 
 " vim-multiple_cursors {{{
 " make NeoComplete compatible with vim-multiple-cursors
-  function! Multiple_cursors_before()
-    exe 'NeoCompleteLock'
-  endfunction
+function! Multiple_cursors_before()
+  exe 'NeoCompleteLock'
+endfunction
 
-  function! Multiple_cursors_after()
-    exe 'NeoCompleteUnlock'
-  endfunction
+function! Multiple_cursors_after()
+  exe 'NeoCompleteUnlock'
+endfunction
 " }}}
 
 " {{{ Eclim
-  let g:EclimCompletionMethod = 'omnifunc'
+let g:EclimCompletionMethod = 'omnifunc'
 " }}}
 
 " Colorizer {{{
-  let g:colorizer_nomap = 1
-  let g:colorizer_startup = 0
+let g:colorizer_nomap = 1
+let g:colorizer_startup = 0
 " }}}
 
 " RagTag {{{
-  imap <M-O> <Esc>o
-  imap <C-J> <Down>
-  let g:ragtag_global_maps = 1
+imap <M-O> <Esc>o
+imap <C-J> <Down>
+let g:ragtag_global_maps = 1
 
-  imap <C-Space> <C-X><Space>
-  imap <C-CR> <C-X><CR>
+imap <C-Space> <C-X><Space>
+imap <C-CR> <C-X><CR>
 " }}}
 
 " NERDTree {{{
@@ -383,12 +404,12 @@ endif
 " }}}
 
 " Fugitive {{{
-  let FugitiveIgnoreBufferTitles = ['NERDTree']
-  let FugitivePreferFileBuffers = 1
+let FugitiveIgnoreBufferTitles = ['NERDTree']
+let FugitivePreferFileBuffers = 1
 " }}}
 
 " GitGutter {{{
-  source ~/myConfigs/vim/vimrc.gitgutter
+source ~/myConfigs/vim/vimrc.gitgutter
 " }}}
 
 " TagBar {{{
@@ -410,22 +431,22 @@ endif
 " vim-tags {{{
 " do not let vim-tags auto generate tags on save
 " use vim-autotag plugin to do this instead
-  let g:vim_tags_auto_generate = 1
+let g:vim_tags_auto_generate = 1
 " }}}
 
 " vim-notes {{{
-  let g:notes_directories = ['~/notes']
-  let g:notes_suffix = '.note'
-  let g:notes_title_sync = 'change_title'
-  let g:notes_tab_indents = 0
+let g:notes_directories = ['~/notes']
+let g:notes_suffix = '.note'
+let g:notes_title_sync = 'change_title'
+let g:notes_tab_indents = 0
 " }}}
 
 " vim-better-whitespace {{{
-  let g:better_whitespace_enabled=0
+let g:better_whitespace_enabled=0
 " }}}
 
 " vim-easymotion {{{
-  let g:EasyMotion_do_mapping = 0 " Disable default mappings
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Bi-directional find motion
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
@@ -434,47 +455,47 @@ endif
 " or
 " `s{char}{char}{label}`
 " Need one more keystroke, but on average, it may be more comfortable.
-  nmap <Leader>s <Plug>(easymotion-s2)
-  nmap <Leader>t <Plug>(easymotion-t2)
+nmap <Leader>s <Plug>(easymotion-s2)
+nmap <Leader>t <Plug>(easymotion-t2)
 
-  map  / <Plug>(easymotion-sn)
-  omap / <Plug>(easymotion-tn)
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
 
 " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
 " Without these mappings, `n` & `N` works fine. (These mappings just provide
 " different highlight method and have some other features )
-  map  n <Plug>(easymotion-next)
-  map  N <Plug>(easymotion-prev)
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
 
 " Turn on case insensitive feature
-  let g:EasyMotion_smartcase = 1
+let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
-  map <Leader>l <Plug>(easymotion-lineforward)
-  map <Leader>j <Plug>(easymotion-j)
-  map <Leader>k <Plug>(easymotion-k)
-  map <Leader>h <Plug>(easymotion-linebackward)
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
 
-  let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
-  hi link EasyMotionMoveHL Search
+let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+hi link EasyMotionMoveHL Search
 " }}}
 
 " vim-autoformat {{{
-  noremap <F3> :Autoformat<CR>
-  " Custom formatters {{{
-  " -p = --pad-oper
-  " -c = --convert-tabs
-  " -H = --pad-header
-  " -s# = --indent=spaces=#
-  " -t = --indent=tab
-  " -k1 = --align-pointer=type
-  " -W1 = --align-reference=type
-  " -xd = --pad-first-paren-out
-  let g:formatdef_my_astyle_c = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
-  let g:formatters_c = ['my_astyle_c']
+noremap <F3> :Autoformat<CR>
+" Custom formatters {{{
+" -p = --pad-oper
+" -c = --convert-tabs
+" -H = --pad-header
+" -s# = --indent=spaces=#
+" -t = --indent=tab
+" -k1 = --align-pointer=type
+" -W1 = --align-reference=type
+" -xd = --pad-first-paren-out
+let g:formatdef_my_astyle_c = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
+let g:formatters_c = ['my_astyle_c']
 
-  let g:formatdef_my_astyle_cpp = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
-  let g:formatters_cpp = ['my_astyle_cpp']
-  "}}}
+let g:formatdef_my_astyle_cpp = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
+let g:formatters_cpp = ['my_astyle_cpp']
+"}}}
 " }}}
 " }}}
