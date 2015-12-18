@@ -1,29 +1,39 @@
-snippet     file_head_comment
-abbr        fhc
+snippet     comment_file_head
+abbr        cmfh
 options     head
-    /** @file
-     *  @brief .
+    /** @file `bufname('%') ==#'[Command Line]' ? expand('#') : expand('%')`${0}
+     *  @brief ${1:brief_information}.
      *
-     *  This contains .
+     *  This file contains ${2:detail_information}.
      *
      *  @author Siwen Yu (yusiwen@gmail.com)
      *
-     *  @date
+     *  @date ${3:YYYY-MM-DD}
      *  - First version
      *
-     *  @date
-     *  - Add some functions
      */
 
-snippet     function_comment
-abbr        funcc
-options     head
-    /** @brief .
+snippet     comment_function
+abbr        cmfunc
+options     word
+    /** @brief ${0:brief_information}.
      *
-     *  This function
+     *  This function ${1:detail_information}.
      *
-     *  @param[in]
-     *  @param[in]
-     *  @return
+     *  @param[in] ${2:param1_name} ${3:param1}
+     *  @param[in] ${4:param2_name} ${5:param2}
+     *  @return ${6:return_value}
      */
 
+snippet     comment_detail
+abbr        cmdtl
+options     word
+    /**
+     * ${0:brief_information}
+     * ${1:detail_information}
+     */
+
+snippet     comment_brief
+abbr        cmbrf
+options     word
+    /**< ${0:comment} */
