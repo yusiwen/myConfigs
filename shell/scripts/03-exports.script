@@ -1,5 +1,23 @@
 #!/bin/sh
 
+#{{{ Oracle instant client
+if [ -z "$ORACLE_HOME" ]; then
+  CLIENT_INSTALLATION_PATH="$HOME/instantclient_11_2"
+  if [ -d "$CLIENT_INSTALLATION_PATH" ]; then
+    ORACLE_HOME=$CLIENT_INSTALLATION_PATH
+    export ORACLE_HOME
+    export PATH=$PATH:$ORACLE_HOME
+    export TNS_ADMIN=$ORACLE_HOME/network/admin
+    if [ -z "$LD_LIBRARY_PATH" ]; then
+      export LD_LIBRARY_PATH=$ORACLE_HOME
+    else
+      export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
+    fi
+    export NLS_LANG=american_america.ZHS32GB18030
+  fi
+fi
+#}}}
+
 #{{{ Java
 if [ -z "$JAVA_HOME" ]; then
   if [ $(uname) = 'Darwin' ]; then
