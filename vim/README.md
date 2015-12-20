@@ -3,7 +3,7 @@ VIM Installation
 
 ##Prerequisites
 
-`cscope`, `exuberant ctags`, `lua`
+`cscope`, `exuberant ctags`, `lua`, `ag`
 
 1. Install vim:
 
