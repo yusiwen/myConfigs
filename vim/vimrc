@@ -118,8 +118,8 @@ NeoBundle 'bruno-/vim-man'
 
 " 'fcitx.vim' is only needed under Linux
 if s:is_linux
-   " keep/restore fcitx state when toggling insert mode
-   NeoBundle 'vim-scripts/fcitx.vim'
+  " keep/restore fcitx state when toggling insert mode
+  NeoBundle 'vim-scripts/fcitx.vim'
 endif
 " extended % matching for HTML, LaTeX, etc
 NeoBundle 'vim-scripts/matchit.zip'
@@ -188,10 +188,10 @@ set fillchars=""
 
 " Mac OSX specific settings {{{
 if s:is_mac
-   " set italic codes under Mac
-   set t_ZH=[3m t_ZR=[23m
-   " using OSX system clipboard
-   set clipboard=unnamed
+  " set italic codes under Mac
+  set t_ZH=[3m t_ZR=[23m
+  " using OSX system clipboard
+  set clipboard=unnamed
 endif
 " }}}
 " }}}
@@ -322,11 +322,11 @@ source ~/myConfigs/vim/vimrc.airline
 " }}}
 
 " unite {{{
-  source ~/myConfigs/vim/vimrc.unite
+source ~/myConfigs/vim/vimrc.unite
 " }}}
 
 " neocomplete {{{
-  source ~/myConfigs/vim/vimrc.neocomplete
+source ~/myConfigs/vim/vimrc.neocomplete
 " }}}
 
 " neosnippet {{{
@@ -339,10 +339,12 @@ xmap <C-k> <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
 imap <expr><TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ neosnippet#expandable_or_jumpable() ?
-  \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+      \ pumvisible() ? "\<C-n>" :
+      \ neosnippet#expandable_or_jumpable() ?
+      \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "
+      \<Plug>(neosnippet_expand_or_jump)"
+      \: "\<TAB>"
 
 " For conceal markers.
 if has('conceal')
