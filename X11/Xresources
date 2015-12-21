@@ -42,9 +42,9 @@ rofi.hmode: false
 rofi.terminal: x-terminal-emulator
 rofi.ssh-set-title: true
 rofi.disable-history: true
-rofi.key-window: mod4+Tab
-rofi.key-run: mod4+d
-rofi.key-ssh: mod1+F3
+rofi.key-window: Alt+Tab
+rofi.key-run: Alt+d
+rofi.key-ssh: Alt+F3
 
 ! URxvt  ---------------------------------------------------------------
 URxvt.meta8: true
