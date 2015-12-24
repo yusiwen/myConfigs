@@ -55,3 +55,6 @@ alias gitl='git log --graph --oneline --decorate'
 alias gitll='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --stat'
 alias gitlp='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%b" -p'
 
+# Valgrind aliases
+alias mchk='valgrind --leak-check=full --show-leak-kinds=all -v'
+
