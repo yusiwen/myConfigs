@@ -333,7 +333,7 @@ source ~/myConfigs/vim/vimrc.neocomplete
 let g:neosnippet#snippets_directory='~/myConfigs/vim/snippets'
 
 " Plugin key-mappings.
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
+imap <expr><C-k> (pumvisible()? "\<C-y>" : '') . "\<Plug>(neosnippet_expand_or_jump)"
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 xmap <C-k> <Plug>(neosnippet_expand_target)
 
