@@ -26,7 +26,7 @@ rofi.opacity: 85
 rofi.width: 100
 rofi.lines: 7
 rofi.columns: 4
-rofi.font: Terminus 10
+rofi.font: Terminus 9
 rofi.fg: #E5DBCF
 rofi.bg: #0F3B5F
 rofi.hlfg: #0F3B5F
@@ -49,10 +49,10 @@ rofi.key-ssh: Alt+F3
 ! URxvt  ---------------------------------------------------------------
 URxvt.meta8: true
 
-URxvt.font: xft:Input Mono Compressed:Regular:size=10,xft:YaHei Consolas Hybrid:Normal:size=10
-URxvt.boldFont: xft:Input Mono Compressed:Bold:size=10,xft:YaHei Consolas Hybrid:Bold:size=10
-URxvt.italicFont: xft:Input Mono Compressed:Italic:size=10,xft:YaHei Consolas Hybrid:Normal:size=10
-URxvt.boldItalicFont: xft:Input Mono Compressed:Bold Italic:size=10,xft:YaHei Consolas Hybrid:Bold:size=10
+URxvt.font: xft:Input Mono Compressed:Regular:size=9,xft:YaHei Consolas Hybrid:Normal:size=9
+URxvt.boldFont: xft:Input Mono Compressed:Bold:size=9,xft:YaHei Consolas Hybrid:Bold:size=9
+URxvt.italicFont: xft:Input Mono Compressed:Italic:size=9,xft:YaHei Consolas Hybrid:Normal:size=9
+URxvt.boldItalicFont: xft:Input Mono Compressed:Bold Italic:size=9,xft:YaHei Consolas Hybrid:Bold:size=9
 
 URxvt.intensityStyles: false
 
