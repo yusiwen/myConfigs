@@ -48,6 +48,7 @@ fi
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
 
 # Git commands aliases
+alias gitc='git commit --verbose'
 alias gits='git status --short --branch'
 alias gitd='git diff --submodule --word-diff'
 alias gitds='git diff --submodule --word-diff --staged'
