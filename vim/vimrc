@@ -237,9 +237,6 @@ set softtabstop=2
 set autoindent
 set smartindent
 set expandtab
-
-" turn off expandtab for editing makefiles
-autocmd FileType make setlocal noexpandtab
 " }}}
 
 " Invisibles {{{
@@ -314,6 +311,13 @@ set tags=./tags;
 " }}}
 
 " Macros {{{
+" }}}
+
+" Specific File Types Settings {{{
+" turn off expandtab for editing makefiles
+autocmd FileType make setlocal noexpandtab
+" for git commit messages
+autocmd Filetype gitcommit setlocal spell textwidth=72
 " }}}
 
 " Plugins {{{
