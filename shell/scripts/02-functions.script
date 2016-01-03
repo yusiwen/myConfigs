@@ -59,10 +59,10 @@ pdfpextr() {
     return 1
   fi
   gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
-     -dFirstPage=${1} \
-     -dLastPage=${2} \
-     -sOutputFile=${3%.pdf}_p${1}-p${2}.pdf \
-     ${3}
+    -dFirstPage=${1} \
+    -dLastPage=${2} \
+    -sOutputFile=${3%.pdf}_p${1}-p${2}.pdf \
+    ${3}
 }
 
 # Fix pdf embedded fonts problem
@@ -76,9 +76,9 @@ pdffixfont() {
     return 1
   fi
   gs -o ${2} \
-     -dPDFSETTINGS=/prepress \
-     -sDEVICE=pdfwrite \
-     ${1}
+    -dPDFSETTINGS=/prepress \
+    -sDEVICE=pdfwrite \
+    ${1}
 }
 
 # Split media file by cue
@@ -111,5 +111,41 @@ addpath() {
   if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
     PATH="${PATH:+"$PATH:"}$1"
   fi
+}
+
+# Find largest directories or files in current folder
+maxs() {
+  numbers=10
+  type='d'
+  re='^[0-9]+$'
+  if [ $# -eq 0 ]; then
+    numbers=10
+    type='d'
+  elif [ $# -eq 1 ]; then
+    if [ "$1" = "-h" ]; then
+      echo "maxs [-fdh] [NUMBER]"
+    fi
+
+    if ! [[ $1 =~ $re ]]; then
+      echo "error: Not a number: $1" >&2; return 1
+    fi
+    numbers="${1}"
+    type='d'
+  else
+    if [ "$1" = "-f" ]; then
+      type='f'
+    elif [ "$1" = "-d" ]; then
+      type='d'
+    else
+      echo "error: Wrong option: $1" >&2; return 1
+    fi
+
+    if ! [[ $2 =~ $re ]]; then
+      echo "error: Not a number: $2" >&2; return 1
+    fi
+    numbers="${2}"
+  fi
+
+  find . -type "$type" -print0 | xargs -0 du | sort -n | tail -"$numbers" | cut -f2 | xargs -I{} du -sh {}
 }
 
