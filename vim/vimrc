@@ -308,6 +308,8 @@ inoremap <C-t> <Esc>:tabnew<CR>
 
 " Tags {{{
 set tags=./tags;
+nmap <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+nmap <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " }}}
 
 " Macros {{{
