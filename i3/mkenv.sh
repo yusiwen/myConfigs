@@ -11,6 +11,7 @@ DUNST_HOME=$HOME/.config/dunst
 [ ! -d $DUNST_HOME ] && mkdir -p $DUNST_HOME
 ln -sf $CONFIG_HOME/dunst/dunstrc $DUNST_HOME/dunstrc
 
+mkdir -p $HOME/bin
 ln -sf $CONFIG_HOME/i3bang/i3bang.rb $HOME/bin/i3bang
 i3bang
 
