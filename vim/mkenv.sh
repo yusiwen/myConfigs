@@ -16,7 +16,7 @@ if [ -z "$PACKAGE" ]; then
   echo 'Install vim-gtk ... done'
 fi
 
-ln -sf $CONFIG_VIM/vimrc $HOME/.vimrc
+ln -sfnv $CONFIG_VIM/vimrc $HOME/.vimrc
 
 if [ ! -d "$VIM_HOME" ]; then
   mkdir $VIM_HOME
@@ -24,22 +24,22 @@ fi
 
 # link custom color themes to $VIM_HOME
 if [ ! -L $VIM_HOME/colors ]; then
-  ln -sf $CONFIG_VIM/colors $VIM_HOME/colors
+  ln -sfnv $CONFIG_VIM/colors $VIM_HOME/colors
 fi
 # make swap directory to store swap files globally
 if [ ! -d $VIM_HOME/swap ]; then
   mkdir $VIM_HOME/swap
 fi
 
-if [ ! -d "$VIM_HOME/bundle/Vundle.vim" ]; then
-  echo 'Install Vundle.vim ...'
-  git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+if [ ! -d "$VIM_HOME/bundle/neobundle.vim" ]; then
+  echo 'Install neobundle.vim ...'
+  git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
   if [ "$?" -ne 0 ]; then
-    echo 'Install Vundle.vim failed, please check your git output.'
+    echo 'Install neobundle.vim failed, please check your git output.'
     exit 2
   fi
-  echo 'Install Vundle.vim ... done'
+  echo 'Install neobundle.vim ... done'
   echo 'Install vim plugins ...'
-  vim +PluginInstall +qall
+  vim +NeoBundleInstall! qall
   echo 'Install vim plugins ... done'
 fi

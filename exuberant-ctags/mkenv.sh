@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ln -sf ~/myConfigs/exuberant-ctags/ctags ~/.ctags
+ln -sfnv ~/myConfigs/exuberant-ctags/ctags ~/.ctags
