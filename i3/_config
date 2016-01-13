@@ -12,6 +12,9 @@
 !?<HOSTNAME=home-ubuntu
 set $mod Mod4
 >
+!?<HOSTNAME=vmware-ubuntu-guest
+set $mod Mod4
+>
 !?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
 set $mod Mod1
 >
