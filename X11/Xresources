@@ -21,7 +21,7 @@ Xft.antialias: true
 Xft.dpi: 96
 Xft.rgba: rgb
 
-! rofi  ---------------------------------------------------------------
+! rofi  ---------------------------------------------------------------{{{
 rofi.opacity: 85
 rofi.width: 100
 rofi.lines: 7
@@ -45,14 +45,15 @@ rofi.disable-history: true
 rofi.key-window: Alt+Tab
 rofi.key-run: Alt+d
 rofi.key-ssh: Alt+F3
+! }}}
 
-! URxvt  ---------------------------------------------------------------
+! URxvt  ---------------------------------------------------------------{{{
 URxvt.meta8: true
 
-URxvt.font: xft:Input Mono Compressed:Regular:size=9,xft:YaHei Consolas Hybrid:Normal:size=9
-URxvt.boldFont: xft:Input Mono Compressed:Bold:size=9,xft:YaHei Consolas Hybrid:Bold:size=9
-URxvt.italicFont: xft:Input Mono Compressed:Italic:size=9,xft:YaHei Consolas Hybrid:Normal:size=9
-URxvt.boldItalicFont: xft:Input Mono Compressed:Bold Italic:size=9,xft:YaHei Consolas Hybrid:Bold:size=9
+URxvt.font: xft:Input Mono Compressed:Regular:size=9,xft:MicrosoftYaHeiUI:Normal:size=9
+URxvt.boldFont: xft:Input Mono Compressed:Bold:size=9,xft:MicrosoftYaHeiUI:Bold:size=9
+URxvt.italicFont: xft:Input Mono Compressed:Italic:size=9,xft:MicrosoftYaHeiUI:Normal:size=9
+URxvt.boldItalicFont: xft:Input Mono Compressed:Bold Italic:size=9,xft:MicrosoftYaHeiUI:Bold:size=9
 
 URxvt.intensityStyles: false
 
@@ -83,9 +84,9 @@ URxvt.tabbed.tabbar-fg: 3
 URxvt.tabbed.tabbar-bg: 0
 URxvt.tabbed.tab-fg:    0
 URxvt.tabbed.tab-bg:    6
+! }}}
 
-! xscreensaver ---------------------------------------------------------------
-
+! xscreensaver ---------------------------------------------------------------{{{
 !font settings
 xscreensaver.Dialog.headingFont:        -*-fixed-medium-r-*-*-14-*-*-*-*-*-*-*
 xscreensaver.Dialog.bodyFont:           -*-fixed-medium-r-*-*-14-*-*-*-*-*-*-*
@@ -111,4 +112,4 @@ xscreensaver.Dialog.shadowThickness:    2
 xscreensaver.passwd.thermometer.foreground:  #101010
 xscreensaver.passwd.thermometer.background:  #2E2E2E
 xscreensaver.passwd.thermometer.width:       8
-
+! }}}
