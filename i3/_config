@@ -351,6 +351,7 @@ for_window [class="^Eclipse$" instance="^Eclipse$" title="^Workspace Launcher "]
 for_window [class="^URxvt$" instance="^ncmpcpp$" title="^ncmpcpp$"] floating enable
 for_window [class="^URxvt$" instance="^mc$" title="^mc$"] floating enable
 for_window [class="^Thunar$" instance="^thunar$"] floating enable
+for_window [class="^Steam$" instance="^Steam$"] floating enable
 for_window [class="!!<\
   ^Gimp$,^Gpick$,^feh$,^Fcitx-config-gtk3$,^Telegram$,\
   ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,\
