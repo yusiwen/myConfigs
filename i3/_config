@@ -295,12 +295,10 @@ bindsym $mod+Shift+Return exec $TERM -name emergence_terminal && i3-msg '[instan
 exec --no-startup-id !!<\
   xrdb -merge ~/.Xresources,\
   xcompmgr -n,dunst,\
-  feh --bg-scale ~/.wallpaper/wallpaper.jpg,\
-  python ~/goagent/local/goagent-gtk.py,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
   thunar --daemon,nm-applet,urxvtd -q -o -f,\
-  mpd ~/.mpd/mpd.conf,orage,indicator-sound-switcher,\
-  ss-qt5,rofi,~/myConfigs/i3/i3.autostart.sh\
+  mpd ~/.mpd/mpd.conf,orage,\
+  ss-qt5,rofi
 >
 !?<HOSTNAME=yusiwen-Aspire-S3
 exec --no-startup-id !!<\
@@ -308,6 +306,9 @@ exec --no-startup-id !!<\
 >
 !?<HOSTNAME=home-ubuntu
 exec --no-startup-id dropboxd
+exec --no-startup-id indicator-sound-switcher
+exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
+exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
 >
 !?<HOSTNAME=vmware-ubuntu-guest
 exec --no-startup-id /usr/bin/vmware-user-suid-wrapper
@@ -316,7 +317,9 @@ exec --no-startup-id /usr/bin/vmware-user-suid-wrapper
 exec --no-startup-id !!<\
   /usr/bin/prlcc,\
   sh -c 'LD_LIBRARY_PATH=/usr/lib/parallels-tools/lib:$LD_LIBRARY_PATH /usr/bin/prl_wmouse_d -d',\
-  /usr/bin/ptiagent --info>
+  /usr/bin/ptiagent --info,\
+  i3-msg Workspace 1:Main,\
+  i3-sensible-terminal>
 >
 # }}}
 
