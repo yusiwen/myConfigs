@@ -507,4 +507,8 @@ let g:formatdef_my_astyle_cpp = '"astyle --mode=c --style=google -xdk1W1pcH".(&e
 let g:formatters_cpp = ['my_astyle_cpp']
 "}}}
 " }}}
+
+" vim-markdown {{{
+let g:vim_markdown_folding_disabled = 1
+" }}}
 " }}}
