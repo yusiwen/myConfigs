@@ -111,8 +111,6 @@ NeoBundle 'moll/vim-node'
 NeoBundle 'pangloss/vim-javascript'
 " CoffeeScript support
 NeoBundle 'kchmck/vim-coffee-script'
-" markdown extensions
-NeoBundle 'plasticboy/vim-markdown'
 " view man pages in vim
 NeoBundle 'bruno-/vim-man'
 
@@ -506,9 +504,5 @@ let g:formatters_c = ['my_astyle_c']
 let g:formatdef_my_astyle_cpp = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
 let g:formatters_cpp = ['my_astyle_cpp']
 "}}}
-" }}}
-
-" vim-markdown {{{
-let g:vim_markdown_folding_disabled = 1
 " }}}
 " }}}
