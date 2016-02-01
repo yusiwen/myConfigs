@@ -223,6 +223,10 @@ if has('gui_running')
 
   colorscheme sourcerer
 else
+  " gruvbox theme {{{
+  "let g:gruvbox_italic=1
+  "colorscheme gruvbox
+  " }}}
   colorscheme sourcerer
   set t_Co=256
 endif

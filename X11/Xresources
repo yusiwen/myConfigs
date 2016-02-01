@@ -12,6 +12,10 @@
 
 ! Color themes
 #include "myConfigs/X11/themes/sourcerer.xresources"
+! Gruvbox theme {{{
+!#include "myConfigs/X11/themes/gruvbox-dark.xresources"
+!#include "myConfigs/X11/themes/gruvbox-urxvt256.xresources"
+! }}}
 
 Xft.autohint: true
 Xft.lcdfilter: lcddefault
