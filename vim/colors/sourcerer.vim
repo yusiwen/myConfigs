@@ -9,7 +9,7 @@
 " sourcerer by xero harrison (http://xero.nu)
 "  ├─ based on sorcerer by Jeet Sukumaran (http://jeetworks.org)
 "  └─ based on mustang by Henrique C. Alves (hcarvalhoalves@gmail.com)
-" adjuested by yusiwen@gmail.com
+" adjusted by yusiwen@gmail.com
 "
 " put this file in: ~/.vim/colors/
 "   or make linke `ln -sf ~/myConfigs/vim/colors ~/.vim/colors`
