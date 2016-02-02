@@ -216,8 +216,8 @@ if has('gui_running')
 
   set guifont=Input\ Mono\ Compressed\ Regular\ 10
 
-  set lines=40                    " Height
-  set columns=85                  " Width
+  set lines=50                    " Height
+  set columns=130                 " Width
 
   source ~/.vim/vimrc.theme
 else
