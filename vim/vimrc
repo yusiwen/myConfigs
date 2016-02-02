@@ -128,7 +128,7 @@ NeoBundle 'altercation/vim-colors-solarized'
 "NeoBundle 'nanotech/jellybeans.vim'
 "NeoBundle 'jnurmine/Zenburn'
 NeoBundle 'morhetz/gruvbox'
-NeoBundle 'chriskempson/base16-vim'
+NeoBundle 'yusiwen/base16-vim'
 
 call neobundle#end()
 
