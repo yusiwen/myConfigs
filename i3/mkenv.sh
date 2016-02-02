@@ -21,7 +21,7 @@ if [ -z "$PACKAGE" ]; then
   # Install 'consolekit'
   echo 'Install consolekit...'
   sudo apt-get install consolekit
-  if [ "$?" -ne 0  ]; then
+  if [ "$?" -ne 0 ]; then
     echo 'Install consolekit failed, please check the output of apt-get.'
     exit 1
   fi
