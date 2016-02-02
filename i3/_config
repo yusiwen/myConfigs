@@ -272,13 +272,13 @@ bindsym $mod+z exec $BROWSER
 # bind key for Thunderbird mail client
 bindsym $mod+Shift+x exec thunderbird
 # bind key for Alpine, run in a new TERM window
-bindsym $mod+x exec $TERM -name $MUA -title $MUA -pe -tabbed -e tsocks $MUA
+bindsym $mod+x exec $TERM -name $MUA -title $MUA -pe -tabbed -e zsh -i -c "tsocks $MUA"
 # bind key for weechat, run in a new TERM window
-bindsym $mod+Shift+o exec $TERM -name $IRC -title $IRC -pe -tabbed -e $IRC
+bindsym $mod+Shift+o exec $TERM -name $IRC -title $IRC -pe -tabbed -e zsh -i -c "$IRC"
 # bind key for PLAYER, run in a new TERM window
-bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -pe -tabbed -e $PLAYER
+bindsym $mod+o exec $TERM -name $PLAYER -title $PLAYER -pe -tabbed -e zsh -i -c "$PLAYER"
 # bind key for FM_CMD, run in a new TERM window
-bindsym $mod+m exec $TERM -name $FM_CMD -title $FM_CMD -geometry 160x42 -pe -tabbed -e $FM_CMD -c
+bindsym $mod+m exec $TERM -name $FM_CMD -title $FM_CMD -geometry 160x42 -pe -tabbed -e zsh -c "$FM_CMD -c"
 # bind key for FM
 bindsym $mod+Shift+m exec $FM
 # bind key for Catfish
