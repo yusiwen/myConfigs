@@ -214,7 +214,7 @@ if has('gui_running')
   set guioptions-=r               " No Scrollbar right
   set guioptions-=r               " No Scrollbar right when split
 
-  set guifont=Input\ Mono:h12
+  set guifont=Input\ Mono\ Compressed\ Regular\ 10
 
   set lines=40                    " Height
   set columns=85                  " Width
