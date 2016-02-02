@@ -14,10 +14,12 @@ echo "[1] Solarized"
 echo "[2] Gruvbox"
 echo "[3] Sourcerer"
 echo "[4] Base16-Default"
-echo "[5] Base16-Bespin"
-echo "[6] Base16-Tomorrow"
-echo "[7] Base16-Twilight"
-echo -n "Choose theme[1-7]: "
+echo "[5] Base16-Atelier Seaside"
+echo "[6] Base16-Atelier Sulphurpool"
+echo "[7] Base16-Bespin"
+echo "[8] Base16-Tomorrow"
+echo "[9] Base16-Twilight"
+echo -n "Choose theme[1-9]: "
 read number
 
 if echo "$number" | grep -iq "^1"; then
@@ -43,18 +45,30 @@ elif echo "$number" | grep -iq "^4"; then
   ln -sfnv $X11_THEME_DIR/base16-default.dark.sh $BASE16_THEME_SHELL
   ln -sfnv $MUTT_THEME_DIR/base16-default.dark.256.muttrc $MUTT_THEME_FILE
 elif echo "$number" | grep -iq "^5"; then
+  echo "Setting theme to 'Base16-Atelier Seaside'..."
+  ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-atelierseaside $VIM_THEME_FILE
+  ln -sfnv $X11_THEME_DIR/base16-atelierseaside.dark.256.xresources $X11_THEME_FILE
+  ln -sfnv $X11_THEME_DIR/base16-atelierseaside.dark.sh $BASE16_THEME_SHELL
+  ln -sfnv $MUTT_THEME_DIR/base16-atelierseaside.dark.256.muttrc $MUTT_THEME_FILE
+elif echo "$number" | grep -iq "^6"; then
+  echo "Setting theme to 'Base16-Atelier Sulphurpool'..."
+  ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-ateliersulphurpool $VIM_THEME_FILE
+  ln -sfnv $X11_THEME_DIR/base16-ateliersulphurpool.dark.256.xresources $X11_THEME_FILE
+  ln -sfnv $X11_THEME_DIR/base16-ateliersulphurpool.dark.sh $BASE16_THEME_SHELL
+  ln -sfnv $MUTT_THEME_DIR/base16-ateliersulphurpool.dark.256.muttrc $MUTT_THEME_FILE
+elif echo "$number" | grep -iq "^7"; then
   echo "Setting theme to 'Base16-Bespin'..."
   ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-bespin $VIM_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-bespin.dark.256.xresources $X11_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-bespin.dark.sh $BASE16_THEME_SHELL
   ln -sfnv $MUTT_THEME_DIR/base16-bespin.dark.256.muttrc $MUTT_THEME_FILE
-elif echo "$number" | grep -iq "^6"; then
+elif echo "$number" | grep -iq "^8"; then
   echo "Setting theme to 'Base16-Tomorrow'..."
   ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-tomorrow $VIM_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-tomorrow.dark.256.xresources $X11_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-tomorrow.dark.sh $BASE16_THEME_SHELL
   ln -sfnv $MUTT_THEME_DIR/base16-tomorrow.dark.256.muttrc $MUTT_THEME_FILE
-elif echo "$number" | grep -iq "^7"; then
+elif echo "$number" | grep -iq "^9"; then
   echo "Setting theme to 'Base16-Twilight'..."
   ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-twilight $VIM_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-twilight.dark.256.xresources $X11_THEME_FILE
