@@ -261,6 +261,8 @@ bar {
 # }}}
 
 # {{{ Custom keybindings
+# bind key for Gvim
+bindsym $mod+g exec gvim
 # bind key for pidgin
 bindsym $mod+p exec pidgin
 # bind key for ec.py (Eclipse Environment Chooser)
@@ -283,10 +285,6 @@ bindsym $mod+Shift+m exec $FM
 bindsym $mod+c exec catfish
 # bind key for Windows XP guest
 bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWork
-# bind key for Windows 8.1 guest
-!?<HOSTNAME=home-ubuntu
-bindsym $mod+Shift+u exec VBoxManage startvm win8.1-DailyWork
->
 # bind key for an emergence terminal in floating mode
 bindsym $mod+Shift+Return exec $TERM -name emergence_terminal && i3-msg '[instance="^emergence_terminal$"] floating enable'
 # }}}
@@ -365,7 +363,7 @@ for_window [class="!!<\
   ^Gimp$,^Gpick$,^feh$,^Fcitx-config-gtk3$,^Telegram$,\
   ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,\
   ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,\
-  ^Pidgin$,^File-roller$,^shadowsocks-qt5$,\
+  ^Pidgin$,^File-roller$,^shadowsocks-qt5$,^Gvim$,\
   ^Nvidia-settings$,^Seahorse$,^Keepassx$,^Xfce4-appfinder$\
   >"] floating enable
 # }}}
