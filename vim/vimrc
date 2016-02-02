@@ -125,11 +125,11 @@ NeoBundle 'vim-scripts/matchit.zip'
 NeoBundle 'Chiel92/vim-autoformat'
 
 " themes repos
-"NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'altercation/vim-colors-solarized'
 "NeoBundle 'nanotech/jellybeans.vim'
 "NeoBundle 'jnurmine/Zenburn'
-"NeoBundle 'morhetz/gruvbox'
-"NeoBundle 'chriskempson/base16-vim'
+NeoBundle 'morhetz/gruvbox'
+NeoBundle 'chriskempson/base16-vim'
 
 call neobundle#end()
 
@@ -219,15 +219,9 @@ if has('gui_running')
   set lines=40                    " Height
   set columns=85                  " Width
 
-  set background=dark
-
-  colorscheme sourcerer
+  source ~/.vim/vimrc.theme
 else
-  " gruvbox theme {{{
-  "let g:gruvbox_italic=1
-  "colorscheme gruvbox
-  " }}}
-  colorscheme sourcerer
+  source ~/.vim/vimrc.theme
   set t_Co=256
 endif
 " }}}

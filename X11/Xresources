@@ -11,12 +11,9 @@
 ! ~/.Xresources is a symbolic link to ~/myConfigs/Xresources
 
 ! Color themes
-#include "myConfigs/X11/themes/sourcerer.xresources"
-! Gruvbox theme {{{
-!#include "myConfigs/X11/themes/gruvbox-dark.xresources"
-!#include "myConfigs/X11/themes/gruvbox-urxvt256.xresources"
-! }}}
+#include ".Xresources.theme"
 
+! xft ---------------------------------------------------------------{{{
 Xft.autohint: true
 Xft.lcdfilter: lcddefault
 Xft.hintstyle: hintfull
@@ -24,8 +21,9 @@ Xft.hinting: true
 Xft.antialias: true
 Xft.dpi: 96
 Xft.rgba: rgb
+! }}}
 
-! rofi  ---------------------------------------------------------------{{{
+! rofi  -------------------------------------------------------------{{{
 rofi.opacity: 85
 rofi.width: 100
 rofi.lines: 7
@@ -51,7 +49,7 @@ rofi.key-run: Alt+d
 rofi.key-ssh: Alt+F3
 ! }}}
 
-! URxvt  ---------------------------------------------------------------{{{
+! URxvt  ------------------------------------------------------------{{{
 URxvt.meta8: true
 
 URxvt.font: xft:Input Mono Compressed:Regular:size=9,xft:MicrosoftYaHeiUI:Normal:size=9
@@ -90,7 +88,7 @@ URxvt.tabbed.tab-fg:    0
 URxvt.tabbed.tab-bg:    6
 ! }}}
 
-! xscreensaver ---------------------------------------------------------------{{{
+! xscreensaver ------------------------------------------------------{{{
 !font settings
 xscreensaver.Dialog.headingFont:        -*-fixed-medium-r-*-*-14-*-*-*-*-*-*-*
 xscreensaver.Dialog.bodyFont:           -*-fixed-medium-r-*-*-14-*-*-*-*-*-*-*
