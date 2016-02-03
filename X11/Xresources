@@ -52,15 +52,12 @@ rofi.key-ssh: Alt+F3
 ! URxvt  ------------------------------------------------------------{{{
 URxvt.meta8: true
 
-URxvt.font: xft:Input Mono Compressed:Regular:size=9,xft:MicrosoftYaHeiUI:Normal:size=9
-URxvt.boldFont: xft:Input Mono Compressed:Bold:size=9,xft:MicrosoftYaHeiUI:Bold:size=9
-URxvt.italicFont: xft:Input Mono Compressed:Italic:size=9,xft:MicrosoftYaHeiUI:Normal:size=9
-URxvt.boldItalicFont: xft:Input Mono Compressed:Bold Italic:size=9,xft:MicrosoftYaHeiUI:Bold:size=9
+! Fonts
+#include ".Xresources.font"
 
 URxvt.intensityStyles: false
 
 URxvt.preeditType: OverTheSpot
-URxvt.letterSpace: -1
 
 URxvt.scrollBar: false
 URxvt.scrollTtyOutput: false
