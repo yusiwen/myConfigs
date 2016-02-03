@@ -57,7 +57,7 @@ hi SpellBad             cterm=underline ctermbg=NONE ctermfg=196  guifg=NONE    
 hi SpellCap             cterm=underline ctermbg=NONE ctermfg=21   guifg=NONE    guibg=NONE    gui=undercurl guisp=#0000ff
 hi SpellLocal           cterm=underline ctermbg=NONE ctermfg=30   guifg=NONE    guibg=NONE    gui=undercurl guisp=#008b8b
 hi SpellRare            cterm=underline ctermbg=NONE ctermfg=201  guifg=NONE    guibg=NONE    gui=undercurl guisp=#ff00ff
-hi StatusLine           cterm=bold      ctermbg=234  ctermfg=13   guifg=#5b5b71 guibg=#1e1e1e gui=bold
+hi StatusLine           cterm=bold      ctermbg=234  ctermfg=13   guifg=#1e1e1e guibg=#5b5b71 gui=bold
 hi StatusLineNC         cterm=NONE      ctermbg=239  ctermfg=235  guifg=#242424 guibg=#3c3c3c gui=italic
 hi StatusLineAlert      cterm=NONE      ctermbg=160  ctermfg=231  guifg=#a7a7a7 guibg=#8f0d0d gui=NONE
 hi StatusLineUnalert    cterm=NONE      ctermbg=238  ctermfg=144  guifg=#77775e guibg=#363636 gui=NONE
