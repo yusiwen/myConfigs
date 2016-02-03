@@ -124,7 +124,7 @@ NeoBundle 'vim-scripts/matchit.zip'
 NeoBundle 'Chiel92/vim-autoformat'
 
 " themes repos
-NeoBundle 'altercation/vim-colors-solarized'
+"NeoBundle 'altercation/vim-colors-solarized'
 "NeoBundle 'nanotech/jellybeans.vim'
 "NeoBundle 'jnurmine/Zenburn'
 NeoBundle 'morhetz/gruvbox'

@@ -10,58 +10,60 @@ BASE16_THEME_SHELL="$HOME/.base16rc"
 MUTT_THEME_DIR="$HOME/myConfigs/mail/mutt/themes"
 MUTT_THEME_FILE="$HOME/.mutt/theme.muttrc"
 
-echo "[1] Solarized"
-echo "[2] Gruvbox"
-echo "[3] Sourcerer"
-echo "[4] Base16-Default"
-echo "[5] Base16-Atelier Seaside"
-echo "[6] Base16-Atelier Sulphurpool"
-echo "[7] Base16-Bespin"
+echo "[1] Gruvbox"
+echo "[2] Sourcerer"
+echo "[3] Base16-Default"
+echo "[4] Base16-Atelier Seaside"
+echo "[5] Base16-Atelier Sulphurpool"
+echo "[6] Base16-Bespin"
+echo "[7] Base16-Solarized Dark"
 echo "[8] Base16-Tomorrow"
 echo "[9] Base16-Twilight"
 echo -n "Choose theme[1-9]: "
 read number
 
 if echo "$number" | grep -iq "^1"; then
-  echo "Setting theme to 'Solarized'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.solarized $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/solarized.xresources $X11_THEME_FILE
-  ln -sfnv $MUTT_THEME_DIR/solarized-dark-256.muttrc $MUTT_THEME_FILE
-  rm -f $BASE16_THEME_SHELL
-elif echo "$number" | grep -iq "^2"; then
   echo "Setting theme to 'Gruvbox'..."
   ln -sfnv $VIM_THEME_DIR/vimrc.theme.gruvbox $VIM_THEME_FILE
   ln -sfnv $X11_THEME_DIR/gruvbox.xresources $X11_THEME_FILE
   rm -f $BASE16_THEME_SHELL
-elif echo "$number" | grep -iq "^3"; then
+  ln -sfnv $MUTT_THEME_DIR/gruvbox.muttrc $MUTT_THEME_FILE
+elif echo "$number" | grep -iq "^2"; then
   echo "Setting theme to 'Sourcerer'..."
   ln -sfnv $VIM_THEME_DIR/vimrc.theme.sourcerer $VIM_THEME_FILE
   ln -sfnv $X11_THEME_DIR/sourcerer.xresources $X11_THEME_FILE
   rm -f $BASE16_THEME_SHELL
-elif echo "$number" | grep -iq "^4"; then
+  ln -sfnv $MUTT_THEME_DIR/sourcerer.muttrc $MUTT_THEME_FILE
+elif echo "$number" | grep -iq "^3"; then
   echo "Setting theme to 'Base16-Default'..."
   ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-default $VIM_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-default.dark.256.xresources $X11_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-default.dark.sh $BASE16_THEME_SHELL
   ln -sfnv $MUTT_THEME_DIR/base16-default.dark.256.muttrc $MUTT_THEME_FILE
-elif echo "$number" | grep -iq "^5"; then
+elif echo "$number" | grep -iq "^4"; then
   echo "Setting theme to 'Base16-Atelier Seaside'..."
   ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-atelierseaside $VIM_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-atelierseaside.dark.256.xresources $X11_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-atelierseaside.dark.sh $BASE16_THEME_SHELL
   ln -sfnv $MUTT_THEME_DIR/base16-atelierseaside.dark.256.muttrc $MUTT_THEME_FILE
-elif echo "$number" | grep -iq "^6"; then
+elif echo "$number" | grep -iq "^5"; then
   echo "Setting theme to 'Base16-Atelier Sulphurpool'..."
   ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-ateliersulphurpool $VIM_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-ateliersulphurpool.dark.256.xresources $X11_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-ateliersulphurpool.dark.sh $BASE16_THEME_SHELL
   ln -sfnv $MUTT_THEME_DIR/base16-ateliersulphurpool.dark.256.muttrc $MUTT_THEME_FILE
-elif echo "$number" | grep -iq "^7"; then
+elif echo "$number" | grep -iq "^6"; then
   echo "Setting theme to 'Base16-Bespin'..."
   ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-bespin $VIM_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-bespin.dark.256.xresources $X11_THEME_FILE
   ln -sfnv $X11_THEME_DIR/base16-bespin.dark.sh $BASE16_THEME_SHELL
   ln -sfnv $MUTT_THEME_DIR/base16-bespin.dark.256.muttrc $MUTT_THEME_FILE
+elif echo "$number" | grep -iq "^7"; then
+  echo "Setting theme to 'Base16-Solarized Dark'..."
+  ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-solarized $VIM_THEME_FILE
+  ln -sfnv $X11_THEME_DIR/base16-solarized.dark.256.xresources $X11_THEME_FILE
+  ln -sfnv $X11_THEME_DIR/base16-solarized.dark.sh $BASE16_THEME_SHELL
+  ln -sfnv $MUTT_THEME_DIR/base16-solarized.dark.256.muttrc $MUTT_THEME_FILE
 elif echo "$number" | grep -iq "^8"; then
   echo "Setting theme to 'Base16-Tomorrow'..."
   ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-tomorrow $VIM_THEME_FILE
