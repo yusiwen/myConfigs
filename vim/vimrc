@@ -44,7 +44,7 @@ NeoBundle 'szw/vim-tags'
 " Automatically discover and update ctags files on save
 NeoBundle 'craigemery/vim-autotag'
 NeoBundle 'vim-airline/vim-airline'
-NeoBundle 'vim-airline/vim-airline-themes'
+NeoBundle 'yusiwen/vim-airline-themes'
 
 " easy note taking in Vim
 NeoBundle 'xolox/vim-misc'
@@ -125,7 +125,7 @@ NeoBundle 'Chiel92/vim-autoformat'
 
 " themes repos
 "NeoBundle 'altercation/vim-colors-solarized'
-"NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'nanotech/jellybeans.vim'
 "NeoBundle 'jnurmine/Zenburn'
 NeoBundle 'morhetz/gruvbox'
 NeoBundle 'yusiwen/base16-vim'
