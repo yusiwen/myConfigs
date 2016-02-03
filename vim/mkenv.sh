@@ -33,13 +33,13 @@ fi
 
 if [ ! -d "$VIM_HOME/bundle/neobundle.vim" ]; then
   echo 'Install neobundle.vim ...'
-  git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+  git clone git@github.com:Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim
   if [ "$?" -ne 0 ]; then
     echo 'Install neobundle.vim failed, please check your git output.'
     exit 2
   fi
   echo 'Install neobundle.vim ... done'
   echo 'Install vim plugins ...'
-  vim +NeoBundleInstall! qall
+  ~/.vim/bundle/neocomplete.vim/bin/neoinstall
   echo 'Install vim plugins ... done'
 fi
