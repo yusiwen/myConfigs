@@ -67,28 +67,14 @@ floating_modifier $mod
 # }}}
 
 # {{{ Colors
-# {{{ dark theme (like jellybeans)
-!?<I3_COLOR_THEME=dark
-set !!<$FOCUSED,$FOCUSED_TEXT,$INACTIVE,$INACTIVE_TEXT,\
-  $BAR_FOCUSED,$BAR_FOCUSED_TEXT,$BAR_ACTIVE,$BAR_INACTIVE,$BAR_URGENT> \
-  !!<#121212,#9e8a8e,#191919,#999999,#2aa198,#eee8d5,#5f676a,#2d2d2d,#709030>
->
-# }}}
-# {{{ solarized theme
-!?<I3_COLOR_THEME=solarized
-set !!<$FOCUSED,$FOCUSED_TEXT,$INACTIVE,$INACTIVE_TEXT,\
-  $BAR_FOCUSED,$BAR_FOCUSED_TEXT,$BAR_ACTIVE,$BAR_INACTIVE,$BAR_URGENT> \
-  !!<#082029,#cccccc,#223136,#555555,#2aa198,#eee8d5,#709030,#b58900,#cb4b16>
->
-# }}}
-#                       border    backgr    text
-client.focused          $FOCUSED  $FOCUSED  $FOCUSED_TEXT
-client.focused_inactive $INACTIVE $INACTIVE $INACTIVE_TEXT
-client.unfocused        #001010   #191919   #999999
-client.urgent           #cd989a   #cd989a   #2e3436
+!#<~/myConfigs/i3/colors/_config.jellybeans>
+#                       border            backgr     text
+client.focused          $FOCUSED_BORDER   $FOCUSED   $FOCUSED_TEXT
+client.focused_inactive $INACTIVE_BORDER  $INACTIVE  $INACTIVE_TEXT
+client.unfocused        $UNFOCUSED_BORDER $UNFOCUSED $UNFOCUSED_TEXT
+client.urgent           $URGENT_BORDER    $URGENT    $URGENT_TEXT
 
-# client.background       #1d1d1d
-client.background       #082029
+client.background       $BACKGROUND
 # }}}
 
 # {{{ General keybindings
@@ -249,13 +235,13 @@ bar {
   status_command i3blocks -c ~/.i3/i3blocks.conf
 
   colors {
-    background $FOCUSED
-    statusline $INACTIVE_TEXT
-    separator  $INACTIVE_TEXT
-    focused_workspace  $BAR_FOCUSED  $BAR_FOCUSED  $BAR_FOCUSED_TEXT
-    active_workspace   $BAR_ACTIVE   $BAR_ACTIVE   $INACTIVE_TEXT
-    inactive_workspace $BAR_INACTIVE $BAR_INACTIVE $INACTIVE_TEXT
-    urgent_workspace   $BAR_URGENT   $BAR_URGENT   $BAR_FOCUSED_TEXT
+    background $BAR_BACKGROUND
+    statusline $BAR_STATUSLINE
+    separator  $BAR_SEPARATOR
+    focused_workspace  $BAR_FOCUSED_BORDER  $BAR_FOCUSED  $BAR_FOCUSED_TEXT
+    active_workspace   $BAR_ACTIVE_BORDER   $BAR_ACTIVE   $BAR_ACTIVE_TEXT
+    inactive_workspace $BAR_INACTIVE_BORDER $BAR_INACTIVE $BAR_INACTIVE_TEXT
+    urgent_workspace   $BAR_URGENT_BORDER   $BAR_URGENT   $BAR_URGENT_TEXT
   }
 }
 # }}}
