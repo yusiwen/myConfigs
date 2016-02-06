@@ -13,9 +13,8 @@ ln -sfnv $CONFIG_HOME/dunst/dunstrc $DUNST_HOME/dunstrc
 
 mkdir -p $HOME/bin
 ln -sfnv $CONFIG_HOME/i3bang/i3bang.rb $HOME/bin/i3bang
-if [ -z "$I3_COLOR_THEME" ]; then
-  export I3_COLOR_THEME=dark
-fi
+# link default theme 'jellybeans' to ~/.i3/_config.colors
+ln -sfnv $CONFIG_HOME/colors/_config.jellybeans $I3_HOME/_config.colors
 i3bang
 
 # check if 'consolekit' is installed or not
@@ -31,6 +30,6 @@ if [ -z "$PACKAGE" ]; then
   echo 'Install consolekit ... done'
 fi
 
-if [ -e /usr/share/xsessions/i3.desktop ]; then
+if [ ! -e /usr/share/xsessions/i3.desktop ]; then
   sudo cp $CONFIG_HOME/xsessions/i3.desktop /usr/share/xsessions/i3.desktop
 fi
