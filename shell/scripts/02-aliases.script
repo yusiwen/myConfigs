@@ -59,8 +59,11 @@ alias gits='git status --short --branch'
 alias gitd='git diff --submodule --word-diff'
 alias gitds='git diff --submodule --word-diff --staged'
 alias gitl='git log --graph --oneline --decorate'
+alias gitla='git log --graph --oneline --decorate --all'
 alias gitll='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --stat'
+alias gitlla='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --stat --all'
 alias gitlp='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%b" -p'
+alias gitlpa='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%b" -p --all'
 
 # Valgrind aliases
 alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v'
