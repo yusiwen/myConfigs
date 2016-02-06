@@ -350,6 +350,6 @@ for_window [class="!!<\
   ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,\
   ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,\
   ^Pidgin$,^File-roller$,^shadowsocks-qt5$,^Gvim$,\
-  ^Nvidia-settings$,^Seahorse$,^Keepassx$,^Xfce4-appfinder$\
+  ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$\
   >"] floating enable
 # }}}
