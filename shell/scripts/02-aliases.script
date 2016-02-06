@@ -54,6 +54,11 @@ fi
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
 
 # Git commands aliases
+alias gitpso='git push origin'
+alias gitpsa='git push --all'
+alias gitplo='git pull origin'
+alias gitfup='git fetch upstream'
+alias gitfo='git fetch origin'
 alias gitc='git commit --verbose'
 alias gits='git status --short --branch'
 alias gitd='git diff --submodule --word-diff'
