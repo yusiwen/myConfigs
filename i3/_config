@@ -67,7 +67,7 @@ floating_modifier $mod
 # }}}
 
 # {{{ Colors
-!#<~/myConfigs/i3/colors/_config.jellybeans>
+!#<~/.i3/_config.colors>
 #                       border            backgr     text
 client.focused          $FOCUSED_BORDER   $FOCUSED   $FOCUSED_TEXT
 client.focused_inactive $INACTIVE_BORDER  $INACTIVE  $INACTIVE_TEXT
