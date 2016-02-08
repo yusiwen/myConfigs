@@ -18,8 +18,9 @@ ln -sfnv $CONFIG_HOME/colors/_config.jellybeans $I3_HOME/_config.colors
 i3bang
 
 # check if 'consolekit' is installed or not
-PACKAGE=$(dpkg -l | grep consolekit)
-if [ -z "$PACKAGE" ]; then
+echo 'Checking package consolekit...'
+dpkg-query -l consolekit 2>/dev/null
+if [ "$?" -eq 1 ]; then
   # Install 'consolekit'
   echo 'Install consolekit...'
   sudo apt-get install consolekit
@@ -33,3 +34,26 @@ fi
 if [ ! -e /usr/share/xsessions/i3.desktop ]; then
   sudo cp $CONFIG_HOME/xsessions/i3.desktop /usr/share/xsessions/i3.desktop
 fi
+
+# xsession autostart files
+_files="$CONFIG_HOME/xsessions/autostart/*.desktop"
+for file in $_files
+do
+  _name=`basename $file`
+  ln -sfnv $file $HOME/.config/autostart/$_name
+done
+
+# check if 'dex' is installed or not, it's needed to load xsession files
+echo 'Checking package dex...'
+dpkg-query -l dex 2>/dev/null
+if [ "$?" -eq 1 ]; then
+  # Install 'dex'
+  echo 'Install dex...'
+  sudo apt-get install dex
+  if [ "$?" -ne 0 ]; then
+    echo 'Install dex failed, please check the output of apt-get.'
+    exit 1
+  fi
+  echo 'Install dex ... done'
+fi
+
