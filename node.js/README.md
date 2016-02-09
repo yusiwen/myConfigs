@@ -1,240 +1,328 @@
-Node.js
-=======
+# [NodeSource](https://nodesource.com/) Node.js and io.js Binary Distributions
 
-# Installation
+![Linux Distributions](https://nodesource.com/assets/external/linux-distributions.svg)
 
-***Note:*** The packages on this page are maintained and supported by their respective packagers, **not** the Node.js core team. Please report any issues you encounter to the package maintainer. If it turns out your issue is a bug in Node.js itself, the maintainer will report the issue upstream.
+This repository contains the source of the **[NodeSource](https://nodesource.com)** **[Node.js](http://nodejs.org)** and **[io.js](https://iojs.org)** Binary Distributions setup and support scripts.
 
-## Ubuntu, Debian, Linux Mint, etc.
+----------------------------------
 
-***Including most Ubuntu and Debian-based Linux distributions***
+<img src="https://downloads.nodesource.com/img/nsolid.svg" width="25%">
 
-Node.js is available from the [NodeSource](https://nodesource.com) official Debian and Ubuntu repository.
+If you are looking for NodeSource's Enterprise-grade Node.js platform, **[N|Solid](https://nmaster.nodesource.com/products/nsolid)**, please visit **<https://downloads.nodesource.com/>**
 
-Setup with:
+----------------------------------
 
-```text
-$ curl -sL https://deb.nodesource.com/setup | sudo bash -
-```
+For **Debian / Ubuntu** based distributions, see the **[deb](./deb)** directory for the source of the two setup scripts located at <https://deb.nodesource.com/setup> and <https://deb.nodesource.com/setup_dev>.
 
-Then install:
+For **Enterprise Linux** based distributions (Red Hat® Enterprise Linux® / RHEL, CentOS, CloudLinux, Fedora), see the **[rpm](./rpm)** directory for the source of setup script located at <https://rpm.nodesource.com/setup>.
 
-```text
-$ sudo apt-get install nodejs
-```
+Please file an issue if you are experiencing a problem or would like to discuss something related to the distributions.
+
+Pull requests are encouraged if you have changes you believe would improve the setup process or increase compatibility across Linux distributions.
+
+* **[Debian and Ubuntu based distributions](#deb)** (deb)
+  - [Installation instructions](#debinstall)
+  - [Manual installation](#debmanual)
+* **[Enterprise Linux based distributions](#rpm)** (rpm)
+  - [Installation instructions](#rpminstall)
+* **[Tests](#tests)**
+
+<a name="deb"></a>
+## Debian and Ubuntu based distributions
 
 **Available architectures:**
+
+NodeSource will continue to maintain the following architectures and may add additional ones in the future.
 
 * **i386** (32-bit)
 * **amd64** (64-bit)
 * **armhf** (ARM 32-bit hard-float, ARMv7 and up: _arm-linux-gnueabihf_)
 
+*PLEASE NOTE* that `armhf` builds are **NOT** available for Debian Wheezy or Ubuntu Precise. For more information read about [Node.JS >= 4.x on older distros](https://github.com/nodesource/distributions/blob/master/OLDER_DISTROS.md).
+
 **Supported Ubuntu versions:**
 
-* **Ubuntu 10.04 LTS** (Lucid Lynx, *armhf build not available*)
+NodeSource will maintain Ubuntu distributions in active support by Canonical, including LTS and the intermediate releases.
+
 * **Ubuntu 12.04 LTS** (Precise Pangolin)
-* **Ubuntu 13.10** (Saucy Salamander)
 * **Ubuntu 14.04 LTS** (Trusty Tahr)
+* **Ubuntu 15.04** (Vivid Vervet)
+* **Ubuntu 15.10** (Wily Werewolf) **[For Node >= 4.2.x]**
 
 **Supported Debian versions:**
 
-* **Debian 7 / stable** (wheezy)
-* **Debian testing** (jessie)
+NodeSource will maintain support for stable, testing and unstable releases of Debian, due to the long release cycle a considerable number of users are running unstable.
+
+* **Debian 7** (wheezy)
+* **Debian 8 / stable** (jessie)
+* **Debian testing** (stretch, aliased to jessie)
 * **Debian unstable** (sid)
 
-A Node.js package is also available in [official repo](http://packages.debian.org/search?searchon=names&keywords=nodejs) for Debian Sid (unstable) as "nodejs".
+**Supported Linux Mint versions:**
 
-***Note:*** You may experience a naming conflict with the "node" package (Amateur Packet Radio Node Program), and find that the "nodejs" binary has been renamed from `node` to `nodejs`. You'll need to symlink `/usr/bin/node` to `/usr/bin/nodejs` or you could uninstall the Amateur Packet Radio Node Program to avoid the conflict.
+* **Linux Mint 13 "Maya"** (via Ubuntu 12.04 LTS)
+* **Linux Mint 17 "Qiana"** (via Ubuntu 14.04 LTS)
+* **Linux Mint 17.1 "Rebecca"** (via Ubuntu 14.04 LTS)
+* **Linux Mint 17.2 "Rafaela"** (via Ubuntu 14.04 LTS)
+* **Linux Mint Debian Edition (LMDE) 2 "Betsy"** (via Debian 8)
 
-## Gentoo
+**Supported elementary OS versions:**
 
-Node.js is available in the portage tree.
+* **elementary OS Luna** (via Ubuntu 12.04 LTS)
+* **elementary OS Freya** (via Ubuntu 14.04 LTS)
+
+**Supported Trisquel versions:**
+
+* **Trisquel 6 "Toutatis"** (via Ubuntu 12.04 LTS)
+* **Trisquel 7 "Belenos"** (via Ubuntu 14.04 LTS)
+
+**Supported BOSS versions:**
+
+* **BOSS 5.0 "Anokha"** (via Debian 7)
+
+<a name="debinstall"></a>
+### Installation instructions
+
+**Node.js v5.x**:
+
+* NOTE: If you are using Ubuntu Precise or Debian Wheezy, you might want to read about [running Node.js >= 4.x on older distros](https://github.com/nodesource/distributions/blob/master/OLDER_DISTROS.md).
+
+```sh
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Using Debian, as root
+curl -sL https://deb.nodesource.com/setup_5.x | bash -
+apt-get install -y nodejs
+```
+
+**Node.js v4.x**:
+
+* NOTE: If you are using Ubuntu Precise or Debian Wheezy, you might want to read about [running Node.js >= 4.x on older distros](https://github.com/nodesource/distributions/blob/master/OLDER_DISTROS.md).
+
+```sh
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Using Debian, as root
+curl -sL https://deb.nodesource.com/setup_4.x | bash -
+apt-get install -y nodejs
+```
+
+**Node.js v0.12**:
+
+```sh
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_0.12 | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Using Debian, as root
+curl -sL https://deb.nodesource.com/setup_0.12 | bash -
+apt-get install -y nodejs
+```
+
+**Node.js v0.10**:
+
+```sh
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_0.10 | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Using Debian, as root
+curl -sL https://deb.nodesource.com/setup_0.10 | bash -
+apt-get install -y nodejs
+```
+
+**io.js v3.x**:
+
+```sh
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_iojs_3.x | sudo -E bash -
+sudo apt-get install -y iojs
+
+# Using Debian, as root
+curl -sL https://deb.nodesource.com/setup_iojs_3.x | bash -
+apt-get install -y iojs
+```
+
+**io.js v2.x**:
+
+```sh
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_iojs_2.x | sudo -E bash -
+sudo apt-get install -y iojs
+
+# Using Debian, as root
+curl -sL https://deb.nodesource.com/setup_iojs_2.x | bash -
+apt-get install -y iojs
+```
+
+**io.js v1.x**:
+
+_Note: this branch of io.js is not actively maintained and is not recommended for production use._
+
+```sh
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_iojs_1.x | sudo -E bash -
+sudo apt-get install -y iojs
+
+# Using Debian, as root
+curl -sL https://deb.nodesource.com/setup_iojs_1.x | bash -
+apt-get install -y iojs
+```
+
+***Optional***: install build tools
+
+To compile and install native addons from npm you may also need to install build tools:
+
+```sh
+# use `sudo` on Ubuntu or run this as root on debian
+apt-get install -y build-essential
+```
+
+<a name="debmanual"></a>
+### Manual installation
+
+If you're not a fan of `curl <url> | bash -`, or you want to try use the repository for your unsupported distribution, try a manual install. The setup script performs the following steps:
+
+In the commands below you should replace the following placeholdes:
+
+* **`{DISTRO}`**: replace with the codename of your distro, which will be something like: *wheezy, jessie, sid* or *precise, trusty, utopic, vivid* (or other supported Ubuntu or Debian distro)
+* **`{VERSION}`**: replace with the version of Node.js or io.js you want to install, it should take the following form: *node_0.10, node_0.12* or *iojs_1.x*, *iojs_2.x*, etc.
+
+**1. Remove the old PPA if it exists**
+
+```sh
+# add-apt-repository may not exist on some distributions
+add-apt-repository -y -r ppa:chris-lea/node.js
+rm -f /etc/apt/sources.list.d/chris-lea-node_js-*.list
+```
+
+**2. Add the NodeSource signing key**
+
+```sh
+curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+# if curl is not available:
+wget -qO- https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+```
+
+**3. Add the repositories to your sources.list**
+
+```sh
+echo 'deb https://deb.nodesource.com/{VERSION} {DISTRO} main' > /etc/apt/sources.list.d/nodesource.list
+echo 'deb-src https://deb.nodesource.com/{VERSION} {DISTRO} main' >> /etc/apt/sources.list.d/nodesource.list
+```
+
+Then you should be able to `apt-get update` and `apt-get install nodejs`.
+
+<a name="rpm"></a>
+## Enterprise Linux based distributions
+
+**Available architectures:**
+
+NodeSource will continue to maintain the following architectures and may add additional ones in the future.
+
+* **i386** (32-bit, not available for all distros)
+* **x86_64** (64-bit)
+
+**Supported Red Hat® Enterprise Linux® versions:**
+
+* **RHEL 5** (32-bit and 64-bit) **[For Node < 0.12.x]**
+* **RHEL 6** (32-bit and 64-bit) **[For Node < 4.x]**
+* **RHEL 6** (64-bit) **[For Node >= 4.x]**
+* **RHEL 7** (64-bit)
+
+**Supported CentOS versions:**
+
+* **CentOS 5** (32-bit and 64-bit) **[For Node < 0.12.x]**
+* **CentOS 6** (32-bit and 64-bit) **[For Node < 4.x]**
+* **CentOS 6** (64-bit) **[For Node >= 4.x]**
+* **CentOS 7** (64-bit)
+
+**Supported CloudLinux versions:**
+* **CloudLinux 6** (32-bit and 64-bit)
+
+**Supported Fedora versions:**
+
+* **Fedora 23 (Twenty Three)** (32-bit and 64-bit) **[For Node >= 4.2.x]**
+* **Fedora 22 (Twenty Two)** (32-bit and 64-bit)
+* **Fedora 21 (Twenty One)** (32-bit and 64-bit)
+
+Equivalent versions of Korora Linux should also be supported.
+
+<a name="rpminstall"></a>
+### Installation instructions
+
+Current instructions for installing, as listed on the [Node.js Wiki](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager):
+
+Note that the Node.js packages for EL 5 (RHEL5 and CentOS 5) depend on the [EPEL](https://fedoraproject.org/wiki/EPEL) repository being available. The setup script will check and provide instructions if it is not installed.
+
+Run as root on RHEL, CentOS, CloudLinux or Fedora:
+
+**NodeJS 5.x**
+
+* NOTE: If you are using RHEL 6 or CentOS 6, you might want to read about [running Node.js >= 4.x on older distros](https://github.com/nodesource/distributions/blob/master/OLDER_DISTROS.md).
 
 ```text
-$ emerge nodejs
+curl -sL https://rpm.nodesource.com/setup_5.x | bash -
 ```
 
-## openSUSE & SLE
+**NodeJS 4.x**
 
-[Download Node.js via openSUSE one-click](http://software.opensuse.org/download.html?project=devel%3Alanguages%3Anodejs&package=nodejs).
-
-Available RPM packages for: openSUSE 11.4, 12.1, 12.2, 12.3, 13.1, Factory and Tumbleweed; SLE 11 (with SP1/SP2/SP3 variations).
-
-Example install on openSUSE 13.1:
+* NOTE: If you are using RHEL 6 or CentOS 6, you might want to read about [running Node.js >= 4.x on older distros](https://github.com/nodesource/distributions/blob/master/OLDER_DISTROS.md).
 
 ```text
-$ sudo zypper ar \
-  http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/ \
-  Node.js
-$ sudo zypper in nodejs nodejs-devel
+curl -sL https://rpm.nodesource.com/setup_4.x | bash -
 ```
 
-## Fedora
-
-[Node.js](https://apps.fedoraproject.org/packages/nodejs) and [npm](https://apps.fedoraproject.org/packages/npm) are available in Fedora 18 and later. Just use your favorite graphical package manager or run this on a terminal to install both node and npm:
+**NodeJS 0.12.x**
 
 ```text
-$ sudo yum install nodejs npm
+curl -sL https://rpm.nodesource.com/setup_0.12 | bash -
 ```
 
-## Enterprise Linux (RHEL, CentOS, Fedora, etc.)
-
-Node.js and npm are available from the [Extra Packages for Enterprise Linux](https://fedoraproject.org/wiki/EPEL) (EPEL) repository.
-
-To check if you have EPEL registered, run:
+**NodeJS 0.10.x**
 
 ```text
-$ yum repolist
+curl -sL https://rpm.nodesource.com/setup | bash -
 ```
 
-If you don't see EPEL, [install it](https://fedoraproject.org/wiki/EPEL#How_can_I_use_these_extra_packages.3F
-) via `yum`:
-
-For **Enterprise Linux version 6** (EPEL version 6.8 at the time of writing):
+Then install, as root:
 
 ```text
-$ yum install \
-  http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+yum install -y nodejs
 ```
 
-For **Enterprise Linux version 7 Beta**:
+***Optional***: install build tools
+
+To compile and install native addons from npm you may also need to install build tools:
 
 ```text
-$ yum install \
-  http://dl.fedoraproject.org/pub/epel/beta/7/x86_64/epel-release-7-0.2.noarch.rpm
+yum install gcc-c++ make
+# or: yum groupinstall 'Development Tools'
 ```
 
-Then install the **nodejs** and **npm** packages:
+<a name="tests"></a>
+## Tests
+
+To test an installation is working (and that the setup scripts are working!) use:
 
 ```text
-$ sudo yum install nodejs npm --enablerepo=epel
+curl -sL https://deb.nodesource.com/test | bash -
 ```
 
-## Arch Linux
+## License
 
-Node.js is available in the Community Repository.
+This material is Copyright (c) 2015 NodeSource LLC and licenced under the MIT licence. All rights not explicitly granted in the MIT license are reserved. See the included LICENSE.md file for more details.
 
-```text
-$ pacman -S nodejs
-```
+------------------------------------------------------------------
 
-## FreeBSD and OpenBSD
+*Supported with love by [Chris Lea](https://github.com/chrislea), [Rod Vagg](https://github.com/rvagg) and the [NodeSource](https://nodesource.com) team*
 
-Node.js is available through the ports system.
-
-```text
-/usr/ports/www/node
-```
-
-Development versions are also available using ports
-
-```text
-$ cd /usr/ports/www/node-devel/ && make install clean
-```
-
-Or packages on FreeBSD:
-
-```text
-$ pkg_add -r node-devel
-```
-
-Using [pkg-ng](https://wiki.freebsd.org/pkgng) on FreeBSD
-
-```text
-$ pkg install node
-```
-
-Or the development versions:
-
-```text
-$ pkg install node-devel
-```
-
-## OSX
-
-Simply download the [Macintosh Installer](http://nodejs.org/#download) direct from the [nodejs.org](http://nodejs.org) web site.
-
-### Alternatives
-
-Using **[Homebrew](http://brew.sh/)**:
-
-```text
-$ brew install node
-```
-
-Using **[Fink](http://www.finkproject.org)**:
-
-```text
-$ fink install nodejs
-```
-
-Using **[MacPorts](http://www.macports.org/)**:
-
-```text
-$ port install nodejs
-```
-
-## Windows
-
-Simply download the [Windows Installer](http://nodejs.org/#download) directly from the [nodejs.org](http://nodejs.org) web site.
-
-### Alternatives
-
-Using **[Chocolatey](http://chocolatey.org)**:
-
-```text
-$ cinst nodejs
-# or for full install with npm
-$ cinst nodejs.install
-```
-
-Using **[Scoop](http://scoop.sh/)**:
-
-```text
-$ scoop install nodejs
-```
-
-# Install npm packages globally on Linux without sudo
-
-npm installs packages locally within each of your projects by default. You
-can also install packages globally (e.g. `npm install -g <package>`). However
-the downside of this is that you need to be root (or use `sudo`) to be
-able to install globally.
-
-Here is a way to install packages globally for a given user.
-
-1. Create a directory for your global packages
-```bash
-$ mkdir ~/.npm-packages
-```
-
-2. Reference this directory for future usage in your `.bashrc`/`.zshrc`:
-```bash
-NPM_PACKAGES="$HOME/.npm-packages"
-```
-
-3. Indicate to `npm` where to store your globally installed package. In
-   your `~/.npmrc` file add:
-```
-prefix=~/.npm-packages
-```
-
-4. Ensure `node` will find them. Add the following to your
-   `.bashrc`/`.zshrc`:
-```bash
-NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
-```
-
-5. Ensure you'll find installed binaries and man pages. Add the following to your
-   `.bashrc`/`.zshrc`:
-```bash
-PATH="$NPM_PACKAGES/bin:$PATH"
-# Unset manpath so we can inherit from /etc/manpath via the `manpath`
-# command
-unset MANPATH  # delete if you already modified MANPATH elsewhere in your config
-MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
-```
-
-Inspired from this [answer on
-StackOverflow](http://stackoverflow.com/a/13021677).
-
+*This project is not affiliated with Debian, Ubuntu, Red Hat, CentOS or Fedora.*<br>
+*Ubuntu is a registered trademark of Canonical Ltd.*<br>
+*Debian is a registered trademark owned by Software in the Public Interest, Inc.*<br>
+*Red Hat, CentOS and Fedora are trademarks of Red Hat, Inc.*<br>
+*CloudLinux is a trademark of Cloud Linux, Inc*
