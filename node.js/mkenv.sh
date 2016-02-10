@@ -2,5 +2,5 @@
 
 mkdir -p $HOME/.npm-packages
 
-ls -sf $HOME/myConfigs/node.js/npmrc $HOME/.npmrc
+ln -sfnv $HOME/myConfigs/node.js/npmrc $HOME/.npmrc
 
