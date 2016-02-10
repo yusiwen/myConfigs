@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ ! -e $HOME/.Xresources.font ]; then
+  $HOME/myConfigs/change_font.sh
+fi
+
 VIM_THEME_DIR="$HOME/myConfigs/vim"
 VIM_THEME_FILE="$HOME/.vim/vimrc.theme"
 
@@ -20,8 +24,12 @@ echo "[7] Base16-Bespin"
 echo "[8] Base16-Solarized Dark"
 echo "[9] Base16-Tomorrow"
 echo "[0] Base16-Twilight"
-echo -n "Choose theme: "
+echo -n "Choose theme[3]: "
 read number
+
+if [ -z $number ]; then
+  number='3'
+fi
 
 if echo "$number" | grep -iq "^1"; then
   echo "Setting theme to 'Gruvbox'..."

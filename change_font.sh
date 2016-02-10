@@ -6,8 +6,12 @@ X11_FONT_FILE="$HOME/.Xresources.font"
 echo "[1] Input Mono Compressed"
 echo "[2] Iosevka"
 echo "[3] Iosevka Slab"
-echo -n "Choose font: "
+echo -n "Choose font[1]: "
 read number
+
+if [ -z $number ]; then
+  number='1'
+fi
 
 if echo "$number" | grep -iq "^1"; then
   echo "Setting font to 'Input Mono Compressed'..."
