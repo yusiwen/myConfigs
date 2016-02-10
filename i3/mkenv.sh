@@ -36,6 +36,7 @@ if [ ! -e /usr/share/xsessions/i3.desktop ]; then
 fi
 
 # xsession autostart files
+mkdir -p $HOME/.config/autostart
 _files="$CONFIG_HOME/xsessions/autostart/*.desktop"
 for file in $_files
 do
