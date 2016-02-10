@@ -40,6 +40,6 @@ if [ ! -d "$VIM_HOME/bundle/neobundle.vim" ]; then
   fi
   echo 'Install neobundle.vim ... done'
   echo 'Install vim plugins ...'
-  ~/.vim/bundle/neocomplete.vim/bin/neoinstall
+  ~/.vim/bundle/neobundle.vim/bin/neoinstall
   echo 'Install vim plugins ... done'
 fi

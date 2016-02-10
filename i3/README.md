@@ -29,7 +29,7 @@ Installation
   $ sudo apt-get install i3
   ```
 
-  For better session management, using ConsoleKit to start i3wm:
+  (Optional) For better session management, using ConsoleKit to start i3wm:
   ```sh
   $ sudo cp ~/myConfigs/i3/i3.desktop /usr/share/xsessions/i3.desktop
   # or just edit following line to /usr/share/xsessions/i3.desktop
