@@ -43,6 +43,8 @@ $ sudo cp ~/myConfigs/rxvt/clipboard /usr/local/lib/urxvt/perl/
 
 ## Import official CVS repository into GitHub
 
+`git-cvs` package must be installed before run `git cvsimport` command.
+
 ```text
 # Import CVS repository into current directory.
 $ cd ~/git
