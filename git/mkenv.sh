@@ -1,8 +1,8 @@
 #!/bin/sh
 
 PROXY=""
-if [ -e $HOME/apt.conf  ]; then
-  PROXY="-c $HOME/apt.conf"
+if [ -e $HOME/.apt.conf  ]; then
+  PROXY="-c $HOME/.apt.conf"
 fi
 
 # install git if not exist
