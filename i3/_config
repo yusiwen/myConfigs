@@ -12,7 +12,7 @@
 !?<HOSTNAME=home-ubuntu
 set $mod Mod4
 >
-!?<HOSTNAME=vmware-ubuntu-guest
+!?<HOSTNAME=vm-ubuntu-guest
 set $mod Mod4
 >
 !?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
@@ -293,7 +293,7 @@ exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
 exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
 exec dex -ae i3
 >
-!?<HOSTNAME=vmware-ubuntu-guest
+!?<HOSTNAME=vm-ubuntu-guest
 exec --no-startup-id dex -ae i3
 exec --no-startup-id i3-msg Workspace 1:Main
 exec --no-startup-id i3-sensible-terminal

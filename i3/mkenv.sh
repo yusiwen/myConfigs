@@ -1,8 +1,10 @@
 #!/bin/sh
 
 PROXY=""
-if [ -e $HOME/.apt.conf ]; then
-  PROXY="-c $HOME/.apt.conf"
+if [ "$1" = "-p" ]; then
+  if [ -e $HOME/.apt.conf ]; then
+    PROXY="-c $HOME/.apt.conf"
+  fi
 fi
 
 # install i3wm if not exist
@@ -15,6 +17,9 @@ if [ -z "$APT_SOURCE" ]; then
   echo "Install i3wm official repository key..."
   sudo apt-get $PROXY --allow-unauthenticated install sur5r-keyring
   sudo apt-get $PROXY update
+fi
+I3_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "^i3$")
+if [ -z "$I3_PACKAGE" ]; then
   echo "Install i3wm..."
   sudo apt-get $PROXY install i3
   echo "Install i3blocks..."
