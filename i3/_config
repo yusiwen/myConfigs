@@ -300,9 +300,6 @@ exec --no-startup-id i3-sensible-terminal
 >
 !?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
 exec --no-startup-id !!<\
-  /usr/bin/prlcc,\
-  sh -c 'LD_LIBRARY_PATH=/usr/lib/parallels-tools/lib:$LD_LIBRARY_PATH /usr/bin/prl_wmouse_d -d',\
-  /usr/bin/ptiagent --info,\
   i3-msg Workspace 1:Main,\
   i3-sensible-terminal>
 exec dex -ae i3

@@ -52,4 +52,4 @@ Comment[zh_CN]=启动屏幕锁程序
 Icon=preferences-desktop-screensaver
 Exec=light-locker
 NoDisplay=true
-NotShownIn=Gnome;Unity;i3;
+NotShowIn=Gnome;Unity;i3;
