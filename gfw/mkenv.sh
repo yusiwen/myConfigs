@@ -9,5 +9,5 @@ if [ -z "$SS_PACKAGE" ]; then
   sudo apt-add-repository ppa:hzwhuang/ss-qt5
   sudo apt-get -c ~/.apt.conf update
   sudo apt-get -c ~/.apt.conf install shadowsocks-qt5
-  ln -sfnv $HOME/myConfigs/gfw/ss-qt5.config.ini $HOME/.config/shadowsocks-qt5/config.ini
+  cp $HOME/myConfigs/gfw/ss-qt5.config.ini $HOME/.config/shadowsocks-qt5/config.ini
 fi
