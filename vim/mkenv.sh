@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $HOME/myConfigs/gfw/get_apt_proxy.sh
+
 CONFIG_VIM=$HOME/myConfigs/vim
 VIM_HOME=$HOME/.vim
 
@@ -8,7 +10,7 @@ PACKAGE=$(dpkg -l | grep vim-gtk)
 if [ -z "$PACKAGE" ]; then
   # Install vim-gtk
   echo 'Install vim-gtk ...'
-  sudo apt-get install vim-gtk
+  sudo apt-get $APT_PROXY install vim-gtk
   if [ "$?" -ne 0 ]; then
     echo 'Install vim-gtk failed, please check the output of apt-get.'
     exit 1

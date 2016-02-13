@@ -1,9 +1,6 @@
 #!/bin/sh
 
-PROXY=""
-if [ -e $HOME/.apt.conf  ]; then
-  PROXY="-c $HOME/.apt.conf"
-fi
+. $HOME/myConfigs/gfw/get_apt_proxy.sh
 
 # install git if not exist
 GIT_SOURCE="^deb http://ppa.launchpad.net/git-core/ppa/ubuntu $(lsb_release -c -s) main"
@@ -11,8 +8,8 @@ APT_SOURCE=$(grep "$GIT_SOURCE" /etc/apt/sources.list.d/*.list)
 if [ -z "$APT_SOURCE" ]; then
   echo "Add git-core ppa..."
   sudo apt-add-repository ppa:git-core/ppa
-  sudo apt-get $PROXY update
-  sudo apt-get $PROXY install git
+  sudo apt-get $APT_PROXY update
+  sudo apt-get $APT_PROXY install git
 fi
 
 git config --global user.email "yusiwen@gmail.com"

@@ -1,12 +1,14 @@
 #!/bin/sh
 
+. $HOME/myConfigs/gfw/get_apt_proxy.sh
+
 CONFIG_SHELL=$HOME/myConfigs/shell
 
 if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
   echo "Current SHELL is not ZSH"
   if [ ! -e /usr/bin/zsh ]; then
     echo "Cannot find ZSH binary, installing ..."
-    sudo apt-get install zsh
+    sudo apt-get $APT_PROXY install zsh
     if [ "$?" -ne 0 ]; then
       echo "Install ZSH failed, please manually install it."
       exit

@@ -1,10 +1,12 @@
 #!/bin/sh
 
+. $HOME/myConfigs/gfw/get_apt_proxy.sh
+
 # Check if mpd is installed or not
 MPD=$(dpkg -l|cut -d " " -f 3|grep "^mpd$")
 if [ -z "$MPD" ]; then
   echo 'Install mpd ...'
-  sudo apt-get install mpd
+  sudo apt-get $APT_PROXY install mpd
   echo 'Install mpd ... done'
 fi
 
@@ -12,7 +14,7 @@ fi
 NCMPCPP=$(dpkg -l|cut -d " " -f 3|grep "^ncmpcpp$")
 if [ -z "$NCMPCPP" ]; then
   echo 'Install ncmpcpp ...'
-  sudo apt-get install ncmpcpp
+  sudo apt-get $APT_PROXY install ncmpcpp
   echo 'Install ncmpcpp ... done'
 fi
 
