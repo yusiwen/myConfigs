@@ -95,8 +95,13 @@ if [ -z "$I3_COLOR_THEME" ]; then
   export I3_COLOR_THEME
 fi
 
+# Add $HOME/bin to $PATH if exists && not added
 if [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
   PATH="${PATH:+"$PATH:"}$HOME/bin"
+fi
+# Add $HOME/.local/bin to $PATH if exists && not added
+if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  PATH="$HOME/.local/bin:$PATH"
 fi
 export PATH
 #}}}

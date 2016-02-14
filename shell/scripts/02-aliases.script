@@ -73,3 +73,7 @@ alias gitlpa='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Cres
 # Valgrind aliases
 alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v'
 
+# Python Pip
+alias pipi='pip --proxy="b.qypac.net:15355" install --user'
+alias pipiu='pip --proxy="b.qypac.net:15355" install --user --upgrade'
+
