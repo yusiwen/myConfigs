@@ -36,6 +36,17 @@ mkdir -p $HOME/bin
 ln -sfnv $CONFIG_HOME/i3bang/i3bang.rb $HOME/bin/i3bang
 # link default theme 'jellybeans' to ~/.i3/_config.colors
 ln -sfnv $CONFIG_HOME/colors/_config.jellybeans $I3_HOME/_config.colors
+# check if 'ruby' is installed or not
+RUBY_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "^ruby$")
+if [ -z "$RUBY_PACKAGE" ]; then
+  echo "Installing ruby..."
+  sudo apt-get $APT_PROXY install ruby
+  if [ "$?" -ne 0 ]; then
+    echo 'Install ruby failed, please check the output of apt-get.'
+    exit 1
+  fi
+  echo 'Installing ruby ... done'
+fi
 i3bang
 
 # check if 'consolekit' is installed or not
@@ -43,13 +54,13 @@ echo 'Checking package consolekit...'
 dpkg-query -l consolekit 2>/dev/null
 if [ "$?" -eq 1 ]; then
   # Install 'consolekit'
-  echo 'Install consolekit...'
+  echo 'Installing consolekit...'
   sudo apt-get $APT_PROXY install consolekit
   if [ "$?" -ne 0 ]; then
     echo 'Install consolekit failed, please check the output of apt-get.'
     exit 1
   fi
-  echo 'Install consolekit ... done'
+  echo 'Installing consolekit ... done'
 fi
 
 if [ ! -e /usr/share/xsessions/i3.desktop ]; then
@@ -70,12 +81,12 @@ echo 'Checking package dex...'
 dpkg-query -l dex 2>/dev/null
 if [ "$?" -eq 1 ]; then
   # Install 'dex'
-  echo 'Install dex...'
+  echo 'Installing dex...'
   sudo apt-get $APT_PROXY install dex
   if [ "$?" -ne 0 ]; then
     echo 'Install dex failed, please check the output of apt-get.'
     exit 1
   fi
-  echo 'Install dex ... done'
+  echo 'Installing dex ... done'
 fi
 
