@@ -24,10 +24,14 @@ if [ $(uname) = 'Linux' ]; then
     echo 'vim-gtk is found.'
   fi
 elif [ $(uname) = 'Darwin' ]; then
+  echo 'Darwin is found, checking vim...'
   PACKAGE=$(brew list|grep vim)
   if [ -z "$PACKAGE" ]; then
+    echo 'vim is not found. Installing vim...'
     brew install vim macvim
+    echo 'Installing vim...Done.'
   fi
+  echo 'vim is found.'
 else
   echo 'Unknown OS, please make sure vim is installed.'
 fi
