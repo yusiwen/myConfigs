@@ -20,7 +20,8 @@ Contents
 1. `figlet/` figlet fonts for ascii art.
 1. `git/` Git configurations and scripts.
 1. `i3/` i3-wm configurations.
-1. `keyring` keyring confiurations for i3 and mutt.
+1. `keyring/` keyring confiurations for i3 and mutt.
+1. `mac/` configurations for MacOS.
 1. `mail/` settings for all mail clients.
 1. `mc.conf/` confiurations for MidnightCommander.
 1. `mounts/` fstab configurations for home-ubuntu.
@@ -28,11 +29,14 @@ Contents
 1. `node.js/` Node.js settings.
 1. `python/` Python settings.
 1. `razer/` Razer DeathAdder mouse polling rate configurations.
-1. `rxvt/` rxvt-unicode terminal configurations.
 1. `shell/` shell environments scripts.
 1. `vim/` VIM configurations.
 1. `X11/` X11 scripts.
+1. `calibre.sh` for installation for `calibre`.
+1. `change_font.sh` script for changing font.
+1. `change_theme.sh` script for changing themes of Xresources, vim, etc.
 1. `composeKey.sh` compose keys setting for X.
+1. `install_tools.sh` script for installing tools under Ubuntu.
 1. `ocr.sh` script for OCR some pages in a PDF file.
 1. `projector.sh` xrandr settings for connection with a projector.
 1. `route.sh` routing config files for 3G mobile network when at work.
