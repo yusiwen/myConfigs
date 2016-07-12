@@ -9,6 +9,8 @@ Configurations for Python environment.
   ```text
   $ curl -O https://bootstrap.pypa.io/get-pip.py
   $ sudo python get-pip.py
+  # or install to $HOME/.local/bin
+  $ python get-pip.py --user
   ```
 
   For more details, check out this [official page](https://pip.pypa.io/en/latest/installing.html#install-pip)

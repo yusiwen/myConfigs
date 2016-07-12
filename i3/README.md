@@ -29,7 +29,7 @@ Installation
   $ sudo apt-get install i3
   ```
 
-  For better session management, using ConsoleKit to start i3wm:
+  (Optional) For better session management, using ConsoleKit to start i3wm:
   ```sh
   $ sudo cp ~/myConfigs/i3/i3.desktop /usr/share/xsessions/i3.desktop
   # or just edit following line to /usr/share/xsessions/i3.desktop
@@ -115,7 +115,11 @@ Configuration
   x-directory/normal=thunar.desktop
   ```
 
-`gnome-keyring-daemon` Problems
------------------------------
+XSession Autostart
+------------------
 
-When using unity-greeter with LightDM, there may be some PAM problem causing gnome-keyring-daemon not started after user login. By replacing unity-greeter with lightdm-gtk-greeter, the problem is gone.
+  Using `dex` to autostart xsessions desktop files to load programs which can't be load in i3 startup, such as `gnome-keyring` modules. Link all the desktop files in `i3/xsessions/autostart/` to `$HOME/.config/autostart/`, and add `exec dex -ae i3` in i3's config.
+
+  For convenience, run `mkenv.sh` to make all things right.
+
+  See this [post](https://faq.i3wm.org/question/2155/how-can-i-use-autostart-desktop-files-in-i3.1.html) for more details.

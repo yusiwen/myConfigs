@@ -2,6 +2,7 @@
 
 urxvt*background:  #1f1f1f
 urxvt*foreground:  #dcdccc
+urxvt*fading:      20
 ! black + red
 !urxvt*color0:     #3f3f3f
 urxvt*color0:      #1E2320

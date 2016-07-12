@@ -20,7 +20,8 @@ Contents
 1. `figlet/` figlet fonts for ascii art.
 1. `git/` Git configurations and scripts.
 1. `i3/` i3-wm configurations.
-1. `keyring` keyring confiurations for i3 and mutt.
+1. `keyring/` keyring confiurations for i3 and mutt.
+1. `mac/` configurations for MacOS.
 1. `mail/` settings for all mail clients.
 1. `mc.conf/` confiurations for MidnightCommander.
 1. `mounts/` fstab configurations for home-ubuntu.
@@ -28,11 +29,14 @@ Contents
 1. `node.js/` Node.js settings.
 1. `python/` Python settings.
 1. `razer/` Razer DeathAdder mouse polling rate configurations.
-1. `rxvt/` rxvt-unicode terminal configurations.
 1. `shell/` shell environments scripts.
 1. `vim/` VIM configurations.
 1. `X11/` X11 scripts.
+1. `calibre.sh` for installation for `calibre`.
+1. `change_font.sh` script for changing font.
+1. `change_theme.sh` script for changing themes of Xresources, vim, etc.
 1. `composeKey.sh` compose keys setting for X.
+1. `install_tools.sh` script for installing tools under Ubuntu.
 1. `ocr.sh` script for OCR some pages in a PDF file.
 1. `projector.sh` xrandr settings for connection with a projector.
 1. `route.sh` routing config files for 3G mobile network when at work.
@@ -44,28 +48,7 @@ Some important softwares. Needed after re-installing OS.
 
 1. i3-wm
 
-	Installation from official repository:
-
-	```text
-	$ sudo echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >> /etc/apt/sources.list
-	$ sudo apt-get update
-	$ sudo apt-get --allow-unauthenticated install sur5r-keyring
-	$ sudo apt-get install consolekit
-	$ sudo apt-get install i3
-	```
-
-	Then, disable `xfce4-notifyd` because `dunst` is running:
-
-	```text
-	$ sudo mv /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service.disabled
-	```
-
-	Install i3blocks to replace i3status for better status display:
-
-	```text
-	$ sudo apt-get install i3blocks
-	$ ln -s ~/myConfigs/i3/i3blocks.conf ~/.i3/i3blocks.conf
-	```
+	See `i3/README.md`.
 
 1. Git
 
@@ -73,6 +56,8 @@ Some important softwares. Needed after re-installing OS.
 	$ sudo apt-add-repository ppa:git-core/ppa
 	$ sudo apt-get install git
 	```
+
+	See more details in `git/README.md`.
 
 1. Chrome
 
@@ -98,11 +83,7 @@ Some important softwares. Needed after re-installing OS.
 	$ sudo apt-get install vim-gtk
 	```
 
-	Install `vundle` pacakge manager for vim.
-
-	```text
-	$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-	```
+	See more details in `vim/README.md`.
 
 1. Terminal tools
 
@@ -237,7 +218,7 @@ Some important softwares. Needed after re-installing OS.
 		...
 		```
 
-1. [kingsoft-office](http://linux.wps.cn/) (aka 'WPS')
+1. [kingsoft-office](http://linux.wps.cn/) (AKA "WPS")
 
 	To install kingsoft-office on 13.10+, which has removed ia32-libs package:
 
@@ -303,13 +284,6 @@ Some important softwares. Needed after re-installing OS.
 		```text
 		$ sudo pip install goobook
 		$ sudo pip install keyring
-		```
-
-	* Geary
-
-		```text
-		$ sudo apt-add-repository ppa:yorba/ppa
-		$ sudo apt-get install geary
 		```
 
 1. Media tools

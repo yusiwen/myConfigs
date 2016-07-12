@@ -72,6 +72,13 @@ if [ -z "$NPM_PACKAGES" ]; then
 fi
 #}}}
 
+#{{{ Ruby
+if which ruby >/dev/null && which gem >/dev/null; then
+  PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+  export PATH
+fi
+#}}}
+
 #{{{ Misc
 # TERMINAL used in i3-sensible-terminal
 if [ -z "$TERMINAL" ]; then
@@ -89,15 +96,19 @@ if [ -z "$HOSTNAME" ]; then
   export HOSTNAME
 fi
 
-# i3wm color scheme
-#   dark or solarized
+# i3wm color scheme, see i3/_config
 if [ -z "$I3_COLOR_THEME" ]; then
   I3_COLOR_THEME=dark
   export I3_COLOR_THEME
 fi
 
+# Add $HOME/bin to $PATH if exists && not added
 if [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
   PATH="${PATH:+"$PATH:"}$HOME/bin"
+fi
+# Add $HOME/.local/bin to $PATH if exists && not added
+if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  PATH="$HOME/.local/bin:$PATH"
 fi
 export PATH
 #}}}

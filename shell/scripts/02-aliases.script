@@ -13,8 +13,14 @@ if [ $(uname) = 'Darwin' ]; then
   alias dir='ls -G'
 else
   alias l='vdir -h --format=across --color'
-  alias la='ls++ -aF'
-  alias ls='ls++ -F'
+  if [ -e /usr/local/bin/ls++ ]; then
+    alias la='ls++ -aF'
+    alias ls='ls++ -F'
+  else
+    alias la='ls -a --color=auto'
+    alias ls='ls --color=auto'
+    alias ll='ls -la --color=auto'
+  fi
   alias dir='dir -l --color'
 fi
 
@@ -48,14 +54,26 @@ fi
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
 
 # Git commands aliases
+alias gitpso='git push origin'
+alias gitpsa='git push --all'
+alias gitplo='git pull origin'
+alias gitfup='git fetch upstream'
+alias gitfo='git fetch origin'
 alias gitc='git commit --verbose'
 alias gits='git status --short --branch'
 alias gitd='git diff --submodule --word-diff'
 alias gitds='git diff --submodule --word-diff --staged'
 alias gitl='git log --graph --oneline --decorate'
+alias gitla='git log --graph --oneline --decorate --all'
 alias gitll='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --stat'
+alias gitlla='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --stat --all'
 alias gitlp='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%b" -p'
+alias gitlpa='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%b" -p --all'
 
 # Valgrind aliases
 alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v'
+
+# Python Pip
+alias pipi='pip --proxy="b.qypac.net:15355" install --user'
+alias pipiu='pip --proxy="b.qypac.net:15355" install --user --upgrade'
 

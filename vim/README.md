@@ -58,3 +58,11 @@ VIM Installation
 		```text
 		$ sudo gem install redcarpet pygments.rb
 		```
+
+1. Install lucius theme for airline
+
+	```text
+	$ ln -sf ~/git/myConfigs/vim/airline/lucius.vim ~/.vim/bundle/vim-airline/autoload/airline/themes/lucius.vim
+	```
+
+	`lucius.vim` can be found at [link](https://github.com/jonathanfilip/lucius/blob/master/vim-airline/lucius.vim).

@@ -1,0 +1,5 @@
+set background=dark
+let base16colorspace=256
+colorscheme base16-twilight
+" airline theme
+let g:airline_theme = 'base16_twilight'

@@ -25,6 +25,7 @@ let s:is_linux = !s:is_windows && !s:is_cygwin && !s:is_mac
 " NeoBundle {{{
 filetype off
 set runtimepath+=~/.vim/bundle/neobundle.vim/
+let g:neobundle#types#git#default_protocol='ssh'
 call neobundle#begin(expand('~/.vim/bundle/'))
 
 " Let NeoBundle manage NeoBundle
@@ -42,10 +43,8 @@ NeoBundle 'jiangmiao/auto-pairs'
 NeoBundle 'szw/vim-tags'
 " Automatically discover and update ctags files on save
 NeoBundle 'craigemery/vim-autotag'
-" tree explorer for vim
-"NeoBundle 'scrooloose/nerdtree'
-"NeoBundle 'Xuyuanp/nerdtree-git-NeoBundle'
-NeoBundle 'bling/vim-airline'
+NeoBundle 'vim-airline/vim-airline'
+NeoBundle 'yusiwen/vim-airline-themes'
 
 " easy note taking in Vim
 NeoBundle 'xolox/vim-misc'
@@ -111,8 +110,6 @@ NeoBundle 'moll/vim-node'
 NeoBundle 'pangloss/vim-javascript'
 " CoffeeScript support
 NeoBundle 'kchmck/vim-coffee-script'
-" markdown extensions
-NeoBundle 'plasticboy/vim-markdown'
 " view man pages in vim
 NeoBundle 'bruno-/vim-man'
 
@@ -128,10 +125,10 @@ NeoBundle 'Chiel92/vim-autoformat'
 
 " themes repos
 "NeoBundle 'altercation/vim-colors-solarized'
-"NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'yusiwen/jellybeans.vim'
 "NeoBundle 'jnurmine/Zenburn'
-"NeoBundle 'morhetz/gruvbox'
-"NeoBundle 'chriskempson/base16-vim'
+NeoBundle 'morhetz/gruvbox'
+NeoBundle 'yusiwen/base16-vim'
 
 call neobundle#end()
 
@@ -216,16 +213,14 @@ if has('gui_running')
   set guioptions-=r               " No Scrollbar right
   set guioptions-=r               " No Scrollbar right when split
 
-  set guifont=Input\ Mono:h12
+  set guifont=Input\ Mono\ Compressed\ Regular\ 10
 
-  set lines=40                    " Height
-  set columns=85                  " Width
+  set lines=50                    " Height
+  set columns=130                 " Width
 
-  set background=dark
-
-  colorscheme sourcerer
+  source ~/.vim/vimrc.theme
 else
-  colorscheme sourcerer
+  source ~/.vim/vimrc.theme
   set t_Co=256
 endif
 " }}}

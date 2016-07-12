@@ -70,3 +70,8 @@ if [[ $(tty) == \/dev\/tty[0-9]* ]] ; then
   fbterm
 fi
 
+# Base16 Shell
+BASE16_SHELL="$HOME/.base16rc"
+[[ -s $BASE16_SHELL  ]] && source $BASE16_SHELL
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
