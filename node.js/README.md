@@ -1,14 +1,14 @@
-# [NodeSource](https://nodesource.com/) Node.js and io.js Binary Distributions
+# [NodeSource](http://nsrc.io/release-updates-1) Node.js and io.js Binary Distributions
 
 ![Linux Distributions](https://nodesource.com/assets/external/linux-distributions.svg)
 
-This repository contains the source of the **[NodeSource](https://nodesource.com)** **[Node.js](http://nodejs.org)** and **[io.js](https://iojs.org)** Binary Distributions setup and support scripts.
+This repository contains the source of the **[NodeSource](http://nsrc.io/release-updates-1)** **[Node.js](http://nodejs.org)** and **[io.js](https://iojs.org)** Binary Distributions setup and support scripts.
 
 ----------------------------------
 
 <img src="https://downloads.nodesource.com/img/nsolid.svg" width="25%">
 
-If you are looking for NodeSource's Enterprise-grade Node.js platform, **[N|Solid](https://nmaster.nodesource.com/products/nsolid)**, please visit **<https://downloads.nodesource.com/>**
+If you are looking for NodeSource's Enterprise-grade Node.js platform, **[N|Solid](https://nodesource.com/products/nsolid)**, please visit **<https://downloads.nodesource.com/>**
 
 ----------------------------------
 
@@ -46,8 +46,8 @@ NodeSource will maintain Ubuntu distributions in active support by Canonical, in
 
 * **Ubuntu 12.04 LTS** (Precise Pangolin)
 * **Ubuntu 14.04 LTS** (Trusty Tahr)
-* **Ubuntu 15.04** (Vivid Vervet)
-* **Ubuntu 15.10** (Wily Werewolf) **[For Node >= 4.2.x]**
+* **Ubuntu 15.10** (Wily Werewolf)
+* **Ubuntu 16.04 LTS** (Xenial Xerus)
 
 **Supported Debian versions:**
 
@@ -70,6 +70,7 @@ NodeSource will maintain support for stable, testing and unstable releases of De
 
 * **elementary OS Luna** (via Ubuntu 12.04 LTS)
 * **elementary OS Freya** (via Ubuntu 14.04 LTS)
+* **elementary OS Loki** (via Ubuntu 16.04)
 
 **Supported Trisquel versions:**
 
@@ -80,8 +81,26 @@ NodeSource will maintain support for stable, testing and unstable releases of De
 
 * **BOSS 5.0 "Anokha"** (via Debian 7)
 
+**Supported BunsenLabs versions:**
+
+* **Hydrogen (rc2)** (via Debian 8)
+
 <a name="debinstall"></a>
 ### Installation instructions
+
+**Node.js v6.x**:
+
+* NOTE: If you are using Ubuntu Precise or Debian Wheezy, you might want to read about [running Node.js >= 4.x on older distros](https://github.com/nodesource/distributions/blob/master/OLDER_DISTROS.md).
+
+```sh
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Using Debian, as root
+curl -sL https://deb.nodesource.com/setup_6.x | bash -
+apt-get install -y nodejs
+```
 
 **Node.js v5.x**:
 
@@ -185,37 +204,51 @@ apt-get install -y build-essential
 <a name="debmanual"></a>
 ### Manual installation
 
-If you're not a fan of `curl <url> | bash -`, or you want to try use the repository for your unsupported distribution, try a manual install. The setup script performs the following steps:
+If you're not a fan of `curl <url> | bash -`, or are using an unsupported distribution, you can try a manual installation.
 
-In the commands below you should replace the following placeholdes:
-
-* **`{DISTRO}`**: replace with the codename of your distro, which will be something like: *wheezy, jessie, sid* or *precise, trusty, utopic, vivid* (or other supported Ubuntu or Debian distro)
-* **`{VERSION}`**: replace with the version of Node.js or io.js you want to install, it should take the following form: *node_0.10, node_0.12* or *iojs_1.x*, *iojs_2.x*, etc.
+These instructions assume `sudo` is present, however some distributions do not include this command by default, particularly those focused on a minimal environment. In this case, you should install `sudo` or `su` to root to run the commands directly.
 
 **1. Remove the old PPA if it exists**
 
-```sh
-# add-apt-repository may not exist on some distributions
-add-apt-repository -y -r ppa:chris-lea/node.js
-rm -f /etc/apt/sources.list.d/chris-lea-node_js-*.list
-```
-
-**2. Add the NodeSource signing key**
+This step is only required if you previously used Chris Lea's Node.js PPA.
 
 ```sh
-curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
-# if curl is not available:
-wget -qO- https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+# add-apt-repository may not be present on some Ubuntu releases:
+#sudo apt-get install python-software-properties
+sudo add-apt-repository -y -r ppa:chris-lea/node.js
+sudo rm -f /etc/apt/sources.list.d/chris-lea-node_js-*.list
+sudo rm -f /etc/apt/sources.list.d/chris-lea-node_js-*.list.save
 ```
 
-**3. Add the repositories to your sources.list**
+**2. Add the NodeSource package signing key**
 
 ```sh
-echo 'deb https://deb.nodesource.com/{VERSION} {DISTRO} main' > /etc/apt/sources.list.d/nodesource.list
-echo 'deb-src https://deb.nodesource.com/{VERSION} {DISTRO} main' >> /etc/apt/sources.list.d/nodesource.list
+curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
+# wget can also be used:
+# wget --quiet -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 ```
 
-Then you should be able to `apt-get update` and `apt-get install nodejs`.
+**3. Add the desired NodeSource repository**
+
+
+```sh
+# Replace with the branch of Node.js or io.js you want to install: node_0.10, node_0.12, node_4.x, node_5.x, etc...
+VERSION=node_5.x
+# The below command will set this correctly, but if lsb_release isn't available, you can set it manually:
+# - For Debian distributions: wheezey, jessie, sid, etc...
+# - For Ubuntu distributions: precise, trusty, xenial, etc...
+# - For Debian or Ubuntu derived distributions your best option is to use the codename corresponding to the upstream release your distribution is based off. This is an advanced scenario and unsupported if your distribution is not listed as supported per earlier in this README.
+DISTRO="$(lsb_release -s -c)"
+echo "deb https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+echo "deb-src https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
+```
+
+**4. Update package lists and install Node.js**
+
+```sh
+sudo apt-get update
+sudo apt-get install nodejs
+```
 
 <a name="rpm"></a>
 ## Enterprise Linux based distributions
@@ -248,7 +281,6 @@ NodeSource will continue to maintain the following architectures and may add add
 
 * **Fedora 23 (Twenty Three)** (32-bit and 64-bit) **[For Node >= 4.2.x]**
 * **Fedora 22 (Twenty Two)** (32-bit and 64-bit)
-* **Fedora 21 (Twenty One)** (32-bit and 64-bit)
 
 Equivalent versions of Korora Linux should also be supported.
 
@@ -260,6 +292,14 @@ Current instructions for installing, as listed on the [Node.js Wiki](https://git
 Note that the Node.js packages for EL 5 (RHEL5 and CentOS 5) depend on the [EPEL](https://fedoraproject.org/wiki/EPEL) repository being available. The setup script will check and provide instructions if it is not installed.
 
 Run as root on RHEL, CentOS, CloudLinux or Fedora:
+
+**NodeJS 6.x**
+
+* NOTE: If you are using RHEL 6 or CentOS 6, you might want to read about [running Node.js >= 4.x on older distros](https://github.com/nodesource/distributions/blob/master/OLDER_DISTROS.md).
+
+```text
+curl -sL https://rpm.nodesource.com/setup_6.x | bash -
+```
 
 **NodeJS 5.x**
 
@@ -313,9 +353,89 @@ To test an installation is working (and that the setup scripts are working!) use
 curl -sL https://deb.nodesource.com/test | bash -
 ```
 
+# FAQ
+
+---
+
+Q: How do I use this repo when behind a proxy?
+
+A: Please take a look at [issue #9](https://github.com/nodesource/distributions/issues/9)
+
+---
+
+Q: How do I pin to specific versions of Node.js?
+
+A: Please take a look at [issue #33](https://github.com/nodesource/distributions/issues/33#issuecomment-169345680)
+
+---
+
+Q: I upgraded to a new major version of Node.js using the scripts, but the old version is still being installed, what is going on?
+
+A: You probably need to clear out your package manager's cache. Take a look at [issue #191](https://github.com/nodesource/distributions/issues/191)
+
+---
+
+Q: I'm trying to install Node.js on Centos 5 and it is failing, why?
+
+A: Do to the limitations of the compiler tool chain on Centos5, we currently can only support Node.js 0.10 on that release. See [issue #190](https://github.com/nodesource/distributions/issues/190)
+
+---
+
+Q: I'm seeing "Your distribution, identified as "*.i686" or "*.i386, is not currently supported, why?
+
+A: Node.js 4.x and newer require a 64bit os for rpms. See [issue #268](https://github.com/nodesource/distributions/issues/268)
+
+---
+
+Q: Why have certain versions of platforms/releases stopped receiving updates to Node.js?
+
+A: Unfortunately, newer versions of v8 require a modern compiler toolchain. On some platforms, such as ARM wheezy, that toolchain is not available. See [issue #247](https://github.com/nodesource/distributions/issues/247)
+
+---
+
+Q: What is the current status of IPv6 support?
+
+A: See [issue #170](https://github.com/nodesource/distributions/issues/170)
+
+# Requested Distributions
+
+We, unfortunately, do not have the resources necessary to support and test the plethora of Linux releases in the wild, so we rely on community members such as yourself to get support on your favorite distributions! This is a list of releases that have been requested by the community. If you are interested in contributing to this project, this would be a great place to start!
+
+* OpenSUSE - [Issue #199](https://github.com/nodesource/distributions/issues/199)
+* Scientific Linux - [Issue #251](https://github.com/nodesource/distributions/issues/251)
+* LinuxMint Nadia - [Issue #269](https://github.com/nodesource/distributions/issues/269)
+* TANGLU Bartholomea - [Issue #81](https://github.com/nodesource/distributions/issues/81)
+* Korora - [Issue #130](https://github.com/nodesource/distributions/issues/130)
+* FreePBX - [Issue #257](https://github.com/nodesource/distributions/issues/257)
+
+## Authors and Contributors
+
+<table><tbody>
+<tr><th align="left">Chris Lea</th><td><a href="https://github.com/chrislea">GitHub/chrislea</a></td><td><a href="http://twitter.com/chrislea">Twitter/@chrislea</a></td></tr>
+<tr><th align="left">Rod Vagg</th><td><a href="https://github.com/rvagg">GitHub/rvagg</a></td><td><a href="http://twitter.com/rvagg">Twitter/@rvagg</a></td></tr>
+<tr><th align="left">William Blankenship</th><td><a href="https://github.com/retrohacker">GitHub/retrohacker</a></td><td><a href="http://twitter.com/retrohack3r">Twitter/@retrohack3r</a></td></tr>
+<tr><th align="left">Harry Truong</th><td><a href="https://github.com/harrytruong">GitHub/harrytruong</a></td><td></td></tr>
+<tr><th align="left">Matteo Brunati</th><td><a href="https://github.com/mattbrun">GitHub/mattbrun</a></td><td></td></tr>
+<tr><th align="left">Brian White</th><td><a href="https://github.com/mscdex">GitHub/mscdex</a></td><td></td></tr>
+<tr><th align="left">Matt Lewandowsky</th><td><a href="https://github.com/lewellyn">GitHub/lewellyn</a></td><td></td></tr>
+<tr><th align="left">Jan-Hendrik Peters</th><td><a href="https://github.com/hennr">GitHub/hennr</a></td><td></td></tr>
+<tr><th align="left">Andris Reinman</th><td><a href="https://github.com/andris9">GitHub/andris9</a></td><td></td></tr>
+<tr><th align="left">Carvilsi</th><td><a href="https://github.com/carvilsi">GitHub/carvilsi</a></td><td></td></tr>
+<tr><th align="left">Krasimir Trenchev</th><td><a href="https://github.com/Ava7">GitHub/Ava7</a></td><td></td></tr>
+<tr><th align="left">Phil Helm</th><td><a href="https://github.com/phelma">GitHub/phelma</a></td><td></td></tr>
+<tr><th align="left">0xmohit</th><td><a href="https://github.com/0xmohit">GitHub/0xmohit</a></td><td></td></tr>
+<tr><th align="left">jdarling</th><td><a href="https://github.com/jdarling">GitHub/jdarling</a></td><td></td></tr>
+<tr><th align="left">Prayag Verma</th><td><a href="https://github.com/pra85">GitHub/pra85</a></td><td></td></tr>
+<tr><th align="left">Misha Brukman</th><td><a href="https://github.com/mbrukman">GitHub/mbrukman</a></td><td></td></tr>
+<tr><th align="left">Simon Lydell</th><td><a href="https://github.com/lydell">GitHub/lydell</a></td><td></td></tr>
+<tr><th align="left">Sebastian Blei</th><td><a href="https://github.com/iamsebastian">GitHub/iamsebastian</a></td><td></td></tr>
+</tbody></table>
+
+Contributions are welcomed from anyone wanting to improve this project!
+
 ## License
 
-This material is Copyright (c) 2015 NodeSource LLC and licenced under the MIT licence. All rights not explicitly granted in the MIT license are reserved. See the included LICENSE.md file for more details.
+This material is Copyright (c) 2016 NodeSource and licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included [LICENSE.md](./LICENSE.md) file for more details.
 
 ------------------------------------------------------------------
 

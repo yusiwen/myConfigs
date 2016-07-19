@@ -72,6 +72,13 @@ if [ -z "$NPM_PACKAGES" ]; then
 fi
 #}}}
 
+#{{{ Ruby
+if which ruby >/dev/null && which gem >/dev/null; then
+  PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+  export PATH
+fi
+#}}}
+
 #{{{ Misc
 # TERMINAL used in i3-sensible-terminal
 if [ -z "$TERMINAL" ]; then

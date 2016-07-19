@@ -11,7 +11,7 @@ VIM Installation
 	$ sudo apt-get install vim-gtk
 	```
 
-	As for windows, check out [kybu Windows build](https://bitbucket.org/kybu/vim-for-windows-single-drop), it supports `ruby`, `python`, `perl`, `lua`, etc.
+	As for windows, check out [kybu Windows build](https://bitbucket.org/kybu/vim-for-windows-single-drop), it supports `Ruby`, `Python`, `Perl`, `Lua`, etc. Or [tuxproject](http://tuxproject.de/projects/vim) , supports both x86 (32-bit) and x64 (64-bit) architectures, compiled with Xpm and DirectX support, provides "huge" feature set and scripting interfaces for `Tcl`, `Python` 2, `Python` 3, `Ruby`, `Lua`, `Racket`, and `Perl`.
 
 	As for Mac, using `brew install vim macvim ctags cscope lua`.
 
