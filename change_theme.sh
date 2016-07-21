@@ -1,9 +1,5 @@
 #!/bin/sh
 
-if [ ! -e $HOME/.Xresources.font ]; then
-  $HOME/myConfigs/change_font.sh
-fi
-
 VIM_THEME_DIR="$HOME/myConfigs/vim"
 VIM_THEME_FILE="$HOME/.vim/vimrc.theme"
 
@@ -13,6 +9,42 @@ BASE16_THEME_SHELL="$HOME/.base16rc"
 
 MUTT_THEME_DIR="$HOME/myConfigs/mail/mutt/themes"
 MUTT_THEME_FILE="$HOME/.mutt/theme.muttrc"
+
+GREP="grep -q"
+
+change_theme()
+{
+  if [ $(uname) = 'Linux' ]; then
+    if [ ! -e $HOME/.Xresources.font ]; then
+      $HOME/myConfigs/change_font.sh
+    fi
+
+    echo "Setting theme to '$1'..."
+
+    ln -sfnv $VIM_THEME_DIR/vimrc.theme.$1 $VIM_THEME_FILE
+
+    BASE16=
+    if echo "$1" | $GREP "^base16"; then
+      ln -sfnv $X11_THEME_DIR/$1.dark.256.xresources $X11_THEME_FILE
+      ln -sfnv $X11_THEME_DIR/$1.dark.sh $BASE16_THEME_SHELL
+      BASE16=".dark.256"
+    else
+      ln -sfnv $X11_THEME_DIR/$1.xresources $X11_THEME_FILE
+      rm -f $BASE16_THEME_SHELL
+    fi
+
+    # Check if mutt is installed or not
+    PACKAGE=$(dpkg -l | grep mutt)
+    if [ ! -z "$PACKAGE" ]; then
+      ln -sfnv $MUTT_THEME_DIR/$1$BASE16.muttrc $MUTT_THEME_FILE
+    fi
+
+    echo "Reloading xresources..."
+    xrdb -load ~/.Xresources
+  else
+    echo 'Only Linux is supported.'
+  fi
+}
 
 echo "[1] Gruvbox"
 echo "[2] Jellybeans"
@@ -32,71 +64,28 @@ if [ -z $number ]; then
 fi
 
 if echo "$number" | grep -iq "^1"; then
-  echo "Setting theme to 'Gruvbox'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.gruvbox $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/gruvbox.xresources $X11_THEME_FILE
-  rm -f $BASE16_THEME_SHELL
-  ln -sfnv $MUTT_THEME_DIR/gruvbox.muttrc $MUTT_THEME_FILE
+  change_theme gruvbox
 elif echo "$number" | grep -iq "^2"; then
-  echo "Setting theme to 'Jellybeans'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.jellybeans $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/jellybeans.xresources $X11_THEME_FILE
-  rm -f $BASE16_THEME_SHELL
-  ln -sfnv $MUTT_THEME_DIR/jellybeans.muttrc $MUTT_THEME_FILE
+  change_theme jellybeans
 elif echo "$number" | grep -iq "^3"; then
-  echo "Setting theme to 'Sourcerer'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.sourcerer $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/sourcerer.xresources $X11_THEME_FILE
-  rm -f $BASE16_THEME_SHELL
-  ln -sfnv $MUTT_THEME_DIR/sourcerer.muttrc $MUTT_THEME_FILE
+  change_theme sourcerer
 elif echo "$number" | grep -iq "^4"; then
-  echo "Setting theme to 'Base16-Default'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-default $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-default.dark.256.xresources $X11_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-default.dark.sh $BASE16_THEME_SHELL
-  ln -sfnv $MUTT_THEME_DIR/base16-default.dark.256.muttrc $MUTT_THEME_FILE
+  change_theme base16-default
 elif echo "$number" | grep -iq "^5"; then
-  echo "Setting theme to 'Base16-Atelier Seaside'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-atelierseaside $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-atelierseaside.dark.256.xresources $X11_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-atelierseaside.dark.sh $BASE16_THEME_SHELL
-  ln -sfnv $MUTT_THEME_DIR/base16-atelierseaside.dark.256.muttrc $MUTT_THEME_FILE
+  change_theme base16-atelierseaside
 elif echo "$number" | grep -iq "^6"; then
-  echo "Setting theme to 'Base16-Atelier Sulphurpool'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-ateliersulphurpool $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-ateliersulphurpool.dark.256.xresources $X11_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-ateliersulphurpool.dark.sh $BASE16_THEME_SHELL
-  ln -sfnv $MUTT_THEME_DIR/base16-ateliersulphurpool.dark.256.muttrc $MUTT_THEME_FILE
+  change_theme base16-ateliersulphurpool
 elif echo "$number" | grep -iq "^7"; then
-  echo "Setting theme to 'Base16-Bespin'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-bespin $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-bespin.dark.256.xresources $X11_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-bespin.dark.sh $BASE16_THEME_SHELL
-  ln -sfnv $MUTT_THEME_DIR/base16-bespin.dark.256.muttrc $MUTT_THEME_FILE
+  change_theme base16-bespin
 elif echo "$number" | grep -iq "^8"; then
-  echo "Setting theme to 'Base16-Solarized Dark'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-solarized $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-solarized.dark.256.xresources $X11_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-solarized.dark.sh $BASE16_THEME_SHELL
-  ln -sfnv $MUTT_THEME_DIR/base16-solarized.dark.256.muttrc $MUTT_THEME_FILE
+  change_theme base16-solarized
 elif echo "$number" | grep -iq "^9"; then
-  echo "Setting theme to 'Base16-Tomorrow'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-tomorrow $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-tomorrow.dark.256.xresources $X11_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-tomorrow.dark.sh $BASE16_THEME_SHELL
-  ln -sfnv $MUTT_THEME_DIR/base16-tomorrow.dark.256.muttrc $MUTT_THEME_FILE
+  change_theme base16-tomorrow
 elif echo "$number" | grep -iq "^0"; then
-  echo "Setting theme to 'Base16-Twilight'..."
-  ln -sfnv $VIM_THEME_DIR/vimrc.theme.base16-twilight $VIM_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-twilight.dark.256.xresources $X11_THEME_FILE
-  ln -sfnv $X11_THEME_DIR/base16-twilight.dark.sh $BASE16_THEME_SHELL
-  ln -sfnv $MUTT_THEME_DIR/base16-twilight.dark.256.muttrc $MUTT_THEME_FILE
+  change_theme base16-twilight
 else
   echo "Nahh!"
   exit
 fi
-
-echo "Reloading xresources..."
-xrdb -load ~/.Xresources
 
 echo "Done."
