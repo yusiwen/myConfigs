@@ -2,19 +2,23 @@
 
 #{{{ Oracle instant client
 if [ -z "$ORACLE_HOME" ]; then
-  CLIENT_INSTALLATION_PATH="$HOME/instantclient_11_2"
+  CLIENT_INSTALLATION_PATH="$HOME/oracle"
   if [ -d "$CLIENT_INSTALLATION_PATH" ]; then
-    ORACLE_HOME=$CLIENT_INSTALLATION_PATH
-    export ORACLE_HOME
-    export PATH=$PATH:$ORACLE_HOME
-    export TNS_ADMIN=$ORACLE_HOME/network/admin
-    # On linux, for sqlplus to running, 'libaio1' must be installed.
-    if [ -z "$LD_LIBRARY_PATH" ]; then
-      export LD_LIBRARY_PATH=$ORACLE_HOME
-    else
-      export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
+    ORACLE_HOME=`/bin/ls -dr $CLIENT_INSTALLATION_PATH/instantclient*/ | head -1`
+    if [ ! -z $ORACLE_HOME ]; then
+      # truncate trailing '/'
+      ORACLE_HOME=`printf '%s' "${ORACLE_HOME%/}"`
+      export ORACLE_HOME
+      export PATH=$PATH:$ORACLE_HOME
+      export TNS_ADMIN=$ORACLE_HOME/network/admin
+      # On linux, for sqlplus to running, 'libaio1' must be installed.
+      if [ -z "$LD_LIBRARY_PATH" ]; then
+        export LD_LIBRARY_PATH=$ORACLE_HOME
+      else
+        export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
+      fi
+      export NLS_LANG=american_america.ZHS32GB18030
     fi
-    export NLS_LANG=american_america.ZHS32GB18030
   fi
 fi
 #}}}
