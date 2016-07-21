@@ -56,10 +56,12 @@ if [ -z "$M2_HOME" ]; then
     MVN_NAME=`/bin/ls -dr $MVN_INSTALLATION_PATH/*-maven-*/ | head -1`
     # set M2_HOME (truncated trailing '/')
     M2_HOME=`printf '%s' "${MVN_NAME%/}"`
-    export M2_HOME
-    export M2=$M2_HOME/bin
-    export MAVEN_OPTS="-Xms64m -Xmx256m"
-    export PATH=$PATH:$M2
+    if [ ! -z $M2_HOME ]; then
+      export M2_HOME
+      export M2=$M2_HOME/bin
+      export MAVEN_OPTS="-Xms64m -Xmx256m"
+      export PATH=$PATH:$M2
+    fi
   fi
 fi
 #}}}
