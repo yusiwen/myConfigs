@@ -19,9 +19,13 @@ if [ $(uname) = 'Linux' ]; then
         echo 'Install vim-gtk failed, please check the output of apt-get.'
         exit 1
       fi
-      echo 'Install vim-gtk ... done'
+      echo 'Install vim-gtk...done'
+    else
+      echo 'vim-gtk is found.'
     fi
-    echo 'vim-gtk is found.'
+
+    echo 'Install supplementary tools...'
+    sudo apt-get $APT_PROXY install exuberant-ctags silversearcher-ag cscope astyle
   fi
 elif [ $(uname) = 'Darwin' ]; then
   echo 'Darwin is found, checking vim...'
@@ -30,13 +34,18 @@ elif [ $(uname) = 'Darwin' ]; then
     echo 'vim is not found. Installing vim...'
     brew install vim macvim
     echo 'Installing vim...Done.'
+  else
+    echo 'vim is found.'
   fi
-  echo 'vim is found.'
+
+  echo 'Install supplementary tools...'
+  brew install ctags the_silver_searcher cscope astyle
 else
   echo 'Unknown OS, please make sure vim is installed.'
 fi
 
 ln -sfnv $CONFIG_VIM/vimrc $HOME/.vimrc
+ln -sfnv $CONFIG_VIM/ctags $HOME/.ctags
 
 if [ ! -d "$VIM_HOME" ]; then
   mkdir $VIM_HOME
