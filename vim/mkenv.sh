@@ -4,24 +4,35 @@
 
 CONFIG_VIM=$HOME/myConfigs/vim
 VIM_HOME=$HOME/.vim
+VIM_PACKAGE=
 
 if [ $(uname) = 'Linux' ]; then
   if [ $(lsb_release -i -s) = 'Ubuntu' ]; then
-    echo 'Ubuntu is found, checking vim-gtk...'
-    # Check if vim-gtk is installed or not
-    PACKAGE=$(dpkg -l | grep vim-gtk)
+    # Check if ubuntu-server is installed or not
+    PACKAGE=$(dpkg -l | grep ubuntu-server)
+    if [ ! -z "$PACKAGE" ]; then
+      echo 'Ubuntu server edition found.'
+      VIM_PACKAGE=vim
+    else
+      echo 'Ubuntu desktop edition found.'
+      VIM_PACKAGE=vim-gtk
+    fi
+
+    echo "Ubuntu is found, checking $VIM_PACKAGE..."
+    # Check if VIM_PACKAGE is installed or not
+    PACKAGE=$(dpkg -l | grep $VIM_PACKAGE)
     if [ -z "$PACKAGE" ]; then
-      echo 'vim-gtk is not found.'
-      # Install vim-gtk
-      echo 'Install vim-gtk ...'
-      sudo apt-get $APT_PROXY install vim-gtk
+      echo "$VIM_PACKAGE is not found."
+      # Install VIM_PACKAGE
+      echo "Install $VIM_PACKAGE ..."
+      sudo apt-get $APT_PROXY install $VIM_PACKAGE
       if [ "$?" -ne 0 ]; then
-        echo 'Install vim-gtk failed, please check the output of apt-get.'
+        echo "Install $VIM_PACKAGE failed, please check the output of apt-get."
         exit 1
       fi
-      echo 'Install vim-gtk...done'
+      echo "Install $VIM_PACKAGE...done"
     else
-      echo 'vim-gtk is found.'
+      echo "$VIM_PACKAGE is found."
     fi
 
     echo 'Install supplementary tools...'
