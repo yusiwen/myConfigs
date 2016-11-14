@@ -84,9 +84,9 @@ function getLatestTag(repo) {
 
           return versionCompare(p2, p1);
         });
-        console.log(repo.name + ':\n\t' + json[0].name);
+        console.log(repo + ':\n\t' + json[0].name);
       } else {
-        console.log(repo.name + ':\n\tError to retrieve data: ' + statusCode);
+        console.log(repo + ':\n\tError to retrieve data: ' + statusCode);
       }
     });
   });
