@@ -94,6 +94,16 @@ if [ -d "/usr/local/go" ]; then
 fi
 #}}}
 
+#{{{ Python
+# Add $HOME/.local/bin to $PATH if exists && not added
+if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  PATH="$HOME/.local/bin:$PATH"
+  export PATH
+fi
+export WORKON_HOME=$HOME/venv
+
+#}}}
+
 #{{{ Misc
 # TERMINAL used in i3-sensible-terminal
 if [ -z "$TERMINAL" ]; then
@@ -120,10 +130,6 @@ fi
 # Add $HOME/bin to $PATH if exists && not added
 if [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
   PATH="${PATH:+"$PATH:"}$HOME/bin"
+  export PATH
 fi
-# Add $HOME/.local/bin to $PATH if exists && not added
-if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-  PATH="$HOME/.local/bin:$PATH"
-fi
-export PATH
 #}}}

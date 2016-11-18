@@ -1,51 +1,19 @@
-//console.log('Hello, world!');
-
 const https = require('https');
 
-var repos = [{
-    name: 'atom',
-    repo: 'atom/atom'
-  },
-  {
-    name: 'brackets.io',
-    repo: 'adobe/brackets'
-  },
-  {
-    name: 'git-for-windows',
-    repo: 'git-for-windows/git'
-  },
-  {
-    name: 'calibre',
-    repo: 'kovidgoyal/calibre'
-  }, {
-    name: 'keeweb',
-    repo: 'keeweb/keeweb'
-  }, {
-    name: 'tagspaces',
-    repo: 'tagspaces/tagspaces'
-  }, {
-    name: 'hain',
-    repo: 'appetizermonster/hain'
-  }, {
-    name: 'ShadowsocksX-NG',
-    repo: 'shadowsocks/ShadowsocksX-NG'
-  }, {
-    name: 'shadowsocks-qt5',
-    repo: 'shadowsocks/shadowsocks-qt5'
-  }, {
-    name: 'Übersicht',
-    repo: 'felixhageloh/uebersicht'
-  }, {
-    name: 'pencil',
-    repo: 'evolus/pencil'
-  }, {
-    name: 'Abricotine',
-    repo: 'brrd/Abricotine'
-  }];
+var repos = [
+  'atom/atom', 'adobe/brackets',
+  'git-for-windows/git',
+  'kovidgoyal/calibre', 'keeweb/keeweb',
+  'tagspaces/tagspaces', 'appetizermonster/hain',
+  'shadowsocks/ShadowsocksX-NG', 'shadowsocks/shadowsocks-qt5',
+  'felixhageloh/uebersicht', 'evolus/pencil',
+  'brrd/Abricotine', 'Laverna/laverna',
+  'electron/electron', 'electron/electron-api-demos'
+];
 
 for (var i = 0; i < repos.length; i++) {
   (function (repo) {
-    var url = '/repos/' + repo.repo + '/releases/latest';
+    var url = '/repos/' + repo + '/releases/latest';
     var option = {
       hostname: 'api.github.com',
       port: 443,
@@ -68,11 +36,11 @@ for (var i = 0; i < repos.length; i++) {
           var json = JSON.parse(resp);
           var tagName = json['tag_name'];
           var pubDate = json['published_at'];
-          console.log(repo.name + ':\n\t' + tagName + ' (' + pubDate.replace(/T/, ' ').replace(/\..+/, '') + ')');
+          console.log(repo + ':\n\t' + tagName + ' (' + pubDate.replace(/T/, ' ').replace(/\..+/, '') + ')');
         } else if (statusCode == '404') {
           getLatestTag(repo);
         } else {
-          console.log(repo.name + ':\n\tError to retrieve data: ' + statusCode);
+          console.log(repo + ':\n\tError to retrieve data: ' + statusCode);
         }
       });
     });
@@ -85,7 +53,7 @@ for (var i = 0; i < repos.length; i++) {
 }
 
 function getLatestTag(repo) {
-  var url = '/repos/' + repo.repo + '/tags';
+  var url = '/repos/' + repo + '/tags';
   var option = {
     hostname: 'api.github.com',
     port: 443,
@@ -116,9 +84,9 @@ function getLatestTag(repo) {
 
           return versionCompare(p2, p1);
         });
-        console.log(repo.name + ':\n\t' + json[0].name);
+        console.log(repo + ':\n\t' + json[0].name);
       } else {
-        console.log(repo.name + ':\n\tError to retrieve data: ' + statusCode);
+        console.log(repo + ':\n\tError to retrieve data: ' + statusCode);
       }
     });
   });

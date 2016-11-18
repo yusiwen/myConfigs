@@ -76,6 +76,8 @@ tx_rate=$(( $tx_diff / $time_diff ))
 # shift by 10 bytes to get KiB/s. If the value is larger than
 # 1024^2 = 1048576, then display MiB/s instead
 
+echo -n "${INTERFACE}: "
+
 # incoming
 echo -n "IN "
 rx_kib=$(( $rx_rate >> 10 ))
