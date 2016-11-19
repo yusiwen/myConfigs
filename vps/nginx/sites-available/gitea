@@ -1,0 +1,29 @@
+server {
+	listen 80;
+
+	server_name gitea.yusiwen.cc;
+	return 301 https://$server_name$request_uri;
+}
+
+server {
+	listen 443 ssl;
+	
+	include snippets/ssl-gitea.yusiwen.cc.conf;
+	include snippets/ssl-params.conf;
+	
+	server_name gitea.yusiwen.cc;
+	server_tokens off; # don't show the version number, a security best practice
+	root /var/www/html;
+	
+	# Increase this if you want to upload large attachments
+	# Or if you want to accept large git objects over http
+	client_max_body_size 250m;
+	
+	location / {
+	    proxy_pass http://127.0.0.1:3001;
+	}
+	
+	location ~ /.well-known {
+	    allow all;
+	}
+}
