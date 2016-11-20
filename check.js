@@ -8,7 +8,8 @@ var repos = [
   'shadowsocks/ShadowsocksX-NG', 'shadowsocks/shadowsocks-qt5',
   'felixhageloh/uebersicht', 'evolus/pencil',
   'brrd/Abricotine', 'Laverna/laverna',
-  'electron/electron', 'electron/electron-api-demos'
+  'electron/electron', 'electron/electron-api-demos',
+  'cryptomator/cryptomator'
 ];
 
 for (var i = 0; i < repos.length; i++) {
