@@ -8,6 +8,11 @@ server {
     #listen [::]:80;
     server_name mail.yusiwen.cc;
     return 301 https://$server_name$request_uri;
+    
+    #root /var/www/html;
+    #location ~ /.well-known {
+    #    allow all;
+    #}
 }
 
 # HTTPS
@@ -30,7 +35,6 @@ server {
     # Web applications.
     include /etc/nginx/templates/roundcube.tmpl;
     include /etc/nginx/templates/iredadmin.tmpl;
-    include /etc/nginx/templates/sogo.tmpl;
 
     # PHP applications. WARNING: php-catchall.tmpl should be loaded after
     # other php web applications.
