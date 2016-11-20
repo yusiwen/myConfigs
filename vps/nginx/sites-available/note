@@ -15,6 +15,11 @@ server {
 
 	server_name note.yusiwen.cc;
 	return 301 https://$server_name$request_uri;
+	
+	#root /var/www/html;
+	#location ~ /.well-known {
+	#	allow all;
+	#}
 }
 
 server {
@@ -67,10 +72,6 @@ server {
 	#location ~ /\.ht {
 	#	deny all;
 	#}
-	
-	location ~ /.well-known {
-		allow all;
-	}
 }
 
 
