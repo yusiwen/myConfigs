@@ -9,7 +9,7 @@ var repos = [
   'felixhageloh/uebersicht', 'evolus/pencil',
   'brrd/Abricotine', 'Laverna/laverna',
   'electron/electron', 'electron/electron-api-demos',
-  'cryptomator/cryptomator'
+  'cryptomator/cryptomator', 'wallabag/wallabag'
 ];
 
 for (var i = 0; i < repos.length; i++) {
