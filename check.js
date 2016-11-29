@@ -2,14 +2,14 @@ const https = require('https');
 
 var repos = [
   'atom/atom', 'adobe/brackets',
-  'git-for-windows/git',
+  'git-for-windows/git', 'gogits/gogs',
   'kovidgoyal/calibre', 'keeweb/keeweb',
   'tagspaces/tagspaces', 'appetizermonster/hain',
   'shadowsocks/ShadowsocksX-NG', 'shadowsocks/shadowsocks-qt5',
   'felixhageloh/uebersicht', 'evolus/pencil',
   'brrd/Abricotine', 'Laverna/laverna',
   'electron/electron', 'electron/electron-api-demos',
-  'cryptomator/cryptomator'
+  'cryptomator/cryptomator', 'wallabag/wallabag'
 ];
 
 for (var i = 0; i < repos.length; i++) {
