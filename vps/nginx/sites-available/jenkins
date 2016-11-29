@@ -1,7 +1,7 @@
 server {
 	listen 80;
 
-	server_name git.yusiwen.cc;
+	server_name jenkins.yusiwen.cc;
 	return 301 https://$server_name$request_uri;
 
 	#root /var/www/html;
@@ -13,10 +13,10 @@ server {
 server {
 	listen 443 ssl;
 	
-	include snippets/ssl-git.yusiwen.cc.conf;
+	include snippets/ssl-jenkins.yusiwen.cc.conf;
 	include snippets/ssl-params.conf;
 	
-	server_name git.yusiwen.cc;
+	server_name jenkins.yusiwen.cc;
 	server_tokens off; # don't show the version number, a security best practice
 	
 	# Increase this if you want to upload large attachments
@@ -24,6 +24,6 @@ server {
 	client_max_body_size 250m;
 	
 	location / {
-	    proxy_pass http://127.0.0.1:3001;
+	    proxy_pass http://127.0.0.1:8080;
 	}
 }

@@ -1,25 +1,3 @@
-##
-# You should look at the following URL's in order to grasp a solid understanding
-# of Nginx configuration files in order to fully unleash the power of Nginx.
-# http://wiki.nginx.org/Pitfalls
-# http://wiki.nginx.org/QuickStart
-# http://wiki.nginx.org/Configuration
-#
-# Generally, you will want to move this file somewhere, and start with a clean
-# file but keep this around for reference. Or just disable in sites-enabled.
-#
-# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
-##
-
-# Default server configuration
-#
-#server {
-#	listen 80 ;
-#
-#	server_name links.yusiwen.cc;
-#	return 301 https://$server_name$request_uri;
-#}
-
 server {
 	listen 80;
 
@@ -36,6 +14,7 @@ server {
 	# SSL configuration
 	#
 	listen 443 ssl;
+	server_name links.yusiwen.cc;
 	#
 	# Note: You should disable gzip for SSL traffic.
 	# See: https://bugs.debian.org/773332
@@ -51,37 +30,28 @@ server {
 	include snippets/ssl-links.yusiwen.cc.conf;
 	include snippets/ssl-params.conf;
 
-	root /var/www/html;
-
-	# Add index.php to the list if you are using PHP
-	index index.html index.htm index.nginx-debian.html;
-
-	server_name links.yusiwen.cc;
+	root /opt/www/wallabag/web;
 
 	location / {
 		# First attempt to serve request as file, then
 		# as directory, then fall back to displaying a 404.
                 #try_files $uri $uri/ =404;
-		proxy_pass http://127.0.0.1:3000;
+		#proxy_pass http://127.0.0.1:8000;
+		# try to serve file directly, fallback to app.php
+		try_files $uri /app.php$is_args$args;
 	}
 
-	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-	#
-	#location ~ \.php$ {
-	#	include snippets/fastcgi-php.conf;
-	#
-	#	# With php7.0-cgi alone:
-	#	fastcgi_pass 127.0.0.1:9000;
-	#	# With php7.0-fpm:
-	#	fastcgi_pass unix:/run/php/php7.0-fpm.sock;
-	#}
+	location ~ ^/app\.php(/|$) {
+		fastcgi_pass unix:/var/run/php-fpm.socket;
+	    	fastcgi_split_path_info ^(.+\.php)(/.*)$;
+	    	include fastcgi_params;
+	    	fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+	    	fastcgi_param DOCUMENT_ROOT $realpath_root;
+	    	internal;
+	}
 
-	# deny access to .htaccess files, if Apache's document root
-	# concurs with nginx's one
-	#
-	#location ~ /\.ht {
-	#	deny all;
-	#}
+	error_log /var/log/nginx/wallabag_error.log;
+	access_log /var/log/nginx/wallabag_access.log;
 }
 
 

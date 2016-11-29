@@ -1,0 +1,44 @@
+# HTTP
+server {
+    # Listen on ipv4
+    listen 80;
+    # Listen on ipv6.
+    # Note: this setting listens on both ipv4 and ipv6 with Nginx release
+    #       shipped in some Linux/BSD distributions.
+    #listen [::]:80;
+    server_name mail.yusiwen.cc;
+    return 301 https://$server_name$request_uri;
+    
+    #root /var/www/html;
+    #location ~ /.well-known {
+    #    allow all;
+    #}
+}
+
+# HTTPS
+server {
+    listen 443 ssl;
+    server_name mail.yusiwen.cc;
+
+    include snippets/ssl-mail.yusiwen.cc.conf;
+    include snippets/ssl-params.conf;
+
+    index index.php index.html;
+
+    location / {
+        root /var/www;
+    }
+
+    # HTTP Strict Transport Security (HSTS)
+    #include /etc/nginx/templates/hsts.tmpl;
+
+    # Web applications.
+    include /etc/nginx/templates/roundcube.tmpl;
+    include /etc/nginx/templates/iredadmin.tmpl;
+
+    # PHP applications. WARNING: php-catchall.tmpl should be loaded after
+    # other php web applications.
+    include /etc/nginx/templates/php-catchall.tmpl;
+
+    include /etc/nginx/templates/misc.tmpl;
+}
