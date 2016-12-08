@@ -21,9 +21,6 @@ set $mod Mod1
 
 set $TERM urxvtc
 set $BROWSER google-chrome
-!?<HOSTNAME=vm-ubuntu-guest
-set $BROWSER firefox
->
 set $FM thunar
 set $FM_CMD mc
 set $PLAYER ncmpcpp
@@ -328,7 +325,7 @@ bindsym $mod!!<1!,+Shift>+!!<2!1..9,0> \
 bindsym $mod+!!<b,n> workspace !!<prev,next>
 
 # Assign applications to workspace
-assign [class="^google-chrome$"] $ws2
+assign [class="^Google-chrome$" instance="^google-chrome$"] $ws2
 assign [class="^Firefox$"] $ws2
 assign [class="^Geary$|^Thunderbird$"] $ws3
 assign [class="^URxvt$" instance="$MUA" title="$MUA"] $ws3
