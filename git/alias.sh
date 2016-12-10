@@ -5,7 +5,7 @@
 
 # {{{ Basic
 git config --global alias.cp   'cherry-pick'
-git config --global alias.st   'status -s'
+git config --global alias.st   'status --short --branch'
 git config --global alias.cl   'clone'
 git config --global alias.ci   'commit'
 git config --global alias.co   'checkout'
