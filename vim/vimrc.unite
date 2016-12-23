@@ -120,6 +120,9 @@ nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
 " Quick bookmarks
 nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
 
+" Quick jump
+nnoremap <silent> [unite]j :<C-u>Unite -buffer-name=jumps jump<CR>
+
 " Fuzzy search from current buffer
 " nnoremap <silent> [unite]b :<C-u>UniteWithBufferDir
 " \ -buffer-name=files -prompt=%\  buffer file_mru bookmark file<CR>
@@ -131,6 +134,17 @@ nnoremap <silent> [unite]; :<C-u>Unite -buffer-name=history -default-action=edit
 nnoremap <silent> [unite]t :<C-u>Unite -buffer-name=tags tag<CR>
 
 augroup MyAutoCmd
+augroup END
+
+augroup unite_wipe_nosplit
+  autocmd!
+  autocmd BufLeave *
+  \ if empty(&bufhidden)
+  \ && &buftype  ==# 'nofile'
+  \ && &filetype ==# 'unite'
+  \ && !unite#get_current_unite().context.split |
+  \   setlocal bufhidden=wipe |
+  \ endif
 augroup END
 
 " Custom Unite settings
