@@ -61,12 +61,12 @@ else
   echo 'Unknown OS, please make sure vim is installed.'
 fi
 
-ln -sfnv $CONFIG_VIM/vimrc $HOME/.vimrc
-ln -sfnv $CONFIG_VIM/ctags $HOME/.ctags
-
 if [ ! -d "$VIM_HOME" ]; then
   mkdir $VIM_HOME
 fi
+
+ln -sfnv $CONFIG_VIM/vimrc $VIM_HOME/vimrc
+ln -sfnv $CONFIG_VIM/ctags $HOME/.ctags
 
 # link custom color themes to $VIM_HOME
 if [ ! -L $VIM_HOME/colors ]; then
