@@ -66,6 +66,10 @@ if [ ! -d "$VIM_HOME" ]; then
 fi
 
 ln -sfnv $CONFIG_VIM/vimrc $VIM_HOME/vimrc
+ln -sfnv $CONFIG_VIM/vimrc.airline $VIM_HOME/vimrc.airline
+ln -sfnv $CONFIG_VIM/vimrc.gitgutter $VIM_HOME/vimrc.gitgutter
+ln -sfnv $CONFIG_VIM/vimrc.neocomplete $VIM_HOME/vimrc.neocomplete
+ln -sfnv $CONFIG_VIM/vimrc.unite $VIM_HOME/vimrc.unite
 ln -sfnv $CONFIG_VIM/ctags $HOME/.ctags
 
 # link custom color themes to $VIM_HOME

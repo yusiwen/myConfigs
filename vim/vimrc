@@ -320,15 +320,15 @@ autocmd Filetype gitcommit setlocal spell textwidth=72
 
 " Plugins {{{
 " Airline {{{
-source ~/myConfigs/vim/vimrc.airline
+source vimrc.airline
 " }}}
 
 " unite {{{
-source ~/myConfigs/vim/vimrc.unite
+source vimrc.unite
 " }}}
 
 " neocomplete {{{
-source ~/myConfigs/vim/vimrc.neocomplete
+source vimrc.neocomplete
 " }}}
 
 " neosnippet {{{
@@ -413,7 +413,7 @@ let FugitivePreferFileBuffers = 1
 " }}}
 
 " GitGutter {{{
-source ~/myConfigs/vim/vimrc.gitgutter
+source vimrc.gitgutter
 " }}}
 
 " TagBar {{{
