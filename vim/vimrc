@@ -26,9 +26,9 @@ let s:is_linux = !s:is_windows && !s:is_cygwin && !s:is_mac
 filetype off
 let s:vimfiles = ""
 if s:is_windows
-  let s:vimfiles = "$HOME/vimfiles/"
+  let s:vimfiles = "~/vimfiles/"
 else
-  let s:vimfiles = "$HOME/.vim/"
+  let s:vimfiles = "~/.vim/"
 endif
 
 let &runtimepath .= ',' . expand(s:vimfiles . "bundle/neobundle.vim/")
