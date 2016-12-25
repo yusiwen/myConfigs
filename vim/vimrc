@@ -7,7 +7,7 @@
 "   ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝
 "
 "  @author: yusiwen@gmail.com
-"  ~/.vimrc is a symbolic link to ~/myConfigs/vim/vimrc
+"  ~/.vim/vimrc is a symbolic link to ~/myConfigs/vim/vimrc
 
 set nocompatible               " Be iMproved
 
@@ -24,9 +24,17 @@ let s:is_linux = !s:is_windows && !s:is_cygwin && !s:is_mac
 
 " NeoBundle {{{
 filetype off
-set runtimepath+=~/.vim/bundle/neobundle.vim/
+let s:vimfiles = ""
+if s:is_windows
+  let s:vimfiles = "$HOME/vimfiles/"
+else
+  let s:vimfiles = "$HOME/.vim/"
+endif
+
+let &runtimepath .= ',' . expand(s:vimfiles . "bundle/neobundle.vim/")
+
 let g:neobundle#types#git#default_protocol='ssh'
-call neobundle#begin(expand('~/.vim/bundle/'))
+call neobundle#begin(expand(s:vimfiles . 'bundle/'))
 
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
@@ -47,8 +55,8 @@ NeoBundle 'vim-airline/vim-airline'
 NeoBundle 'yusiwen/vim-airline-themes'
 
 " easy note taking in Vim
-NeoBundle 'xolox/vim-misc'
-NeoBundle 'xolox/vim-notes'
+" NeoBundle 'xolox/vim-misc'
+" NeoBundle 'xolox/vim-notes'
 
 " sublime text style multiple selection
 NeoBundle 'terryma/vim-multiple-cursors'
@@ -218,9 +226,9 @@ if has('gui_running')
   set lines=50                    " Height
   set columns=130                 " Width
 
-  source ~/.vim/vimrc.theme
+  execute 'source ' . expand(s:vimfiles . 'vimrc.theme')
 else
-  source ~/.vim/vimrc.theme
+  execute 'source ' . expand(s:vimfiles . 'vimrc.theme')
   set t_Co=256
 endif
 " }}}
@@ -267,7 +275,7 @@ nmap <silent> ,n :set invhls<CR>:set hls?<CR>
 set nobackup
 set writebackup
 " set swap file directory to ~/.vim/swap, need to mkdir it first
-set directory=~/.vim/swap,.
+let &directory=expand(s:vimfiles . 'swap,.')
 set swapfile
 " }}}
 
@@ -320,19 +328,19 @@ autocmd Filetype gitcommit setlocal spell textwidth=72
 
 " Plugins {{{
 " Airline {{{
-source vimrc.airline
+execute 'source ' . expand(s:vimfiles . 'vimrc.airline')
 " }}}
 
 " unite {{{
-source vimrc.unite
+execute 'source ' . expand(s:vimfiles . 'vimrc.unite')
 " }}}
 
 " neocomplete {{{
-source vimrc.neocomplete
+execute 'source ' . expand(s:vimfiles . 'vimrc.neocomplete')
 " }}}
 
 " neosnippet {{{
-let g:neosnippet#snippets_directory='~/myConfigs/vim/snippets'
+let g:neosnippet#snippets_directory=expand(s:vimfiles . 'snippets')
 
 " Plugin key-mappings.
 imap <expr><C-k> (pumvisible()? "\<C-y>" : '') . "\<Plug>(neosnippet_expand_or_jump)"
@@ -413,7 +421,7 @@ let FugitivePreferFileBuffers = 1
 " }}}
 
 " GitGutter {{{
-source vimrc.gitgutter
+execute 'source ' . expand(s:vimfiles . 'vimrc.gitgutter')
 " }}}
 
 " TagBar {{{
@@ -439,10 +447,10 @@ let g:vim_tags_auto_generate = 1
 " }}}
 
 " vim-notes {{{
-let g:notes_directories = ['~/notes']
-let g:notes_suffix = '.note'
-let g:notes_title_sync = 'change_title'
-let g:notes_tab_indents = 0
+" let g:notes_directories = ['~/notes']
+" let g:notes_suffix = '.note'
+" let g:notes_title_sync = 'change_title'
+" let g:notes_tab_indents = 0
 " }}}
 
 " vim-better-whitespace {{{

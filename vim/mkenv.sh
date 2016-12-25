@@ -76,6 +76,12 @@ ln -sfnv $CONFIG_VIM/ctags $HOME/.ctags
 if [ ! -L $VIM_HOME/colors ]; then
   ln -sfnv $CONFIG_VIM/colors $VIM_HOME/colors
 fi
+
+# link snippets to $VIM_HOME
+if [ ! -L $VIM_HOME/snippets ]; then
+  ln -sfnv $CONFIG_VIM/snippets $VIM_HOME/snippets
+fi
+
 # make swap directory to store swap files globally
 if [ ! -d $VIM_HOME/swap ]; then
   mkdir $VIM_HOME/swap
