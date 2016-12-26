@@ -74,7 +74,7 @@ VIM Installation
 
 	On Windows, [Git-for-Windows](https://github.com/git-for-windows/git) uses MSYS2, and its x64 version will cause an internal error when reading the windows environment which is bigger than 32KB. See [this issue](https://github.com/Alexpux/MSYS2-packages/issues/25) and [this issue](https://github.com/git-for-windows/git/issues/942).
 
-	So, on Windows, if you want to run gVim with Git, intall x86 version Git-for-windows instead.
+	So, on Windows, if you want to run gVim with Git, install x86 version Git-for-windows instead.
 
 4. NeoBundle
 
