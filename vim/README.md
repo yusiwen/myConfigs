@@ -1,9 +1,11 @@
 VIM Installation
 ================
 
-##Prerequisites
+## Prerequisites
 
-`cscope`, `exuberant ctags`, `lua`, `ag`
+`cscope`, `exuberant ctags`, `lua`, `ag`, `python`, `python3`, `ruby`, `perl`
+
+## Installation
 
 1. Install vim:
 
@@ -41,28 +43,62 @@ VIM Installation
 
 	To install from command line: `vim +PluginInstall +qall` or `vim +NeoBundleInstall +qall`
 
-1. Install vim-instant-markdown plugin
+1. About 'lucius.vim' theme of 'vim-airline.vim'
 
-	- Required libraries: `ruby`, `xdg-utils`, `nodejs`
+    The latest 'lucius' theme has wrong colors, use my fork 'yusiwen/vim-airline-themes' instead.
 
-	- Add `Bundle 'vim-scripts/instant-markdown.vim'` in `.vimrc` to let `vundle` get this plugin
+## Installation on Windows
 
-	- Get `instant-markdown-d` in npm:
+1. Prerequisites
 
-		```text
-		$ npm -g install instant-markdown-d
-		```
+    - [Lua](http://luabinaries.sourceforge.net/download.html)
+    - [Python](https://www.python.org/downloads/)
+    - [Python3](https://www.python.org/downloads/)
+    - [Ruby](http://rubyinstaller.org/downloads/)
+    
+	Make sure their executables are in `%PATH%`.
 
-	- Install ruby libraries:
+2. Vim files
 
-		```text
-		$ sudo gem install redcarpet pygments.rb
-		```
+	Make directory `vimfiles` in `%USERPROFILE%`. **NOTE**: `%USERPROFILE%` must be all english characters and no spaces.
 
-1. Install lucius theme for airline
+	Copy `vimrc`, `vimrc.airline`, `vimrc.gitgutter`, `vimrc.neocomplete`, `vimrc.unite` to `%USERPROFILE%\vimfiles`.
 
-	```text
-	$ ln -sf ~/git/myConfigs/vim/airline/lucius.vim ~/.vim/bundle/vim-airline/autoload/airline/themes/lucius.vim
+	Copy `vimrc.theme.NAME` to `%USERPROFILE%\vimfiles\vimrc.theme`, which `NAME` is the theme you choose.
+
+	Copy folder `colors` and `snippets` to `%USERPROFILE%\vimfiles`.
+
+	Make directory `swap` in `%USERPROFILE%\vimfiles`.
+
+3. Git
+
+	On Windows, [Git-for-Windows](https://github.com/git-for-windows/git) uses MSYS2, and its x64 version will cause an internal error when reading the windows environment which is bigger than 32KB. See [this issue](https://github.com/Alexpux/MSYS2-packages/issues/25) and [this issue](https://github.com/git-for-windows/git/issues/942).
+
+	So, on Windows, if you want to run gVim with Git, intall x86 version Git-for-windows instead.
+
+4. NeoBundle
+
+	In `%USERPROFILE%\vimfiles`, run:
+
+	```shell
+	git clone git@github.com:Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim
 	```
 
-	`lucius.vim` can be found at [link](https://github.com/jonathanfilip/lucius/blob/master/vim-airline/lucius.vim).
+5. Start gVim and install plugins
+
+6. Compile vimproc.vim binary
+
+	To build with Visual Studio, you must install Windows SDK and run from VS command prompt.
+
+	If you use MSVC 11 or later, you need to specify where the Win32.mak file is, e.g.:
+
+	```shell
+	$ nmake -f make_msvc.mak nodebug=1 "SDK_INCLUDE_DIR=C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Include"
+	```
+
+	The architecture will be automatically detected, but you can also specify the architecture explicitly. E.g.:
+
+	```shell
+	32bit: nmake -f make_msvc.mak nodebug=1 CPU=i386
+	64bit: nmake -f make_msvc.mak nodebug=1 CPU=AMD64
+	```
