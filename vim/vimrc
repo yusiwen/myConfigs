@@ -31,10 +31,10 @@ else
   let s:vimfiles = "~/.vim/"
 endif
 
-let &runtimepath .= ',' . expand(s:vimfiles . "bundle/neobundle.vim/")
+let &runtimepath .= ',' . expand(s:vimfiles) . 'bundle/neobundle.vim/'
 
 let g:neobundle#types#git#default_protocol='ssh'
-call neobundle#begin(expand(s:vimfiles . 'bundle/'))
+call neobundle#begin(expand(s:vimfiles) . 'bundle/')
 
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
