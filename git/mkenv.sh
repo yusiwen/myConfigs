@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ -d "$HOME/myConfigs" ]; then
   . $HOME/myConfigs/gfw/get_apt_proxy.sh
@@ -24,7 +24,7 @@ fi
 git config --global user.email "yusiwen@gmail.com"
 git config --global user.name "Siwen Yu"
 
-if [ ${OS:0:5} = 'MINGW' ]; then
+if [[ $OS = MINGW* ]]; then
   # On Windows, commit with LF and checkout with CRLF
   git config --global core.autocrlf true
 else
@@ -43,10 +43,10 @@ git config --global http.proxy 'http://d.qypac.net:15355'
 git config --global https.proxy 'http://d.qypac.net:15355'
 
 if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
-mkdir -p $HOME/.ssh
-ln -sfnv $HOME/myConfigs/git/ssh_config $HOME/.ssh/config
+  mkdir -p $HOME/.ssh
+  ln -sfnv $HOME/myConfigs/git/ssh_config $HOME/.ssh/config
 
-mkdir -p $HOME/bin
-ln -sfnv $HOME/myConfigs/git/git-migrate $HOME/bin/git-migrate
-ln -sfnv $HOME/myConfigs/git/git-new-workdir $HOME/bin/git-new-workdir
+  mkdir -p $HOME/bin
+  ln -sfnv $HOME/myConfigs/git/git-migrate $HOME/bin/git-migrate
+  ln -sfnv $HOME/myConfigs/git/git-new-workdir $HOME/bin/git-new-workdir
 fi
