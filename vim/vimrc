@@ -324,6 +324,11 @@ nmap <C-]>h :sp <CR>:exec("tag ".expand("<cword>"))<CR>
 autocmd FileType make setlocal noexpandtab
 " for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
+" Vim detects *.pc as filetype 'proc' but has no syntax highlighting for Pro*C. Override it so that it highlights as C.
+"   See http://vim.wikia.com/wiki/Forcing_Syntax_Coloring_for_files_with_odd_extensions
+augroup filetypedetect
+  au BufRead,BufNewFile *.pc set filetype=c
+augroup END
 " }}}
 
 " Plugins {{{
