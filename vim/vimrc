@@ -47,8 +47,6 @@ NeoBundle 'jiangmiao/auto-pairs'
 
 " displays tags in a window
 NeoBundle 'majutsushi/tagbar'
-" Ctags generator for Vim
-NeoBundle 'szw/vim-tags'
 " Automatically discover and update ctags files on save
 NeoBundle 'craigemery/vim-autotag'
 NeoBundle 'vim-airline/vim-airline'
@@ -429,12 +427,6 @@ if bundle
 
   call neobundle#untap()
 endif
-" }}}
-
-" vim-tags {{{
-" do not let vim-tags auto generate tags on save
-" use vim-autotag plugin to do this instead
-let g:vim_tags_auto_generate = 1
 " }}}
 
 " vim-better-whitespace {{{
