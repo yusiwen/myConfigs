@@ -263,7 +263,7 @@ set sidescroll=5
 
 " Search {{{
 set incsearch
-set ignorecase
+set noignorecase
 
 " Toggle that stupid highlight search
 nmap <silent> ,n :set invhls<CR>:set hls?<CR>
