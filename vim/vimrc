@@ -149,6 +149,7 @@ syntax on
 
 set title
 set mouse=a
+set ttymouse=sgr
 
 set shortmess=at      " shorten error messages
 
