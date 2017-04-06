@@ -18,6 +18,7 @@ Contents
 --------
 1. `eclipse/` Eclipse configurations under linux.
 1. `figlet/` figlet fonts for ascii art.
+1. `gfw/` configurations for shadowsocks and polipo
 1. `git/` Git configurations and scripts.
 1. `i3/` i3-wm configurations.
 1. `keyring/` keyring confiurations for i3 and mutt.
