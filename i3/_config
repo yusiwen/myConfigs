@@ -336,6 +336,7 @@ assign [class="^Eclipse$" instance="^Eclipse$"] $ws6
 assign [class="^jetbrains-idea-|^Atom$"] $ws6
 assign [class="Wps|Et|Wpp|^libreoffice"] $ws7
 assign [class="^URxvt$" instance="$IRC" title="$IRC"] $ws8
+assign [class="^Meld$" instance="^meld$"] $ws6
 # }}}
 
 # {{{ Floating settings

@@ -2,22 +2,29 @@
 
 #{{{ Oracle instant client
 if [ -z "$ORACLE_HOME" ]; then
-  CLIENT_INSTALLATION_PATH="$HOME/oracle"
+  CLIENT_INSTALLATION_PATH="/opt/oracle"
   if [ -d "$CLIENT_INSTALLATION_PATH" ]; then
     ORACLE_HOME=`/bin/ls -dr $CLIENT_INSTALLATION_PATH/instantclient*/ | head -1`
     if [ ! -z $ORACLE_HOME ]; then
       # truncate trailing '/'
       ORACLE_HOME=`printf '%s' "${ORACLE_HOME%/}"`
       export ORACLE_HOME
-      export PATH=$PATH:$ORACLE_HOME
+      export ORACLE_BASE=$CLIENT_INSTALLATION_PATH
+      export PATH=$PATH:$ORACLE_HOME:$ORACLE_HOME/sdk
       export TNS_ADMIN=$ORACLE_HOME/network/admin
-      # On linux, for sqlplus to running, 'libaio1' must be installed.
+      export NLS_LANG=american_america.ZHS32GB18030
+      # On linux,
+      #   for 'sqlplus', 'libaio1' must be installed;
+      #   for 'proc', 'libclntsh.so.XX.1' must be installed.
+      # NOTE: On Ubuntu, 'LD_LIBRARY_PATH' can't be set in .profile,
+      #   it can only be set in '/etc/ld.so.conf.d/XXX.conf' and run 'ldconfig'
       if [ -z "$LD_LIBRARY_PATH" ]; then
         export LD_LIBRARY_PATH=$ORACLE_HOME
+        export TEST_PARAM=$ORACLE_HOME
       else
         export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
+        export TEST_PARAM='YES'
       fi
-      export NLS_LANG=american_america.ZHS32GB18030
     fi
   fi
 fi

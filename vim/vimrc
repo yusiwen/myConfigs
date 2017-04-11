@@ -46,9 +46,7 @@ NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'jiangmiao/auto-pairs'
 
 " displays tags in a window
-"NeoBundle 'majutsushi/tagbar'
-" Ctags generator for Vim
-NeoBundle 'szw/vim-tags'
+NeoBundle 'majutsushi/tagbar'
 " Automatically discover and update ctags files on save
 NeoBundle 'craigemery/vim-autotag'
 NeoBundle 'vim-airline/vim-airline'
@@ -151,6 +149,7 @@ syntax on
 
 set title
 set mouse=a
+set ttymouse=sgr
 
 set shortmess=at      " shorten error messages
 
@@ -265,7 +264,7 @@ set sidescroll=5
 
 " Search {{{
 set incsearch
-set ignorecase
+set noignorecase
 
 " Toggle that stupid highlight search
 nmap <silent> ,n :set invhls<CR>:set hls?<CR>
@@ -324,6 +323,11 @@ nmap <C-]>h :sp <CR>:exec("tag ".expand("<cword>"))<CR>
 autocmd FileType make setlocal noexpandtab
 " for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
+" Vim detects *.pc as filetype 'proc' but has no syntax highlighting for Pro*C. Override it so that it highlights as C.
+"   See http://vim.wikia.com/wiki/Forcing_Syntax_Coloring_for_files_with_odd_extensions
+augroup filetypedetect
+  au BufRead,BufNewFile *.pc set filetype=c
+augroup END
 " }}}
 
 " Plugins {{{
@@ -400,21 +404,6 @@ imap <C-Space> <C-X><Space>
 imap <C-CR> <C-X><CR>
 " }}}
 
-" NERDTree {{{
-let bundle = neobundle#tap('nerdtree')
-if bundle
-  nnoremap <silent> <Leader>1 :NERDTreeToggle<CR>
-  function! neobundle#hooks.on_source(bundle)
-    let g:NERDTreeChDirMode = 2
-    let g:NERDTreeShowBookmarks = 1
-    let g:NERDTreeWinPos = "left"
-    let g:NERDTreeShowHidden = 0
-  endfunction
-
-  call neobundle#untap()
-endif
-" }}}
-
 " Fugitive {{{
 let FugitiveIgnoreBufferTitles = ['NERDTree']
 let FugitivePreferFileBuffers = 1
@@ -428,29 +417,17 @@ execute 'source ' . expand(s:vimfiles . 'vimrc.gitgutter')
 let bundle = neobundle#tap('tagbar')
 if bundle
   nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
-  function! neobundle#hooks.on_source(bundle)
+  function! neobundle#hooks.on_post_source(bundle)
     " on mac, default '/bin/ctags' provided by Apple is not exuberant ctags,
     " homebrew's ctags is installed under '/usr/local/bin'
     if s:is_mac
       let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
     endif
+    let g:tagbar_iconchars = ['+', '-']
   endfunction
 
   call neobundle#untap()
 endif
-" }}}
-
-" vim-tags {{{
-" do not let vim-tags auto generate tags on save
-" use vim-autotag plugin to do this instead
-let g:vim_tags_auto_generate = 1
-" }}}
-
-" vim-notes {{{
-" let g:notes_directories = ['~/notes']
-" let g:notes_suffix = '.note'
-" let g:notes_title_sync = 'change_title'
-" let g:notes_tab_indents = 0
 " }}}
 
 " vim-better-whitespace {{{
