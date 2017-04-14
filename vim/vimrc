@@ -135,6 +135,7 @@ NeoBundle 'yusiwen/jellybeans.vim'
 "NeoBundle 'jnurmine/Zenburn'
 NeoBundle 'morhetz/gruvbox'
 NeoBundle 'yusiwen/base16-vim'
+NeoBundle 'dracula/vim'
 
 call neobundle#end()
 

@@ -56,6 +56,7 @@ echo "[7] Base16-Bespin"
 echo "[8] Base16-Solarized Dark"
 echo "[9] Base16-Tomorrow"
 echo "[0] Base16-Twilight"
+echo "[a] Dracula"
 echo -n "Choose theme[3]: "
 read number
 
@@ -83,6 +84,8 @@ elif echo "$number" | grep -iq "^9"; then
   change_theme base16-tomorrow
 elif echo "$number" | grep -iq "^0"; then
   change_theme base16-twilight
+elif echo "$number" | grep -iq "^a"; then
+  change_theme dracula
 else
   echo "Nahh!"
   exit
