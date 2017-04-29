@@ -18,4 +18,4 @@ rsync -azPv root@vps01:/etc/nginx $HOME/vps/backup/etc
 
 # Backup Artifactory backup files from vps01
 echo 'Backup Artifactory files...'
-rsync -azPv root@vps01:/opt/artifactory/artifactory-oss-4.14.2/backup $HOME/vps/backup/artifactory
+rsync -azPv root@vps01:/var/opt/jfrog/artifactory/backup $HOME/vps/backup/artifactory
