@@ -3,9 +3,11 @@ Eclipse Setup
 
 ### Location & Startup
 
-  Install eclipse in `/opt/eclipse` directory.
+  Set `$IDE_HOME` environment variable to your home directory of all IDEs, such as `/opt/ide`.
 
-  Change directory name to version name, such as `/opt/eclipse/eclipse-java-luna-SR2`.
+  Install eclipse in `$IDE_HOME/eclipse` directory.
+
+  Change directory name to version name, such as `$IDE_HOME/eclipse/eclipse-java-luna-SR2`.
 
   Use `ec.py` script to start eclipse.
 

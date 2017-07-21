@@ -8,10 +8,12 @@ pygtk.require('2.0')
 import gtk
 import subprocess
 
-class EclipseChooser:
+class EclipseChooser(object):
+  """Main class of EclipseChooser"""
+
   i = 1
   # default eclipse installation dir
-  eclipse_dir = "/opt/eclipse"
+  eclipse_dir = '/opt/eclipse'
   # default eclipse command and arguments
   eclipse_args = ['eclipse', '-vm', '', '-nosplash']
   # default ideas installation dir
@@ -24,14 +26,19 @@ class EclipseChooser:
   commands = []
 
   def check_env(self):
+    """Check environment variables"""
+
     javahome = os.environ['JAVA_HOME']
+    idehome = os.environ['IDE_HOME']
+
+    self.eclipse_dir = idehome + '/eclipse'
+    self.idea_dir = idehome + '/intellij'
+
     # Linux is the default os
     # Windows ?
     if os.name == 'nt':
-      self.eclipse_dir = 'j:/eclipse'
       self.eclipse_args[0] = 'eclipse.exe'
       self.eclipse_args[2] = os.path.join(javahome, 'jre/bin/javaw.exe')
-      self.idea_dir = 'j:/intellij'
       self.idea_args = ['bin/idea.exe']
     else:
       self.eclipse_args[2] = os.path.join(javahome, 'bin/java')
