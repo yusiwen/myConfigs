@@ -289,37 +289,6 @@ bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWork
 bindsym $mod+Shift+Return exec $TERM -name emergence_terminal && i3-msg '[instance="^emergence_terminal$"] floating enable'
 # }}}
 
-# {{{ Auto-startup settings
-exec --no-startup-id !!<\
-  xrdb -merge ~/.Xresources,\
-  xcompmgr -n,dunst,\
-  /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
-  thunar --daemon,urxvtd -q -o -f,\
-  orage,ss-qt5,rofi
->
-!?<HOSTNAME=yusiwen-Aspire-S3
-exec --no-startup-id !!<\
-  xbacklight -set 75,remmina -i,blueman-applet>
->
-!?<HOSTNAME=home-ubuntu
-exec --no-startup-id dropboxd
-exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
-exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
-exec dex -ae i3
->
-!?<HOSTNAME=vm-ubuntu-guest
-exec --no-startup-id dex -ae i3
-exec --no-startup-id i3-msg Workspace 1:Main
-exec --no-startup-id i3-sensible-terminal
->
-!?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
-exec --no-startup-id !!<\
-  i3-msg Workspace 1:Main,\
-  i3-sensible-terminal>
-exec dex -ae i3
->
-# }}}
-
 # {{{ Workspace settings
 # define workspaces
 set $ws!!<1..10> \
@@ -368,3 +337,35 @@ for_window [class="!!<\
   ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$\
   >"] floating enable
 # }}}
+
+# {{{ Auto-startup settings
+exec --no-startup-id !!<\
+  xrdb -merge ~/.Xresources,\
+  xcompmgr -n,dunst,\
+  /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
+  thunar --daemon,urxvtd -q -o -f,\
+  orage,ss-qt5,rofi
+exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
+>
+!?<HOSTNAME=yusiwen-Aspire-S3
+exec --no-startup-id !!<\
+  xbacklight -set 75,remmina -i,blueman-applet>
+>
+!?<HOSTNAME=home-ubuntu
+exec --no-startup-id dropboxd
+exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
+exec dex -ae i3
+>
+!?<HOSTNAME=vm-ubuntu-guest
+exec --no-startup-id dex -ae i3
+exec --no-startup-id i3-msg Workspace 1:Main
+exec --no-startup-id i3-sensible-terminal
+>
+!?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
+exec --no-startup-id !!<\
+  i3-msg Workspace 1:Main,\
+  i3-sensible-terminal>
+exec dex -ae i3
+>
+# }}}
+

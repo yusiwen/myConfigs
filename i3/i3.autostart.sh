@@ -62,15 +62,17 @@ sleep 3
 i3-sensible-terminal
 sleep 1
 
-# make left half bigger
-i3-msg resize shrink width 10 px or 10 ppt
-sleep 1
+if [ "$HOSTNAME" = "vm-ubuntu-guest" ]; then
+  # make left half bigger
+  i3-msg resize shrink width 10 px or 10 ppt
+  sleep 1
 
-# split right half vertical
-i3-msg split v
-sleep 1
+  # split right half vertical
+  i3-msg split v
+  sleep 1
 
-### --- urxvt3 --- ###
-i3-sensible-terminal
+  ### --- urxvt3 --- ###
+  i3-sensible-terminal
+fi
 
 exit 0
