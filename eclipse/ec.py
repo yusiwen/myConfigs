@@ -39,7 +39,7 @@ class EclipseChooser(object):
     if os.name == 'nt':
       self.eclipse_args[0] = 'eclipse.exe'
       self.eclipse_args[2] = os.path.join(javahome, 'jre/bin/javaw.exe')
-      self.idea_args = ['bin/idea.exe']
+      self.idea_args = ['bin/idea64.exe']
     else:
       self.eclipse_args[2] = os.path.join(javahome, 'bin/java')
       os.environ['SWT_GTK3'] = "0" # Do not use GTK3
