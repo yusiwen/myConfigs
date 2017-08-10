@@ -39,8 +39,8 @@ git config --global merge.tool vimdiff
 git config --global merge.conflictstyle diff3
 git config --global mergetool.prompt false
 
-git config --global http.proxy 'http://d.qypac.net:15355'
-git config --global https.proxy 'http://d.qypac.net:15355'
+git config --global http.proxy 'socks5://127.0.0.1:1088'
+git config --global https.proxy 'socks5://127.0.0.1:1088'
 
 if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
   mkdir -p $HOME/.ssh
