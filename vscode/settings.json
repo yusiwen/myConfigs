@@ -1,0 +1,39 @@
+// Place your settings in this file to overwrite the default settings
+{
+  "editor.tabSize": 2,
+  "vsicons.projectDetection.autoReload": true,
+  "editor.wordWrap": true,
+  "workbench.iconTheme": "material-icon-theme",
+
+  "java.home": "I:/java/jdk1.8.0_144",
+
+  "vim.leader": ",",
+  "vim.easymotion": true,
+  "vim.incsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": true,
+  "vim.disableAnnoyingNeovimMessage": true,
+  "vim.insertModeKeyBindings": [
+    {
+        "before": ["j", "j"],
+        "after": ["<Esc>"]
+    }
+  ],
+
+  "extensions.ignoreRecommendations": false,
+
+  "rust.mode": "legacy",
+  "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe",
+  "rust.rustup": {
+    "toolchain": "stable-x86_64-pc-windows-gnu"
+  },
+
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue"
+  ],
+
+  "vetur.format.js.InsertSpaceBeforeFunctionParenthesis": true
+}
