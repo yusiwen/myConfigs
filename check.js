@@ -4,7 +4,7 @@ const https = require('https');
 
 var repos = [
   'atom/atom', 'adobe/brackets', 'Microsoft/vscode',
-  'git-for-windows/git', 'gogits/gogs',
+  'git-for-windows/git', 'gogits/gogs', 'go-gitea/gitea',
   'kovidgoyal/calibre', 'keeweb/keeweb',
   'tagspaces/tagspaces', 'hainproject/hain',
   'shadowsocks/ShadowsocksX-NG', 'shadowsocks/shadowsocks-qt5', 'shadowsocks/shadowsocks-windows',
