@@ -34,13 +34,21 @@ fi
 # Turn on warning on convert EOL failure
 git config --global core.safecrlf warn
 
-git config --global core.editor "vim"
+git config --global core.editor vim
 git config --global merge.tool vimdiff
 git config --global merge.conflictstyle diff3
 git config --global mergetool.prompt false
 
-git config --global http.proxy 'socks5://127.0.0.1:1088'
-git config --global https.proxy 'socks5://127.0.0.1:1088'
+if [ $OS = 'Linux' ]; then
+  git config --global http.proxy 'http://127.0.0.1:15355'
+  git config --global https.proxy 'http://127.0.0.1:15355'
+elif [ $OS = 'Darwin' ]; then
+  git config --global http.proxy 'http://127.0.0.1:1087'
+  git config --global https.proxy 'http://127.0.0.1:1087'
+else
+  git config --global http.proxy 'http://127.0.0.1:1088'
+  git config --global https.proxy 'http://127.0.0.1:1088'
+fi
 
 if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
   mkdir -p $HOME/.ssh

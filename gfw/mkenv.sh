@@ -10,4 +10,6 @@ if [ -z "$SS_PACKAGE" ]; then
   sudo apt-get update
   sudo apt-get install shadowsocks-qt5
   sudo apt-get install polipo
+
+  sudo cp ./polipo.conf /etc/polipo/config
 fi
