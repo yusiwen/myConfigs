@@ -4,10 +4,10 @@
 if [ -z "$ORACLE_HOME" ]; then
   CLIENT_INSTALLATION_PATH="/opt/oracle"
   if [ -d "$CLIENT_INSTALLATION_PATH" ]; then
-    ORACLE_HOME=`/bin/ls -dr $CLIENT_INSTALLATION_PATH/instantclient*/ | head -1`
-    if [ ! -z $ORACLE_HOME ]; then
+    ORACLE_HOME=$(/bin/ls -dr $CLIENT_INSTALLATION_PATH/instantclient*/ | head -1)
+    if [ ! -z "$ORACLE_HOME" ]; then
       # truncate trailing '/'
-      ORACLE_HOME=`printf '%s' "${ORACLE_HOME%/}"`
+      ORACLE_HOME=$(printf '%s' "${ORACLE_HOME%/}")
       export ORACLE_HOME
       export ORACLE_BASE=$CLIENT_INSTALLATION_PATH
       export PATH=$PATH:$ORACLE_HOME:$ORACLE_HOME/sdk
@@ -32,7 +32,7 @@ fi
 
 #{{{ Java
 if [ -z "$JAVA_HOME" ]; then
-  if [ $(uname) = 'Darwin' ]; then
+  if [ "$(uname)" = 'Darwin' ]; then
     # MacOS
     JAVA_HOME=$(/usr/libexec/java_home)
   else
@@ -41,9 +41,9 @@ if [ -z "$JAVA_HOME" ]; then
     JDK_INSTALLATION_PATH='/opt/java'
     if [ -d "$JDK_INSTALLATION_PATH" ]; then
       # select the newest version of JDK to be JAVA_HOME
-      JAVA_NAME=`/bin/ls -dr $JDK_INSTALLATION_PATH/j*/ | head -1`
+      JAVA_NAME=$(/bin/ls -dr $JDK_INSTALLATION_PATH/j*/ | head -1)
       # set JAVA_HOME (truncated trailing '/')
-      JAVA_HOME=`printf '%s' "${JAVA_NAME%/}"`
+      JAVA_HOME=$(printf '%s' "${JAVA_NAME%/}")
     else
       JAVA_HOME=
     fi
@@ -60,10 +60,10 @@ fi
 if [ -z "$M2_HOME" ]; then
   MVN_INSTALLATION_PATH="$HOME/maven"
   if [ -d "$MVN_INSTALLATION_PATH" ]; then
-    MVN_NAME=`/bin/ls -dr $MVN_INSTALLATION_PATH/*-maven-*/ | head -1`
+    MVN_NAME=$(/bin/ls -dr "$MVN_INSTALLATION_PATH"/*-maven-*/ | head -1)
     # set M2_HOME (truncated trailing '/')
-    M2_HOME=`printf '%s' "${MVN_NAME%/}"`
-    if [ ! -z $M2_HOME ]; then
+    M2_HOME=$(printf '%s' "${MVN_NAME%/}")
+    if [ ! -z "$M2_HOME" ]; then
       export M2_HOME
       export M2=$M2_HOME/bin
       export MAVEN_OPTS="-Xms64m -Xmx256m"
@@ -124,7 +124,7 @@ if [ -z "$EDITOR" ]; then
 fi
 
 if [ -z "$HOSTNAME" ]; then
-  HOSTNAME=`hostname`
+  HOSTNAME=$(hostname)
   export HOSTNAME
 fi
 
