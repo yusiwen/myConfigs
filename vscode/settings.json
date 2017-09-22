@@ -10,8 +10,8 @@
   "vim.leader": ",",
   "vim.easymotion": true,
   "vim.incsearch": true,
-  "vim.useSystemClipboard": true,
-  "vim.useCtrlKeys": true,
+  "vim.useSystemClipboard": false,
+  "vim.useCtrlKeys": false,
   "vim.hlsearch": true,
   "vim.disableAnnoyingNeovimMessage": true,
   "vim.insertModeKeyBindings": [
