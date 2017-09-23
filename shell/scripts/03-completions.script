@@ -1,5 +1,3 @@
-#!/usr/bin/zsh
-
 ### zstyle :completion:<function>:<completer>:<command>:<argument>:<tag> _settings_
 
 #{{{ general settings
@@ -10,7 +8,7 @@ zstyle ':completion:*'                  verbose no
 zstyle ':completion:*:descriptions'     format '%B%d%b'
 zstyle ':completion:*:messages'         format '%d'
 zstyle ':completion:*:warnings'         format 'No matches for: %d'
-zstyle ':completion:*'                  group-name ”
+zstyle ':completion:*'                  group-name ''
 #}}}
 
 #{{{ make use of LS_COLORS

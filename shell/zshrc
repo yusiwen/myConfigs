@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -40,7 +42,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-if [ $(uname) = 'Darwin' ]; then
+if [ "$(uname)" = 'Darwin' ]; then
   plugins=(brew git svn mercurial mvn node npm pip ruby rvm gem colored-man colorize z)
 else
   plugins=(git svn mercurial mvn node npm pip ruby rvm gem colored-man colorize z)
@@ -52,26 +54,32 @@ fi
 # 10ms for key sequences
 KEYTIMEOUT=1
 
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 
 # Customize to your needs...
 
 # Load all of my custom scripts
-ZSH_CUSTOM_SCRIPTS=$HOME/myConfigs/shell/scripts
-for script ($ZSH_CUSTOM_SCRIPTS/*.script); do
-  source $script
+for script in $HOME/myConfigs/shell/scripts/*.script; do
+  source "$script"
 done
 
-if [ $(uname) != 'Darwin' ]; then
+if [ "$(uname)" != 'Darwin' ]; then
   source /etc/zsh_command_not_found
 fi
 
-if [[ $(tty) == \/dev\/tty[0-9]* ]] ; then
-  fbterm
+if [[ $(tty) =~ \/dev\/tty[0-9]* ]]; then
+  if ! fbterm_loc="$(type -p fbterm)" || [ -z "$fbterm_loc" ]; then
+    fbterm
+  fi
 fi
 
 # Base16 Shell
-BASE16_SHELL="$HOME/.base16rc"
-[[ -s $BASE16_SHELL  ]] && source $BASE16_SHELL
+if [[ -f "$HOME/.base16rc" ]]; then
+  source $HOME/.base16rc
+fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# fzf
+if [[ -f "$HOME/.fzf.zsh" ]]; then
+  source ~/.fzf.zsh
+fi
+

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-which() {
+whichv() {
   printf '\e[?7t'
 
   TYPE="$(builtin type "$@")"
@@ -11,7 +11,7 @@ which() {
   FUNCTION='function'
   BUILTIN='builtin'
   NOTFOUND='not found'
-  if [[ "$TYPE" =~ "$ALIAS" ]] || [[ "$TYPE" =~ "$FUNCTION" ]] || [[ "$TYPE" =~ "$BUILTIN" ]] || [[ "$TYPE" =~ "$NOTFOUND" ]]; then
+  if [[ "$TYPE" =~ $ALIAS ]] || [[ "$TYPE" =~ $FUNCTION ]] || [[ "$TYPE" =~ $BUILTIN ]] || [[ "$TYPE" =~ $NOTFOUND ]]; then
     whereis "$@"
   else
     whereis "$@"
@@ -32,7 +32,7 @@ purgerc() {
   fi
   echo "$RC"
   printf "Purge all [Y/n]? "
-  read -s choice
+  read -rs choice
   case $choice in
     Y|""|y)
       echo "$RC" | xargs sudo dpkg --purge
@@ -58,7 +58,7 @@ pdfpextr() {
   gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
     -dFirstPage="${1}" \
     -dLastPage="${2}" \
-    -sOutputFile=${3%.pdf}_p${1}-p${2}.pdf \
+    -sOutputFile="${3%.pdf}_p${1}-p${2}.pdf" \
     "${3}"
 }
 
@@ -123,7 +123,7 @@ maxs() {
       echo "maxs [-fdh] [NUMBER]"
     fi
 
-    if ! [[ "${1}" =~ "$re" ]]; then
+    if ! [[ "${1}" =~ $re ]]; then
       echo "error: Not a number: ${1}" >&2; return 1
     fi
     numbers="${1}"
@@ -137,7 +137,7 @@ maxs() {
       echo "error: Wrong option: ${1}" >&2; return 1
     fi
 
-    if ! [[ "${2}" =~ "$re" ]]; then
+    if ! [[ "${2}" =~ $re ]]; then
       echo "error: Not a number: ${2}" >&2; return 1
     fi
     numbers="${2}"
