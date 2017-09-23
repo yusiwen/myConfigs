@@ -3,22 +3,19 @@
 which() {
   printf '\e[?7t'
 
-  TYPE=`builtin type $@`
+  TYPE="$(builtin type "$@")"
   builtin which "$@" \
-    && echo $TYPE
+    && echo "$TYPE"
 
   ALIAS='alias'
   FUNCTION='function'
   BUILTIN='builtin'
   NOTFOUND='not found'
-  if [[ "$TYPE" =~ "$ALIAS" ]]; then
-  elif [[ "$TYPE" =~ "$FUNCTION" ]]; then
-  elif [[ "$TYPE" =~ "$BUILTIN" ]]; then
-  elif [[ "$TYPE" =~ "$NOTFOUND" ]]; then
+  if [[ "$TYPE" =~ "$ALIAS" ]] || [[ "$TYPE" =~ "$FUNCTION" ]] || [[ "$TYPE" =~ "$BUILTIN" ]] || [[ "$TYPE" =~ "$NOTFOUND" ]]; then
     whereis "$@"
   else
     whereis "$@"
-    file $(builtin type "$@" | awk '{print $3}')
+    file "$(builtin type "$@" | awk '{print $3}')"
   fi
 
   printf '\e[?7t'
@@ -28,8 +25,8 @@ du1() { du -h --max-depth=1 "$@" | sort -k 1,1hr -k 2,2f; }
 
 # Purge all rc packages
 purgerc() {
-  RC=`dpkg -l | grep "^rc" | cut -d ' ' -f 3`
-  if [ -z $RC ]; then
+  RC=$(dpkg -l | grep "^rc" | cut -d ' ' -f 3)
+  if [ -z "$RC" ]; then
     echo "No 'rc' status package was found."
     return 1
   fi
@@ -59,10 +56,10 @@ pdfpextr() {
     return 1
   fi
   gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
-    -dFirstPage=${1} \
-    -dLastPage=${2} \
+    -dFirstPage="${1}" \
+    -dLastPage="${2}" \
     -sOutputFile=${3%.pdf}_p${1}-p${2}.pdf \
-    ${3}
+    "${3}"
 }
 
 # Fix pdf embedded fonts problem
@@ -75,10 +72,10 @@ pdffixfont() {
     echo 'Usage: pdffixfont input_file output_file'
     return 1
   fi
-  gs -o ${2} \
+  gs -o "${2}" \
     -dPDFSETTINGS=/prepress \
     -sDEVICE=pdfwrite \
-    ${1}
+    "${1}"
 }
 
 # Split media file by cue
@@ -93,7 +90,7 @@ splitbycue() {
     return 1
   fi
 
-  cuebreakpoints ${1} | shnsplit -o ${3} ${2}
+  cuebreakpoints "${1}" | shnsplit -o "${3}" "${2}"
 }
 
 # Convert all FLAC files in current directory to ALAC
@@ -108,7 +105,7 @@ flac2alac() {
 # Add folder to $PATH if it doesn't exist in it
 #   see: http://superuser.com/questions/39751/add-directory-to-path-if-its-not-already-there
 addpath() {
-  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+  if [ -d "${1}" ] && [[ ":$PATH:" != *":${1}:"* ]]; then
     PATH="${PATH:+"$PATH:"}$1"
   fi
 }
@@ -126,22 +123,22 @@ maxs() {
       echo "maxs [-fdh] [NUMBER]"
     fi
 
-    if ! [[ $1 =~ $re ]]; then
-      echo "error: Not a number: $1" >&2; return 1
+    if ! [[ "${1}" =~ "$re" ]]; then
+      echo "error: Not a number: ${1}" >&2; return 1
     fi
     numbers="${1}"
     type='d'
   else
-    if [ "$1" = "-f" ]; then
+    if [ "${1}" = "-f" ]; then
       type='f'
-    elif [ "$1" = "-d" ]; then
+    elif [ "${1}" = "-d" ]; then
       type='d'
     else
-      echo "error: Wrong option: $1" >&2; return 1
+      echo "error: Wrong option: ${1}" >&2; return 1
     fi
 
-    if ! [[ $2 =~ $re ]]; then
-      echo "error: Not a number: $2" >&2; return 1
+    if ! [[ "${2}" =~ "$re" ]]; then
+      echo "error: Not a number: ${2}" >&2; return 1
     fi
     numbers="${2}"
   fi

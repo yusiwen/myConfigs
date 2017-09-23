@@ -6,7 +6,7 @@ alias mv='mv -iv'
 alias cp='cp -iv'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
-if [ $(uname) = 'Darwin' ]; then
+if [ "$(uname)" = 'Darwin' ]; then
   alias l='ls -GF'
   alias la='ls -G -aF'
   alias ll='ls -G -alF'
@@ -24,16 +24,11 @@ else
   alias dir='dir -l --color'
 fi
 
-if [ $(uname) = 'Darwin' ]; then
-  alias vi='/usr/local/bin/vi'
-  alias vim='/usr/local/bin/vim'
-fi
-
 # On Mac, to enable italic fonts in iTerm2, TERM must be set to 'xterm-256color-italic'.
 # If ssh to a remote server, the environment may be passed on the remote and it will probable don't know this custom terminal.
 # A possible solution on the local host is to alias ssh
 # See 'https://gist.github.com/sos4nt/3187620' for detail
-if [ $(uname) = 'Darwin' ]; then
+if [ "$(uname)" = 'Darwin' ]; then
   alias ssh='TERM=xterm-256color ssh'
 fi
 
@@ -44,7 +39,7 @@ alias pgrep='pgrep -a'
 
 alias ag='ag --nogroup'
 
-if [ $(uname) = 'Darwin' ]; then
+if [ "$(uname)" = 'Darwin' ]; then
   alias df='df -h'
 else
   alias df='df -h --total'
@@ -73,7 +68,22 @@ alias gitlpa='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Cres
 # Valgrind aliases
 alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v'
 
-# Python Pip
+# Python
 alias pipi='pip --proxy="b.qypac.net:15355" install --user'
 alias pipiu='pip --proxy="b.qypac.net:15355" install --user --upgrade'
+if [ "$(uname)" = 'Darwin' ]; then
+  alias virtualenv2='virtualenv --python /usr/local/bin/python2 --system-site-packages'
+  alias virtualenv3='virtualenv --python /usr/local/bin/python3 --system-site-packages'
+else
+  alias virtualenv2='virtualenv --python /usr/bin/python2 --system-site-packages'
+  alias virtualenv3='virtualenv --python /usr/bin/python3 --system-site-packages'
+fi
+
+# Vim
+if [ "$(uname)" = 'Darwin' ]; then
+  alias vi='/usr/local/bin/vi'
+  alias vim='/usr/local/bin/vim'
+fi
+alias v='vim'
+alias nv='nvim'
 
