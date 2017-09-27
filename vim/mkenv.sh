@@ -66,6 +66,8 @@ if [ ! -d "$VIM_HOME" ]; then
 fi
 
 ln -sfnv $CONFIG_VIM/vimrc $VIM_HOME/vimrc
+ln -sfnv $CONFIG_VIM/plugins.yaml $VIM_HOME/plugins.yaml
+ln -sfnv $CONFIG_VIM/vimrc.mappings $VIM_HOME/vimrc.mappings
 ln -sfnv $CONFIG_VIM/vimrc.airline $VIM_HOME/vimrc.airline
 ln -sfnv $CONFIG_VIM/vimrc.gitgutter $VIM_HOME/vimrc.gitgutter
 ln -sfnv $CONFIG_VIM/vimrc.neocomplete $VIM_HOME/vimrc.neocomplete

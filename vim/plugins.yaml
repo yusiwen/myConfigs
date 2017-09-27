@@ -1,0 +1,135 @@
+---
+# PLUGINS
+# =====================================
+
+
+# Let - repo: manage - repo:
+- repo: Shougo/neobundle.vim
+# quoting/parenthesizing made simple
+- repo: tpope/vim-surround
+# pairs of handy bracket mappings
+- repo: tpope/vim-unimpaired
+# insert or delete brackets, parens, quotes in pair
+- repo: jiangmiao/auto-pairs
+# Underlines the word under the cursor
+- repo: itchyny/vim-cursorword
+  hook_add: |
+    autocmd MyAutoCmd FileType unite,qf let b:cursorword=0
+    autocmd MyAutoCmd InsertEnter * let b:cursorword=0
+    autocmd MyAutoCmd InsertLeave * let b:cursorword=1
+
+# displays tags in a window
+- repo: majutsushi/tagbar
+# Automatically discover and update ctags files on save
+- repo: craigemery/vim-autotag
+- repo: vim-airline/vim-airline
+- repo: yusiwen/vim-airline-themes
+
+# easy note taking in Vim
+# - repo: xolox/vim-misc
+# - repo: xolox/vim-notes
+
+# sublime text style multiple selection
+- repo: terryma/vim-multiple-cursors
+# visually select increasingly larger regions
+- repo: terryma/vim-expand-region
+
+# Shuogos neo packages
+- { repo: Shougo/vimproc.vim, build: make, on_func: vimproc# }
+- repo: Shougo/unite.vim
+  on_cmd: Unite
+  hook_source: source $VIMPATH/vimrc.unite
+- { repo: Shougo/unite-session, depends: Shougo/unite.vim }
+- { repo: Shougo/unite-outline, depends: Shougo/unite.vim }
+- { repo: Shougo/neoyank.vim, depends: Shougo/unite.vim }
+- { repo: Shougo/unite-help, depends: Shougo/unite.vim }
+- { repo: tsukkee/unite-tag, depends: Shougo/unite.vim }
+- { repo: Shougo/neomru.vim, depends: Shougo/unite.vim }
+- { repo: Shougo/vimfiler.vim, depends: Shougo/unite.vim }
+- repo: Shougo/neocomplete.vim
+  depends: context_filetype.vim
+  if: ! has('lua') && empty($VIM_MINIMAL)
+  on_event: InsertEnter
+  hook_source: source $VIMPATH/vimrc.neocomplete
+- repo: Shougo/neosnippet.vim
+  depends: [ neosnippet-snippets, context_filetype.vim ]
+  if: empty($VIM_MINIMAL)
+  on_event: InsertCharPre
+  on_ft: snippet
+- { repo: Shougo/neosnippet-snippets, if: empty($VIM_MINIMAL) }
+- { repo: Shougo/context_filetype.vim, lazy: 1, if: empty($VIM_MINIMAL) }
+
+# extensible & universal comment
+- repo: tomtom/tcomment_vim
+# colorize text in the form #rrggbb or #rgb
+- repo: lilydjwg/colorizer
+# text filtering and alignment
+- repo: godlygeek/tabular
+# accelerated smooth scroll
+- repo: yonchu/accelerated-smooth-scroll
+# better whitespace highlighting
+- repo: ntpeters/vim-better-whitespace
+# Vim motions on speed!
+- repo: easymotion/vim-easymotion
+# enable repeating supported - repo: maps with "."
+- repo: tpope/vim-repeat
+
+# Language & Develop specific repos
+# git wrapper
+- repo: tpope/vim-fugitive
+# gitk for Vim
+- repo: gregsexton/gitv
+# shows a git diff in the gutter
+- repo: airblade/vim-gitgutter
+  on_path: .*
+  hook_source: source $VIMPATH/vimrc.gitgutter
+# groovy
+- repo: vim-scripts/groovy.vim
+# gradle support
+- repo: tfnico/vim-gradle
+# wisely add end in ruby, vim script, etc
+- repo: tpope/vim-endwise
+# Ruby on Rails power tools
+- repo: tpope/vim-rails
+# mappings for HTML, XML, PHP, eRuby, JSP, etc
+- repo: tpope/vim-ragtag
+# runtime files for Haml, Sass, and SCSS
+- { repo: tpope/vim-haml, on_ft: [css, sass, scss, haml] }
+# tools for json
+- { repo: elzr/vim-json, on_ft: [json] }
+# tools for developing Node.js
+- { repo: moll/vim-node, on_ft: [javascript, jsx, javascript.jsx] }
+# improved Javascript indentation and syntax
+- { repo: pangloss/vim-javascript, on_ft: [javascript, jsx, javascript.jsx] }
+# CoffeeScript support
+- { repo: kchmck/vim-coffee-script, on_ft: [coffee] }
+# view man pages in vim
+- repo: bruno-/vim-man
+# Asynchronous linting and make framework for Neovim/Vim
+- { repo: benekastah/neomake, on_cmd: Neomake }
+- { repo: plasticboy/vim-markdown, on_ft: markdown }
+- { repo: rhysd/vim-gfm-syntax, depends: plasticboy/vim-markdown, on_ft: markdown }
+- { repo: fatih/vim-go, on_ft: go }
+- { repo: vim-python/python-syntax, on_ft: python }
+- { repo: Vimjas/vim-python-pep8-indent, on_ft: python }
+- { repo: vim-scripts/python_match.vim, on_ft: python }
+- { repo: tmhedberg/SimpylFold, on_ft: python }
+- { repo: raimon49/requirements.txt.vim, on_ft: requirements }
+
+# fcitx.vim is only needed under Linux
+#   keep/restore fcitx state when toggling insert mode
+- repo: vim-scripts/fcitx.vim
+# extended % matching for HTML, LaTeX, etc
+- repo: vim-scripts/matchit.zip
+# easy code formatting in Vim by integrating existing code formatters
+- repo: Chiel92/vim-autoformat
+
+# themes repos
+- repo: altercation/vim-colors-solarized
+- repo: yusiwen/jellybeans.vim
+- repo: jnurmine/Zenburn
+- repo: morhetz/gruvbox
+- repo: yusiwen/base16-vim
+- repo: dracula/vim
+
+

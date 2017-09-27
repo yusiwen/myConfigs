@@ -20,89 +20,142 @@ let s:is_mac = !s:is_windows && !s:is_cygwin
       \     system('uname') =~? '^darwin'))
 let s:is_linux = !s:is_windows && !s:is_cygwin && !s:is_mac
       \ && (has('unix') && system('uname') =~? '^linux')
-
-let $VIMPATH = expand('~/.vim')
-let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
-
-augroup MyAutoCmd
-augroup END
 " }}}
 
-" dein.vim {{{
+" NeoBundle {{{
 filetype off
-
-let g:dein#install_max_processes = 16
-let g:dein#install_progress_type = 'echo'
-let g:dein#enable_notification = 0
-let g:dein#install_log_filename = $VARPATH.'/dein.log'
-
-function! s:dein_check_ruby() abort
-  call system("ruby -e 'require \"json\"; require \"yaml\"'")
-  return (v:shell_error == 0) ? 1 : 0
-endfunction
-
-function! s:dein_load_yaml(filename) abort
-  if executable('yaml2json') && exists('*json_decode')
-    " Decode YAML using the CLI tool yaml2json
-    " See: https://github.com/koraa/large-yaml2json-json2yaml
-    let g:denite_plugins = json_decode(
-          \ system('yaml2json', readfile(a:filename)))
-  elseif executable('ruby') && exists('*json_decode') && s:dein_check_ruby()
-    let g:denite_plugins = json_decode(
-          \ system("ruby -e 'require \"json\"; require \"yaml\"; ".
-                 \ "print JSON.generate YAML.load \$stdin.read'",
-                 \ readfile(a:filename)))
-  else
-    " Fallback to use python3 and PyYAML
-  python3 << endpython
-import vim, yaml
-with open(vim.eval('a:filename'), 'r') as f:
-  vim.vars['denite_plugins'] = yaml.load(f.read())
-endpython
-  endif
-
-  for plugin in g:denite_plugins
-    call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
-  endfor
-  unlet g:denite_plugins
-endfunction
-
-if &runtimepath !~# '/dein.vim'
-  let s:dein_dir = expand('$VARPATH/dein').'/repos/github.com/Shougo/dein.vim'
-  if ! isdirectory(s:dein_dir)
-    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_dir
-  endif
-
-  execute 'set runtimepath+='.substitute(
-         \ fnamemodify(s:dein_dir, ':p') , '/$', '', '')
+let s:vimfiles = ""
+if s:is_windows
+  let s:vimfiles = "~/vimfiles/"
+else
+  let s:vimfiles = "~/.vim/"
 endif
 
-" Initialize dein.vim (package manager)
-let s:path = expand('$VARPATH/dein')
-let s:plugins_path = expand('$VIMPATH/plugins.yaml')
-if dein#load_state(s:path)
-  call dein#begin(s:path, [expand('<sfile>'), s:plugins_path])
-  try
-    call s:dein_load_yaml(s:plugins_path)
-  catch /.*/
-    echoerr v:exception
-    echomsg 'Error loading plugins.yaml...'
-    echomsg 'Caught: ' v:exception
-    echoerr 'Please run: pip3 install --user PyYAML'
-  endtry
+let &runtimepath .= ',' . expand(s:vimfiles) . 'bundle/neobundle.vim/'
 
-  if isdirectory(expand('$VIMPATH/dev'))
-    call dein#local(expand('$VIMPATH/dev'), {'frozen': 1, 'merged': 0})
-  endif
-  call dein#end()
-  call dein#save_state()
-  if dein#check_install()
-    if ! has('nvim')
-      set nomore
-    endif
-    call dein#install()
-  endif
+let g:neobundle#types#git#default_protocol='ssh'
+call neobundle#begin(expand(s:vimfiles) . 'bundle/')
+
+" Let NeoBundle manage NeoBundle
+NeoBundleFetch 'Shougo/neobundle.vim'
+" quoting/parenthesizing made simple
+NeoBundle 'tpope/vim-surround'
+" pairs of handy bracket mappings
+NeoBundle 'tpope/vim-unimpaired'
+" insert or delete brackets, parens, quotes in pair
+NeoBundle 'jiangmiao/auto-pairs'
+" Underlines the word under the cursor
+NeoBundle 'vim-cursorword'
+
+" displays tags in a window
+NeoBundle 'majutsushi/tagbar'
+" Automatically discover and update ctags files on save
+NeoBundle 'craigemery/vim-autotag'
+NeoBundle 'vim-airline/vim-airline'
+NeoBundle 'yusiwen/vim-airline-themes'
+
+" easy note taking in Vim
+" NeoBundle 'xolox/vim-misc'
+" NeoBundle 'xolox/vim-notes'
+
+" sublime text style multiple selection
+NeoBundle 'terryma/vim-multiple-cursors'
+" visually select increasingly larger regions
+NeoBundle 'terryma/vim-expand-region'
+
+" Shuogo's neo packages
+NeoBundle 'Shougo/vimproc.vim', { 'build': 'make', 'on_func': 'vimproc#' }
+NeoBundle 'Shougo/unite.vim', { 'on_cmd': 'Unite' }
+NeoBundle 'Shougo/unite-session', { 'depends': 'Shougo/unite.vim' }
+NeoBundle 'Shougo/unite-outline', { 'depends': 'Shougo/unite.vim' }
+NeoBundle 'Shougo/neoyank.vim', { 'depends': 'Shougo/unite.vim' }
+NeoBundle 'Shougo/unite-help', { 'depends': 'Shougo/unite.vim' }
+NeoBundle 'tsukkee/unite-tag', { 'depends': 'Shougo/unite.vim' }
+NeoBundle 'Shougo/neomru.vim', { 'depends': 'Shougo/unite.vim' }
+NeoBundle 'Shougo/vimfiler.vim', { 'depends': 'Shougo/unite.vim' }
+NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
+"NeoBundle 'honza/vim-snippets'
+
+" extensible & universal comment
+NeoBundle 'tomtom/tcomment_vim'
+" colorize text in the form #rrggbb or #rgb
+NeoBundle 'lilydjwg/colorizer'
+" text filtering and alignment
+NeoBundle 'godlygeek/tabular'
+" accelerated smooth scroll
+NeoBundle 'yonchu/accelerated-smooth-scroll'
+" better whitespace highlighting
+NeoBundle 'ntpeters/vim-better-whitespace'
+" Vim motions on speed!
+NeoBundle 'easymotion/vim-easymotion'
+" enable repeating supported NeoBundle maps with "."
+NeoBundle 'tpope/vim-repeat'
+
+" Language & Develop specific repos
+" git wrapper
+NeoBundle 'tpope/vim-fugitive'
+" gitk for Vim
+NeoBundle 'gregsexton/gitv'
+" shows a git diff in the gutter
+NeoBundle 'airblade/vim-gitgutter'
+" groovy
+NeoBundle 'vim-scripts/groovy.vim'
+" gradle support
+NeoBundle 'tfnico/vim-gradle'
+" wisely add 'end' in ruby, vim script, etc
+NeoBundle 'tpope/vim-endwise'
+" Ruby on Rails power tools
+NeoBundle 'tpope/vim-rails'
+" mappings for HTML, XML, PHP, eRuby, JSP, etc
+NeoBundle 'tpope/vim-ragtag'
+" runtime files for Haml, Sass, and SCSS
+NeoBundle 'tpope/vim-haml', { 'on_ft': ['css', 'sass', 'scss', 'haml'] }
+" tools for json
+NeoBundle 'elzr/vim-json', { 'on_ft': ['json'] }
+" tools for developing Node.js
+NeoBundle 'moll/vim-node', { 'on_ft': ['javascript', 'jsx', 'javascript.jsx'] }
+" improved Javascript indentation and syntax
+NeoBundle 'pangloss/vim-javascript', { 'on_ft': ['javascript', 'jsx', 'javascript.jsx'] }
+" CoffeeScript support
+NeoBundle 'kchmck/vim-coffee-script', { 'on_ft': ['coffee'] }
+" view man pages in vim
+NeoBundle 'bruno-/vim-man'
+" Asynchronous linting and make framework for Neovim/Vim
+NeoBundle 'benekastah/neomake', { 'on_cmd': 'Neomake' }
+NeoBundle 'plasticboy/vim-markdown', { 'on_ft': 'markdown' }
+NeoBundle 'rhysd/vim-gfm-syntax', { 'depends': 'plasticboy/vim-markdown', 'on_ft': 'markdown' }
+NeoBundle 'fatih/vim-go', { 'on_ft': 'go' }
+NeoBundle 'vim-python/python-syntax', { 'on_ft': 'python' }
+NeoBundle 'Vimjas/vim-python-pep8-indent', { 'on_ft': 'python' }
+NeoBundle 'vim-scripts/python_match.vim', { 'on_ft': 'python' }
+NeoBundle 'tmhedberg/SimpylFold', { 'on_ft': 'python' }
+NeoBundle 'raimon49/requirements.txt.vim', { 'on_ft': 'requirements' }
+
+" 'fcitx.vim' is only needed under Linux
+if s:is_linux
+  " keep/restore fcitx state when toggling insert mode
+  NeoBundle 'vim-scripts/fcitx.vim'
 endif
+" extended % matching for HTML, LaTeX, etc
+NeoBundle 'vim-scripts/matchit.zip'
+" easy code formatting in Vim by integrating existing code formatters
+NeoBundle 'Chiel92/vim-autoformat'
+
+" themes repos
+"NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'yusiwen/jellybeans.vim'
+"NeoBundle 'jnurmine/Zenburn'
+NeoBundle 'morhetz/gruvbox'
+NeoBundle 'yusiwen/base16-vim'
+NeoBundle 'dracula/vim'
+
+call neobundle#end()
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
 " }}}
 
 " General settings {{{
@@ -187,9 +240,9 @@ if has('gui_running')
   set lines=50                    " Height
   set columns=130                 " Width
 
-  execute 'source ' . expand('$VIMPATH/vimrc.theme')
+  execute 'source ' . expand(s:vimfiles . 'vimrc.theme')
 else
-  execute 'source ' . expand('$VIMPATH/vimrc.theme')
+  execute 'source ' . expand(s:vimfiles . 'vimrc.theme')
   set t_Co=256
 endif
 " }}}
@@ -236,7 +289,7 @@ nmap <silent> ,n :set invhls<CR>:set hls?<CR>
 set nobackup
 set writebackup
 " set swap file directory to ~/.vim/swap, need to mkdir it first
-let &directory=expand('$VIMPATH/swap,.')
+let &directory=expand(s:vimfiles . 'swap,.')
 set swapfile
 " }}}
 
@@ -293,14 +346,40 @@ augroup END
 " }}}
 
 " Plugins {{{
-execute 'source ' . expand('$VIMPATH/vimrc.mappings')
-
 " Airline {{{
-execute 'source ' . expand('$VIMPATH/vimrc.airline')
+execute 'source ' . expand(s:vimfiles . 'vimrc.airline')
+" }}}
+
+" {{{ cursorword
+autocmd FileType unite,qf let b:cursorword=0
+autocmd InsertEnter * let b:cursorword=0
+autocmd InsertLeave * let b:cursorword=1
+" }}}
+
+" unite {{{
+execute 'source ' . expand(s:vimfiles . 'vimrc.unite')
+" }}}
+
+" neocomplete {{{
+execute 'source ' . expand(s:vimfiles . 'vimrc.neocomplete')
 " }}}
 
 " neosnippet {{{
-let g:neosnippet#snippets_directory=expand('$VIMPATH/snippets')
+let g:neosnippet#snippets_directory=expand(s:vimfiles . 'snippets')
+
+" Plugin key-mappings.
+imap <expr><C-k> (pumvisible()? "\<C-y>" : '') . "\<Plug>(neosnippet_expand_or_jump)"
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ neosnippet#expandable_or_jumpable() ?
+      \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "
+      \<Plug>(neosnippet_expand_or_jump)"
+      \: "\<TAB>"
 
 " For conceal markers.
 if has('conceal')
@@ -311,6 +390,10 @@ endif
 " vimfiler {{{
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_enable_clipboard = 0
+" [unite] is difined in 'unite.vim' setting above, which is included in
+" separated file 'vimrc.unite'
+nnoremap <silent> [unite]q :<C-u>VimFilerExplorer -buffer-name=explorer -split -simple -winwidth=40 -toggle -no-quit<CR>
+nnoremap <silent> [unite]w :<C-u>VimFiler -buffer-name=files -no-split<CR>
 " }}}
 
 " {{{ Neomake
@@ -362,15 +445,24 @@ let FugitiveIgnoreBufferTitles = ['NERDTree']
 let FugitivePreferFileBuffers = 1
 " }}}
 
+" GitGutter {{{
+execute 'source ' . expand(s:vimfiles . 'vimrc.gitgutter')
+" }}}
+
 " TagBar {{{
-if dein#tap('tagbar')
+let bundle = neobundle#tap('tagbar')
+if bundle
   nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
-  " on mac, default '/bin/ctags' provided by Apple is not exuberant ctags,
-  " homebrew's ctags is installed under '/usr/local/bin'
-  if s:is_mac
-    let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
-  endif
-  let g:tagbar_iconchars = ['+', '-']
+  function! neobundle#hooks.on_post_source(bundle)
+    " on mac, default '/bin/ctags' provided by Apple is not exuberant ctags,
+    " homebrew's ctags is installed under '/usr/local/bin'
+    if s:is_mac
+      let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+    endif
+    let g:tagbar_iconchars = ['+', '-']
+  endfunction
+
+  call neobundle#untap()
 endif
 " }}}
 
