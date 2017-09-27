@@ -20,6 +20,17 @@
 
 # displays tags in a window
 - repo: majutsushi/tagbar
+  if: empty($VIM_MINIMAL)
+  on_cmd: TagbarToggle
+  hook_source: |
+    let g:tagbar_width = 40
+    let g:tagbar_iconchars = ['+', '-']
+    if executable('jsctags')
+      let g:tagbar_type_javascript = { 'ctagsbin': 'jsctags' }
+    endif
+    if has('mac') || has('macunix') || has('gui_macvim')
+      let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+    endif
 # Automatically discover and update ctags files on save
 - repo: craigemery/vim-autotag
 - repo: vim-airline/vim-airline
@@ -56,6 +67,14 @@
   if: empty($VIM_MINIMAL)
   on_event: InsertCharPre
   on_ft: snippet
+  hook_add: |
+    let g:neosnippet#data_directory = $VARPATH.'/snippets'
+    let g:neosnippet#snippets_directory=expand('$VIMPATH/snippets')
+  hook_source: |
+    let g:neosnippet#enable_snipmate_compatibility = 1
+    let g:neosnippet#enable_completed_snippet = 1
+    let g:neosnippet#expand_word_boundary = 1
+    autocmd MyAutoCmd InsertLeave * NeoSnippetClearMarkers
 - { repo: Shougo/neosnippet-snippets, if: empty($VIM_MINIMAL) }
 - { repo: Shougo/context_filetype.vim, lazy: 1, if: empty($VIM_MINIMAL) }
 
@@ -71,6 +90,15 @@
 - repo: ntpeters/vim-better-whitespace
 # Vim motions on speed!
 - repo: easymotion/vim-easymotion
+  on_map: { n: <Plug> }
+  hook_source: |
+    let g:EasyMotion_do_mapping = 0
+    let g:EasyMotion_prompt = 'Jump to → '
+    let g:EasyMotion_keys = 'fjdksweoavn'
+    let g:EasyMotion_smartcase = 1
+    let g:EasyMotion_use_smartsign_us = 1
+    let g:EasyMotion_startofline = 0
+    hi link EasyMotionMoveHL Search
 # enable repeating supported - repo: maps with "."
 - repo: tpope/vim-repeat
 
@@ -106,10 +134,30 @@
 # view man pages in vim
 - repo: bruno-/vim-man
 # Asynchronous linting and make framework for Neovim/Vim
-- { repo: benekastah/neomake, on_cmd: Neomake }
+- repo: benekastah/neomake
+  on_cmd: Neomake
+  hook_add: |
+    let g:lint_filetypes = [
+      \  'ansible', 'python', 'php', 'ruby', 'vim', 'go', 'sh',
+      \  'javascript', 'jsx', 'javascript.jsx', 'json', 'css',
+      \  'markdown', 'html', 'yaml'
+      \ ]
+    autocmd MyAutoCmd BufWritePost *
+      \ if index(g:lint_filetypes, &filetype) > -1 && empty(&buftype)
+      \|   Neomake
+      \| elseif &filetype =~ 'html'
+      \|   Neomake tidy
+      \| endif
 - { repo: plasticboy/vim-markdown, on_ft: markdown }
 - { repo: rhysd/vim-gfm-syntax, depends: plasticboy/vim-markdown, on_ft: markdown }
-- { repo: fatih/vim-go, on_ft: go }
+- repo: fatih/vim-go
+  on_ft: go
+  hook_source: |
+    let g:go_def_mapping_enabled = 0
+    let g:go_loaded_gosnippets = 1
+    let g:go_snippet_engine = 'neosnippet'
+    let g:go_highlight_extra_types = 1
+    let g:go_highlight_operators = 1
 - { repo: vim-python/python-syntax, on_ft: python }
 - { repo: Vimjas/vim-python-pep8-indent, on_ft: python }
 - { repo: vim-scripts/python_match.vim, on_ft: python }
@@ -119,10 +167,12 @@
 # fcitx.vim is only needed under Linux
 #   keep/restore fcitx state when toggling insert mode
 - repo: vim-scripts/fcitx.vim
+  if: has('unix') && system('uname') =~? '^linux'
 # extended % matching for HTML, LaTeX, etc
 - repo: vim-scripts/matchit.zip
 # easy code formatting in Vim by integrating existing code formatters
 - repo: Chiel92/vim-autoformat
+
 
 # themes repos
 - repo: altercation/vim-colors-solarized

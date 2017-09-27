@@ -11,7 +11,7 @@
 
 set nocompatible               " Be iMproved
 
-" Local variables {{{
+" Variables {{{
 let s:is_windows = has('win16') || has('win32') || has('win64')
 let s:is_cygwin = has('win32unix')
 let s:is_mac = !s:is_windows && !s:is_cygwin
@@ -26,6 +26,24 @@ let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
 
 augroup MyAutoCmd
 augroup END
+
+" }}}
+
+" Global Mappings {{{
+" Use spacebar as leader and ; as secondary-leader
+" Required before loading plugins!
+let g:mapleader="\<Space>"
+let g:maplocalleader=';'
+
+" Release keymappings prefixes, evict entirely for use of plug-ins.
+nnoremap <Space>  <Nop>
+xnoremap <Space>  <Nop>
+nnoremap ,        <Nop>
+xnoremap ,        <Nop>
+nnoremap ;        <Nop>
+xnoremap ;        <Nop>
+nnoremap m        <Nop>
+xnoremap m        <Nop>
 " }}}
 
 " dein.vim {{{
@@ -162,16 +180,6 @@ endif
 " }}}
 " }}}
 
-" General Keybindings & Mappings {{{
-let mapleader=","
-let maplocalleader=","
-
-set pastetoggle=<F10>
-
-" Allow saving of files as sudo when I forgot to start vim using sudo.
-"command W w !sudo tee % > /dev/null
-" }}}
-
 " GUI or no GUI, that's the question {{{
 if has('gui_running')
   set guicursor+=a:blinkon0       " Cursor doesn't blink - it's annoying
@@ -300,8 +308,6 @@ execute 'source ' . expand('$VIMPATH/vimrc.airline')
 " }}}
 
 " neosnippet {{{
-let g:neosnippet#snippets_directory=expand('$VIMPATH/snippets')
-
 " For conceal markers.
 if has('conceal')
   set conceallevel=2 concealcursor=niv
@@ -362,55 +368,8 @@ let FugitiveIgnoreBufferTitles = ['NERDTree']
 let FugitivePreferFileBuffers = 1
 " }}}
 
-" TagBar {{{
-if dein#tap('tagbar')
-  nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
-  " on mac, default '/bin/ctags' provided by Apple is not exuberant ctags,
-  " homebrew's ctags is installed under '/usr/local/bin'
-  if s:is_mac
-    let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
-  endif
-  let g:tagbar_iconchars = ['+', '-']
-endif
-" }}}
-
 " vim-better-whitespace {{{
 let g:better_whitespace_enabled=0
-" }}}
-
-" vim-easymotion {{{
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-
-" Bi-directional find motion
-" Jump to anywhere you want with minimal keystrokes, with just one key binding.
-" `s{char}{label}`
-" nmap s <Plug>(easymotion-s)
-" or
-" `s{char}{char}{label}`
-" Need one more keystroke, but on average, it may be more comfortable.
-nmap <Leader>s <Plug>(easymotion-s2)
-nmap <Leader>t <Plug>(easymotion-t2)
-
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-
-" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
-" Without these mappings, `n` & `N` works fine. (These mappings just provide
-" different highlight method and have some other features )
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
-
-" Turn on case insensitive feature
-let g:EasyMotion_smartcase = 1
-
-" JK motions: Line motions
-map <Leader>l <Plug>(easymotion-lineforward)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map <Leader>h <Plug>(easymotion-linebackward)
-
-let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
-hi link EasyMotionMoveHL Search
 " }}}
 
 " vim-autoformat {{{
@@ -430,13 +389,5 @@ let g:formatters_c = ['my_astyle_c']
 let g:formatdef_my_astyle_cpp = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
 let g:formatters_cpp = ['my_astyle_cpp']
 "}}}
-" }}}
-
-" {{{ vim-go
-let g:go_def_mapping_enabled = 0
-let g:go_loaded_gosnippets = 1
-let g:go_snippet_engine = 'neosnippet'
-let g:go_highlight_extra_types = 1
-let g:go_highlight_operators = 1
 " }}}
 " }}}

@@ -89,19 +89,3 @@ if [ ! -d $VIM_HOME/swap ]; then
   mkdir $VIM_HOME/swap
 fi
 
-if [ ! -d "$VIM_HOME/bundle/neobundle.vim" ]; then
-  echo 'Install neobundle.vim ...'
-  git clone git@github.com:Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim
-  if [ "$?" -ne 0 ]; then
-    echo 'Install neobundle.vim failed, please check your git output.'
-    exit 2
-  fi
-  echo 'Install neobundle.vim ... done'
-  echo 'Install vim plugins ...'
-  ~/.vim/bundle/neobundle.vim/bin/neoinstall
-  echo 'Install vim plugins ... done'
-  if [ -d $VIM_HOME/bundle/vimproc.vim ]; then
-    cd $VIM_HOME/bundle/vimproc.vim && make
-    cd $OLDPWD
-  fi
-fi
