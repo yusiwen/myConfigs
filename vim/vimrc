@@ -303,22 +303,6 @@ augroup END
 " Plugins {{{
 execute 'source ' . expand('$VIMPATH/vimrc.mappings')
 
-" Airline {{{
-execute 'source ' . expand('$VIMPATH/vimrc.airline')
-" }}}
-
-" neosnippet {{{
-" For conceal markers.
-if has('conceal')
-  set conceallevel=2 concealcursor=niv
-endif
-" }}}
-
-" vimfiler {{{
-let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_enable_clipboard = 0
-" }}}
-
 " {{{ Neomake
 let g:neomake_open_list = 2
 let g:neomake_verbose = 1
@@ -349,11 +333,6 @@ endfunction
 let g:EclimCompletionMethod = 'omnifunc'
 " }}}
 
-" Colorizer {{{
-let g:colorizer_nomap = 1
-let g:colorizer_startup = 0
-" }}}
-
 " RagTag {{{
 imap <M-O> <Esc>o
 imap <C-J> <Down>
@@ -361,11 +340,6 @@ let g:ragtag_global_maps = 1
 
 imap <C-Space> <C-X><Space>
 imap <C-CR> <C-X><CR>
-" }}}
-
-" Fugitive {{{
-let FugitiveIgnoreBufferTitles = ['NERDTree']
-let FugitivePreferFileBuffers = 1
 " }}}
 
 " vim-better-whitespace {{{
