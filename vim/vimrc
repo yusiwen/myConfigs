@@ -123,6 +123,38 @@ if dein#load_state(s:path)
 endif
 " }}}
 
+" Load less plugins while SSHing to remote machines {{{
+if len($SSH_CLIENT)
+  let $VIM_MINIMAL = 1
+endif
+" }}}
+
+" Disable default plugins {{{
+" Disable pre-bundled plugins
+let g:loaded_getscript = 1
+let g:loaded_getscriptPlugin = 1
+let g:loaded_gzip = 1
+let g:loaded_logiPat = 1
+let g:loaded_matchit = 1
+let g:loaded_matchparen = 1
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_netrwFileHandlers = 1
+let g:loaded_netrwSettings = 1
+let g:loaded_rrhelper = 1
+let g:loaded_ruby_provider = 1
+let g:loaded_shada_plugin = 1
+let g:loaded_spellfile_plugin  = 1
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_tutor_mode_plugin = 1
+let g:loaded_2html_plugin = 1
+let g:loaded_vimball = 1
+let g:loaded_vimballPlugin = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
+" }}}
+
 " General settings {{{
 filetype plugin indent on
 syntax on
@@ -164,6 +196,7 @@ set laststatus=2      " always show statusline
 
 set encoding=utf-8    " Necessary to show Unicode glyphs
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+set fileformats=unix,dos,mac " Use Unix as the standard file type"
 
 set timeoutlen=1000
 set ttimeoutlen=0
@@ -178,6 +211,17 @@ if s:is_mac
   set clipboard=unnamed
 endif
 " }}}
+" }}}
+
+" Sessions {{{
+" What to save in sessions:
+set sessionoptions-=blank
+set sessionoptions-=options
+set sessionoptions-=globals
+set sessionoptions-=folds
+set sessionoptions-=help
+set sessionoptions-=buffers
+set sessionoptions+=tabpages
 " }}}
 
 " GUI or no GUI, that's the question {{{
@@ -219,12 +263,56 @@ nmap <silent> <F11> :set list!<CR>
 " }}}
 
 " Folds {{{
-set foldmethod=marker
-set foldcolumn=1
+" FastFold
+" Credits: https://github.com/Shougo/shougo-s-github
+autocmd MyAutoCmd TextChangedI,TextChanged *
+  \ if &l:foldenable && &l:foldmethod !=# 'manual' |
+  \   let b:foldmethod_save = &l:foldmethod |
+  \   let &l:foldmethod = 'manual' |
+  \ endif
+
+autocmd MyAutoCmd BufWritePost *
+  \ if &l:foldmethod ==# 'manual' && exists('b:foldmethod_save') |
+  \   let &l:foldmethod = b:foldmethod_save |
+  \   execute 'normal! zx' |
+  \ endif
+
+if has('folding')
+  set foldenable
+  set foldmethod=syntax
+  set foldlevelstart=0
+  set foldtext=FoldText()
+endif
+
+" Improved Vim fold-text
+" See: http://www.gregsexton.org/2011/03/improving-the-text-displayed-in-a-fold/
+function! FoldText()
+  " Get first non-blank line
+  let fs = v:foldstart
+  while getline(fs) =~? '^\s*$' | let fs = nextnonblank(fs + 1)
+  endwhile
+  if fs > v:foldend
+    let line = getline(v:foldstart)
+  else
+    let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
+  endif
+
+  let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+  let foldSize = 1 + v:foldend - v:foldstart
+  let foldSizeStr = ' ' . foldSize . ' lines '
+  let foldLevelStr = repeat('+--', v:foldlevel)
+  let lineCount = line('$')
+  let foldPercentage = printf('[%.1f', (foldSize*1.0)/lineCount*100) . '%] '
+  let expansionString = repeat('.', w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
+  return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
+endfunction
 " }}}
 
 " Pairings {{{
 set showmatch
+set matchpairs+=<:> " Add HTML brackets to pair matching
+set matchtime=1     " Tenths of a second to show the matching paren
+set cpoptions-=m    " showmatch will wait 0.5s or until a char is typed"
 " }}}
 
 " Margins {{{
@@ -233,8 +321,12 @@ set sidescroll=5
 " }}}
 
 " Search {{{
-set incsearch
 set noignorecase
+set smartcase       " Keep case when searching with *
+set infercase       " Adjust case in insert completion mode
+set incsearch       " Incremental search
+set hlsearch        " Highlight search results
+set wrapscan        " Searches wrap around the end of the file"
 
 " Toggle that stupid highlight search
 nmap <silent> ,n :set invhls<CR>:set hls?<CR>
@@ -249,8 +341,16 @@ set swapfile
 " }}}
 
 " Completion {{{
-set wildmenu
-set wildmode=longest,full,list
+if has('wildmenu')
+  set nowildmenu
+  set wildmode=list:longest,full
+  set wildoptions=tagfile
+  set wildignorecase
+  set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
+  set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
+  set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
+  set wildignore+=__pycache__,*.egg-info
+endif
 
 set ofu=syntaxcomplete#Complete
 " }}}
@@ -301,6 +401,7 @@ augroup END
 " }}}
 
 " Plugins {{{
+execute 'source ' . expand('$VIMPATH/vimrc.airline')
 execute 'source ' . expand('$VIMPATH/vimrc.mappings')
 
 " {{{ Neomake
@@ -365,3 +466,5 @@ let g:formatters_cpp = ['my_astyle_cpp']
 "}}}
 " }}}
 " }}}
+
+" vim: set foldmethod=marker ts=2 sw=2 tw=80 expandtab :
