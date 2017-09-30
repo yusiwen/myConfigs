@@ -6,14 +6,22 @@
 - repo: Shougo/dein.vim
 # Heuristically set buffer options
 - repo: tpope/vim-sleuth
+# enable repeating supported - repo: maps with "."
+- repo: tpope/vim-repeat
 - repo: itchyny/vim-parenmatch
+- repo: ntpeters/vim-better-whitespace
 - repo: vim-airline/vim-airline
-# hook_source: source $VIMPATH/vimrc.airline
 - repo: yusiwen/vim-airline-themes
+# colorize text in the form #rrggbb or #rgb
+- repo: lilydjwg/colorizer
+  hook_source: |
+    let g:colorizer_nomap = 1
+    let g:colorizer_startup = 0
+
 # Underlines the word under the cursor
 - repo: itchyny/vim-cursorword
   hook_add: |
-    autocmd MyAutoCmd FileType unite,qf let b:cursorword=0
+    autocmd MyAutoCmd FileType denite,qf,nerdtree let b:cursorword=0
     autocmd MyAutoCmd InsertEnter * let b:cursorword=0
     autocmd MyAutoCmd InsertLeave * let b:cursorword=1
 
@@ -21,6 +29,26 @@
 - repo: terryma/vim-multiple-cursors
 
 # Commands {{{
+- {repo: Shougo/vimproc.vim, build: make, on_func: vimproc#}
+- repo: scrooloose/nerdtree
+  depends: nerdtree-git-plugin
+  on_map: {n: <Plug>}
+  hook_post_source: source $VIMPATH/vimrc.nerdtree
+
+- {repo: Xuyuanp/nerdtree-git-plugin, on_source: nerdtree}
+
+# git wrapper
+- repo: tpope/vim-fugitive
+  on_cmd: [Gstatus, Gcommit, Gedit, Gsplit, Gvsplit, Gtagedit, Gdiff, Gblame,
+           Gmove, Gdelete, Ggrep, Glog, Gread, Gwrite, Gbrowse, Git]
+  hook_source: |
+    let FugitiveIgnoreBufferTitles = ['NERDTree']
+    let FugitivePreferFileBuffers = 1
+# gitk for Vim
+- repo: gregsexton/gitv
+  depends: tpope/vim-fugitive
+  on_cmd: [Gitv]
+
 # displays tags in a window
 - repo: majutsushi/tagbar
   if: empty($VIM_MINIMAL)
@@ -55,6 +83,12 @@
 - {repo: brooth/far.vim, on_cmd: [Far, Farp, F]}
 # text filtering and alignment
 - {repo: godlygeek/tabular, on_cmd: Tabularize}
+# view man pages in vim
+- repo: vim-utils/vim-man
+  on_cmd: [Man, Vman]
+# easy code formatting in Vim by integrating existing code formatters
+- repo: Chiel92/vim-autoformat
+  on_cmd: Autoformat
 # }}}
 
 # Interface {{{
@@ -62,6 +96,11 @@
 - {repo: rhysd/accelerated-jk, on_map: {n: <Plug>}}
 # accelerated smooth scroll
 - repo: yonchu/accelerated-smooth-scroll
+
+# shows a git diff in the gutter
+- repo: airblade/vim-gitgutter
+  on_path: .*
+  hook_source: source $VIMPATH/vimrc.gitgutter
 
 - repo: nathanaelkane/vim-indent-guides
   on_cmd: [IndentGuidesEnable, IndentGuidesDisable, IndentGuidesToggle]
@@ -100,6 +139,22 @@
   depends: limelight.vim
   on_cmd: Goyo
   hook_source: source $VIMPATH/vimrc.goyo
+
+# Asynchronous linting and make framework for Neovim/Vim
+- repo: benekastah/neomake
+  on_cmd: Neomake
+  hook_add: |
+    let g:lint_filetypes = [
+      \  'ansible', 'python', 'php', 'ruby', 'vim', 'go', 'sh',
+      \  'javascript', 'jsx', 'javascript.jsx', 'json', 'css',
+      \  'markdown', 'html', 'yaml'
+      \ ]
+    autocmd MyAutoCmd BufWritePost *
+      \ if index(g:lint_filetypes, &filetype) > -1 && empty(&buftype)
+      \|   Neomake
+      \| elseif &filetype =~ 'html'
+      \|   Neomake tidy
+      \| endif
 # }}}
 
 # Completion {{{
@@ -111,30 +166,20 @@
     let g:gutentags_generate_on_write = 1
     let g:gutentags_generate_on_missing = 0
     let g:gutentags_generate_on_new = 0
+
+- repo: mattn/emmet-vim
+  if: empty($VIM_MINIMAL)
+  on_event: InsertEnter
+  on_ft: [html, css, jsx, javascript, javascript.jsx]
+  hook_source: |
+    let g:use_emmet_complete_tag = 0
+    let g:user_emmet_install_global = 0
+    let g:user_emmet_install_command = 0
+    let g:user_emmet_mode = 'i'
+
 # insert or delete brackets, parens, quotes in pair
 - repo: jiangmiao/auto-pairs
   on_event: InsertEnter
-# }}}
-
-# Shuogos neo packages {{{
-- {repo: Shougo/vimproc.vim, build: make, on_func: vimproc#}
-
-- repo: Shougo/unite.vim
-  on_cmd: Unite
-  hook_source: source $VIMPATH/vimrc.unite
-
-- {repo: Shougo/unite-session, depends: Shougo/unite.vim}
-- {repo: Shougo/unite-outline, depends: Shougo/unite.vim}
-- {repo: Shougo/neoyank.vim, depends: Shougo/unite.vim}
-- {repo: Shougo/unite-help, depends: Shougo/unite.vim}
-- {repo: tsukkee/unite-tag, depends: Shougo/unite.vim}
-- {repo: Shougo/neomru.vim, depends: Shougo/unite.vim}
-
-- repo: Shougo/vimfiler.vim
-  depends: Shougo/unite.vim
-  hook_source: |
-    let g:vimfiler_as_default_explorer = 1
-    let g:vimfiler_enable_clipboard = 0
 
 - repo: Shougo/neocomplete.vim
   depends: context_filetype.vim
@@ -161,33 +206,24 @@
 
 - {repo: Shougo/neosnippet-snippets, if: empty($VIM_MINIMAL)}
 - {repo: Shougo/context_filetype.vim, lazy: 1, if: empty($VIM_MINIMAL)}
-
 # }}}
 
-# colorize text in the form #rrggbb or #rgb
-- repo: lilydjwg/colorizer
-  hook_source: |
-    let g:colorizer_nomap = 1
-    let g:colorizer_startup = 0
-# better whitespace highlighting
-- repo: ntpeters/vim-better-whitespace
-# enable repeating supported - repo: maps with "."
-- repo: tpope/vim-repeat
+# Denite {{{
+# ------
+- repo: Shougo/denite.nvim
+  on_cmd: Denite
+  hook_source: source $VIMPATH/vimrc.denite
+  hook_post_source: source $VIMPATH/vimrc.denite.menu
 
-# Language & Develop specific repos
+- {repo: chemzqm/unite-location, on_source: denite.nvim}
+- {repo: chemzqm/denite-git, on_source: denite.nvim}
+- {repo: rafi/vim-denite-z, on_source: denite.nvim}
+- {repo: rafi/vim-denite-session, on_source: denite.nvim}
 
-# Git {{{
-# git wrapper
-- repo: tpope/vim-fugitive
-  hook_source: |
-    let FugitiveIgnoreBufferTitles = ['NERDTree']
-    let FugitivePreferFileBuffers = 1
-# gitk for Vim
-- repo: gregsexton/gitv
-# shows a git diff in the gutter
-- repo: airblade/vim-gitgutter
-  on_path: .*
-  hook_source: source $VIMPATH/vimrc.gitgutter
+- repo: rafi/vim-denite-mpc
+  if: executable('mpc') && empty($VIM_MINIMAL)
+  on_source: denite.nvim
+  hook_source: call denite#custom#var('mpc', 'default_view', 'date')
 # }}}
 
 # Language & DevTools {{{
@@ -196,12 +232,18 @@
   on_ft: [groovy]
 # Ruby on Rails power tools
 - repo: tpope/vim-rails
+  on_cmd: [A, R, Econtroller, Eenvironment, Efixtures, Efunctionaltest, Ehelper,
+           Einitializer, Eintegrationtest, Ejavascript, Elayout, Elib, Elocale,
+           Emailer, Emigration, Emodel, Eschema, Espec, Estylesheet, Etask,
+           Eunittest, Eview, Rails, Rscript, Console, Generate, Destory, Server,
+           Runner, Rp, Rpp, Rake]
+- {repo: osyo-manga/vim-monster, on_ft: ruby}
 # gradle support
 - repo: tfnico/vim-gradle
+  on_ft: [groovy]
 # wisely add end in ruby, vim script, etc
 - repo: tpope/vim-endwise
-# mappings for HTML, XML, PHP, eRuby, JSP, etc
-- repo: tpope/vim-ragtag
+  on_event: InsertEnter
 # runtime files for Haml, Sass, and SCSS
 - {repo: tpope/vim-haml, on_ft: [css, sass, scss, haml]}
 # tools for json
@@ -212,23 +254,6 @@
 - {repo: pangloss/vim-javascript, on_ft: [javascript, jsx, javascript.jsx]}
 # CoffeeScript support
 - {repo: kchmck/vim-coffee-script, on_ft: [coffee]}
-# view man pages in vim
-- repo: bruno-/vim-man
-# Asynchronous linting and make framework for Neovim/Vim
-- repo: benekastah/neomake
-  on_cmd: Neomake
-  hook_add: |
-    let g:lint_filetypes = [
-      \  'ansible', 'python', 'php', 'ruby', 'vim', 'go', 'sh',
-      \  'javascript', 'jsx', 'javascript.jsx', 'json', 'css',
-      \  'markdown', 'html', 'yaml'
-      \ ]
-    autocmd MyAutoCmd BufWritePost *
-      \ if index(g:lint_filetypes, &filetype) > -1 && empty(&buftype)
-      \|   Neomake
-      \| elseif &filetype =~ 'html'
-      \|   Neomake tidy
-      \| endif
 - repo: plasticboy/vim-markdown
   on_ft: markdown
 - repo: rhysd/vim-gfm-syntax
@@ -253,10 +278,6 @@
 #   keep/restore fcitx state when toggling insert mode
 - repo: vim-scripts/fcitx.vim
   if: has('unix') && system('uname') =~? '^linux'
-# extended % matching for HTML, LaTeX, etc
-- repo: vim-scripts/matchit.zip
-# easy code formatting in Vim by integrating existing code formatters
-- repo: Chiel92/vim-autoformat
 
 # Operators {{{
 # ---------
@@ -299,10 +320,4 @@
   hook_add: let g:textobj_function_no_default_key_mappings = 1
 # }}}
 
-# themes repos
-- repo: altercation/vim-colors-solarized
-- repo: yusiwen/jellybeans.vim
-- repo: jnurmine/Zenburn
-- repo: morhetz/gruvbox
-- repo: yusiwen/base16-vim
-- repo: dracula/vim
+# vim: set foldmethod=marker ts=2 sw=2 tw=80 expandtab :

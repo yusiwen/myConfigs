@@ -163,7 +163,10 @@ set title
 set mouse=a
 set ttymouse=sgr
 
-set shortmess=at      " shorten error messages
+set magic             " For regular expressions turn magic on
+set path=.,**         " Directories to search when using gf
+set virtualedit=block " Position cursor anywhere in visual block
+set synmaxcol=1000    " Don't syntax highlight long lines
 
 set nrformats+=alpha  " in-/decrease letters with C-a/C-x
 
@@ -172,7 +175,6 @@ set modelines=5
 
 set selection=inclusive
 
-set number            " enable line numbers
 set ruler             " enable something
 set cursorline        " enable hiliting of cursor line
 
@@ -185,23 +187,38 @@ set confirm           " ask instead of just print errors
 
 set equalalways       " make splits equal size
 " Always splits to the right and below
-set splitright
-set splitbelow
+set splitright splitbelow
+set switchbuf=useopen,usetab " Jump to the first open window in any tab
+set switchbuf+=vsplit        " Switch buffer behavior to vsplit
 
 set lazyredraw        " don't redraw while executing macros
-
-set noshowmode        " don't display mode, it's already in the status line
-
-set laststatus=2      " always show statusline
 
 set encoding=utf-8    " Necessary to show Unicode glyphs
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 set fileformats=unix,dos,mac " Use Unix as the standard file type"
 
-set timeoutlen=1000
-set ttimeoutlen=0
+set timeout ttimeout
+set timeoutlen=750  " Time out on mappings
+set updatetime=1000 " Idle time to write swap and trigger CursorHold
+
+" Time out on key codes
+if has('nvim')
+  " https://github.com/neovim/neovim/issues/2017
+  set ttimeoutlen=-1
+else
+  set ttimeoutlen=10
+endif
 
 set fillchars=""
+
+set diffopt=filler,iwhite " Diff mode: show fillers, ignore white
+if exists('+inccommand')
+  set inccommand=nosplit
+endif
+
+" What to save for views:
+set viewoptions-=options
+set viewoptions+=slash,unix
 
 " Mac OSX specific settings {{{
 if s:is_mac
@@ -238,21 +255,21 @@ if has('gui_running')
 
   set lines=50                    " Height
   set columns=130                 " Width
-
-  execute 'source ' . expand('$VIMPATH/vimrc.theme')
 else
-  execute 'source ' . expand('$VIMPATH/vimrc.theme')
   set t_Co=256
 endif
 " }}}
 
-" Tabstops {{{
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set autoindent
-set smartindent
-set expandtab
+" Tabstops & Indents {{{
+set textwidth=80    " Text width maximum chars before wrapping
+set expandtab     " Don't expand tabs to spaces.
+set tabstop=2       " The number of spaces a tab is
+set softtabstop=2   " While performing editing operations
+set shiftwidth=2    " Number of spaces to use in auto(indent)
+set smarttab        " Tab insert blanks according to 'shiftwidth'
+set autoindent      " Use same indenting on new lines
+set smartindent     " Smart autoindenting on new lines
+set shiftround      " Round indent to multiple of 'shiftwidth'
 " }}}
 
 " Invisibles {{{
@@ -315,9 +332,41 @@ set matchtime=1     " Tenths of a second to show the matching paren
 set cpoptions-=m    " showmatch will wait 0.5s or until a char is typed"
 " }}}
 
-" Margins {{{
-set scrolloff=5
-set sidescroll=5
+" UI Appearance {{{
+set noshowmode          " Don't show mode in cmd window
+set shortmess=aoOTI     " Shorten messages and don't show intro
+set scrolloff=2         " Keep at least 2 lines above/below
+set sidescrolloff=5     " Keep at least 5 lines left/right
+set number              " Show line numbers
+
+set showtabline=2       " Always show the tabs line
+set winwidth=30         " Minimum width for active window
+set winheight=1         " Minimum height for active window
+set pumheight=15        " Pop-up menu's line height
+set helpheight=12       " Minimum help window height
+
+set noshowcmd           " Don't show command in status line
+set cmdheight=2         " Height of the command line
+set cmdwinheight=5      " Command-line lines
+set noequalalways       " Don't resize windows on split or close
+set laststatus=2        " Always show a status line
+set display=lastline
+
+" Do not display completion messages
+" Patch: https://groups.google.com/forum/#!topic/vim_dev/WeBBjkXE8H8
+if has('patch-7.4.314')
+  set shortmess+=c
+endif
+
+" Do not display message when editing files
+if has('patch-7.4.1570')
+  set shortmess+=F
+endif
+
+" For snippet_complete marker
+if has('conceal') && v:version >= 703
+  set conceallevel=2 concealcursor=niv
+endif
 " }}}
 
 " Search {{{
@@ -333,11 +382,25 @@ nmap <silent> ,n :set invhls<CR>:set hls?<CR>
 " }}}
 
 " Backup and Recovery {{{
-set nobackup
-set writebackup
-" set swap file directory to ~/.vim/swap, need to mkdir it first
-let &directory=expand('$VIMPATH/swap,.')
-set swapfile
+set undofile swapfile nobackup
+set directory=$VARPATH/swap//,$VARPATH,~/tmp,/var/tmp,/tmp
+set undodir=$VARPATH/undo//,$VARPATH,~/tmp,/var/tmp,/tmp
+set backupdir=$VARPATH/backup/,$VARPATH,~/tmp,/var/tmp,/tmp
+set viewdir=$VARPATH/view/
+
+" History saving
+set history=2000
+if has('nvim')
+  "  ShaDa/viminfo:
+  "   ' - Maximum number of previously edited files marks
+  "   < - Maximum number of lines saved for each register
+  "   @ - Maximum number of items in the input-line history to be
+  "   s - Maximum size of an item contents in KiB
+  "   h - Disable the effect of 'hlsearch' when loading the shada
+  set shada='300,<10,@50,s100,h
+else
+  set viminfo='300,<10,@50,h,n$VARPATH/viminfo
+endif
 " }}}
 
 " Completion {{{
@@ -352,59 +415,45 @@ if has('wildmenu')
   set wildignore+=__pycache__,*.egg-info
 endif
 
+set showfulltag           " Show tag and tidy search in completion
+set complete=.            " No wins, buffs, tags, include scanning
+set completeopt=menuone   " Show menu even for one item
+set completeopt+=noselect " Do not select a match in the menu
+if has('patch-7.4.775')
+  set completeopt+=noinsert
+endif
+set previewheight=12      " Completion preview height
+
 set ofu=syntaxcomplete#Complete
 " }}}
 
 " Wrapping {{{
-set linebreak
+set nowrap                      " No wrap by default
+set linebreak                   " Break long lines at 'breakat'
+set breakat=\ \ ;:,!?           " Long lines break chars
 set showbreak=∟\
+set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys
+
 " toggle wrapping
 nmap <silent> <F12> :let &wrap = !&wrap<CR>
-" }}}
 
-" Tabs Navigatoin {{{
-" Since most terminal emulators do not intercept Ctrl-Tab, they just send the
-" same code as for Tab, use <Leader>(which is ',' by default) intead of <C>
-" If want to change that, please checkout this post below:
-" http://www.staldal.nu/tech/2009/01/10/how-to-use-ctrl-tab-in-gnu-screen/
-nnoremap <Leader><S-Tab> :tabprevious<CR>
-nnoremap <Leader><Tab> :tabnext<CR>
-nnoremap <Leader>nt :tabnew<CR>
-
-"map <C-W> <Esc>:confirm bdelete<CR>
-
-inoremap <Leader><Tab> <Esc>:tabnext<CR>
-inoremap <Leader><S-Tab> <Esc>:tabpreviuos<CR>
-inoremap <C-t> <Esc>:tabnew<CR>
-" }}}
-
-" Tags {{{
-set tags=./tags;
-nmap <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-nmap <C-]>v :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
-nmap <C-]>h :sp <CR>:exec("tag ".expand("<cword>"))<CR>
+set formatoptions+=1 " Don't break lines after a one-letter word
+set formatoptions-=t " Don't auto-wrap text
+if has('patch-7.3.541')
+  set formatoptions+=j " Remove comment leader when joining lines
+endif
 " }}}
 
 " Macros {{{
 " }}}
 
-" Specific File Types Settings {{{
-" turn off expandtab for editing makefiles
-autocmd FileType make setlocal noexpandtab
-" for git commit messages
-autocmd Filetype gitcommit setlocal spell textwidth=72
-" Vim detects *.pc as filetype 'proc' but has no syntax highlighting for Pro*C. Override it so that it highlights as C.
-"   See http://vim.wikia.com/wiki/Forcing_Syntax_Coloring_for_files_with_odd_extensions
-augroup filetypedetect
-  au BufRead,BufNewFile *.pc set filetype=c
-augroup END
-" }}}
-
 " Plugins {{{
 execute 'source ' . expand('$VIMPATH/vimrc.airline')
+execute 'source ' . expand('$VIMPATH/vimrc.theme')
 execute 'source ' . expand('$VIMPATH/vimrc.mappings')
+execute 'source ' . expand('$VIMPATH/vimrc.filetype')
 
-" {{{ Neomake
+" Neomake {{{
 let g:neomake_open_list = 2
 let g:neomake_verbose = 1
 let g:airline#extensions#neomake#enabled = 1
@@ -428,19 +477,6 @@ endfunction
 function! Multiple_cursors_after()
   exe 'NeoCompleteUnlock'
 endfunction
-" }}}
-
-" {{{ Eclim
-let g:EclimCompletionMethod = 'omnifunc'
-" }}}
-
-" RagTag {{{
-imap <M-O> <Esc>o
-imap <C-J> <Down>
-let g:ragtag_global_maps = 1
-
-imap <C-Space> <C-X><Space>
-imap <C-CR> <C-X><CR>
 " }}}
 
 " vim-better-whitespace {{{

@@ -49,7 +49,7 @@ elif [ $(uname) = 'Darwin' ]; then
   PACKAGE=$(brew list|grep vim)
   if [ -z "$PACKAGE" ]; then
     echo 'vim is not found. Installing vim...'
-    brew install vim macvim
+    brew install vim vim --with-python3
     echo 'Installing vim...Done.'
   else
     echo 'vim is found.'
@@ -67,11 +67,15 @@ fi
 
 ln -sfnv $CONFIG_VIM/vimrc $VIM_HOME/vimrc
 ln -sfnv $CONFIG_VIM/plugins.yaml $VIM_HOME/plugins.yaml
+ln -sfnv $CONFIG_VIM/vimrc.filetype $VIM_HOME/vimrc.filetype
 ln -sfnv $CONFIG_VIM/vimrc.mappings $VIM_HOME/vimrc.mappings
 ln -sfnv $CONFIG_VIM/vimrc.airline $VIM_HOME/vimrc.airline
 ln -sfnv $CONFIG_VIM/vimrc.gitgutter $VIM_HOME/vimrc.gitgutter
 ln -sfnv $CONFIG_VIM/vimrc.neocomplete $VIM_HOME/vimrc.neocomplete
-ln -sfnv $CONFIG_VIM/vimrc.unite $VIM_HOME/vimrc.unite
+ln -sfnv $CONFIG_VIM/vimrc.denite $VIM_HOME/vimrc.denite
+ln -sfnv $CONFIG_VIM/vimrc.denite.menu $VIM_HOME/vimrc.denite.menu
+ln -sfnv $CONFIG_VIM/vimrc.nerdtree $VIM_HOME/vimrc.nerdtree
+ln -sfnv $CONFIG_VIM/vimrc.theme $VIM_HOME/vimrc.theme
 ln -sfnv $CONFIG_VIM/ctags $HOME/.ctags
 
 # link custom color themes to $VIM_HOME
@@ -82,10 +86,5 @@ fi
 # link snippets to $VIM_HOME
 if [ ! -L $VIM_HOME/snippets ]; then
   ln -sfnv $CONFIG_VIM/snippets $VIM_HOME/snippets
-fi
-
-# make swap directory to store swap files globally
-if [ ! -d $VIM_HOME/swap ]; then
-  mkdir $VIM_HOME/swap
 fi
 

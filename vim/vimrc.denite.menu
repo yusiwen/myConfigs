@@ -1,0 +1,63 @@
+" MENUS
+" -----
+
+let s:menus = {}
+
+let s:menus.dein = { 'description': 'Plugin management' }
+let s:menus.dein.command_candidates = [
+  \   ['▶ Dein: Plugins update │', 'call dein#update()'],
+  \   ['▶ Denite: Dein Log     │ ;n', 'Denite dein -no-quit'],
+  \   ['▶ Dein: Update log     │', 'echo dein#get_updates_log()'],
+  \   ['▶ Dein: Log            │', 'echo dein#get_log()'],
+  \ ]
+
+let s:menus.project = { 'description': 'Project & structure' }
+let s:menus.project.command_candidates = [
+  \   ['▶ File Explorer │ ;e',          'NERDTree'],
+  \   ['▶ Outline       │ <Leader>o',   'TagbarToggle'],
+  \   ['▶ Git Status    │ <Leader>gs',  'Denite gitstatus'],
+  \   ['▶ Bookmarks     │ ma',          'Bookmarks'],
+  \   ['▶ Undo Tree     │ <Leader>un',  'UndotreeToggle'],
+  \ ]
+
+let s:menus.files = { 'description': 'File tools' }
+let s:menus.files.command_candidates = [
+  \   ['▶ Denite: Find in files…    │ ;g',  'Denite grep:.'],
+  \   ['▶ Denite: Find files        │ ;f',  'Denite file_rec'],
+  \   ['▶ Denite: Buffers           │ ;b',  'Denite buffer'],
+  \   ['▶ Denite: MRU               │',  'Denite file_old'],
+  \   ['▶ Denite: Line              │ ;/',  'Denite line'],
+  \ ]
+
+let s:menus.tools = { 'description': 'Tools' }
+let s:menus.tools.command_candidates = [
+  \   ['▶ Git commands       │', 'Git'],
+  \   ['▶ Git log            │', 'Gitv --all'],
+  \   ['▶ Check Syntax       │', 'Noemake'],
+  \   ['▶ Goyo               │', 'Goyo'],
+  \   ['▶ List marks         │', 'Denite marks'],
+  \   ['▶ Thesaurus          │', 'Thesaurus'],
+  \   ['▶ Xterm color-table  │', 'XtermColorTable'],
+  \   ['▶ Hex editor         │', 'Vinarise'],
+  \   ['▶ Tag-bar            │', 'TagbarToggle'],
+  \   ['▶ File explorer      │', 'NERDTree'],
+  \   ['▶ Codi (python)      │', 'Codi python'],
+  \ ]
+
+let s:menus.sessions = { 'description': 'Sessions' }
+let s:menus.sessions.command_candidates = [
+  \   ['▶ Restore session │ ;s', 'Denite session'],
+  \   ['▶ Save session…   │', 'Denite session/new'],
+  \ ]
+
+let s:menus.settings = {'description': 'Configuration files'}
+let s:menus.settings.file_candidates = [
+  \   ['▶ General settings: vimrc            ', $VIMPATH.'/vimrc'],
+  \   ['▶ File Types: vimrc.filetype         ', $VIMPATH.'/vimrc.filetype'],
+  \   ['▶ Installed plugins: plugins.yaml    ', $VIMPATH.'/plugins.yaml'],
+  \   ['▶ Global Key mappings: vimrc.mappings', $VIMPATH.'/vimrc.mappings'],
+  \ ]
+
+call denite#custom#var('menu', 'menus', s:menus)
+
+" vim: set ts=2 sw=2 tw=80 expandtab :

@@ -6,83 +6,332 @@ set pastetoggle=<F10>
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 "command W w !sudo tee % > /dev/null
+
+" Window-control prefix
+nnoremap [Window] <Nop>
+nmap     s [Window]
+
+" Fix keybind name for Ctrl+Spacebar
+map  <Nul> <C-Space>
+map! <Nul> <C-Space>
+
+" Disable arrow movement, resize splits instead.
+if get(g:, 'elite_mode')
+  nnoremap <Up>    :resize +2<CR>
+  nnoremap <Down>  :resize -2<CR>
+  nnoremap <Left>  :vertical resize +2<CR>
+  nnoremap <Right> :vertical resize -2<CR>
+endif
+
+" Double leader key for toggling visual-line mode
+nmap <silent> <Leader><Leader> V
+vmap <Leader><Leader> <Esc>
+
+" Change current word in a repeatable manner
+nnoremap cn *``cgn
+nnoremap cN *``cgN
+
+" Change selected word in a repeatable manner
+vnoremap <expr> cn "y/\\V\<C-r>=escape(@\", '/')\<CR>\<CR>" . "``cgn"
+vnoremap <expr> cN "y/\\V\<C-r>=escape(@\", '/')\<CR>\<CR>" . "``cgN"
+
+nnoremap cp yap<S-}>p
+nnoremap <Leader>a =ip
+
+" xnoremap p  "0p
+" nnoremap x "_x
+
+" Toggle fold
+nnoremap <CR> za
+
+" Focus the current fold by closing all others
+nnoremap <S-Return> zMza
+
+" Use backspace key for matchit.vim
+nmap <BS> %
+xmap <BS> %
+
+nmap <Tab>   <C-w>w
+nmap <S-Tab> <C-w>W
+
+" Show highlight names under cursor
+nmap <silent> gh :echo 'hi<'.synIDattr(synID(line('.'), col('.'), 1), 'name')
+        \.'> trans<'.synIDattr(synID(line('.'), col('.'), 0), 'name').'> lo<'
+        \.synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>'<CR>
 " }}}
 
-" unite.vim key mappings {{{
-if dein#tap('unite.vim')
-  " Map space to the prefix for Unite
-  nnoremap [unite] <Nop>
-  nmap <space> [unite]
+" Toggle editor visuals {{{
+nmap <silent> <Leader>ts :setlocal spell!<cr>
+nmap <silent> <Leader>tn :setlocal nonumber!<CR>
+nmap <silent> <Leader>tl :setlocal nolist!<CR>
+nmap <silent> <Leader>th :nohlsearch<CR>
+nmap <silent> <Leader>tw :setlocal wrap! breakindent!<CR>
+" }}}
 
-  " General fuzzy search
-  "nnoremap <silent> [unite]<space> :<C-u>Unite
-  "      \ -no-split -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+" Tabs Navigatoin {{{
+nnoremap <silent> <C-t> :<C-u>tabnew<CR>
+nnoremap <silent> g0 :<C-u>tabfirst<CR>
+nnoremap <silent> g$ :<C-u>tablast<CR>
+nnoremap <silent> gr :<C-u>tabprevious<CR>
+nnoremap <silent> <A-j> :<C-U>tabnext<CR>
+nnoremap <silent> <A-k> :<C-U>tabprevious<CR>
+nnoremap <silent> <C-Tab> :<C-U>tabnext<CR>
+nnoremap <silent> <C-S-Tab> :<C-U>tabprevious<CR>
+" Uses g:lasttab set on TabLeave in MyAutoCmd
+let g:lasttab = 1
+nmap <silent> \\ :execute 'tabn '.g:lasttab<CR>
+" }}}
 
-  " Quick registers
-  nnoremap <silent> [unite]r :<C-u>Unite -quick-match -buffer-name=register register<CR>
+" Totally Custom {{{
+" --------------
 
-  " Quick buffer and mru
-  nnoremap <silent> [unite]u :<C-u>Unite -quick-match -buffer-name=buffers buffer<CR>
+" Remove spaces at the end of lines
+nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 
-  " Quick yank history
-  nnoremap <silent> [unite]y :<C-u>Unite -quick-match -auto-preview -buffer-name=yanks history/yank<CR>
+" C-r: Easier search and replace
+xnoremap <C-r> :<C-u>call <SID>get_selection('/')<CR>:%s/\V<C-R>=@/<CR>//gc<Left><Left><Left>
 
-  " Quick outline (Need 'Shougo/unite-outline' installed)
-  nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+" Returns visually selected text
+function! s:get_selection(cmdtype) "{{{
+  let s:temp = @s
+  normal! gv"sy
+  let @/ = substitute(escape(@s, '\'.a:cmdtype), '\n', '\\n', 'g')
+  let @s = s:temp
+endfunction "}}}
 
-  " Quick sessions (projects)
-  nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session<CR>
+" Background dark/light toggle and contrasts
+nnoremap <silent><Leader>b :<C-u>call <SID>toggle_background()<CR>
 
-  " Quick sources
-  nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
+function! s:toggle_background()
+  if ! exists('g:colors_name')
+    echomsg 'No colorscheme set'
+    return
+  endif
+  let l:scheme = g:colors_name
 
-  " Quick snippet
-  nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=snippets ultisnips<CR>
+  if l:scheme =~# 'dark' || l:scheme =~# 'light'
+    " Rotate between different theme backgrounds
+    execute 'colorscheme' (l:scheme =~# 'dark'
+          \ ? substitute(l:scheme, 'dark', 'light', '')
+          \ : substitute(l:scheme, 'light', 'dark', ''))
+  else
+    execute 'set background='.(&background ==# 'dark' ? 'light' : 'dark')
+    if ! exists('g:colors_name')
+      execute 'colorscheme' l:scheme
+      echomsg 'The colorscheme `'.l:scheme
+        \ .'` doesn''t have background variants!'
+    else
+      echo 'Set colorscheme to '.&background.' mode'
+    endif
+  endif
+endfunction
 
-  " Quickly switch lcd
-  nnoremap <silent> [unite]d
-        \ :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async<CR>
+" Location list movement
+nmap <Leader>j :lnext<CR>
+nmap <Leader>k :lprev<CR>
 
-  " Quick file search
-  nnoremap <silent> [unite]f :<C-u>Unite -no-split -buffer-name=files file_rec/async file/new<CR>
+" Duplicate lines
+nnoremap <Leader>d m`YP``
+vnoremap <Leader>d YPgv
 
-  " Quick grep from cwd
-  nnoremap <silent> [unite]g :<C-u>Unite -no-split -buffer-name=grep grep:.<CR>
+" Source line and selection in vim
+vnoremap <Leader>S y:execute @@<CR>:echo 'Sourced selection.'<CR>
+nnoremap <Leader>S ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 
-  " Quick help
-  nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
+" Yank buffer's absolute path to X11 clipboard
+nnoremap <Leader>y :let @+=expand("%:p")<CR>:echo 'Copied to clipboard.'<CR>
 
-  " Quick line using the word under cursor
-  " nnoremap <silent> [unite]l :<C-u>UniteWithCursorWord -buffer-name=search_file line<CR>
+" Drag current line/s vertically and auto-indent
+vnoremap mk :m-2<CR>gv=gv
+vnoremap mj :m'>+<CR>gv=gv
+noremap  mk :m-2<CR>
+noremap  mj :m+<CR>
 
-  " Quick line
-  nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=search_file line<CR>
+" Last session management shortcuts
+nmap <Leader>se :<C-u>SessionSave last<CR>
+nmap <Leader>os :<C-u>execute 'source '.g:session_directory.'/last.vim'<CR>
 
-  " Quick MRU search
-  nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
+if has('mac')
+  " Open the macOS dictionary on current word
+  nmap <Leader>? :!open dict://<cword><CR><CR>
 
-  " Quick find
-  nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
+  " Use Dash on Mac, for context help
+  if executable('/Applications/Dash.app/Contents/MacOS/Dash')
+    autocmd MyAutoCmd FileType ansible,go,php,css,less,html,markdown
+      \ nmap <silent><buffer> K :!open -g dash://"<C-R>=split(&ft, '\.')[0]<CR>:<cword>"&<CR><CR>
+    autocmd MyAutoCmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
+      \ nmap <silent><buffer> K :!open -g dash://"<cword>"&<CR><CR>
+  endif
 
-  " Quick commands
-  nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
-
-  " Quick bookmarks
-  nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
-
-  " Quick jump
-  nnoremap <silent> [unite]j :<C-u>Unite -buffer-name=jumps jump<CR>
-
-  " Fuzzy search from current buffer
-  " nnoremap <silent> [unite]b :<C-u>UniteWithBufferDir
-  " \ -buffer-name=files -prompt=%\  buffer file_mru bookmark file<CR>
-
-  " Quick commands
-  nnoremap <silent> [unite]; :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
-
-  " Quick tags (Need tsukkee/unite-tag installed)
-  nnoremap <silent> [unite]t :<C-u>Unite -buffer-name=tags tag<CR>
+" Use Zeal on Linux for context help
+elseif executable('zeal')
+  autocmd MyAutoCmd FileType ansible,go,php,css,less,html,markdown
+    \ nmap <silent><buffer> K :!zeal --query "<C-R>=split(&ft, '\.')[0]<CR>:<cword>"&<CR><CR>
+  autocmd MyAutoCmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
+    \ nmap <silent><buffer> K :!zeal --query "<cword>"&<CR><CR>
 endif
+" }}}
+
+" Display diff from last save {{{
+command! DiffOrig vert new | setlocal bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
+" }}}
+
+" Append modeline to EOF {{{
+nnoremap <silent> <Leader>ml :call <SID>append_modeline()<CR>
+
+" Append modeline after last line in buffer
+" See: http://vim.wikia.com/wiki/Modeline_magic
+function! s:append_modeline() "{{{
+  let l:modeline = printf(' vim: set ts=%d sw=%d tw=%d %set :',
+        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, '%s', l:modeline, '')
+  call append(line('$'), l:modeline)
+endfunction "}}}
+" }}}
+
+" Windows and buffers {{{
+nnoremap <silent> [Window]v  :<C-u>split<CR>
+nnoremap <silent> [Window]g  :<C-u>vsplit<CR>
+nnoremap <silent> [Window]t  :tabnew<CR>
+nnoremap <silent> [Window]o  :<C-u>only<CR>
+nnoremap <silent> [Window]b  :b#<CR>
+nnoremap <silent> [Window]c  :close<CR>
+nnoremap <silent> [Window]x  :<C-u>call <SID>BufferEmpty()<CR>
+
+" Split current buffer, go to previous window and previous buffer
+nnoremap <silent> [Window]sv :split<CR>:wincmd p<CR>:e#<CR>
+nnoremap <silent> [Window]sg :vsplit<CR>:wincmd p<CR>:e#<CR>
+
+function! s:BufferEmpty() " {{{
+  let l:current = bufnr('%')
+  if ! getbufvar(l:current, '&modified')
+    enew
+    silent! execute 'bdelete '.l:current
+  endif
+endfunction " }}}
+
+function! s:SweepBuffers() " {{{
+  let s:bufs = range(1, bufnr('$'))
+  let s:hidden = filter(s:bufs, 'buflisted(v:val) && !bufloaded(v:val)')
+  if ! empty(s:hidden)
+    execute 'silent bdelete' join(s:hidden)
+  endif
+endfunction " }}}
+" }}}
+
+" Tags {{{
+nmap <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+nmap <C-]>v :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+nmap <C-]>h :sp <CR>:exec("tag ".expand("<cword>"))<CR>
+" }}}
+
+" denite.nvim key mappings {{{
+if dein#tap('denite.nvim')
+  nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh<CR>
+  nnoremap <silent><LocalLeader>f :<C-u>Denite file_rec<CR>
+  nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file_old -default-action=switch<CR>
+  nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec -default-action=cd<CR>
+  nnoremap <silent><LocalLeader>v :<C-u>Denite register -buffer-name=register<CR>
+  xnoremap <silent><LocalLeader>v :<C-u>Denite register -buffer-name=register -default-action=replace<CR>
+  nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list<CR>
+  nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list<CR>
+  nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>
+  nnoremap <silent><LocalLeader>g :<C-u>Denite grep<CR>
+  nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file_point<CR>
+  nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
+  nnoremap <silent><LocalLeader>s :<C-u>Denite session -buffer-name=list<CR>
+  nnoremap <silent><expr> <LocalLeader>t &filetype == 'help' ? "g\<C-]>" :
+    \ ":\<C-u>DeniteCursorWord -buffer-name=tag
+    \  tag:include\<CR>"
+  nnoremap <silent><LocalLeader>h :<C-u>Denite help<CR>
+  nnoremap <silent><LocalLeader>m :<C-u>Denite mpc -buffer-name=mpc<CR>
+  nnoremap <silent><LocalLeader>/ :<C-u>Denite line<CR>
+  nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
+  nnoremap <silent><LocalLeader>z :<C-u>Denite z<CR>
+  nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
+  nnoremap <silent><LocalLeader>` :<C-u>Denite menu<CR>
+
+  " chemzqm/denite-git
+  nnoremap <silent> <Leader>gl :<C-u>Denite gitlog:all<CR>
+  nnoremap <silent> <Leader>gs :<C-u>Denite gitstatus<CR>
+  nnoremap <silent> <Leader>gc :<C-u>Denite gitchanged:<CR>
+
+  " Open Denite with word under cursor or selection
+  nnoremap <silent> <Leader>gf :DeniteCursorWord file_rec<CR>
+  nnoremap <silent> <Leader>gg :DeniteCursorWord grep<CR>
+  vnoremap <silent> <Leader>gg
+    \ :<C-u>call <SID>get_selection('/')<CR>
+    \ :execute 'Denite grep:::'.@/<CR><CR>
+
+  function! s:get_selection(cmdtype)
+    let l:temp = @s
+    normal! gv"sy
+    let @/ = substitute(escape(@s, '\'.a:cmdtype), '\n', '\\n', 'g')
+    let @s = l:temp
+  endfunction
+endif
+
+if dein#tap('vim-denite-z')
+  command! -nargs=+ -complete=file Z
+    \ call denite#start([{'name': 'z', 'args': [<q-args>], {'immediately': 1}}])
+endif
+" }}}
+
+" neocomplete key mappings {{{
+let g:neocomplete#fallback_mappings = [ "\<C-x>\<C-o>", "\<C-x>\<C-n>" ]
+
+" Movement within 'ins-completion-menu'
+imap <expr><C-j>   pumvisible() ? "\<C-n>" : "\<C-j>"
+imap <expr><C-k>   pumvisible() ? "\<C-p>" : "\<C-k>"
+imap <expr><C-f>   pumvisible() ? "\<PageDown>" : "\<Right>"
+imap <expr><C-b>   pumvisible() ? "\<PageUp>" : "\<Left>"
+imap <expr><C-d>   pumvisible() ? "\<PageDown>" : "\<Right>"
+imap <expr><C-u>   pumvisible() ? "\<PageUp>" : "\<Left>"
+
+" <C-n>: neocomplete.
+imap <expr> <C-n>  pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>\<Down>"
+" <C-p>: keyword completion.
+imap <expr> <C-p>  pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
+
+" Special plugin key-mappings
+"inoremap <expr><C-l>  neocomplete#mappings#complete_common_string()
+inoremap <expr><C-l>  neocomplete#mappings#refresh()
+inoremap <expr><C-g>   neocomplete#undo_completion()
+
+" Start file completion TODO Not working all the time
+imap <silent><expr> <C-x><C-f> neocomplete#start_manual_complete('file')
+
+" <CR>: If popup menu visible, expand snippet or close popup with selection,
+"       Otherwise, check if within empty pair and use delimitMate.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function() "{{{
+  " return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  return pumvisible() ?
+    \ (neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<C-y>")
+    \ : (delimitMate#WithinEmptyPair() ? "\<Plug>delimitMateCR" : "\<CR>")
+endfunction "}}}
+
+" <Tab> completion:
+" 1. If popup menu is visible, select and insert next item
+" 2. Otherwise, if within a snippet, jump to next input
+" 3. Otherwise, if preceding chars are whitespace, insert tab char
+" 4. Otherwise, start manual autocomplete
+imap <silent><expr><Tab> pumvisible() ? "\<C-n>"
+  \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+  \ : (<SID>is_whitespace() ? "\<Tab>"
+  \ : neocomplete#start_manual_complete()))
+
+smap <silent><expr><Tab> pumvisible() ? "\<C-n>"
+  \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+  \ : (<SID>is_whitespace() ? "\<Tab>"
+  \ : neocomplete#start_manual_complete()))
+
+inoremap <expr><S-Tab>  pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:is_whitespace() "{{{
+  let l:col = col('.') - 1
+  return ! l:col || getline('.')[l:col - 1] =~? '\s'
+endfunction "}}}
 " }}}
 
 " neosnippet.vim key mappings {{{
@@ -103,14 +352,31 @@ if dein#tap('neosnippet.vim')
 endif
 " }}}
 
-" vimfiler.vim key mappings {{{
-if dein#tap('vimfiler.vim')
-  " [unite] is difined at settings above
-  nnoremap <silent> [unite]q :<C-u>VimFilerExplorer -buffer-name=explorer -split -simple -winwidth=40 -toggle -no-quit<CR>
-  nnoremap <silent> [unite]w :<C-u>VimFiler -buffer-name=files -no-split<CR>
+" emmet-vim key mappings {{{
+if dein#tap('emmet-vim')
+  autocmd MyAutoCmd FileType html,css,jsx,javascript,javascript.jsx
+    \ EmmetInstall
+    \ | imap <buffer> <C-Return> <Plug>(emmet-expand-abbr)
 endif
 " }}}
 
+" NerdTree key mappings {{{
+if dein#tap('nerdtree')
+  let g:NERDTreeMapOpenSplit = 'sv'
+  let g:NERDTreeMapOpenVSplit = 'sg'
+  let g:NERDTreeMapOpenInTab = 'st'
+  let g:NERDTreeMapOpenInTabSilent = 'sT'
+  let g:NERDTreeMapUpdirKeepOpen = '<BS>'
+  let g:NERDTreeMapOpenRecursively = 't'
+  let g:NERDTreeMapCloseChildren = 'T'
+  let g:NERDTreeMapToggleHidden = '.'
+
+  nnoremap <silent> <LocalLeader>e :<C-u>NERDTreeToggle<CR>
+  nnoremap <silent> <LocalLeader>a :<C-u>NERDTreeFind<CR>
+endif
+" }}}
+
+" vim-commentary key mappings {{{
 if dein#tap('vim-commentary')
   xmap <Leader>v  <Plug>Commentary
   nmap <Leader>v  <Plug>CommentaryLine
@@ -121,15 +387,20 @@ if dein#tap('vim-commentary')
   nmap cgc <Plug>ChangeCommentary
   nmap gcu <Plug>Commentary<Plug>Commentary
 endif
+" }}}
 
+" vim-choosewin key mappings {{{
 if dein#tap('vim-choosewin')
   nmap -         <Plug>(choosewin)
   nmap <Leader>- :<C-u>ChooseWinSwapStay<CR>
 endif
+" }}}
 
+" undotree key mappings {{{
 if dein#tap('undotree')
   nnoremap <Leader>gu :UndotreeToggle<CR>
 endif
+" }}}
 
 " EasyMotion key mappings {{{
 if dein#tap('vim-easymotion')
@@ -149,7 +420,7 @@ endif
 
 " TagBar key mappings {{{
 if dein#tap('tagbar')
-  nnoremap <silent> <Leader>2 <Esc>:TagbarToggle<CR>
+  nnoremap <silent> <Leader>o :<C-u>TagbarToggle<CR>
 endif
 " }}}
 
