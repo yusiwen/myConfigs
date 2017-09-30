@@ -39,7 +39,7 @@
 
 # git wrapper
 - repo: chemzqm/vim-easygit
-  on_cmd: [Gcd, Glcd, Gcommit, Gblame, G-status, Gdiff, Gbrowse, Gstatus, Gpush]
+  on_cmd: [Gadd, Gcd, Glcd, Gcommit, Gblame, Gstatus, Gdiff, Gbrowse, Gpush]
   hook_source: let g:easygit_enable_command = 1
 
 # displays tags in a window
