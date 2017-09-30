@@ -12,17 +12,11 @@ call denite#custom#option('_', {
 
 call denite#custom#option('list', {})
 
-call denite#custom#option('mpc', {
-  \ 'quit': 0,
-  \ 'mode': 'normal',
-  \ 'winheight': 20,
-  \ })
-
 " MATCHERS
 " Default is 'matcher_fuzzy'
 if has('nvim') && &runtimepath =~# '\/cpsm'
   call denite#custom#source(
-    \ 'buffer,file_mru,file_old,file_rec,grep,mpc,line',
+    \ 'buffer,file_mru,file_old,file_rec,grep,line',
     \ 'matchers', ['matcher_cpsm', 'matcher_fuzzy'])
 endif
 
