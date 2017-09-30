@@ -7,14 +7,14 @@ execute 'source ' . expand('$VIMPATH/vimrc.colortheme')
 " ---------------------------------------------------------
 let g:NERDTreeIndicatorMapCustom = {
   \ 'Modified':  '·',
-  \ 'Staged':    '‧',
-  \ 'Untracked': '?',
-  \ 'Renamed':   '≫',
+  \ 'Staged':    '✚',
+  \ 'Untracked': '✭',
+  \ 'Renamed':   '➜',
   \ 'Unmerged':  '≠',
-  \ 'Deleted':   '✃',
+  \ 'Deleted':   '✖',
   \ 'Dirty':     '⁖',
   \ 'Clean':     '✓',
-  \ 'Unknown':   '⁇'
+  \ 'Unknown':   '?'
   \ }
 
 let g:NERDTreeDirArrowExpandable = '▷'
