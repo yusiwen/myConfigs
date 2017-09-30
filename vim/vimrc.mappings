@@ -72,11 +72,8 @@ nmap <silent> <Leader>tw :setlocal wrap! breakindent!<CR>
 nnoremap <silent> <C-t> :<C-u>tabnew<CR>
 nnoremap <silent> g0 :<C-u>tabfirst<CR>
 nnoremap <silent> g$ :<C-u>tablast<CR>
-nnoremap <silent> gr :<C-u>tabprevious<CR>
-nnoremap <silent> <A-j> :<C-U>tabnext<CR>
-nnoremap <silent> <A-k> :<C-U>tabprevious<CR>
-nnoremap <silent> <C-Tab> :<C-U>tabnext<CR>
-nnoremap <silent> <C-S-Tab> :<C-U>tabprevious<CR>
+nnoremap <silent> gp :<C-u>tabprevious<CR>
+nnoremap <silent> gn :<C-u>tabnext<CR>
 " Uses g:lasttab set on TabLeave in MyAutoCmd
 let g:lasttab = 1
 nmap <silent> \\ :execute 'tabn '.g:lasttab<CR>
@@ -244,7 +241,6 @@ if dein#tap('denite.nvim')
     \ ":\<C-u>DeniteCursorWord -buffer-name=tag
     \  tag:include\<CR>"
   nnoremap <silent><LocalLeader>h :<C-u>Denite help<CR>
-  nnoremap <silent><LocalLeader>m :<C-u>Denite mpc -buffer-name=mpc<CR>
   nnoremap <silent><LocalLeader>/ :<C-u>Denite line<CR>
   nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
   nnoremap <silent><LocalLeader>z :<C-u>Denite z<CR>
@@ -474,12 +470,48 @@ if dein#tap('vim-bookmarks')
   nmap mi <Plug>BookmarkAnnotate
 endif
 
+if dein#tap('vim-go')
+  autocmd MyAutoCmd FileType go
+    \   nmap <C-]> <Plug>(go-def)
+    \ | nmap <Leader>god  <Plug>(go-describe)
+    \ | nmap <Leader>goc  <Plug>(go-callees)
+    \ | nmap <Leader>goC  <Plug>(go-callers)
+    \ | nmap <Leader>goi  <Plug>(go-info)
+    \ | nmap <Leader>gom  <Plug>(go-implements)
+    \ | nmap <Leader>gos  <Plug>(go-callstack)
+    \ | nmap <Leader>goe  <Plug>(go-referrers)
+    \ | nmap <Leader>gor  <Plug>(go-run)
+    \ | nmap <Leader>gov  <Plug>(go-vet)
+endif
+
+if dein#tap('vim-easygit')
+  nnoremap <silent> <Leader>gd :Gdiff<CR>
+  nnoremap <silent> <Leader>gD :Gdiffoff<CR>
+  nnoremap <silent> <Leader>gC :Gcommit<CR>
+  nnoremap <silent> <Leader>gb :Gblame<CR>
+  nnoremap <silent> <Leader>gB :Gbrowse<CR>
+  nnoremap <silent> <Leader>gS :Gstatus<CR>
+  nnoremap <silent> <Leader>gp :Gpush<CR>
+endif
+
 if dein#tap('vim-gitgutter')
   nmap <Leader>hj <Plug>GitGutterNextHunk
   nmap <Leader>hk <Plug>GitGutterPrevHunk
   nmap <Leader>hs <Plug>GitGutterStageHunk
   nmap <Leader>hr <Plug>GitGutterUndoHunk
   nmap <Leader>hp <Plug>GitGutterPreviewHunk
+endif
+
+if dein#tap('committia.vim')
+  let g:committia_hooks = {}
+  function! g:committia_hooks.edit_open(info)
+    imap <buffer><C-d> <Plug>(committia-scroll-diff-down-half)
+    imap <buffer><C-u> <Plug>(committia-scroll-diff-up-half)
+
+    setlocal winminheight=1 winheight=1
+    resize 10
+    startinsert
+  endfunction
 endif
 
 if dein#tap('goyo.vim')
