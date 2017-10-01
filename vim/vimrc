@@ -194,6 +194,7 @@ set switchbuf+=vsplit        " Switch buffer behavior to vsplit
 set lazyredraw        " don't redraw while executing macros
 
 set encoding=utf-8    " Necessary to show Unicode glyphs
+scriptencoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 set fileformats=unix,dos,mac " Use Unix as the standard file type"
 
@@ -209,7 +210,7 @@ else
   set ttimeoutlen=10
 endif
 
-set fillchars=""
+set fillchars=vert:│,fold:─
 
 set diffopt=filler,iwhite " Diff mode: show fillers, ignore white
 if exists('+inccommand')
@@ -328,7 +329,7 @@ set shiftround      " Round indent to multiple of 'shiftwidth'
 
 " Invisibles {{{
 " tab: U+25BA, extends: U+00BB, precedes:U+00AB, trail:U+2017, eol:U+00AC
-set listchars=tab:►\ ,extends:»,precedes:«,trail:_,eol:¬
+set listchars=tab:►\ ,extends:»,precedes:«,trail:␣,eol:¬
 set list
 nmap <silent> <F11> :set list!<CR>
 " }}}
@@ -368,14 +369,14 @@ function! FoldText()
     let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
   endif
 
-  let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+  let w = winwidth(0) - &foldcolumn - (&number ? 7 : 0)
   let foldSize = 1 + v:foldend - v:foldstart
   let foldSizeStr = ' ' . foldSize . ' lines '
   let foldLevelStr = repeat('+--', v:foldlevel)
   let lineCount = line('$')
   let foldPercentage = printf('[%.1f', (foldSize*1.0)/lineCount*100) . '%] '
   let expansionString = repeat('.', w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
-  return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
+  return line . ' ' . expansionString . foldSizeStr . foldPercentage . foldLevelStr
 endfunction
 " }}}
 
@@ -387,7 +388,7 @@ set cpoptions-=m    " showmatch will wait 0.5s or until a char is typed"
 " }}}
 
 " UI Appearance {{{
-set noshowmode          " Don't show mode in cmd window
+" set noshowmode          " Don't show mode in cmd window
 set shortmess=aoOTI     " Shorten messages and don't show intro
 set scrolloff=2         " Keep at least 2 lines above/below
 set sidescrolloff=5     " Keep at least 5 lines left/right
@@ -400,11 +401,11 @@ set pumheight=15        " Pop-up menu's line height
 set helpheight=12       " Minimum help window height
 
 set noshowcmd           " Don't show command in status line
-set cmdheight=2         " Height of the command line
+set cmdheight=1         " Height of the command line
 set cmdwinheight=5      " Command-line lines
 set noequalalways       " Don't resize windows on split or close
 set laststatus=2        " Always show a status line
-set display=lastline
+set display+=lastline
 
 " Do not display completion messages
 " Patch: https://groups.google.com/forum/#!topic/vim_dev/WeBBjkXE8H8
@@ -502,7 +503,6 @@ endif
 " }}}
 
 " Plugins {{{
-execute 'source ' . expand('$VIMPATH/vimrc.airline')
 execute 'source ' . expand('$VIMPATH/vimrc.theme')
 execute 'source ' . expand('$VIMPATH/vimrc.mappings')
 execute 'source ' . expand('$VIMPATH/vimrc.filetype')
