@@ -8,8 +8,8 @@ execute 'source ' . expand('$VIMPATH/vimrc.colortheme')
 function! Tabline() abort "{{{
   " Active project tab
   let s:tabline =
-    \ '%#TabLineAlt# %{badge#project()} '.
-    \ '%#TabLineAltShade#▛'.
+    \ '%#TabLineAlt# %{badge#project()} >'.
+    \ '%#TabLineAltShade#'.
     \ '%#TabLineFill#  '
 
   let l:nr = tabpagenr()
@@ -17,15 +17,13 @@ function! Tabline() abort "{{{
     if l:i + 1 == l:nr
       " Active tab
       let s:tabline .=
-        \ '%#TabLineSelShade#░%#TabLineSel#'.
-        \ '%'.(l:i+1).'T%{badge#label('.(l:i+1).', "", "N/A")} '.
-        \ '%#TabLineFill#░ '
+        \ '%#TabLineSel# '.
+        \ '%'.(l:i+1).'T'.'[%{badge#label('.(l:i+1).', "", "N/A")}'.'] '
     else
       " Normal tab
       let s:tabline .=
         \ '%#TabLine# '.
-        \ '%'.(l:i+1).'T%{badge#label('.(l:i+1).', "", "N/A")} '.
-        \ ' '
+        \ '%'.(l:i+1).'T%{badge#label('.(l:i+1).', "", "N/A")} '
     endif
   endfor
   " Empty space and session indicator
@@ -61,7 +59,7 @@ let s:stl .= ' %8*%{ChangeModeBgColor()}%*'       " Mode
 let s:stl .= ' %1*%{badge#filename()}%*'          " Filename
 let s:stl .= ' %<'                                " Truncate here
 let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
-let s:stl .= "%4*%(%{badge#trails('Ξ:%s')} %)"  " Whitespace
+let s:stl .= "%5*%( %{badge#trails('Ξ:%s')} %)"  " Whitespace
 let s:stl .= '%(%{badge#syntax()} %)%*'           " syntax check
 let s:stl .= '%='                                 " Align to right
 let s:stl .= '%{badge#format()} %4*%*'            " File format

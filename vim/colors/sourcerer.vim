@@ -59,17 +59,18 @@ hi SpellLocal           cterm=underline ctermfg=30   ctermbg=NONE guifg=NONE    
 hi SpellRare            cterm=underline ctermfg=201  ctermbg=NONE guifg=NONE    guibg=NONE    gui=undercurl guisp=#ff00ff
 hi StatusLine           cterm=bold      ctermfg=13   ctermbg=237  guifg=#ff00ff guibg=#3a3a3a gui=bold
 hi StatusLineNC         cterm=NONE      ctermfg=238  ctermbg=234  guifg=#444444 guibg=#1c1c1c gui=italic
-hi StatusLineAlert      cterm=NONE      ctermfg=231  ctermbg=160  guifg=#ffffff guibg=#d70000 gui=NONE
+hi StatusLineAlert      cterm=NONE      ctermfg=231  ctermbg=1    guifg=#ffffff guibg=#800000 gui=NONE
 hi StatusLineUnalert    cterm=NONE      ctermfg=244  ctermbg=237  guifg=#808080 guibg=#3a3a3a gui=NONE
 hi User1                cterm=NONE      ctermfg=253  ctermbg=237  guifg=#dadada guibg=#3a3a3a
 hi User2                cterm=NONE      ctermfg=248  ctermbg=239  guifg=#a8a8a8 guibg=#4e4e4e
 hi User3                cterm=NONE      ctermfg=239  ctermbg=236  guifg=#4e4e4e guibg=#303030
 hi User4                cterm=NONE      ctermfg=242  ctermbg=236  guifg=#6c6c6c guibg=#303030
+hi User5                cterm=NONE      ctermfg=1    ctermbg=236  guifg=#800000 guibg=#303030
 hi User6                cterm=NONE      ctermfg=167  ctermbg=236  guifg=#d75f5f guibg=#303030
 hi User7                cterm=NONE      ctermfg=118  ctermbg=236  guifg=#87ff00 guibg=#303030
 hi User8                cterm=NONE      ctermfg=220  ctermbg=237  guifg=#ffd700 guibg=#3a3a3a
 hi VertSplit            cterm=NONE      ctermfg=102  ctermbg=102  guifg=#5e5e5e guibg=#5e5e5e gui=NONE
-hi TabLine              cterm=bold      ctermfg=16   ctermbg=102  guifg=#0d0d0d guibg=#5e5e5e gui=bold
+hi TabLine              cterm=bold      ctermfg=244  ctermbg=239  guifg=#808080 guibg=#4e4e4e gui=bold
 hi TabLineFill          cterm=NONE      ctermfg=13   ctermbg=237  guifg=#ff00ff guibg=#3a3a3a gui=NONE
 hi TabLineSel           cterm=bold      ctermfg=255  ctermbg=13   guifg=#eeeeee guibg=#ff00ff gui=bold
 hi TabLineSelShade      cterm=NONE      ctermfg=235  ctermbg=13   guifg=#262626 guibg=#ff00ff
