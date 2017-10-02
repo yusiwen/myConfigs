@@ -1,6 +1,7 @@
 " THEME
 " ================================
 
+scriptencoding utf-8
 execute 'source ' . expand('$VIMPATH/vimrc.colortheme')
 
 " Tabline {{{
@@ -39,13 +40,13 @@ let &tabline='%!Tabline()'
 " Statusline {{{
 function! ChangeModeBgColor()
   if (mode() =~# '\v(n|no)')
-    execute 'hi User8 cterm=NONE ctermfg=248 ctermbg=235 guifg=#ffd700 guibg=#262626'
+    execute 'hi User8 cterm=NONE ctermfg=248 ctermbg=235 guifg=#a8a8a8 guibg=#262626'
   elseif (mode() =~# '\v(v|V)')
-    execute 'hi User8 cterm=NONE ctermfg=248 ctermbg=6 guifg=#ffd700 guibg=#008080'
+    execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=6 guifg=#eeeeee guibg=#008080'
   elseif (mode() ==# 'i')
-    execute 'hi User8 cterm=NONE ctermfg=248 ctermbg=2 guifg=#ffd700 guibg=#008000'
+    execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=2 guifg=#eeeeee guibg=#008000'
   else
-    execute 'hi User8 cterm=NONE ctermfg=248 ctermbg=235 guifg=#ffd700 guibg=#262626'
+    execute 'hi User8 cterm=NONE ctermfg=248 ctermbg=235 guifg=#a8a8a8 guibg=#262626'
   endif
 
   return ' '.mode().' '

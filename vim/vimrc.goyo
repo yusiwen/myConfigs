@@ -17,8 +17,8 @@ function! s:goyo_enter()
   " Activate Limelight
   Limelight
 endfunction
-
 " }}}
+
 " s:goyo_leave() "{{{
 " Enable visuals when leaving Goyo mode
 function! s:goyo_leave()

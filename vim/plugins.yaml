@@ -140,7 +140,7 @@
 
 # Asynchronous linting and make framework for Neovim/Vim
 - repo: benekastah/neomake
-  on_cmd: Neomake
+  on_cmd: [Neomake, NeomakeInfo, NeomakeToggle, NeomakeDisable, NeomakeEnable]
   hook_add: |
     let g:lint_filetypes = [
       \  'ansible', 'python', 'php', 'ruby', 'vim', 'go', 'sh',
@@ -187,8 +187,11 @@
 
 - repo: Shougo/neocomplete.vim
   depends: context_filetype.vim
-  if: ! has('lua') && empty($VIM_MINIMAL)
+  if: has('lua') && empty($VIM_MINIMAL)
   on_event: InsertEnter
+  hook_add: |
+    let g:neocomplete#data_directory = $VARPATH.'/complete'
+    let g:neocomplete#enable_at_startup = 1
   hook_source: source $VIMPATH/vimrc.neocomplete
 
 - repo: Shougo/neosnippet.vim

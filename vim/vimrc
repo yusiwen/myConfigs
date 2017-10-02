@@ -483,7 +483,7 @@ set ofu=syntaxcomplete#Complete
 " }}}
 
 " Wrapping {{{
-set nowrap                      " No wrap by default
+set wrap                        " wrap by default
 set linebreak                   " Break long lines at 'breakat'
 set breakat=\ \ ;:,!?           " Long lines break chars
 set showbreak=∟\
@@ -508,6 +508,9 @@ execute 'source ' . expand('$VIMPATH/vimrc.mappings')
 execute 'source ' . expand('$VIMPATH/vimrc.filetype')
 
 " Neomake {{{
+" Disable Neomake by default
+autocmd VimEnter * NeomakeDisable
+
 let g:neomake_open_list = 2
 let g:neomake_verbose = 1
 let g:airline#extensions#neomake#enabled = 1

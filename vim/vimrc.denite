@@ -1,5 +1,6 @@
 " denite.nvim
 " -----------
+scriptencoding=utf-8
 
 " INTERFACE
 call denite#custom#option('_', {
@@ -55,8 +56,8 @@ elseif executable('ack')
   call denite#custom#var('grep', 'separator', ['--'])
   call denite#custom#var('grep', 'final_opts', [])
   call denite#custom#var('grep', 'default_opts',
-      \ ['--ackrc', $HOME.'/.config/ackrc', '-H',
-      \ '--nopager', '--nocolor', '--nogroup', '--column'])
+    \ ['--ackrc', $HOME.'/.config/ackrc', '-H',
+    \ '--nopager', '--nocolor', '--nogroup', '--column'])
 endif
 
 " KEY MAPPINGS
