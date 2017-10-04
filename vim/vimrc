@@ -26,7 +26,6 @@ let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
 
 augroup MyAutoCmd
 augroup END
-
 " }}}
 
 " Global Mappings {{{
@@ -180,7 +179,7 @@ set selection=inclusive
 set ruler             " enable something
 set cursorline        " enable hiliting of cursor line
 
-set backspace=2       " backspace over EOL etc.
+set backspace=indent,eol,start  " Intuitive backspacing ins insert mode"
 
 set background=dark   " i prefer dark backgrounds
 
@@ -379,9 +378,6 @@ set infercase       " Adjust case in insert completion mode
 set incsearch       " Incremental search
 set hlsearch        " Highlight search results
 set wrapscan        " Searches wrap around the end of the file"
-
-" Toggle that stupid highlight search
-nmap <silent> ,n :set invhls<CR>:set hls?<CR>
 " }}}
 
 " Backup and Recovery {{{
@@ -448,9 +444,6 @@ set linebreak                   " Break long lines at 'breakat'
 set breakat=\ \ ;:,!?           " Long lines break chars
 set showbreak=∟\
 set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys
-
-" toggle wrapping
-nmap <silent> <F12> :let &wrap = !&wrap<CR>
 
 set formatoptions+=1 " Don't break lines after a one-letter word
 set formatoptions-=t " Don't auto-wrap text
