@@ -285,9 +285,9 @@ imap <expr><C-d> pumvisible() ? "\<PageDown>" : "\<Right>"
 imap <expr><C-u> pumvisible() ? "\<PageUp>" : "\<Left>"
 
 " <C-n>: neocomplete.
-imap <expr> <C-n>  pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>\<Down>"
+imap <expr><C-n>  pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>\<Down>"
 " <C-p>: keyword completion.
-imap <expr> <C-p>  pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
+imap <expr><C-p>  pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
 
 " Special plugin key-mappings
 "inoremap <expr><C-l>  neocomplete#mappings#complete_common_string()
@@ -295,7 +295,7 @@ inoremap <expr><C-l>  neocomplete#mappings#refresh()
 inoremap <expr><C-g>   neocomplete#undo_completion()
 
 " Start file completion TODO Not working all the time
-imap <silent><expr> <C-x><C-f> neocomplete#start_manual_complete('file')
+imap <silent><expr><C-x><C-f> neocomplete#start_manual_complete('file')
 
 " <CR>: If popup menu visible, expand snippet or close popup with selection,
 "       Otherwise, check if within empty pair and use delimitMate.
@@ -335,9 +335,9 @@ endfunction "}}}
 " neosnippet.vim key mappings {{{
 if dein#tap('neosnippet.vim')
   " Plugin key-mappings.
-  imap <expr><C-k> (pumvisible()? "\<C-y>" : '') . "\<Plug>(neosnippet_expand_or_jump)"
-  smap <C-k> <Plug>(neosnippet_expand_or_jump)
-  xmap <C-k> <Plug>(neosnippet_expand_target)
+  imap <expr><C-o> (pumvisible()? "\<C-y>" : '') . "\<Plug>(neosnippet_expand_or_jump)"
+  smap <C-o> <Plug>(neosnippet_expand_or_jump)
+  xmap <C-o> <Plug>(neosnippet_expand_target)
 
   " SuperTab like snippets behavior.
   imap <expr><TAB>
