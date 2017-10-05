@@ -59,7 +59,6 @@ nmap <silent> gh :echo 'hi<'.synIDattr(synID(line('.'), col('.'), 1), 'name')
         \.'> trans<'.synIDattr(synID(line('.'), col('.'), 0), 'name').'> lo<'
         \.synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>'<CR>
 " }}}
-
 " Toggle editor visuals {{{
 nmap <silent> <Leader>ts :setlocal spell!<cr>
 nmap <silent> <Leader>tn :setlocal nonumber!<CR>
@@ -67,7 +66,6 @@ nmap <silent> <Leader>tl :setlocal nolist!<CR>
 nmap <silent> <Leader>th :nohlsearch<CR>
 nmap <silent> <Leader>tw :setlocal wrap! breakindent!<CR>
 " }}}
-
 " Tabs Navigatoin {{{
 nnoremap <silent> <C-t> :<C-u>tabnew<CR>
 nnoremap <silent> g0 :<C-u>tabfirst<CR>
@@ -78,7 +76,6 @@ nnoremap <silent> gn :<C-u>tabnext<CR>
 let g:lasttab = 1
 nmap <silent> \\ :execute 'tabn '.g:lasttab<CR>
 " }}}
-
 " Totally Custom {{{
 " --------------
 
@@ -168,11 +165,9 @@ elseif executable('zeal')
     \ nmap <silent><buffer> K :!zeal --query "<cword>"&<CR><CR>
 endif
 " }}}
-
 " Display diff from last save {{{
 command! DiffOrig vert new | setlocal bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
 " }}}
-
 " Append modeline to EOF {{{
 nnoremap <silent> <Leader>ml :call <SID>append_modeline()<CR>
 
@@ -185,7 +180,6 @@ function! s:append_modeline() "{{{
   call append(line('$'), l:modeline)
 endfunction "}}}
 " }}}
-
 " Windows and buffers {{{
 nnoremap <silent> [Window]v  :<C-u>split<CR>
 nnoremap <silent> [Window]g  :<C-u>vsplit<CR>
@@ -215,14 +209,13 @@ function! s:SweepBuffers() " {{{
   endif
 endfunction " }}}
 " }}}
-
 " Tags {{{
 nmap <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 nmap <C-]>v :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 nmap <C-]>h :sp <CR>:exec("tag ".expand("<cword>"))<CR>
 " }}}
 
-" denite.nvim key mappings {{{
+" denite.nvim {{{
 if dein#tap('denite.nvim')
   nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh<CR>
   nnoremap <silent><LocalLeader>f :<C-u>Denite file_rec<CR>
@@ -272,67 +265,116 @@ if dein#tap('vim-denite-z')
     \ call denite#start([{'name': 'z', 'args': [<q-args>], {'immediately': 1}}])
 endif
 " }}}
+" deoplete.nvim {{{
+if has('nvim') && dein#tap('deoplete.nvim')
+  autocmd MyAutoCmd CompleteDone * silent! pclose!
 
-" neocomplete key mappings {{{
-let g:neocomplete#fallback_mappings = [ "\<C-x>\<C-o>", "\<C-x>\<C-n>" ]
+  " Movement within 'ins-completion-menu'
+  imap <expr><C-j>   pumvisible() ? "\<Down>" : "\<C-j>"
+  imap <expr><C-k>   pumvisible() ? "\<Up>" : "\<C-k>"
 
-" Movement within 'ins-completion-menu'
-imap <expr><C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-imap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-imap <expr><C-f> pumvisible() ? "\<PageDown>" : "\<Right>"
-imap <expr><C-b> pumvisible() ? "\<PageUp>" : "\<Left>"
-imap <expr><C-d> pumvisible() ? "\<PageDown>" : "\<Right>"
-imap <expr><C-u> pumvisible() ? "\<PageUp>" : "\<Left>"
+  " Scroll pages in menu
+  inoremap <expr><C-f> pumvisible() ? "\<PageDown>" : "\<Right>"
+  inoremap <expr><C-b> pumvisible() ? "\<PageUp>" : "\<Left>"
+  imap     <expr><C-d> pumvisible() ? "\<PageDown>" : "\<C-d>"
+  imap     <expr><C-u> pumvisible() ? "\<PageUp>" : "\<C-u>"
 
-" <C-n>: neocomplete.
-imap <expr><C-n>  pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>\<Down>"
-" <C-p>: keyword completion.
-imap <expr><C-p>  pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
+  " Undo completion
+  inoremap <expr><C-g> deoplete#undo_completion()
 
-" Special plugin key-mappings
-"inoremap <expr><C-l>  neocomplete#mappings#complete_common_string()
-inoremap <expr><C-l>  neocomplete#mappings#refresh()
-inoremap <expr><C-g>   neocomplete#undo_completion()
+  " Redraw candidates
+  inoremap <expr><C-l> deoplete#refresh()
 
-" Start file completion TODO Not working all the time
-imap <silent><expr><C-x><C-f> neocomplete#start_manual_complete('file')
+  " <CR>: If popup menu visible, expand snippet or close popup with selection,
+  "       Otherwise, check if within empty pair and use delimitMate.
+  inoremap <silent><expr><CR> pumvisible() ?
+    \ (neosnippet#expandable() ? neosnippet#mappings#expand_impl() : deoplete#close_popup())
+      \ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
 
-" <CR>: If popup menu visible, expand snippet or close popup with selection,
-"       Otherwise, check if within empty pair and use delimitMate.
-imap <silent><expr><CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function() "{{{
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-  if pumvisible()
-    return neocomplete#close_popup()
-  else
-    return delimitMate#WithinEmptyPair() ? "\<Plug>delimitMateCR" : "\<CR>"
-  endif
-endfunction "}}}
+  " <Tab> completion:
+  " 1. If popup menu is visible, select and insert next item
+  " 2. Otherwise, if within a snippet, jump to next input
+  " 3. Otherwise, if preceding chars are whitespace, insert tab char
+  " 4. Otherwise, start manual autocomplete
+  imap <silent><expr><Tab> pumvisible() ? "\<Down>"
+    \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+    \ : (<SID>is_whitespace() ? "\<Tab>"
+    \ : deoplete#manual_complete()))
 
-" <Tab> completion:
-" 1. If popup menu is visible, select and insert next item
-" 2. Otherwise, if within a snippet, jump to next input
-" 3. Otherwise, if preceding chars are whitespace, insert tab char
-" 4. Otherwise, start manual autocomplete
-imap <silent><expr><Tab> pumvisible() ? "\<C-n>"
-  \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-  \ : (<SID>is_whitespace() ? "\<Tab>"
-  \ : neocomplete#start_manual_complete()))
+  smap <silent><expr><Tab> pumvisible() ? "\<Down>"
+    \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+    \ : (<SID>is_whitespace() ? "\<Tab>"
+    \ : deoplete#manual_complete()))
 
-smap <silent><expr><Tab> pumvisible() ? "\<C-n>"
-  \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-  \ : (<SID>is_whitespace() ? "\<Tab>"
-  \ : neocomplete#start_manual_complete()))
+  inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
 
-inoremap <expr><S-Tab>  pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:is_whitespace() "{{{
-  let l:col = col('.') - 1
-  return ! l:col || getline('.')[l:col - 1] =~? '\s'
-endfunction "}}}
+  function! s:is_whitespace() "{{{
+    let col = col('.') - 1
+    return ! col || getline('.')[col - 1] =~? '\s'
+  endfunction "}}}
+endif
 " }}}
+" neocomplete.vim {{{
+if !has('nvim') && dein#tap('neocomplete.vim')
+  let g:neocomplete#fallback_mappings = [ "\<C-x>\<C-o>", "\<C-x>\<C-n>" ]
 
-" neosnippet.vim key mappings {{{
+  " Movement within 'ins-completion-menu'
+  imap <expr><C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+  imap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+  imap <expr><C-f> pumvisible() ? "\<PageDown>" : "\<Right>"
+  imap <expr><C-b> pumvisible() ? "\<PageUp>" : "\<Left>"
+  imap <expr><C-d> pumvisible() ? "\<PageDown>" : "\<Right>"
+  imap <expr><C-u> pumvisible() ? "\<PageUp>" : "\<Left>"
+
+  " <C-n>: neocomplete.
+  imap <expr><C-n>  pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>\<Down>"
+  " <C-p>: keyword completion.
+  imap <expr><C-p>  pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
+
+  " Special plugin key-mappings
+  "inoremap <expr><C-l>  neocomplete#mappings#complete_common_string()
+  inoremap <expr><C-l>  neocomplete#mappings#refresh()
+  inoremap <expr><C-g>   neocomplete#undo_completion()
+
+  " Start file completion TODO Not working all the time
+  imap <silent><expr><C-x><C-f> neocomplete#start_manual_complete('file')
+
+  " <CR>: If popup menu visible, expand snippet or close popup with selection,
+  "       Otherwise, check if within empty pair and use delimitMate.
+  imap <silent><expr><CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function() "{{{
+    "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+    if pumvisible()
+      return neocomplete#close_popup()
+    else
+      return delimitMate#WithinEmptyPair() ? "\<Plug>delimitMateCR" : "\<CR>"
+    endif
+  endfunction "}}}
+
+  " <Tab> completion:
+  " 1. If popup menu is visible, select and insert next item
+  " 2. Otherwise, if within a snippet, jump to next input
+  " 3. Otherwise, if preceding chars are whitespace, insert tab char
+  " 4. Otherwise, start manual autocomplete
+  imap <silent><expr><Tab> pumvisible() ? "\<C-n>"
+    \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+    \ : (<SID>is_whitespace() ? "\<Tab>"
+    \ : neocomplete#start_manual_complete()))
+
+  smap <silent><expr><Tab> pumvisible() ? "\<C-n>"
+    \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+    \ : (<SID>is_whitespace() ? "\<Tab>"
+    \ : neocomplete#start_manual_complete()))
+
+  inoremap <expr><S-Tab>  pumvisible() ? "\<C-p>" : "\<C-h>"
+
+  function! s:is_whitespace() "{{{
+    let l:col = col('.') - 1
+    return ! l:col || getline('.')[l:col - 1] =~? '\s'
+  endfunction "}}}
+endif
+" }}}
+" neosnippet.vim {{{
 if dein#tap('neosnippet.vim')
   " Plugin key-mappings.
   imap <expr><C-o> (pumvisible()? "\<C-y>" : '') . "\<Plug>(neosnippet_expand_or_jump)"
@@ -349,16 +391,14 @@ if dein#tap('neosnippet.vim')
         \: "\<TAB>"
 endif
 " }}}
-
-" emmet-vim key mappings {{{
+" emmet-vim {{{
 if dein#tap('emmet-vim')
   autocmd MyAutoCmd FileType html,css,jsx,javascript,javascript.jsx
     \ EmmetInstall
     \ | imap <buffer> <C-Return> <Plug>(emmet-expand-abbr)
 endif
 " }}}
-
-" NerdTree key mappings {{{
+" NerdTree {{{
 if dein#tap('nerdtree')
   let g:NERDTreeMapOpenSplit = 'sv'
   let g:NERDTreeMapOpenVSplit = 'sg'
@@ -373,8 +413,7 @@ if dein#tap('nerdtree')
   nnoremap <silent> <LocalLeader>a :<C-u>NERDTreeFind<CR>
 endif
 " }}}
-
-" vim-commentary key mappings {{{
+" vim-commentary {{{
 if dein#tap('vim-commentary')
   xmap <Leader>v  <Plug>Commentary
   nmap <Leader>v  <Plug>CommentaryLine
@@ -386,21 +425,18 @@ if dein#tap('vim-commentary')
   nmap gcu <Plug>Commentary<Plug>Commentary
 endif
 " }}}
-
-" vim-choosewin key mappings {{{
+" vim-choosewin {{{
 if dein#tap('vim-choosewin')
   nmap -         <Plug>(choosewin)
   nmap <Leader>- :<C-u>ChooseWinSwapStay<CR>
 endif
 " }}}
-
-" undotree key mappings {{{
+" undotree {{{
 if dein#tap('undotree')
   nnoremap <Leader>gu :UndotreeToggle<CR>
 endif
 " }}}
-
-" EasyMotion key mappings {{{
+" EasyMotion {{{
 if dein#tap('vim-easymotion')
   nmap ss <Plug>(easymotion-s2)
   nmap sd <Plug>(easymotion-s)
@@ -415,14 +451,12 @@ if dein#tap('vim-easymotion')
   map  sp <Plug>(easymotion-prev)
 endif
 " }}}
-
-" TagBar key mappings {{{
+" TagBar {{{
 if dein#tap('tagbar')
   nnoremap <silent> <Leader>o :<C-u>TagbarToggle<CR>
 endif
 " }}}
-
-" vim-operator-surround key mappings {{{
+" vim-operator-surround {{{
 if dein#tap('vim-operator-surround')
   map <silent>sa <Plug>(operator-surround-append)
   map <silent>sd <Plug>(operator-surround-delete)
@@ -432,37 +466,47 @@ if dein#tap('vim-operator-surround')
   nmap <silent>srr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
 endif
 " }}}
-
+" vim-operator-replace {{{
 if dein#tap('vim-operator-replace')
   xmap p <Plug>(operator-replace)
 endif
-
+" }}}
+" vim-operator-flashy {{{
 if dein#tap('vim-operator-flashy')
   map y <Plug>(operator-flashy)
   nmap Y <Plug>(operator-flashy)$
 endif
-
+" }}}
+" vim-niceblock {{{
+if dein#tap('vim-niceblock')
+  xmap I  <Plug>(niceblock-I)
+  xmap A  <Plug>(niceblock-A)
+endif
+" }}}
+" vim-asterisk {{{
 if dein#tap('vim-asterisk')
   map *   <Plug>(asterisk-g*)
   map g*  <Plug>(asterisk-*)
   map #   <Plug>(asterisk-g#)
   map g#  <Plug>(asterisk-#)
-
   map z*  <Plug>(asterisk-z*)
   map gz* <Plug>(asterisk-gz*)
   map z#  <Plug>(asterisk-z#)
   map gz# <Plug>(asterisk-gz#)
 endif
-
+" }}}
+" accelerated-jk {{{
 if dein#tap('accelerated-jk')
   nmap <silent>j <Plug>(accelerated_jk_gj)
   nmap <silent>k <Plug>(accelerated_jk_gk)
 endif
-
+" }}}
+" vim-indent-guides {{{
 if dein#tap('vim-indent-guides')
   nmap <silent><Leader>ti :<C-u>IndentGuidesToggle<CR>
 endif
-
+" }}}
+" vim-bookmarks {{{
 if dein#tap('vim-bookmarks')
   nmap ma :<C-u>cgetexpr bm#location_list()<CR>
         \ :<C-u>Denite quickfix -buffer-name=list<CR>
@@ -471,7 +515,8 @@ if dein#tap('vim-bookmarks')
   nmap mm <Plug>BookmarkToggle
   nmap mi <Plug>BookmarkAnnotate
 endif
-
+" }}}
+" vim-go {{{
 if dein#tap('vim-go')
   autocmd MyAutoCmd FileType go
     \   nmap <C-]> <Plug>(go-def)
@@ -485,7 +530,13 @@ if dein#tap('vim-go')
     \ | nmap <Leader>gor  <Plug>(go-run)
     \ | nmap <Leader>gov  <Plug>(go-vet)
 endif
-
+" }}}
+" vimagit {{{
+if dein#tap('vimagit')
+  nnoremap <silent> mg :Magit<CR>
+endif
+" }}}
+" vim-easygit {{{
 if dein#tap('vim-easygit')
   nnoremap <silent> <Leader>gd :Gdiff<CR>
   nnoremap <silent> <Leader>gD :Gdiffoff<CR>
@@ -495,7 +546,18 @@ if dein#tap('vim-easygit')
   nnoremap <silent> <Leader>gS :Gstatus<CR>
   nnoremap <silent> <Leader>gp :Gpush<CR>
 endif
-
+" }}}
+" tern_for_vim {{{
+if dein#tap('tern_for_vim')
+  autocmd MyAutoCmd FileType javascript,jsx,javascript.jsx
+    \  nnoremap <silent><buffer> K          :<C-u>TernDoc<CR>
+    \| nnoremap <silent><buffer> <C-]>      :<C-u>TernDef<CR>
+    \| nnoremap <silent><buffer> <Leader>g  :<C-u>TernType<CR>
+    \| nnoremap <silent><buffer> <Leader>n  :<C-u>TernRefs<CR>
+    \| nnoremap <silent><buffer> <Leader>r  :<C-u>TernRename<CR>
+endif
+" }}}
+" vim-gitgutter {{{
 if dein#tap('vim-gitgutter')
   nmap <Leader>hj <Plug>GitGutterNextHunk
   nmap <Leader>hk <Plug>GitGutterPrevHunk
@@ -503,7 +565,8 @@ if dein#tap('vim-gitgutter')
   nmap <Leader>hr <Plug>GitGutterUndoHunk
   nmap <Leader>hp <Plug>GitGutterPreviewHunk
 endif
-
+" }}}
+" committia.vim {{{
 if dein#tap('committia.vim')
   let g:committia_hooks = {}
   function! g:committia_hooks.edit_open(info)
@@ -515,23 +578,27 @@ if dein#tap('committia.vim')
     startinsert
   endfunction
 endif
-
+" }}}
+" goyo.vim {{{
 if dein#tap('goyo.vim')
   nnoremap <Leader>G :Goyo<CR>
 endif
-
+" }}}
+" vim-peekaboo {{{
 if dein#tap('vim-peekaboo')
   nnoremap <buffer> <silent> " :<c-u>call peekaboo#peek(v:count1, 'quote',  0)<cr>
   xnoremap <buffer> <silent> " :<c-u>call peekaboo#peek(v:count1, 'quote',  1)<cr>
   nnoremap <buffer> <silent> @ :<c-u>call peekaboo#peek(v:count1, 'replay', 0)<cr>
   inoremap <buffer> <silent> <c-r> <c-o>:call peekaboo#peek(1, 'ctrl-r',  0)<cr>
 endif
-
+" }}}
+" vim-expand-region {{{
 if dein#tap('vim-expand-region')
   xmap v <Plug>(expand_region_expand)
   xmap V <Plug>(expand_region_shrink)
 endif
-
+" }}}
+" sideways.vim {{{
 if dein#tap('sideways.vim')
   nnoremap <silent> m" :SidewaysJumpLeft<CR>
   nnoremap <silent> m' :SidewaysJumpRight<CR>
@@ -540,38 +607,44 @@ if dein#tap('sideways.vim')
   omap <silent> i, <Plug>SidewaysArgumentTextobjI
   xmap <silent> i, <Plug>SidewaysArgumentTextobjI
 endif
-
+" }}}
+" splitjoin.vim {{{
 if dein#tap('splitjoin.vim')
   let g:splitjoin_join_mapping = ''
   let g:splitjoin_split_mapping = ''
   nmap sj :SplitjoinJoin<CR>
   nmap sk :SplitjoinSplit<CR>
 endif
-
+" }}}
+" linediff.vim {{{
 if dein#tap('linediff.vim')
   vnoremap ,df :Linediff<CR>
   vnoremap ,da :LinediffAdd<CR>
   nnoremap ,ds :<C-u>LinediffShow<CR>
   nnoremap ,dr :<C-u>LinediffReset<CR>
 endif
-
+" }}}
+" dsf.vim {{{
 if dein#tap('dsf.vim')
   nmap dsf <Plug>DsfDelete
   nmap csf <Plug>DsfChange
 endif
-
+" }}}
+" vim-textobj-multiblock {{{
 if dein#tap('vim-textobj-multiblock')
   omap <silent> ab <Plug>(textobj-multiblock-a)
   omap <silent> ib <Plug>(textobj-multiblock-i)
   xmap <silent> ab <Plug>(textobj-multiblock-a)
   xmap <silent> ib <Plug>(textobj-multiblock-i)
 endif
-
+" }}}
+" vim-textobj-function {{{
 if dein#tap('vim-textobj-function')
   omap <silent> af <Plug>(textobj-function-a)
   omap <silent> if <Plug>(textobj-function-i)
   xmap <silent> af <Plug>(textobj-function-a)
   xmap <silent> if <Plug>(textobj-function-i)
 endif
+" }}}
 
 " vim: set foldmethod=marker ts=2 sw=2 tw=80 expandtab :

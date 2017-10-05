@@ -62,10 +62,10 @@ function! s:dein_load_yaml(filename) abort
   if executable('yaml2json') && exists('*json_decode')
     " Decode YAML using the CLI tool yaml2json
     " See: https://github.com/koraa/large-yaml2json-json2yaml
-    let g:denite_plugins = json_decode(
+    let g:dein_plugins = json_decode(
           \ system('yaml2json', readfile(a:filename)))
   elseif executable('ruby') && exists('*json_decode') && s:dein_check_ruby()
-    let g:denite_plugins = json_decode(
+    let g:dein_plugins = json_decode(
           \ system("ruby -e 'require \"json\"; require \"yaml\"; ".
                  \ "print JSON.generate YAML.load \$stdin.read'",
                  \ readfile(a:filename)))
@@ -74,14 +74,14 @@ function! s:dein_load_yaml(filename) abort
   python3 << endpython
 import vim, yaml
 with open(vim.eval('a:filename'), 'r') as f:
-  vim.vars['denite_plugins'] = yaml.load(f.read())
+  vim.vars['dein_plugins'] = yaml.load(f.read())
 endpython
   endif
 
-  for plugin in g:denite_plugins
+  for plugin in g:dein_plugins
     call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
   endfor
-  unlet g:denite_plugins
+  unlet g:dein_plugins
 endfunction
 
 if &runtimepath !~# '/dein.vim'

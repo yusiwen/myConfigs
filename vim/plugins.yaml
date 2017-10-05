@@ -39,6 +39,7 @@
 - {repo: Xuyuanp/nerdtree-git-plugin, on_source: nerdtree}
 
 # git wrapper
+- {repo: jreybert/vimagit, on_cmd: Magit}
 - repo: chemzqm/vim-easygit
   on_cmd: [Gadd, Gcd, Glcd, Gcommit, Gblame, Gstatus, Gdiff, Gbrowse, Gpush]
   hook_source: let g:easygit_enable_command = 1
@@ -72,7 +73,9 @@
 - {repo: t9md/vim-choosewin, on_map: {n: <Plug>}}
 - {repo: tpope/vim-commentary, on_map: <Plug>Commentary}
 - {repo: Shougo/vinarise.vim, on_cmd: Vinarise}
+- {repo: kana/vim-niceblock, on_map: {x: <Plug>}}
 - {repo: mbbill/undotree, on_cmd: UndotreeToggle}
+- {repo: metakirby5/codi.vim, on_cmd: Codi, if: empty($VIM_MINIMAL)}
 - {repo: reedes/vim-wordy, on_cmd: [Wordy, NextWordy, PrevWordy]}
 - {repo: brooth/far.vim, on_cmd: [Far, Farp, F]}
 # text filtering and alignment
@@ -198,9 +201,16 @@
 - repo: jiangmiao/auto-pairs
   on_event: InsertEnter
 
+- repo: Shougo/deoplete.nvim
+  depends: context_filetype.vim
+  if: has('nvim') && empty($VIM_MINIMAL)
+  on_i: 1
+  hook_add: let g:deoplete#enable_at_startup = 1
+  hook_source: source $VIMPATH/vimrc.deoplete
+
 - repo: Shougo/neocomplete.vim
   depends: context_filetype.vim
-  if: has('lua') && empty($VIM_MINIMAL)
+  if: "!has('nvim') && has('lua') && empty($VIM_MINIMAL)"
   on_event: InsertEnter
   hook_add: |
     let g:neocomplete#data_directory = $VARPATH.'/complete'
@@ -226,6 +236,44 @@
 
 - {repo: Shougo/neosnippet-snippets, if: empty($VIM_MINIMAL)}
 - {repo: Shougo/context_filetype.vim, lazy: 1, if: empty($VIM_MINIMAL)}
+
+# Only NeoVim ------------------------------
+- repo: zchee/deoplete-go
+  if: has('nvim') && empty($VIM_MINIMAL)
+  on_ft: go
+  on_event: InsertEnter
+
+- repo: zchee/deoplete-jedi
+  if: has('nvim') && empty($VIM_MINIMAL)
+  on_ft: python
+  on_event: InsertEnter
+  hook_source: autocmd MyAutoCmd FileType python setlocal omnifunc=
+
+- repo: carlitux/deoplete-ternjs
+  build: npm install -g tern
+  if: executable('npm') && has('nvim') && empty($VIM_MINIMAL)
+  on_event: InsertEnter
+  on_ft: [javascript, jsx, javascript.jsx]
+  hook_source: |
+    let g:tern_request_timeout = 1
+    let g:tern_show_signature_in_pum = 0
+- repo: wellle/tmux-complete.vim
+  if: has('nvim') && empty($VIM_MINIMAL)
+  on_event: InsertEnter
+  hook_add: let g:tmuxcomplete#trigger = ''
+
+- repo: ternjs/tern_for_vim
+  build: npm install
+  if: executable('npm') && empty($VIM_MINIMAL)
+  on_event: InsertEnter
+  on_ft: [javascript, jsx, javascript.jsx]
+  hook_add: |
+    let g:tern#command = ['tern']
+    let g:tern#arguments = ['--persistent']
+    let g:tern_request_timeout = 1
+    let g:tern_show_signature_in_pum = 0
+  hook_post_source: |
+    autocmd MyAutoCmd FileType javascript setlocal omnifunc=tern#Complete
 # }}}
 
 # Denite {{{

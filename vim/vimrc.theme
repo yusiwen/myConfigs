@@ -165,7 +165,7 @@ let g:neomake_info_sign = {'text': '!', 'texthl': 'NeomakeInfoSign'}
 
 " Plugin: vim-gitgutter {{{
 " ---------------------------------------------------------
-highlight! GitGutterAdd          ctermfg=22 ctermbg=237 guifg=#005f00 guibg=#303030
+highlight! GitGutterAdd          ctermfg=46 ctermbg=237 guifg=#00ff00 guibg=#303030
 highlight! GitGutterChange       ctermfg=3  ctermbg=237 guifg=#cc8800 guibg=#303030
 highlight! GitGutterDelete       ctermfg=1  ctermbg=237 guifg=#aa4450 guibg=#303030
 highlight! GitGutterChangeDelete ctermfg=1  ctermbg=237 guifg=#aa4450 guibg=#303030
