@@ -27,24 +27,6 @@ let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
 augroup MyAutoCmd
 augroup END
 " }}}
-
-" Global Mappings {{{
-" Use spacebar as leader and ; as secondary-leader
-" Required before loading plugins!
-let g:mapleader="\<Space>"
-let g:maplocalleader=';'
-
-" Release keymappings prefixes, evict entirely for use of plug-ins.
-nnoremap <Space>  <Nop>
-xnoremap <Space>  <Nop>
-nnoremap ,        <Nop>
-xnoremap ,        <Nop>
-nnoremap ;        <Nop>
-xnoremap ;        <Nop>
-nnoremap m        <Nop>
-xnoremap m        <Nop>
-" }}}
-
 " dein.vim {{{
 filetype off
 
@@ -121,13 +103,11 @@ if dein#load_state(s:path)
   endif
 endif
 " }}}
-
 " Load less plugins while SSHing to remote machines {{{
 if len($SSH_CLIENT)
   let $VIM_MINIMAL = 1
 endif
 " }}}
-
 " Disable default plugins {{{
 " Disable pre-bundled plugins
 let g:loaded_getscript = 1
@@ -153,7 +133,6 @@ let g:loaded_vimballPlugin = 1
 let g:loaded_zip = 1
 let g:loaded_zipPlugin = 1
 " }}}
-
 " General settings {{{
 filetype plugin indent on
 syntax on
@@ -231,7 +210,6 @@ if s:is_mac
 endif
 " }}}
 " }}}
-
 " Sessions {{{
 " What to save in sessions:
 set sessionoptions-=blank
@@ -242,7 +220,6 @@ set sessionoptions-=help
 set sessionoptions-=buffers
 set sessionoptions+=tabpages
 " }}}
-
 " GUI or no GUI, that's the question {{{
 if has('gui_running')
   set guicursor+=a:blinkon0       " Cursor doesn't blink - it's annoying
@@ -261,7 +238,6 @@ else
   set t_Co=256
 endif
 " }}}
-
 " Tabstops & Indents {{{
 set textwidth=80    " Text width maximum chars before wrapping
 set expandtab     " Don't expand tabs to spaces.
@@ -273,14 +249,12 @@ set autoindent      " Use same indenting on new lines
 set smartindent     " Smart autoindenting on new lines
 set shiftround      " Round indent to multiple of 'shiftwidth'
 " }}}
-
 " Invisibles {{{
 " tab: U+25BA, extends: U+00BB, precedes:U+00AB, trail:U+2017, eol:U+00AC
 set listchars=tab:►\ ,extends:»,precedes:«,trail:␣,eol:¬
 set list
 nmap <silent> <F11> :set list!<CR>
 " }}}
-
 " Folds {{{
 " FastFold
 " Credits: https://github.com/Shougo/shougo-s-github
@@ -326,14 +300,12 @@ function! FoldText()
   return line . ' ' . expansionString . foldSizeStr . foldPercentage . foldLevelStr
 endfunction
 " }}}
-
 " Pairings {{{
 set showmatch
 set matchpairs+=<:> " Add HTML brackets to pair matching
 set matchtime=1     " Tenths of a second to show the matching paren
 set cpoptions-=m    " showmatch will wait 0.5s or until a char is typed"
 " }}}
-
 " UI Appearance {{{
 set noshowmode          " Don't show mode in cmd window
 set shortmess=aoOTI     " Shorten messages and don't show intro
@@ -370,7 +342,6 @@ if has('conceal') && v:version >= 703
   set conceallevel=2 concealcursor=niv
 endif
 " }}}
-
 " Search {{{
 set noignorecase
 set smartcase       " Keep case when searching with *
@@ -379,7 +350,6 @@ set incsearch       " Incremental search
 set hlsearch        " Highlight search results
 set wrapscan        " Searches wrap around the end of the file"
 " }}}
-
 " Backup and Recovery {{{
 set undofile swapfile nobackup
 if empty(glob($VARPATH.'/swap'))
@@ -413,7 +383,6 @@ else
   set viminfo='300,<10,@50,h,n$VARPATH/viminfo
 endif
 " }}}
-
 " Completion {{{
 if has('wildmenu')
   set nowildmenu
@@ -437,7 +406,6 @@ set previewheight=12      " Completion preview height
 
 set ofu=syntaxcomplete#Complete
 " }}}
-
 " Wrapping {{{
 set wrap                        " wrap by default
 set linebreak                   " Break long lines at 'breakat'
@@ -451,10 +419,8 @@ if has('patch-7.3.541')
   set formatoptions+=j " Remove comment leader when joining lines
 endif
 " }}}
-
 " Macros {{{
 " }}}
-
 " Plugins {{{
 execute 'source ' . expand('$VIMPATH/vimrc.theme')
 execute 'source ' . expand('$VIMPATH/vimrc.mappings')
@@ -477,39 +443,15 @@ let g:neomake_javascript_eslint_exe = './node_modules/.bin/eslint'
 let g:neomake_yaml_enabled_makers = ['yamllint']
 let g:neomake_ansible_enabled_makers = ['yamllint']
 " }}}
-
 " vim-multiple_cursors {{{
 " make NeoComplete compatible with vim-multiple-cursors
 function! Multiple_cursors_before()
-  exe 'NeoCompleteLock'
+  execute 'NeoCompleteLock'
 endfunction
 
 function! Multiple_cursors_after()
-  exe 'NeoCompleteUnlock'
+  execute 'NeoCompleteUnlock'
 endfunction
-" }}}
-
-" vim-better-whitespace {{{
-let g:better_whitespace_enabled=0
-" }}}
-
-" vim-autoformat {{{
-noremap <F3> :Autoformat<CR>
-" Custom formatters {{{
-" -p = --pad-oper
-" -c = --convert-tabs
-" -H = --pad-header
-" -s# = --indent=spaces=#
-" -t = --indent=tab
-" -k1 = --align-pointer=type
-" -W1 = --align-reference=type
-" -xd = --pad-first-paren-out
-let g:formatdef_my_astyle_c = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
-let g:formatters_c = ['my_astyle_c']
-
-let g:formatdef_my_astyle_cpp = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
-let g:formatters_cpp = ['my_astyle_cpp']
-"}}}
 " }}}
 " }}}
 

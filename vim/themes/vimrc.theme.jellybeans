@@ -1,5 +1,3 @@
 set background=dark
 let g:jellybeans_enable_italic_on_term=1
 colorscheme jellybeans
-" airline theme
-let g:airline_theme = 'jellybeans'

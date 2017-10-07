@@ -1,6 +1,22 @@
 " Mapping for vim & plugins
 " ===========================================================
 
+" Global Mappings {{{
+" Use spacebar as leader and ; as secondary-leader
+" Required before loading plugins!
+let g:mapleader="\<Space>"
+let g:maplocalleader=';'
+
+" Release keymappings prefixes, evict entirely for use of plug-ins.
+nnoremap <Space>  <Nop>
+xnoremap <Space>  <Nop>
+nnoremap ,        <Nop>
+xnoremap ,        <Nop>
+nnoremap ;        <Nop>
+xnoremap ;        <Nop>
+nnoremap m        <Nop>
+xnoremap m        <Nop>
+" }}}
 " General Keybindings & Mappings {{{
 set pastetoggle=<F10>
 
@@ -309,8 +325,8 @@ if has('nvim') && dein#tap('deoplete.nvim')
   inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
 
   function! s:is_whitespace() "{{{
-    let col = col('.') - 1
-    return ! col || getline('.')[col - 1] =~? '\s'
+    let l:col = col('.') - 1
+    return ! l:col || getline('.')[l:col - 1] =~? '\s'
   endfunction "}}}
 endif
 " }}}
@@ -341,15 +357,8 @@ if !has('nvim') && dein#tap('neocomplete.vim')
 
   " <CR>: If popup menu visible, expand snippet or close popup with selection,
   "       Otherwise, check if within empty pair and use delimitMate.
-  imap <silent><expr><CR> <C-r>=<SID>my_cr_function()<CR>
-  function! s:my_cr_function() "{{{
-    "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-    if pumvisible()
-      return neocomplete#close_popup()
-    else
-      return delimitMate#WithinEmptyPair() ? "\<Plug>delimitMateCR" : "\<CR>"
-    endif
-  endfunction "}}}
+  imap <silent><expr><CR> pumvisible() ? (neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<C-y>")
+    \ : (delimitMate#WithinEmptyPair() ? "\<Plug>delimitMateCR" : "\<CR>")
 
   " <Tab> completion:
   " 1. If popup menu is visible, select and insert next item
@@ -429,6 +438,16 @@ endif
 if dein#tap('vim-choosewin')
   nmap -         <Plug>(choosewin)
   nmap <Leader>- :<C-u>ChooseWinSwapStay<CR>
+endif
+" }}}
+" jedi-vim {{{
+if dein#tap('jedi-vim')
+  let g:jedi#completions_command = ''
+  let g:jedi#documentation_command = 'K'
+  let g:jedi#goto_command = '<C-]>'
+  let g:jedi#goto_assignments_command = '<Leader>g'
+  let g:jedi#rename_command = '<Leader>r'
+  let g:jedi#usages_command = '<Leader>n'
 endif
 " }}}
 " undotree {{{
@@ -646,5 +665,22 @@ if dein#tap('vim-textobj-function')
   xmap <silent> if <Plug>(textobj-function-i)
 endif
 " }}}
+" vim-autoformat {{{
+noremap <F3> :Autoformat<CR>
+" Custom formatters {{{
+" -p = --pad-oper
+" -c = --convert-tabs
+" -H = --pad-header
+" -s# = --indent=spaces=#
+" -t = --indent=tab
+" -k1 = --align-pointer=type
+" -W1 = --align-reference=type
+" -xd = --pad-first-paren-out
+let g:formatdef_my_astyle_c = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
+let g:formatters_c = ['my_astyle_c']
 
+let g:formatdef_my_astyle_cpp = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
+let g:formatters_cpp = ['my_astyle_cpp']
+"}}}
+" }}}
 " vim: set foldmethod=marker ts=2 sw=2 tw=80 expandtab :

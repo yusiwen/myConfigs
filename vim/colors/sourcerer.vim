@@ -61,15 +61,6 @@ hi StatusLine           cterm=bold      ctermfg=13   ctermbg=237  guifg=#8181a6 
 hi StatusLineNC         cterm=NONE      ctermfg=238  ctermbg=234  guifg=#444444 guibg=#1c1c1c gui=italic
 hi StatusLineAlert      cterm=NONE      ctermfg=231  ctermbg=1    guifg=#ffffff guibg=#aa4450 gui=NONE
 hi StatusLineUnalert    cterm=NONE      ctermfg=244  ctermbg=237  guifg=#808080 guibg=#3a3a3a gui=NONE
-hi User1                cterm=NONE      ctermfg=253  ctermbg=237  guifg=#dadada guibg=#3a3a3a
-hi User2                cterm=NONE      ctermfg=248  ctermbg=239  guifg=#a8a8a8 guibg=#4e4e4e
-hi User3                cterm=NONE      ctermfg=239  ctermbg=236  guifg=#4e4e4e guibg=#303030
-hi User4                cterm=NONE      ctermfg=242  ctermbg=236  guifg=#6c6c6c guibg=#303030
-hi User5                cterm=NONE      ctermfg=1    ctermbg=236  guifg=#aa4450 guibg=#303030
-hi User6                cterm=NONE      ctermfg=167  ctermbg=236  guifg=#d75f5f guibg=#303030
-hi User7                cterm=NONE      ctermfg=118  ctermbg=236  guifg=#87ff00 guibg=#303030
-hi User8                cterm=NONE      ctermfg=220  ctermbg=237  guifg=#ffd700 guibg=#3a3a3a
-hi VertSplit            cterm=NONE      ctermfg=102  ctermbg=102  guifg=#5e5e5e guibg=#5e5e5e gui=NONE
 hi TabLine              cterm=bold      ctermfg=244  ctermbg=239  guifg=#808080 guibg=#4e4e4e gui=bold
 hi TabLineFill          cterm=NONE      ctermfg=13   ctermbg=237  guifg=#8181a6 guibg=#3a3a3a gui=NONE
 hi TabLineSel           cterm=bold      ctermfg=255  ctermbg=13   guifg=#eeeeee guibg=#8181a6 gui=bold
@@ -77,6 +68,15 @@ hi TabLineSelShade      cterm=NONE      ctermfg=235  ctermbg=13   guifg=#262626 
 hi TabLineAlt           cterm=NONE      ctermfg=252  ctermbg=238  guifg=#D0D0D0 guibg=#444444
 hi TabLineAltShade      cterm=NONE      ctermfg=238  ctermbg=236  guifg=#444444 guibg=#303030
 hi Title                cterm=bold      ctermfg=66   ctermbg=NONE guifg=#5f8787 guibg=NONE    gui=bold
+hi User1                cterm=NONE      ctermfg=253  ctermbg=237  guifg=#dadada guibg=#3a3a3a
+hi User2                cterm=NONE      ctermfg=248  ctermbg=239  guifg=#a8a8a8 guibg=#4e4e4e
+hi User3                cterm=NONE      ctermfg=239  ctermbg=236  guifg=#4e4e4e guibg=#303030
+hi User4                cterm=NONE      ctermfg=242  ctermbg=235  guifg=#6c6c6c guibg=#262626
+hi User5                cterm=bold      ctermfg=1    ctermbg=237  guifg=#aa4450 guibg=#3a3a3a gui=bold
+hi User6                cterm=NONE      ctermfg=167  ctermbg=235  guifg=#d75f5f guibg=#262626
+hi User7                cterm=NONE      ctermfg=118  ctermbg=235  guifg=#87ff00 guibg=#262626
+hi User8                cterm=NONE      ctermfg=220  ctermbg=237  guifg=#ffd700 guibg=#3a3a3a
+hi VertSplit            cterm=NONE      ctermfg=102  ctermbg=102  guifg=#5e5e5e guibg=#5e5e5e gui=NONE
 hi Visual               cterm=NONE      ctermfg=16   ctermbg=67   guifg=#000000 guibg=#5f87af gui=NONE
 hi VisualNOS            cterm=bold      ctermfg=fg   ctermbg=NONE guifg=fg      guibg=NONE    gui=bold
 hi WarningMsg           cterm=NONE      ctermfg=208  ctermbg=NONE guifg=#ff8700 guibg=NONE    gui=NONE

@@ -1,4 +1,2 @@
 set background=dark
 colorscheme sourcerer
-" airline theme
-let g:airline_theme = 'lucius'

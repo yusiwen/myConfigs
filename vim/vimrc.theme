@@ -34,7 +34,6 @@ endfunction "}}}
 
 let &tabline='%!Tabline()'
 " }}}
-
 " Statusline {{{
 function! ChangeModeBgColor()
   if (mode() =~# '\v(n|no)')
@@ -51,15 +50,15 @@ function! ChangeModeBgColor()
 endfunction
 
 let s:stl  = " %7*%{&paste ? 'ρ' : ''}%*"         " Paste symbol
-let s:stl .= "%4*%{&readonly ? '' : '#'}%*"       " Modified symbol
+let s:stl .= "%4*%{&readonly ? ' r ' : ' # '}%*"  " Modified symbol
 let s:stl .= "%6*%{badge#mode('', 'Z')}"         " Readonly symbol
-let s:stl .= '%*%n'                               " Buffer number
-let s:stl .= "%6*%{badge#modified('+')}%0*"       " Write symbol
+let s:stl .= '%* %n'                              " Buffer number
+let s:stl .= "%5*%{badge#modified('+')}%0*"       " Write symbol
 let s:stl .= ' %8*%{ChangeModeBgColor()}%*'       " Mode
 let s:stl .= ' %1*%{badge#filename()}%*'          " Filename
 let s:stl .= ' %<'                                " Truncate here
 let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
-let s:stl .= "%5*%( %{badge#trails('Ξ:%s')} %)"  " Whitespace
+let s:stl .= "%5*%( %{badge#trails('WS:%s')} %)"  " Whitespace
 let s:stl .= '%(%{badge#syntax()} %)%*'           " syntax check
 let s:stl .= '%='                                 " Align to right
 let s:stl .= '%{badge#format()} %4*%*'            " File format
@@ -92,9 +91,7 @@ augroup statusline
     \ | endif
 augroup END "}}}
 " }}}
-
 " Plugin: NERDTree icons and highlights {{{
-" ---------------------------------------------------------
 let g:NERDTreeIndicatorMapCustom = {
   \ 'Modified':  '·',
   \ 'Staged':    '✚',
@@ -149,30 +146,22 @@ augroup nerdtree-highlights
   autocmd FileType nerdtree call s:NERDTreeHighlight()
 augroup END
 "}}}
-
 " Plugin: Tagbar icons {{{
-" ---------------------------------------------------------
 let g:tagbar_iconchars = ['▷', '◢']
 "}}}
-
 " Plugin: Neomake icons {{{
-" ---------------------------------------------------------
 let g:neomake_error_sign = {'text': '!', 'texthl': 'ErrorMsg'}
 let g:neomake_warning_sign = {'text': '!', 'texthl': 'WarningMsg'}
 let g:neomake_message_sign = {'text': '⌂', 'texthl': 'NeomakeMessageSign'}
 let g:neomake_info_sign = {'text': '!', 'texthl': 'NeomakeInfoSign'}
 "}}}
-
 " Plugin: vim-gitgutter {{{
-" ---------------------------------------------------------
 highlight! GitGutterAdd          ctermfg=46 ctermbg=237 guifg=#00ff00 guibg=#303030
 highlight! GitGutterChange       ctermfg=3  ctermbg=237 guifg=#cc8800 guibg=#303030
 highlight! GitGutterDelete       ctermfg=1  ctermbg=237 guifg=#aa4450 guibg=#303030
 highlight! GitGutterChangeDelete ctermfg=1  ctermbg=237 guifg=#aa4450 guibg=#303030
 " }}}
-
 " Plugin: denite {{{
-" ---------------------------------------------------------
 highlight! clear WildMenu
 highlight! link WildMenu CursorLine
 highlight! link deniteSelectedLine Type
@@ -181,20 +170,15 @@ highlight! link deniteMatchedRange Underlined
 highlight! link deniteMode Comment
 highlight! link deniteSource_QuickfixPosition qfLineNr
 " }}}
-
 " Plugin: vim-operator-flashy {{{
-" ---------------------------------------------------------
 highlight! link Flashy DiffText
 " }}}
-
 " Plugin: vim-bookmarks {{{
 let g:bookmark_sign = '⚐'
 highlight! BookmarkSign            ctermfg=12 guifg=#90b0d1
 highlight! BookmarkAnnotationSign  ctermfg=11 guifg=#ff9800
 " }}}
-
 " Plugin: vim-choosewin {{{
-" ---------------------------------------------------------
 let g:choosewin_label = 'SDFJKLZXCV'
 let g:choosewin_overlay_enable = 1
 let g:choosewin_statusline_replace = 1

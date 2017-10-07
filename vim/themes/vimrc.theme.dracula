@@ -1,4 +1,2 @@
 set background=dark
 colorscheme dracula
-" airline theme
-" let g:airline_theme = 'dracula'
