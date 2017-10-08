@@ -21,11 +21,23 @@ let s:is_mac = !s:is_windows && !s:is_cygwin
 let s:is_linux = !s:is_windows && !s:is_cygwin && !s:is_mac
       \ && (has('unix') && system('uname') =~? '^linux')
 
+" Set main configuration directory, and where cache is stored.
 let $VIMPATH = fnamemodify(expand('<sfile>'), ':h')
 let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
 
+" Set augroup
 augroup MyAutoCmd
+  autocmd!
+  autocmd CursorHold *? syntax sync minlines=300
 augroup END
+
+" Initialize base requirements
+if has('vim_starting')
+  if has('nvim')
+    " Neovim settings
+    execute 'source ' . expand('$VIMPATH/vimrc.neovim')
+  endif
+endif
 " }}}
 " dein.vim {{{
 filetype off

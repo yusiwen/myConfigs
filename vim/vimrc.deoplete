@@ -1,5 +1,6 @@
 " deoplete for nvim
 " ---
+scriptencoding=utf-8
 
 " General settings " {{{
 " ---
