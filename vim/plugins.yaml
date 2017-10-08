@@ -348,8 +348,9 @@
       \ 'bash=sh',
       \ 'ini=dosini'
       \ ]
+
 - repo: rhysd/vim-gfm-syntax
-  depends: plasticboy/vim-markdown
+  depends: vim-markdown
   on_ft: markdown
   hook_source: |
     let g:gfm_syntax_enable_always = 0
