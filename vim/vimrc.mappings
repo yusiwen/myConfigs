@@ -76,7 +76,7 @@ nmap <silent> gh :echo 'hi<'.synIDattr(synID(line('.'), col('.'), 1), 'name')
         \.synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>'<CR>
 " }}}
 " Toggle editor visuals {{{
-nmap <silent> <Leader>ts :setlocal spell!<cr>
+nmap <silent> <Leader>ts :setlocal spell!<CR>
 nmap <silent> <Leader>tn :setlocal nonumber!<CR>
 nmap <silent> <Leader>tl :setlocal nolist!<CR>
 nmap <silent> <Leader>th :nohlsearch<CR>
@@ -604,10 +604,10 @@ endif
 " }}}
 " vim-peekaboo {{{
 if dein#tap('vim-peekaboo')
-  nnoremap <buffer> <silent> " :<c-u>call peekaboo#peek(v:count1, 'quote',  0)<cr>
-  xnoremap <buffer> <silent> " :<c-u>call peekaboo#peek(v:count1, 'quote',  1)<cr>
-  nnoremap <buffer> <silent> @ :<c-u>call peekaboo#peek(v:count1, 'replay', 0)<cr>
-  inoremap <buffer> <silent> <c-r> <c-o>:call peekaboo#peek(1, 'ctrl-r',  0)<cr>
+  nnoremap <buffer> <silent> " :<C-u>call peekaboo#peek(v:count1, 'quote',  0)<CR>
+  xnoremap <buffer> <silent> " :<C-u>call peekaboo#peek(v:count1, 'quote',  1)<CR>
+  nnoremap <buffer> <silent> @ :<C-u>call peekaboo#peek(v:count1, 'replay', 0)<CR>
+  inoremap <buffer> <silent> <C-r> <C-o>:call peekaboo#peek(1, 'ctrl-r',  0)<CR>
 endif
 " }}}
 " vim-expand-region {{{
