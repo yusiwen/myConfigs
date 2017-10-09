@@ -14,6 +14,7 @@
 " put this file in: ~/.vim/colors/
 "   or make linke `ln -sf ~/myConfigs/vim/colors ~/.vim/colors`
 
+scriptencoding=utf-8
 set background=dark
 hi clear
 
@@ -76,7 +77,7 @@ hi User5                cterm=bold      ctermfg=1    ctermbg=237  guifg=#aa4450 
 hi User6                cterm=NONE      ctermfg=167  ctermbg=235  guifg=#d75f5f guibg=#262626
 hi User7                cterm=NONE      ctermfg=118  ctermbg=235  guifg=#87ff00 guibg=#262626
 hi User8                cterm=NONE      ctermfg=220  ctermbg=237  guifg=#ffd700 guibg=#3a3a3a
-hi VertSplit            cterm=NONE      ctermfg=102  ctermbg=102  guifg=#5e5e5e guibg=#5e5e5e gui=NONE
+hi VertSplit            cterm=NONE      ctermfg=237  ctermbg=237  guifg=#3a3a3a guibg=#3a3a3a gui=NONE
 hi Visual               cterm=NONE      ctermfg=16   ctermbg=67   guifg=#000000 guibg=#5f87af gui=NONE
 hi VisualNOS            cterm=bold      ctermfg=fg   ctermbg=NONE guifg=fg      guibg=NONE    gui=bold
 hi WarningMsg           cterm=NONE      ctermfg=208  ctermbg=NONE guifg=#ff8700 guibg=NONE    gui=NONE
