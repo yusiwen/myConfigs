@@ -62,7 +62,7 @@ function! EditMode()
     execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=6 guifg=#eeeeee guibg=#528b8b'
   elseif (mode() ==# '')
     execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=6 guifg=#eeeeee guibg=#528b8b'
-    return ' '.'X'.' '
+    return 'X'
   elseif (mode() ==# 'R')
     execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=3 guifg=#eeeeee guibg=#cc8800'
   elseif (mode() ==# 'i')
@@ -71,7 +71,7 @@ function! EditMode()
     execute 'hi User8 cterm=NONE ctermfg=248 ctermbg=235 guifg=#a8a8a8 guibg=#262626'
   endif
 
-  return ' '.mode().' '
+  return mode()
 endfunction
 
 function! FileMode()
@@ -85,7 +85,19 @@ function! FileMode()
   elseif s:modes ==# 'Z'
     execute 'hi User4 cterm=bold ctermfg=1 ctermbg=235 guifg=#aa4450 guibg=#262626 gui=bold'
   endif
-  return ' '.s:modes.' '
+  return s:modes
+endfunction
+
+function! BufferNumber()
+  redraw
+  let s:modified = badge#modified('+')
+  let s:bufno = bufnr('%')
+  if empty(s:modified)
+    execute 'hi User3 ctermfg=244 ctermbg=237 guifg=#808080 guibg=#3a3a3a'
+  else
+    execute 'hi User3 cterm=bold ctermfg=255 ctermbg=1 guifg=#eeeeee guibg=#aa4450 gui=bold'
+  endif
+  return s:bufno
 endfunction
 
 " Status line detail:
@@ -125,10 +137,9 @@ endfunction
 "
 " %-5.x - syntax to add 5 chars of padding to some element x
 let s:stl  = " %7*%{&paste ? 'ρ' : ''}%*"         " Paste symbol
-let s:stl .= "%4*%{FileMode()}%*"                 " Modified symbol
-let s:stl .= '%* %n'                              " Buffer number
-let s:stl .= "%5*%{badge#modified('+')}"          " Write symbol
-let s:stl .= ' %8*%{EditMode()}%*'                " Edit mode
+let s:stl .= '%4* %{FileMode()} %*'               " Modified symbol
+let s:stl .= '%3* %{BufferNumber()} %*'           " Buffer number and edit flag
+let s:stl .= '%8* %{EditMode()} %*'               " Edit mode
 let s:stl .= ' %1*%{badge#filename()}%*'          " Filename
 let s:stl .= ' %<'                                " Truncate here
 let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
@@ -138,15 +149,15 @@ let s:stl .= '%='                                 " Align to right
 let s:stl .= '%{badge#format()} %*'               " File format
 let s:stl .= '%( %{&fenc} %)'                     " File encoding
 let s:stl .= '%*%( %{&ft} %)'                     " File type
-let s:stl .= '%3*%2* %l/%2c%4p%% '                " Line and column
+let s:stl .= '%2* %l/%2c%4p%% '                   " Line and column
 let s:stl .= '%{badge#indexing()}%*'              " Indexing tags indicator
 
 " Non-active Statusline {{{
-let s:stl_nc = " %{badge#mode('', 'Z')}%n"    " Readonly & buffer
-let s:stl_nc .= "%6*%{badge#modified('+')}%*"  " Write symbol
-let s:stl_nc .= ' %{badge#filename()}'         " Relative supername
-let s:stl_nc .= '%='                           " Align to right
-let s:stl_nc .= '%{&ft} '                      " File type
+let s:stl_nc  = "  %{badge#mode('R', 'Z')}%n"     " Readonly & buffer
+let s:stl_nc .= "%5*%{badge#modified('+')}%*"     " Write symbol
+let s:stl_nc .= ' %{badge#filename()}'            " Relative supername
+let s:stl_nc .= '%='                              " Align to right
+let s:stl_nc .= '%{&ft} '                         " File type
 " }}}
 
 let s:disable_statusline =
