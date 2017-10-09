@@ -35,7 +35,7 @@ endfunction "}}}
 let &tabline='%!Tabline()'
 " }}}
 " Statusline {{{
-function! Mode()
+function! EditMode()
   redraw
 
   "n	Normal
@@ -72,6 +72,20 @@ function! Mode()
   endif
 
   return ' '.mode().' '
+endfunction
+
+function! FileMode()
+  redraw
+  let s:modes = badge#mode('R', 'Z')
+  if empty(s:modes)
+    let s:modes = '#'
+    execute 'hi User4 ctermfg=242 ctermbg=235 guifg=#6c6c6c guibg=#262626'
+  elseif s:modes ==# 'R'
+    execute 'hi User4 cterm=bold ctermfg=1 ctermbg=235 guifg=#aa4450 guibg=#262626 gui=bold'
+  elseif s:modes ==# 'Z'
+    execute 'hi User4 cterm=bold ctermfg=1 ctermbg=235 guifg=#aa4450 guibg=#262626 gui=bold'
+  endif
+  return ' '.s:modes.' '
 endfunction
 
 " Status line detail:
@@ -111,20 +125,19 @@ endfunction
 "
 " %-5.x - syntax to add 5 chars of padding to some element x
 let s:stl  = " %7*%{&paste ? 'ρ' : ''}%*"         " Paste symbol
-let s:stl .= "%4*%{&readonly ? ' r ' : ' # '}%*"  " Modified symbol
-let s:stl .= "%6*%{badge#mode('', 'Z')}"         " Readonly symbol
+let s:stl .= "%4*%{FileMode()}%*"                 " Modified symbol
 let s:stl .= '%* %n'                              " Buffer number
-let s:stl .= "%5*%{badge#modified('+')}%0*"       " Write symbol
-let s:stl .= ' %8*%{Mode()}%*'                    " Mode
+let s:stl .= "%5*%{badge#modified('+')}"          " Write symbol
+let s:stl .= ' %8*%{EditMode()}%*'                " Edit mode
 let s:stl .= ' %1*%{badge#filename()}%*'          " Filename
 let s:stl .= ' %<'                                " Truncate here
 let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
-let s:stl .= "%5*%( %{badge#trails('WS:%s')} %)"  " Whitespace
+let s:stl .= "%5*%( %{badge#trails('WS:%s')} %)" " Whitespace
 let s:stl .= '%(%{badge#syntax()} %)%*'           " syntax check
 let s:stl .= '%='                                 " Align to right
-let s:stl .= '%{badge#format()} %4*%*'            " File format
+let s:stl .= '%{badge#format()} %*'               " File format
 let s:stl .= '%( %{&fenc} %)'                     " File encoding
-let s:stl .= '%4*%*%( %{&ft} %)'                  " File type
+let s:stl .= '%*%( %{&ft} %)'                     " File type
 let s:stl .= '%3*%2* %l/%2c%4p%% '                " Line and column
 let s:stl .= '%{badge#indexing()}%*'              " Indexing tags indicator
 
