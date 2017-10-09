@@ -55,7 +55,7 @@ VIM Installation
     - [Python](https://www.python.org/downloads/)
     - [Python3](https://www.python.org/downloads/)
     - [Ruby](http://rubyinstaller.org/downloads/)
-    
+
 	Make sure their executables are in `%PATH%`.
 
 2. Vim files

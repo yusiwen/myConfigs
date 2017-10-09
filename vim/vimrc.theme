@@ -35,11 +35,36 @@ endfunction "}}}
 let &tabline='%!Tabline()'
 " }}}
 " Statusline {{{
-function! ChangeModeBgColor()
+function! Mode()
+  redraw
+
+  "n	Normal
+  "no	Operator-pending
+  "v	Visual by character
+  "V	Visual by line
+  "CTRL-V	Visual blockwise
+  "s	Select by character
+  "S	Select by line
+  "CTRL-S	Select blockwise
+  "i	Insert
+  "R	Replace |R|
+  "Rv	Virtual Replace |gR|
+  "c	Command-line
+  "cv	Vim Ex mode |gQ|
+  "ce	Normal Ex mode |Q|
+  "r	Hit-enter prompt
+  "rm	The -- more -- prompt
+  "r?	A |:confirm| query of some sort
+  "!	Shell or external command is executing
   if (mode() =~# '\v(n|no)')
     execute 'hi User8 cterm=NONE ctermfg=248 ctermbg=235 guifg=#a8a8a8 guibg=#262626'
   elseif (mode() =~# '\v(v|V)')
     execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=6 guifg=#eeeeee guibg=#528b8b'
+  elseif (mode() ==# '')
+    execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=6 guifg=#eeeeee guibg=#528b8b'
+    return ' '.'V'.' '
+  elseif (mode() ==# 'R')
+    execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=3 guifg=#eeeeee guibg=#cc8800'
   elseif (mode() ==# 'i')
     execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=2 guifg=#eeeeee guibg=#719611'
   else
@@ -49,12 +74,48 @@ function! ChangeModeBgColor()
   return ' '.mode().' '
 endfunction
 
+" Status line detail:
+" -------------------
+"
+" %f    file name
+" %F    file path
+" %y    file type between braces (if defined)
+"
+" %{v:servername}   server/session name (gvim only)
+"
+" %<    collapse to the left if window is to small
+"
+" %( %) display contents only if not empty
+"
+" %1*   use color preset User1 from this point on (use %0* to reset)
+"
+" %([%R%M]%)   read-only, modified and modifiable flags between braces
+"
+" %{'!'[&ff=='default_file_format']}
+"        shows a '!' if the file format is not the platform default
+"
+" %{'$'[!&list]}  shows a '*' if in list mode
+" %{'~'[&pm=='']} shows a '~' if in patchmode
+"
+" %=     right-align following items
+"
+" %{&fileencoding}  displays encoding (like utf8)
+" %{&fileformat}    displays file format (unix, dos, etc..)
+" %{&filetype}      displays file type (vim, python, etc..)
+"
+" #%n   buffer number
+" %l/%L line number, total number of lines
+" %p%   percentage of file
+" %c%V  column number, absolute column number
+" &modified         whether or not file was modified
+"
+" %-5.x - syntax to add 5 chars of padding to some element x
 let s:stl  = " %7*%{&paste ? 'ρ' : ''}%*"         " Paste symbol
 let s:stl .= "%4*%{&readonly ? ' r ' : ' # '}%*"  " Modified symbol
 let s:stl .= "%6*%{badge#mode('', 'Z')}"         " Readonly symbol
 let s:stl .= '%* %n'                              " Buffer number
 let s:stl .= "%5*%{badge#modified('+')}%0*"       " Write symbol
-let s:stl .= ' %8*%{ChangeModeBgColor()}%*'       " Mode
+let s:stl .= ' %8*%{Mode()}%*'                    " Mode
 let s:stl .= ' %1*%{badge#filename()}%*'          " Filename
 let s:stl .= ' %<'                                " Truncate here
 let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
