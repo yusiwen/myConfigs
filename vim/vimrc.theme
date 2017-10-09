@@ -62,7 +62,7 @@ function! Mode()
     execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=6 guifg=#eeeeee guibg=#528b8b'
   elseif (mode() ==# '')
     execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=6 guifg=#eeeeee guibg=#528b8b'
-    return ' '.'V'.' '
+    return ' '.'X'.' '
   elseif (mode() ==# 'R')
     execute 'hi User8 cterm=NONE ctermfg=255 ctermbg=3 guifg=#eeeeee guibg=#cc8800'
   elseif (mode() ==# 'i')
