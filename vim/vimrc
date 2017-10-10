@@ -284,6 +284,7 @@ autocmd MyAutoCmd BufWritePost *
 
 if has('folding')
   set foldenable
+  set foldcolumn=1
   set foldmethod=syntax
   set foldlevelstart=0
   set foldtext=FoldText()
