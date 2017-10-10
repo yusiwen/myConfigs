@@ -304,7 +304,7 @@ if has('nvim') && dein#tap('deoplete.nvim')
   " <CR>: If popup menu visible, expand snippet or close popup with selection,
   "       Otherwise, check if within empty pair and use delimitMate.
   imap <silent><expr><CR> pumvisible() ? (neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<C-y>")
-    \ : (delimitMate#WithinEmptyPair() ? "\<Plug>(delimitMateCR)" : "\<CR>")
+    \ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
 
   " <Tab> completion:
   " 1. If popup menu is visible, select and insert next item
@@ -357,7 +357,7 @@ if !has('nvim') && dein#tap('neocomplete.vim')
   " <CR>: If popup menu visible, expand snippet or close popup with selection,
   "       Otherwise, check if within empty pair and use delimitMate.
   imap <silent><expr><CR> pumvisible() ? (neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<C-y>")
-    \ : (delimitMate#WithinEmptyPair() ? "\<Plug>(delimitMateCR)" : "\<CR>")
+    \ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
 
   " <Tab> completion:
   " 1. If popup menu is visible, select and insert next item
