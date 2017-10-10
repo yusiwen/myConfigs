@@ -17,7 +17,11 @@ setlocal iskeyword+=:
 setlocal iskeyword+=#
 setlocal iskeyword+=-
 
-wincmd L
+if winwidth('%') > 200
+  wincmd L
+else
+  wincmd J
+endif
 
 " Jump to links with enter
 nmap <buffer> <CR> <C-]>
