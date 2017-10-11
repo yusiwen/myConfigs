@@ -76,7 +76,7 @@ hi User4                cterm=NONE      ctermfg=242  ctermbg=235  guifg=#6c6c6c 
 hi User5                cterm=bold      ctermfg=1    ctermbg=237  guifg=#aa4450 guibg=#3a3a3a gui=bold
 hi User6                cterm=NONE      ctermfg=167  ctermbg=235  guifg=#d75f5f guibg=#262626
 hi User7                cterm=NONE      ctermfg=118  ctermbg=235  guifg=#87ff00 guibg=#262626
-hi User8                cterm=NONE      ctermfg=220  ctermbg=237  guifg=#ffd700 guibg=#3a3a3a
+hi User8                cterm=NONE      ctermfg=248  ctermbg=235  guifg=#a8a8a8 guibg=#262626
 hi VertSplit            cterm=NONE      ctermfg=241  ctermbg=241  guifg=#626262 guibg=#626262 gui=NONE
 hi Visual               cterm=NONE      ctermfg=16   ctermbg=67   guifg=#000000 guibg=#5f87af gui=NONE
 hi VisualNOS            cterm=bold      ctermfg=fg   ctermbg=NONE guifg=fg      guibg=NONE    gui=bold
