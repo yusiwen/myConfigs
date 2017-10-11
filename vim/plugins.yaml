@@ -2,7 +2,7 @@
 # PLUGINS
 # =====================================
 
-# Let - repo: manage - repo:
+# Non-lazy plugins {{{
 - repo: Shougo/dein.vim
 - repo: rafi/vim-badge
 - repo: itchyny/vim-gitbranch
@@ -28,7 +28,7 @@
 #   keep/restore fcitx state when toggling insert mode
 - repo: vim-scripts/fcitx.vim
   if: has('unix') && system('uname') =~? '^linux'
-
+# }}}
 # Commands {{{
 - {repo: Shougo/vimproc.vim, build: make, on_func: vimproc#}
 - repo: scrooloose/nerdtree
@@ -87,7 +87,6 @@
 - repo: Chiel92/vim-autoformat
   on_cmd: Autoformat
 # }}}
-
 # Interface {{{
 - {repo: haya14busa/vim-asterisk, on_map: {nv: <Plug>}}
 - {repo: rhysd/accelerated-jk, on_map: {n: <Plug>}}
@@ -167,7 +166,6 @@
       \|   Neomake tidy
       \| endif
 # }}}
-
 # Completion {{{
 - repo: ludovicchabant/vim-gutentags
   if: executable('ctags') && empty($VIM_MINIMAL)
@@ -250,7 +248,7 @@
     let g:jedi#quickfix_window_height = 10
     let g:jedi#use_splits_not_buffers = 'right'
 
-# Only NeoVim ------------------------------
+# Only NeoVim {{{
 - repo: zchee/deoplete-go
   if: has('nvim') && empty($VIM_MINIMAL)
   on_ft: go
@@ -288,9 +286,8 @@
   hook_post_source: |
     autocmd MyAutoCmd FileType javascript setlocal omnifunc=tern#Complete
 # }}}
-
+# }}}
 # Denite {{{
-# ------
 - repo: Shougo/denite.nvim
   on_cmd: Denite
   hook_source: source $VIMPATH/vimrc.denite
@@ -301,7 +298,6 @@
 - {repo: rafi/vim-denite-z, on_source: denite.nvim}
 - {repo: rafi/vim-denite-session, on_source: denite.nvim}
 # }}}
-
 # Language & DevTools {{{
 - {repo: hail2u/vim-css3-syntax, on_ft: css}
 - {repo: ap/vim-css-color, on_ft: [css, scss, sass]}
@@ -391,9 +387,7 @@
 - {repo: othree/nginx-contrib-vim, on_ft: nginx}
 - {repo: IN3D/vim-raml, on_ft: raml}
 # }}}
-
 # Operators {{{
-# ---------
 - {repo: kana/vim-operator-user, lazy: 1}
 
 - repo: kana/vim-operator-replace
@@ -408,9 +402,7 @@
   depends: vim-operator-user
   on_map: {nx: <Plug>}
 # }}}
-
 # Text objects {{{
-# ------------
 - {repo: kana/vim-textobj-user, on_func: textobj#user#}
 - {repo: bkad/CamelCaseMotion, on_map: {nox: <Plug>CamelCaseMotion}}
 - {repo: terryma/vim-expand-region, on_map: {x: <Plug>}}
