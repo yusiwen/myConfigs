@@ -23,7 +23,6 @@
     autocmd MyAutoCmd InsertLeave * let b:cursorword=1
 # sublime text style multiple selection
 - repo: terryma/vim-multiple-cursors
-- repo: Yggdroot/indentLine
 
 # fcitx.vim is only needed under Linux
 #   keep/restore fcitx state when toggling insert mode

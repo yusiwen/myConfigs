@@ -519,11 +519,6 @@ if dein#tap('accelerated-jk')
   nmap <silent>k <Plug>(accelerated_jk_gk)
 endif
 " }}}
-" indentLine {{{
-if dein#tap('indentLine')
-  nmap <silent><Leader>ti :<C-u>IndentLinesToggle<CR>
-endif
-" }}}
 " vim-bookmarks {{{
 if dein#tap('vim-bookmarks')
   nmap ma :<C-u>cgetexpr bm#location_list()<CR>
