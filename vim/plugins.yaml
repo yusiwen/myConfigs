@@ -23,6 +23,7 @@
     autocmd MyAutoCmd InsertLeave * let b:cursorword=1
 # sublime text style multiple selection
 - repo: terryma/vim-multiple-cursors
+- repo: Yggdroot/indentLine
 
 # fcitx.vim is only needed under Linux
 #   keep/restore fcitx state when toggling insert mode
@@ -108,27 +109,6 @@
     let g:gitgutter_sign_modified_removed = ':'
     let g:gitgutter_max_signs = 1500
 
-- repo: nathanaelkane/vim-indent-guides
-  on_cmd: [IndentGuidesEnable, IndentGuidesDisable, IndentGuidesToggle]
-  hook_post_source: |
-    call indent_guides#init_script_vars()
-    call indent_guides#highlight_colors()
-  hook_add: |
-    let g:indent_guides_color_change_percent = 3
-    let g:indent_guides_autocmds_enabled = 0
-    let g:indent_guides_default_mapping = 0
-    let g:indent_guides_guide_size = 1
-    let g:indent_guides_indent_levels = 15
-    let g:custom_exclude = [ 'help', 'denite', 'codi' ]
-    autocmd MyAutoCmd BufEnter *
-      \ if ! empty(&l:filetype) && index(g:custom_exclude, &l:filetype) == -1
-      \|  if g:indent_guides_autocmds_enabled == 0 && &l:expandtab
-      \|    IndentGuidesEnable
-      \|  elseif g:indent_guides_autocmds_enabled == 1 && ! &l:expandtab
-      \|    IndentGuidesDisable
-      \|  endif
-      \|endif
-
 - repo: MattesGroeger/vim-bookmarks
   on_path: .*
   hook_source: |
@@ -165,6 +145,7 @@
       \| elseif &filetype =~ 'html'
       \|   Neomake tidy
       \| endif
+    autocmd VimEnter * NeomakeDisable
 # }}}
 # Completion {{{
 - repo: ludovicchabant/vim-gutentags

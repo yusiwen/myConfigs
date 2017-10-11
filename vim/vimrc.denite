@@ -69,6 +69,7 @@ let s:insert_mode_mappings = [
   \  ['<Up>', '<denite:assign_previous_text>', 'noremap'],
   \  ['<Down>', '<denite:assign_next_text>', 'noremap'],
   \  ['<C-Y>', '<denite:redraw>', 'noremap'],
+  \  ['<C-X>', '<denite:quick_move>', 'noremap'],
   \ ]
 
 let s:normal_mode_mappings = [
