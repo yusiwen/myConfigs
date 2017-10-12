@@ -69,8 +69,9 @@ alias gitlpa='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Cres
 alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v'
 
 # Python
-alias pipi='pip --proxy="b.qypac.net:15355" install --user'
-alias pipiu='pip --proxy="b.qypac.net:15355" install --user --upgrade'
+alias pipi='pip install --user'
+alias pipiu='pip --user --upgrade'
+
 if [ "$(uname)" = 'Darwin' ]; then
   alias virtualenv2='virtualenv --python /usr/local/bin/python2 --system-site-packages'
   alias virtualenv3='virtualenv --python /usr/local/bin/python3 --system-site-packages'
