@@ -62,7 +62,6 @@ if [ -z "$JAVA_HOME" ]; then
   if [ ! -z "$JAVA_HOME" ]; then
     export JAVA_HOME
     export JDK_HOME=$JAVA_HOME
-    export CLASSPATH=.:$JDK_HOME/lib/tools.jar:$JAVA_HOME/jre/lib/rt.jar
     export PATH=$JAVA_HOME/bin:$PATH
   fi
 fi
@@ -155,3 +154,5 @@ if [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
   export PATH
 fi
 #}}}
+
+# vim: foldmethod=marker :
