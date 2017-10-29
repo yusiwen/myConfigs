@@ -287,6 +287,9 @@ bindsym $mod+c exec catfish
 bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWork
 # bind key for an emergence terminal in floating mode
 bindsym $mod+Shift+Return exec $TERM -name emergence_terminal && i3-msg '[instance="^emergence_terminal$"] floating enable'
+# rofi
+bindsym $mod+d exec rofi -show run
+bindsym $mod+Shift+d exec rofi -show drun
 # }}}
 
 # {{{ Workspace settings
@@ -344,7 +347,7 @@ exec --no-startup-id !!<\
   xcompmgr -n,dunst,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
   thunar --daemon,urxvtd -q -o -f,\
-  orage,ss-qt5,rofi
+  orage,ss-qt5
 exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
 >
 !?<HOSTNAME=yusiwen-Aspire-S3
