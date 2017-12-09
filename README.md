@@ -84,19 +84,19 @@ Some important softwares. Needed after re-installing OS.
 
 	- [**feh**](https://github.com/derf/feh) (A fast and light Imlib2-based image viewer)
 
-	  Install required package to build `feh`.
+		Install required package to build `feh`.
 
-	  ```text
-	  $ sudo apt-get install libcurl4-openssl-dev libx11-dev libxt-dev libimlib2-dev giblib-dev libxinerama-dev libjpeg-progs
-	  ```
+		```text
+		$ sudo apt-get install libcurl4-openssl-dev libx11-dev libxt-dev libimlib2-dev giblib-dev libxinerama-dev libjpeg-progs
+		```
 
-	  Get source from:
+		Get source from:
 
-	  ```text
-	  $ git clone git://derf.homelinux.org/feh
+		```text
+		$ git clone git://derf.homelinux.org/feh
 		# Or
 		$ git clone git@github.com:yusiwen/feh.git
-	  ```
+		```
 
 	- [**rofi**](https://davedavenport.github.io/rofi/) (A window switcher, run dialog and dmenu replacement)
 
