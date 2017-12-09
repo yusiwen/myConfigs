@@ -177,19 +177,14 @@ Some important softwares. Needed after re-installing OS.
 	$ git clone git@github.com:yusiwen/feh.git
 	```
 
-1. GFW tools
+1. GFW tools & settings
 
-	* [GoAgent](https://github.com/goagent/goagent) Linux
+	* Mirror for launchpad PPAs
 
-		```text
-		$ sudo apt-get install python-dev python-greenlet python-gevent python-vte python-openssl python-crypto python-appindicator
-		$ sudo apt-get install python-pip
-		$ sudo pip install gevent --upgrade
-		```
+		Use `launchpad.proxy.ustclug.org` to replace `ppa.launchpad.net` in every PPA addresses to reverse proxy the requests.
 
-		Then, download GoAgent client from [here](https://code.google.com/p/goagent/).
+		See [中科大开源软件镜像服务帮助-反向代理](https://lug.ustc.edu.cn/wiki/mirrors/help/revproxy)
 
-		For more python package & pip installation notes, please check out `python/README.md`.
 
 	* [shadowsocks-qt5](https://github.com/librehat/shadowsocks-qt5)
 
