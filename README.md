@@ -76,12 +76,13 @@ Some important softwares. Needed after re-installing OS.
 
 	or install faenza icon theme.
 
-1. Vim
+1. Vim & NeoVim
 
 	For x11-clipboard support under xterm, install `vim-gtk` instead of `vim` package.
 
 	```text
-	$ sudo apt-get install vim-gtk
+	$ sudo apt-add-repository ppa:neovim-ppa/stable
+	$ sudo apt-get install vim-gtk neovim
 	```
 
 	See more details in `vim/README.md`.
