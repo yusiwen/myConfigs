@@ -134,7 +134,7 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo chmod u+s /usr/bin/fbterm
 		```
 
-1. Git
+1. **Git**
 
 	```text
 	$ sudo apt-add-repository ppa:git-core/ppa
@@ -143,7 +143,7 @@ Some important softwares. Needed after re-installing OS.
 
 	See more details in `git/README.md`.
 
-1. Vim & NeoVim
+1. **Vim** & **NeoVim**
 
 	For x11-clipboard support under xterm, install `vim-gtk` instead of `vim` package.
 
@@ -154,7 +154,7 @@ Some important softwares. Needed after re-installing OS.
 
 	See more details in `vim/README.md`.
 
-1. Chrome
+1. **Google Chrome**
 
 	```text
 	$ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
@@ -170,16 +170,16 @@ Some important softwares. Needed after re-installing OS.
 
 	or install faenza icon theme.
 
-1. GFW tools & settings
+1. **GFW tools & settings**
 
-	* Mirror for launchpad PPAs
+	* **Mirror for launchpad PPAs**
 
 		Use `launchpad.proxy.ustclug.org` to replace `ppa.launchpad.net` in every PPA addresses to reverse proxy the requests.
 
 		See [中科大开源软件镜像服务帮助-反向代理](https://lug.ustc.edu.cn/wiki/mirrors/help/revproxy)
 
 
-	* [shadowsocks-qt5](https://github.com/librehat/shadowsocks-qt5)
+	* [**shadowsocks-qt5**](https://github.com/librehat/shadowsocks-qt5)
 
 		Install `shadowsocks-qt5`:
 
@@ -207,7 +207,7 @@ Some important softwares. Needed after re-installing OS.
 		...
 		```
 
-1. [kingsoft-office](http://linux.wps.cn/) (AKA "WPS")
+1. [**Kingsoft Office**](http://linux.wps.cn/) (AKA "WPS")
 
 	To install kingsoft-office on 13.10+, which has removed ia32-libs package:
 
@@ -229,7 +229,7 @@ Some important softwares. Needed after re-installing OS.
 
 	Then, extract files from `wps_symbol_fonts.zip`, install them in `Font-Manager`.
 
-1. Calibre
+1. **Calibre**
 
 	```text
 	$ sudo -v && wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
@@ -241,9 +241,9 @@ Some important softwares. Needed after re-installing OS.
 	$ sudo mkdir -p /opt/calibre && sudo rm -rf /opt/calibre/* && sudo tar xvf /path/to/downloaded/calibre-tarball.txz -C /opt/calibre && sudo /opt/calibre/calibre_postinstall
 	```
 
-1. Mail Clients
+1. **Mail Clients**
 
-	* offlineImap
+	* **OfflineImap**
 
 		```text
 		$ git clone git://github.com/OfflineIMAP/offlineimap.git
@@ -252,7 +252,7 @@ Some important softwares. Needed after re-installing OS.
 		Then, run mkenv.sh
 		Note: Using `shadowsocks-qt5` for proxy, see #21 below.
 
-	* sup (need offlineImap)
+	* **sup** (need offlineImap)
 
 		```text
 		$ sudo apt-get install build-essential libncursesw5-dev libncurses5-dev uuid-dev zlib1g-dev
@@ -261,7 +261,7 @@ Some important softwares. Needed after re-installing OS.
 		$ gem install sup # sudo is not needed if not using system ruby
 		```
 
-	* mutt
+	* **mutt**
 
 		```text
 		$ sudo apt-get install mutt-patched
@@ -275,9 +275,9 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo pip install keyring
 		```
 
-1. Media tools
+1. **Media tools**
 
-	* MPD
+	* **MPD**
 
 		```text
 		$ sudo apt-add-repository ppa:gmpc-trunk/mpd-trunk
@@ -290,7 +290,7 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-get install mpd ncmpcpp
 		```
 
-	* smplayer
+	* **smplayer**
 
 		```text
 		$ sudo apt-add-repository ppa:rvm/smplayer
@@ -298,9 +298,9 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-get install smplayer smtube smplayer-themes smplayer-skins
 		```
 
-1. Indicators
+1. **Indicators**
 
-	* Sound Switcher Indicator
+	* **Sound Switcher Indicator**
 
 		```text
 		$ sudo apt-add-repository ppa:yktooo/ppa
@@ -308,7 +308,7 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-get install indicator-sound-switcher
 		```
 
-	* Indicator Netspeed
+	* **Indicator Netspeed**
 
 		```text
 		$ sudo add-apt-repository ppa:nilarimogard/webupd8
@@ -316,7 +316,7 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-get install indicator-netspeed
 		```
 
-	* classicmenu-indicator
+	* **classicmenu-indicator**
 
 		```text
 		$ sudo apt-add-repository ppa:diesch/testing
@@ -324,9 +324,9 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-get install classicmenu-indicator
 		```
 
-1. Download managers
+1. **Download managers**
 
-	* uGet
+	* **uGet**
 
 		```
 		$ sudo apt-add-repository ppa:plushuang-tw/uget-stable
@@ -334,14 +334,14 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-get install uget
 		```
 
-	* xunlei-lixian 迅雷离线下载
+	* **xunlei-lixian** (迅雷离线下载)
 
 		```
 		$ git clone git@github.com:yusiwen/xunlei-lixian.git
 		$ ln -sf xunlei-lixian/lixian_cli.py ~/bin/xllx
 		```
 
-1. Themes
+1. **Themes**
 
 	* [Numix theme](https://numixproject.org/)
 
@@ -359,31 +359,32 @@ Some important softwares. Needed after re-installing OS.
 
 	- **font-manager**
 
-	  ```text
-	  $ sudo apt-add-repository ppa:font-manager/staging
-	  ```
+		```text
+		$ sudo apt-add-repository ppa:font-manager/staging
+		```
 	
 	- **TLP** (Power management tools for laptop)
 
-	  Remove `laptop-mode-tools` first, it conflicts with TLP.
+		Remove `laptop-mode-tools` first, it conflicts with TLP.
 
-	  ```text
-	  $ sudo apt-get remove laptop-mode-tools
-	  ```
+		```text
+		$ sudo apt-get remove laptop-mode-tools
+		```
 
-	  Then
+		Then
 
-	  ```text
-	  $ sudo add-apt-repository ppa:linrunner/tlp
-	  $ sudo apt-get update
-	  $ sudo apt-get install tlp tlp-rdw
-	  ```
+		```text
+		$ sudo add-apt-repository ppa:linrunner/tlp
+		$ sudo apt-get update
+		$ sudo apt-get install tlp tlp-rdw
+		```
+
 	- **wiznote**
 
-	  ```text
-	  $ sudo apt-add-repository ppa:wiznote-team/ppa
-	  $ sudo apt-get install wiznote
-	  ```
+		```text
+		$ sudo apt-add-repository ppa:wiznote-team/ppa
+		$ sudo apt-get install wiznote
+		```
 
 Troubleshooting
 ---------------
