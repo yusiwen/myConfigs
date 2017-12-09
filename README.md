@@ -47,9 +47,92 @@ Softwares
 
 Some important softwares. Needed after re-installing OS.
 
-1. i3-wm
+1. **Desktop Environment**
 
-	See `i3/README.md`.
+	- [**i3wm**](https://i3wm.org/) (A tiling window manager)
+
+		See `i3/README.md`.
+	
+	- [**rxvt-unicode**](http://software.schmorp.de/pkg/rxvt-unicode.html) (A fork of the well known terminal emulator rxvt)
+
+		Installing from Ubuntu official repository:
+
+		```text
+		$ sudo apt-get install rxvt-unicode-256color
+		```
+
+		Or, building from source:
+
+		```text
+		# Checkout from official cvs repository
+		$ cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
+		# Or, checkout from github
+		$ git clone git@github.com:yusiwen/rxvt-unicode.git
+		$ git submodule init
+		$ git submodule update
+		```
+
+		Then
+
+		```text
+		$ sudo apt-get install libperl-dev libstartup-notification0-dev libgdk-pixbuf2.0-dev libxft-dev xsel
+		$ cd rxvt-unicode
+		$ ./configure --enable-256-color --enable-unicode3 --enable-combining --enable-xft --enable-font-styles --enable-pixbuf --enable-startup-notification --enable-transparency --enable-fading --enable-rxvt-scroll --enable-perl --enable-iso14755 --enable-keepscrolling --enable-selectionscrolling --enable-mousewheel --enable-slipwheeling --enable-smart-resize --enable-text-blink --enable-pointer-blank --enable-utmp --enable-wtmp --enable-lastlog
+		```
+
+		See `rxvt/README.md` for more details.
+
+	- [**feh**](https://github.com/derf/feh) (A fast and light Imlib2-based image viewer)
+
+	  Install required package to build `feh`.
+
+	  ```text
+	  $ sudo apt-get install libcurl4-openssl-dev libx11-dev libxt-dev libimlib2-dev giblib-dev libxinerama-dev libjpeg-progs
+	  ```
+
+	  Get source from:
+
+	  ```text
+	  $ git clone git://derf.homelinux.org/feh
+		# Or
+		$ git clone git@github.com:yusiwen/feh.git
+	  ```
+
+	- [**rofi**](https://davedavenport.github.io/rofi/) (A window switcher, run dialog and dmenu replacement)
+
+		Replace `dmenu` by `rofi`
+
+		```text
+		$ git clone git@github.com:yusiwen/rofi.git
+		$ cd rofi
+		$ git remote add upstream git@github.com:DaveDavenport/rofi.git
+		$ autoreconf -i
+		$ mkdir build/;cd build/
+		$ ../configure
+		$ make
+		$ sudo make install
+		```
+
+	- **Midnight Commander**
+
+		To get prerequisites:
+
+		```text
+		$ sudo apt-get build-dep mc
+		```
+
+		To get the source:
+
+		```text
+		$ git clone git@github.com:yusiwen/mc.git
+		```
+	- **fbterm**
+
+		```text
+		$ sudo apt-get install fbterm
+		$ sudo gpasswd -a YOUR_USERNAME video
+		$ sudo chmod u+s /usr/bin/fbterm
+		```
 
 1. Git
 
@@ -59,6 +142,17 @@ Some important softwares. Needed after re-installing OS.
 	```
 
 	See more details in `git/README.md`.
+
+1. Vim & NeoVim
+
+	For x11-clipboard support under xterm, install `vim-gtk` instead of `vim` package.
+
+	```text
+	$ sudo apt-add-repository ppa:neovim-ppa/stable
+	$ sudo apt-get install vim-gtk neovim
+	```
+
+	See more details in `vim/README.md`.
 
 1. Chrome
 
@@ -75,108 +169,6 @@ Some important softwares. Needed after re-installing OS.
 	```
 
 	or install faenza icon theme.
-
-1. Vim & NeoVim
-
-	For x11-clipboard support under xterm, install `vim-gtk` instead of `vim` package.
-
-	```text
-	$ sudo apt-add-repository ppa:neovim-ppa/stable
-	$ sudo apt-get install vim-gtk neovim
-	```
-
-	See more details in `vim/README.md`.
-
-1. Terminal tools
-
-	* [rxvt-unicode](http://software.schmorp.de/pkg/rxvt-unicode.html)
-
-		Installing from Ubuntu official repository:
-
-		```text
-		$ sudo apt-get install rxvt-unicode-256color
-		```
-
-		Building from source:
-
-		```text
-		$ cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co rxvt-unicode
-		```
-
-		Or
-
-		```text
-		$ git clone git@github.com:yusiwen/rxvt-unicode.git
-		$ git submodule init
-		$ git submodule update
-		```
-
-		Then
-
-		```text
-		$ sudo apt-get install libperl-dev libstartup-notification0-dev libgdk-pixbuf2.0-dev libxft-dev xsel
-		$ cd rxvt-unicode
-		$ ./configure --enable-256-color --enable-unicode3 --enable-combining --enable-xft --enable-font-styles --enable-pixbuf --enable-startup-notification --enable-transparency --enable-fading --enable-rxvt-scroll --enable-perl --enable-iso14755 --enable-keepscrolling --enable-selectionscrolling --enable-mousewheel --enable-slipwheeling --enable-smart-resize --enable-text-blink --enable-pointer-blank --enable-utmp --enable-wtmp --enable-lastlog
-		```
-
-		See `rxvt/README.md` for more details.
-
-	* fbterm
-
-		```text
-		$ sudo apt-get install fbterm
-		$ sudo gpasswd -a YOUR_USERNAME video
-		$ sudo chmod u+s /usr/bin/fbterm
-		```
-
-	* [rofi](https://davedavenport.github.io/rofi/) (A window switcher, run dialog and dmenu replacement)
-
-		Replace `dmenu` by `rofi`
-
-		```text
-		$ git clone git@github.com:yusiwen/rofi.git
-		$ cd rofi
-		$ git remote add upstream git@github.com:DaveDavenport/rofi.git
-		$ autoreconf -i
-		$ mkdir build/;cd build/
-		$ ../configure
-		$ make
-		$ sudo make install
-		```
-
-	* Midnight Commander
-
-		To get prerequisites:
-
-		```text
-		$ sudo apt-get build-dep mc
-		```
-
-		To get the source:
-
-		```text
-		$ git clone git@github.com:yusiwen/mc.git
-		```
-
-1. feh
-
-	Install required package to build `feh`.
-
-	```text
-	$ sudo apt-get install libcurl4-openssl-dev libx11-dev libxt-dev libimlib2-dev giblib-dev libxinerama-dev libjpeg-progs
-	```
-
-	Get source from:
-
-	```text
-	$ git clone git://derf.homelinux.org/feh
-	```
-
-	Or
-
-	```text
-	$ git clone git@github.com:yusiwen/feh.git
-	```
 
 1. GFW tools & settings
 
@@ -332,13 +324,6 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-get install classicmenu-indicator
 		```
 
-1. wiznote
-
-	```text
-	$ sudo apt-add-repository ppa:wiznote-team/ppa
-	$ sudo apt-get install wiznote
-	```
-
 1. Download managers
 
 	* uGet
@@ -356,22 +341,6 @@ Some important softwares. Needed after re-installing OS.
 		$ ln -sf xunlei-lixian/lixian_cli.py ~/bin/xllx
 		```
 
-1. TLP (Power management tools for laptop)
-
-	Remove `laptop-mode-tools` first, it conflicts with TLP.
-
-	```text
-	$ sudo apt-get remove laptop-mode-tools
-	```
-
-	Then
-
-	```text
-	$ sudo add-apt-repository ppa:linrunner/tlp
-	$ sudo apt-get update
-	$ sudo apt-get install tlp tlp-rdw
-	```
-
 1. Themes
 
 	* [Numix theme](https://numixproject.org/)
@@ -386,11 +355,35 @@ Some important softwares. Needed after re-installing OS.
 		$ sudo apt-add-repository ppa:webupd8team/themes
 		```
 
-1. font-manager
+1. **Misc**
 
-	```text
-	$ sudo apt-add-repository ppa:font-manager/staging
-	```
+	- **font-manager**
+
+	  ```text
+	  $ sudo apt-add-repository ppa:font-manager/staging
+	  ```
+	
+	- **TLP** (Power management tools for laptop)
+
+	  Remove `laptop-mode-tools` first, it conflicts with TLP.
+
+	  ```text
+	  $ sudo apt-get remove laptop-mode-tools
+	  ```
+
+	  Then
+
+	  ```text
+	  $ sudo add-apt-repository ppa:linrunner/tlp
+	  $ sudo apt-get update
+	  $ sudo apt-get install tlp tlp-rdw
+	  ```
+	- **wiznote**
+
+	  ```text
+	  $ sudo apt-add-repository ppa:wiznote-team/ppa
+	  $ sudo apt-get install wiznote
+	  ```
 
 Troubleshooting
 ---------------
