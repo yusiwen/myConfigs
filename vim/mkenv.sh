@@ -98,22 +98,23 @@ ln -sfnv $HOME/.vim $HOME/.config/nvim
 # Initialize Python 2 & 3 environment for NeoVim
 VARPATH=$HOME/.cache/vim
 mkdir -p $VARPATH/venv
-if ! type 'virtualenv' &> /dev/null; then
+
+if ! type virtualenv >/dev/null 2>&1; then
   echo 'Python environment is not initialized.'
   echo 'Calling python/mkenv.sh...'
-  source $HOME/myConfigs/python/mkenv.sh
+  . $HOME/myConfigs/python/mkenv.sh
 fi
-virtualenv -p /usr/bin/python2 $VARPATH/venv/neovim2
-$VARPATH/venv/neovim2/bin/pip install -U neovim PyYAML
-virtualenv -p /usr/bin/python3 $VARPATH/venv/neovim3
-$VARPATH/venv/neovim3/bin/pip install -U neovim PyYAML
+
+pip install -U --user neovim PyYAML
+virtualenv --system-site-packages -p /usr/bin/python2 $VARPATH/venv/neovim2
+virtualenv --system-site-packages -p /usr/bin/python3 $VARPATH/venv/neovim3
 echo 'Initialized env for neovim, run :UpdateRemotePlugin when first startup'
 
 # Node.js package for NeoVim
-if ! type 'npm' &> /dev/null; then
+if ! type npm >/dev/null 2>&1; then
   echo 'Node.js environment is not initialized.'
   echo 'Calling node.js/mkenv.sh'
-  source $HOME/myConfigs/node.js/mkenv.sh
+  . $HOME/myConfigs/node.js/mkenv.sh
 fi
 npm install -g neovim
 #}}}

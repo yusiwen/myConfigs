@@ -2,7 +2,7 @@
 
 . $HOME/myConfigs/gfw/get_apt_proxy.sh $1
 
-if ! type "curl" &> /dev/null; then
+if ! type curl >/dev/null 2>&1; then
   echo 'Installing curl...'
   sudo apt install curl
 fi
