@@ -9,7 +9,11 @@ if [ -z "$SS_PACKAGE" ]; then
   sudo apt-add-repository ppa:hzwhuang/ss-qt5
   sudo apt-get update
   sudo apt-get install shadowsocks-qt5
-  sudo apt-get install polipo
+fi
 
+POLIPO_PACKAGE=$(dpkg -l | cut -d " " -f 3 | grep "polipo")
+if [ -z "$POLIPO_PACKAGE" ]; then
+  echo "Installing polipo proxy..."
+  sudo apt-get install polipo
   sudo cp ./polipo.conf /etc/polipo/config
 fi

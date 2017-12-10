@@ -9,7 +9,8 @@ echo "$OS found..."
 if [ $OS = 'Linux' ]; then
   # install git if not exist
   GIT_SOURCE="^deb http://ppa.launchpad.net/git-core/ppa/ubuntu $(lsb_release -c -s) main"
-  APT_SOURCE=$(grep "$GIT_SOURCE" /etc/apt/sources.list.d/*.list)
+  GIT_SOURCE_PROXY="^deb http://launchpad.proxy.ustclug.org/git-core/ppa/ubuntu $(lsb_release -c -s) main"
+  APT_SOURCE=$(grep -E "$GIT_SOURCE|$GIT_SOURCE_PROXY" /etc/apt/sources.list.d/*.list)
   if [ -z "$APT_SOURCE" ]; then
     echo "Add git-core ppa..."
     sudo apt-add-repository ppa:git-core/ppa

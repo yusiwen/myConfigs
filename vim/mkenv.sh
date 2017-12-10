@@ -15,7 +15,7 @@ if [ $(uname) = 'Linux' ]; then
       VIM_PACKAGE=vim
     else
       echo 'Ubuntu desktop edition found.'
-      if [ -n $DISPLAY ]; then
+      if [ -z $DISPLAY ]; then
         echo 'No $DISPLAY found.'
         VIM_PACKAGE=vim
       else
