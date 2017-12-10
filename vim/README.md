@@ -27,21 +27,21 @@ VIM Installation
     ```
 
 - ag (The Silver Searcher): [ggreer/the_silver_searcher](https://github.com/ggreer/the_silver_searcher)
-- `cscope`, `exuberant ctags`, `lua`, `ag`, `python`, `python3`, `ruby`, `perl`
+- `cscope`, `exuberant ctags`
 
 ## Installation
 
-1. Install vim:
+1. Install vim & neovim:
 
   ```text
+  # Add this PPA if you want to install latest vim release on Ubuntu earlier than 17.04
+  $ sudo add-apt-repository ppa:jonathonf/vim
   $ sudo apt-get install vim-gtk
+
+  # Insall NeoVim latest stable
+  $ sudo add-apt-repository ppa:neovim-ppa/stable
+  $ sudo apt-get insall neovim
   ```
-
-  As for windows, check out [kybu Windows build](https://bitbucket.org/kybu/vim-for-windows-single-drop), it supports `Ruby`, `Python`, `Perl`, `Lua`, etc. Or [tuxproject](http://tuxproject.de/projects/vim) , supports both x86 (32-bit) and x64 (64-bit) architectures, compiled with Xpm and DirectX support, provides "huge" feature set and scripting interfaces for `Tcl`, `Python` 2, `Python` 3, `Ruby`, `Lua`, `Racket`, and `Perl`.
-
-  As for Mac, using `brew install vim macvim ctags cscope lua`.
-
-  As for the latest build, try `ppa:pkg-vim/vim-daily`.
 
 2. Link setting files to ~/.vim
 
