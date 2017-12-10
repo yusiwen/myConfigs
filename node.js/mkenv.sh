@@ -2,6 +2,11 @@
 
 . $HOME/myConfigs/gfw/get_apt_proxy.sh $1
 
+if ! type "curl" &> /dev/null; then
+  echo 'Installing curl...'
+  sudo apt install curl
+fi
+
 NODE_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "nodejs")
 if [ -z "$NODE_PACKAGE" ]; then
 
@@ -13,11 +18,6 @@ if [ -z "$NODE_PACKAGE" ]; then
 
   if [ -z $version ]; then
     version='3'
-  fi
-
-  if ! type "curl" &> /dev/null; then
-    echo 'Installing curl...'
-    sudo apt install curl
   fi
 
   if echo "$version" | grep -iq "^1"; then
