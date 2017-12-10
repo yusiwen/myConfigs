@@ -15,6 +15,11 @@ if [ -z "$NODE_PACKAGE" ]; then
     version='3'
   fi
 
+  if ! type "curl" &> /dev/null; then
+    echo 'Installing curl...'
+    sudo apt install curl
+  fi
+
   if echo "$version" | grep -iq "^1"; then
     curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
   elif echo "$version" | grep -iq "^2"; then
