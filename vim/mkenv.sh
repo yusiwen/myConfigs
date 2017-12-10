@@ -88,3 +88,6 @@ if [ ! -L $VIM_HOME/snippets ]; then
   ln -sfnv $CONFIG_VIM/snippets $VIM_HOME/snippets
 fi
 
+npm -g install jshint jsxhint jsonlint stylelint sass-lint raml-cop markdownlint-cli write-good
+pip install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint
+

@@ -1,8 +1,12 @@
 #!/bin/sh
 
-BASE=$HOME/.local
-
-if [ ! -e $BASE/bin/pip ]; then
-  curl -O https://bootstrap.pypa.io/get-pip.py
-  python get-pip.py --user
+if ! type "pip" &> /dev/null; then
+  sudo apt install python-pip
 fi
+
+if ! type "pip3" &> /dev/null; then
+  sudo apt install python3-pip
+fi
+
+mkdir -p $HOME/.pip
+ln -sfnv $HOME/myConfig/python/pip.conf $HOME/.pip/pip.conf
