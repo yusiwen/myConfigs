@@ -70,6 +70,7 @@ ln -sfnv $CONFIG_VIM/plugins.yaml $VIM_HOME/plugins.yaml
 ln -sfnv $CONFIG_VIM/vimrc.filetype $VIM_HOME/vimrc.filetype
 ln -sfnv $CONFIG_VIM/vimrc.mappings $VIM_HOME/vimrc.mappings
 ln -sfnv $CONFIG_VIM/vimrc.neocomplete $VIM_HOME/vimrc.neocomplete
+ln -sfnv $CONFIG_VIM/vimrc.deoplete $VIM_HOME/vimrc.deoplete
 ln -sfnv $CONFIG_VIM/vimrc.denite $VIM_HOME/vimrc.denite
 ln -sfnv $CONFIG_VIM/vimrc.denite.menu $VIM_HOME/vimrc.denite.menu
 ln -sfnv $CONFIG_VIM/vimrc.nerdtree $VIM_HOME/vimrc.nerdtree
