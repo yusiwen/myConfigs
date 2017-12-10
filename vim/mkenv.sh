@@ -42,7 +42,7 @@ if [ $(uname) = 'Linux' ]; then
     fi
 
     echo 'Install supplementary tools...'
-    sudo apt-get $APT_PROXY install exuberant-ctags silversearcher-ag cscope astyle
+    sudo apt-get $APT_PROXY install exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby perl
   fi
 elif [ $(uname) = 'Darwin' ]; then
   echo 'Darwin is found, checking vim...'
