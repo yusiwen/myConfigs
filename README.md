@@ -16,14 +16,17 @@ yusiwen@gmail.com
 
 Contents
 --------
+
+1. `docker/` Docker configurations.
 1. `eclipse/` Eclipse configurations under linux.
 1. `figlet/` figlet fonts for ascii art.
-1. `gfw/` configurations for shadowsocks and polipo
+1. `gfw/` configurations for shadowsocks and polipo proxy.
 1. `git/` Git configurations and scripts.
 1. `i3/` i3-wm configurations.
 1. `keyring/` keyring confiurations for i3 and mutt.
 1. `mac/` configurations for MacOS.
 1. `mail/` settings for all mail clients.
+1. `maven/` configurations for maven.
 1. `mc.conf/` confiurations for MidnightCommander.
 1. `mounts/` fstab configurations for home-ubuntu.
 1. `mpd/` mpd configurations.
