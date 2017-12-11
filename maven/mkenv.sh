@@ -1,6 +1,15 @@
 #!/bin/bash
 
-mkdir -p $HOME/maven
+if [[ ( -z $M2_HOME ) && ( ! -d $HOME/maven ) ]]; then
+  mkdir -p $HOME/maven
+  curl -o $HOME/maven/apache-maven-3.5.2-bin.zip -O "https://mirrors.cnnic.cn/apache/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.zip"
+  unzip $HOME/maven/apache-maven-3.5.2-bin.zip -d $HOME/maven
+  export M2_HOME=$HOME/maven/apache-maven-3.5.2
+  export M2=$M2_HOME/bin
+  export MAVEN_OPTS="-Xms64m -Xmx256m"
+  export PATH=$PATH:$M2
+fi
+
 mkdir -p $HOME/.m2
 
 if ! type git >/dev/null 2>&1; then
@@ -9,7 +18,7 @@ if ! type git >/dev/null 2>&1; then
   . $HOME/myConfigs/git/mkenv.sh
 fi
 
-if [ -z $M2_REPO ]; then
+if [[ ( -z $M2_REPO ) && ( ! -d $HOME/maven/repository ) ]]; then
   echo 'Fetching maven repository from git.yusiwen.cc...'
   git clone git@git.yusiwen.cc:yusiwen/maven-repo.git $HOME/maven/repository
   export M2_REPO=$HOME/maven/repository
