@@ -78,6 +78,10 @@ if [ -z "$M2_HOME" ]; then
       export MAVEN_OPTS="-Xms64m -Xmx256m"
       export PATH=$PATH:$M2
     fi
+
+    if [ -d "$MVN_INSTALLATION_PATH/repository" ]; then
+      export M2_REPO=$MVN_INSTALLATION_PATH/repository
+    fi
   fi
 fi
 #}}}
