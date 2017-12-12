@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sudo apt install figlet toilet toilet-fonts
+
 # Install 'toilet' package first.
 for file in $HOME/myConfigs/figlet/*.*lf
 do
