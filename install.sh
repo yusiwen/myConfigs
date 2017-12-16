@@ -32,13 +32,10 @@ function init_env() {
 # GFW
 function install_gfw() {
   if [ $OS = 'Linux' ]; then
-    ln -sfnv $HOME/myConfigs/gfw/apt.conf $HOME/.apt.conf
-
     if ! type tsocks >/dev/null 2>&1; then
       echo -e "${COLOR}Installing tsocks...${NC}"
       sudo apt install -y tsocks
     fi
-    ln -sfnv $HOME/myConfigs/gfw/tsocks.conf $HOME/.tsocks.conf
 
     SS_PACKAGE=$(dpkg -l | cut -d " " -f 3 | grep "shadowsocks-qt5")
     if [ -z "$SS_PACKAGE" ]; then
@@ -56,11 +53,15 @@ function install_gfw() {
     if [ -z "$POLIPO_PACKAGE" ]; then
       echo -e "${COLOR}Installing polipo proxy...${NC}"
       sudo apt install polipo
-      sudo cp ./polipo.conf /etc/polipo/config
     fi
 
     echo -e "${COLOR}GFW initialized.${NC}"
     echo -e "${COLOR}Please run '${COLOR1}ss-qt5${COLOR}' and configure some shadowsocks server..."
+
+    if [ -d $HOME/myConfigs ]; then
+      ln -sfnv $HOME/myConfigs/gfw/tsocks.conf $HOME/.tsocks.conf
+      sudo cp $HOME/myConfigs/gfw/polipo.conf /etc/polipo/config
+    fi
   fi
 }
 
@@ -76,12 +77,12 @@ function install_git() {
       sudo apt-add-repository -y ppa:git-core/ppa
       # Replace official launchpad address with reverse proxy from USTC
       sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" git-core-ubuntu-ppa-$(lsb_release).list
-      sudo apt $APT_PROXY update
+      sudo apt update
     fi
 
     if [ -z $(dpkg -l | awk '{print $2}' | grep -e '^git$') ]; then
       echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
-      sudo apt $APT_PROXY install -y git
+      sudo apt install -y git
     fi
   elif [ $OS = 'Darwin']; then
     brew install git
@@ -144,7 +145,7 @@ function install_ruby() {
     RUBY_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "ruby-full")
     if [ -z "$RUBY_PACKAGE" ]; then
       echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
-      sudo apt $APT_PROXY install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
+      sudo apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
     fi
   fi
 
@@ -186,6 +187,11 @@ function fetch_myConfigs() {
     mkdir -p $HOME/bin
     ln -sfnv $HOME/myConfigs/git/git-migrate $HOME/bin/git-migrate
     ln -sfnv $HOME/myConfigs/git/git-new-workdir $HOME/bin/git-new-workdir
+  fi
+
+  if [ $OS = 'Linux' ]; then
+    ln -sfnv $HOME/myConfigs/gfw/tsocks.conf $HOME/.tsocks.conf
+    sudo cp $HOME/myConfigs/gfw/polipo.conf /etc/polipo/config
   fi
 }
 
@@ -246,7 +252,7 @@ function install_node() {
     fi
   
     echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
-    sudo apt $APT_PROXY install -y nodejs
+    sudo apt install -y nodejs
   fi
   
   mkdir -p $HOME/.npm-packages
@@ -263,7 +269,7 @@ function install_zsh() {
     echo -e "${COLOR}Current SHELL is not ${COLOR1}ZSH${NC}"
     if [ ! -e /usr/bin/zsh ]; then
       echo -e "${COLOR}Installing ${COLOR1}ZSH${COLOR}...${NC}"
-      sudo apt $APT_PROXY install -y zsh
+      sudo apt install -y zsh
       echo -e "${COLOR}Change SHELL to /usr/bin/zsh ...${NC}"
       chsh -s /usr/bin/zsh
     fi
@@ -319,14 +325,14 @@ function install_vim() {
         echo -e "$VIM_PACKAGE is not found."
         # Install VIM_PACKAGE
         echo -e "${COLOR}Install ${COLOR1}$VIM_PACKAGE${COLOR}...${NC}"
-        sudo apt $APT_PROXY install -y $VIM_PACKAGE
+        sudo apt install -y $VIM_PACKAGE
       else
         echo -e "${COLOR1}$VIM_PACKAGE${COLOR} is found, trying to find latest upgrades...${NC}"
         sudo apt update && sudo apt upgrade
       fi
   
       echo -e "${COLOR}Install supplementary tools...${NC}"
-      sudo apt $APT_PROXY install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby perl
+      sudo apt install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby perl
     fi
   elif [ $(uname) = 'Darwin' ]; then
     echo -e 'Darwin is found, checking vim...'
@@ -430,7 +436,7 @@ function install_rxvt() {
     RXVT_PACAKGE=$(dpkg -l|cut -d " " -f 3|grep "rxvt-unicode-256color")
     if [ -z "$RXVT_PACAKGE" ]; then
       echo -e "Installing rxvt-unicode-256color..."
-      sudo apt $APT_PROXY install -y rxvt-unicode-256color
+      sudo apt install -y rxvt-unicode-256color
     fi
   else
     echo -e "${COLOR}rxvt-unicode-256color will only be installed on Linux.${NC}"
@@ -446,18 +452,18 @@ function install_i3wm() {
       echo -e "Adding i3wm official repository to '/etc/apt/sources.list'..."
       echo -e "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee --append /etc/apt/sources.list
       echo -e "Update source..."
-      sudo apt $APT_PROXY update
+      sudo apt update
       echo -e "Install i3wm official repository key..."
-      sudo apt $APT_PROXY --allow-unauthenticated install -y sur5r-keyring
-      sudo apt $APT_PROXY update
+      sudo apt --allow-unauthenticated install -y sur5r-keyring
+      sudo apt update
     fi
 
     I3_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "^i3$")
     if [ -z "$I3_PACKAGE" ]; then
       echo -e "Install i3wm..."
-      sudo apt $APT_PROXY install -y i3
+      sudo apt install -y i3
       echo -e "Install i3blocks..."
-      sudo apt $APT_PROXY install -y i3blocks
+      sudo apt install -y i3blocks
     else
       sudo apt update && sudo apt upgrade
     fi
@@ -493,7 +499,7 @@ function install_i3wm() {
     if [ "$?" -eq 1 ]; then
       # Install 'consolekit'
       echo -e 'Installing consolekit...'
-      sudo apt $APT_PROXY install -y consolekit
+      sudo apt install -y consolekit
     fi
   
     if [ ! -e /usr/share/xsessions/i3.desktop ]; then
@@ -515,7 +521,7 @@ function install_i3wm() {
     if [ "$?" -eq 1 ]; then
       # Install 'dex'
       echo -e 'Installing dex...'
-      sudo apt $APT_PROXY install -y dex
+      sudo apt install -y dex
     fi
   else
     echo -e "${COLOR}i3wm will only be installed on Linux.${NC}"
