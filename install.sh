@@ -38,19 +38,22 @@ function install_gfw() {
     fi
 
     if ! type ss-qt5 >/dev/null 2>&1; then
-      echo -e "${COLOR}Add ${COLOR1}ss-qt5${COLOR} ppa...${NC}"
-      sudo apt-add-repository -y ppa:hzwhuang/ss-qt5
-      # Replace official launchpad address with reverse proxy from USTC
-      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" hzwhuang-ubuntu-ss-qt5-$(lsb_release -c -s).list
+      SS_PPA=/etc/apt/sources.list.d/hzwhuang-ubuntu-ss-qt5-$(lsb_release -c -s).list
+      if [ -e $SS_PPA ]; then
+        echo -e "${COLOR}Add ${COLOR1}ss-qt5${COLOR} ppa...${NC}"
+        sudo apt-add-repository -y ppa:hzwhuang/ss-qt5
+        # Replace official launchpad address with reverse proxy from USTC
+        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $SS_PPA
+        sudo apt update
+      fi
 
-      sudo apt update
       echo -e "${COLOR}Installing ${COLOR1}ss-qt5${COLOR}...${NC}"
-      sudo apt install shadowsocks-qt5
+      sudo apt install -y shadowsocks-qt5
     fi
 
     if ! type polipo >/dev/null 2>&1; then
       echo -e "${COLOR}Installing polipo proxy...${NC}"
-      sudo apt install polipo
+      sudo apt install -y polipo
     fi
 
     echo -e "${COLOR}GFW initialized.${NC}"
@@ -67,18 +70,16 @@ function install_gfw() {
 function install_git() {
   if [ $OS = 'Linux' ]; then
     # install git if not exist
-    GIT_SOURCE="^deb http://ppa.launchpad.net/git-core/ppa/ubuntu $(lsb_release -c -s) main"
-    GIT_SOURCE_PROXY="^deb http://launchpad.proxy.ustclug.org/git-core/ppa/ubuntu $(lsb_release -c -s) main"
-    APT_SOURCE=$(grep -E "$GIT_SOURCE|$GIT_SOURCE_PROXY" /etc/apt/sources.list.d/*.list)
-    if [ -z "$APT_SOURCE" ]; then
+    GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$(lsb_release -c -s).list
+    if [ -e $GIT_PPA ]; then
       echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
       sudo apt-add-repository -y ppa:git-core/ppa
       # Replace official launchpad address with reverse proxy from USTC
-      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" git-core-ubuntu-ppa-$(lsb_release).list
+      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
       sudo apt update
     fi
 
-    if [ -z $(dpkg -l | awk '{print $2}' | grep -e '^git$') ]; then
+    if ! type git >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
       sudo apt install -y git
     fi
