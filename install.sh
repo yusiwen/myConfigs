@@ -194,6 +194,7 @@ function fetch_myConfigs() {
 
     CURDIR=$(pwd)
     cd $HOME/git/myConfigs
+    git submodule init
     git submodule update
     cd $CURDIR
   fi
