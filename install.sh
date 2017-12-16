@@ -21,7 +21,7 @@ function init_env() {
 
     sudo apt install -y curl lua5.3 perl 
   elif [ $OS = 'Darwin' ]; then
-    if [ ! type brew >/dev/null 2>&1 ]; then
+    if ! type brew >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
       # On MacOS ruby is pre-installed already
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -37,8 +37,7 @@ function install_gfw() {
       sudo apt install -y tsocks
     fi
 
-    SS_PACKAGE=$(dpkg -l | cut -d " " -f 3 | grep "shadowsocks-qt5")
-    if [ -z "$SS_PACKAGE" ]; then
+    if ! type ss-qt5 >/dev/null 2>&1; then
       echo -e "${COLOR}Add ${COLOR1}ss-qt5${COLOR} ppa...${NC}"
       sudo apt-add-repository -y ppa:hzwhuang/ss-qt5
       # Replace official launchpad address with reverse proxy from USTC
@@ -49,14 +48,13 @@ function install_gfw() {
       sudo apt install shadowsocks-qt5
     fi
 
-    POLIPO_PACKAGE=$(dpkg -l | cut -d " " -f 3 | grep "polipo")
-    if [ -z "$POLIPO_PACKAGE" ]; then
+    if ! type polipo >/dev/null 2>&1; then
       echo -e "${COLOR}Installing polipo proxy...${NC}"
       sudo apt install polipo
     fi
 
     echo -e "${COLOR}GFW initialized.${NC}"
-    echo -e "${COLOR}Please run '${COLOR1}ss-qt5${COLOR}' and configure some shadowsocks server..."
+    echo -e "${COLOR}Please run '${COLOR1}ss-qt5${COLOR}' and configure some shadowsocks server...${NC}"
 
     if [ -d $HOME/myConfigs ]; then
       ln -sfnv $HOME/myConfigs/gfw/tsocks.conf $HOME/.tsocks.conf
@@ -488,7 +486,7 @@ function install_i3wm() {
     ln -sfnv $CONFIG_HOME/colors/_config.jellybeans $I3_HOME/_config.colors
 
     # check if 'ruby' is installed or not
-    if [ ! type ruby >/dev/null 2>&1 ]; then
+    if ! type ruby >/dev/null 2>&1; then
       install_ruby
     fi
     i3bang
