@@ -3,7 +3,7 @@
 const https = require('https');
 
 var repos = [
-  'atom/atom', 'adobe/brackets', 'Microsoft/vscode',
+  'atom/atom', 'adobe/brackets', 'Microsoft/vscode', 'onivim/oni',
   'git-for-windows/git', 'gogits/gogs', 'go-gitea/gitea',
   'kovidgoyal/calibre', 'keeweb/keeweb',
   'tagspaces/tagspaces', 'hainproject/hain',
