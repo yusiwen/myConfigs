@@ -63,6 +63,7 @@ function install_gfw() {
     if [ -d $HOME/myConfigs ]; then
       ln -sfnv $HOME/myConfigs/gfw/tsocks.conf $HOME/.tsocks.conf
       sudo cp $HOME/myConfigs/gfw/polipo.conf /etc/polipo/config
+      sudo systemctl restart polipo
     else
       echo -e "${COLOR1}myConfigs${COLOR} was not found, please install git and fetch it from repo, then run 'install.sh gfw' again to link some configuration files.${NC}"
     fi
@@ -212,6 +213,7 @@ function fetch_myConfigs() {
   if [ $OS = 'Linux' ]; then
     ln -sfnv $HOME/myConfigs/gfw/tsocks.conf $HOME/.tsocks.conf
     sudo cp $HOME/myConfigs/gfw/polipo.conf /etc/polipo/config
+    sudo systemctl restart polipo
   fi
 }
 
