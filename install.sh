@@ -39,7 +39,7 @@ function install_gfw() {
 
     if ! type ss-qt5 >/dev/null 2>&1; then
       SS_PPA=/etc/apt/sources.list.d/hzwhuang-ubuntu-ss-qt5-$(lsb_release -c -s).list
-      if [ -e $SS_PPA ]; then
+      if [ ! -e $SS_PPA ]; then
         echo -e "${COLOR}Add ${COLOR1}ss-qt5${COLOR} ppa...${NC}"
         sudo apt-add-repository -y ppa:hzwhuang/ss-qt5
         # Replace official launchpad address with reverse proxy from USTC
@@ -77,7 +77,7 @@ function install_git() {
   if [ $OS = 'Linux' ]; then
     # install git if not exist
     GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$(lsb_release -c -s).list
-    if [ -e $GIT_PPA ]; then
+    if [ ! -e $GIT_PPA ]; then
       echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
       sudo apt-add-repository -y ppa:git-core/ppa
       # Replace official launchpad address with reverse proxy from USTC
@@ -246,13 +246,11 @@ function install_node() {
     sudo apt install -y curl
   fi
   
-  NODE_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "nodejs")
-  if [ -z "$NODE_PACKAGE" ]; then
-  
-    echo -e "[1] Node.js v4"
-    echo -e "[2] Node.js v6"
-    echo -e "[3] Node.js v8"
-    echo -e -n "Choose version[3]:"
+  if ! type node >/dev/null 2>&1; then
+    echo "[1] Node.js v4"
+    echo "[2] Node.js v6"
+    echo "[3] Node.js v8"
+    echo -n "Choose version[3]:"
     read version
   
     if [ -z $version ]; then
@@ -266,16 +264,20 @@ function install_node() {
     elif echo -e "$version" | grep -iq "^3"; then
       curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     else
-      echo -e "Nahh!"
+      echo "Nahh!"
       exit
     fi
   
     echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
     sudo apt install -y nodejs
+  else
+    echo -e "${COLOR1}Node.js${COLOR} was found.${NC}"
   fi
   
   mkdir -p $HOME/.npm-packages
-  cp $HOME/myConfigs/node.js/npmrc $HOME/.npmrc
+  if [ ! -e $HOME/.npmrc ]; then
+    cp $HOME/myConfigs/node.js/npmrc $HOME/.npmrc
+  fi
 }
 
 function install_zsh() {
