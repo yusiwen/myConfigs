@@ -41,7 +41,7 @@ function install_gfw() {
       echo -e "${COLOR}Add ${COLOR1}ss-qt5${COLOR} ppa...${NC}"
       sudo apt-add-repository -y ppa:hzwhuang/ss-qt5
       # Replace official launchpad address with reverse proxy from USTC
-      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" hzwhuang-ubuntu-ss-qt5-$(lsb_release).list
+      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" hzwhuang-ubuntu-ss-qt5-$(lsb_release -c -s).list
 
       sudo apt update
       echo -e "${COLOR}Installing ${COLOR1}ss-qt5${COLOR}...${NC}"
