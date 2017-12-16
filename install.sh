@@ -12,8 +12,8 @@ echo -e "${COLOR1}$OS${COLOR} found...${NC}"
 # Initialize apt and install prerequisite packages
 function init_env() {
   if [ $OS = 'Linux' ]; then
-    MIRRORS=$(grep "mirrors.aliyun.com" /etc/apt/sources.list)
-    if [ -z $MIRRORS ]; then
+    MIRRORS=$(grep "mirrors.aliyun.com" /etc/apt/sources.list|wc -l)
+    if [ $MIRRORS -eq 0 ]; then
       sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
       sudo sed -i "^deb http:\/\/.*\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
       sudo apt update
