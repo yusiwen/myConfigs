@@ -7,7 +7,7 @@ COLOR1='\033[1;32m'
 NC='\033[0m'
 
 OS=$(uname)
-echo "${COLOR1}$OS${COLOR} found...${NC}"
+echo -e "${COLOR1}$OS${COLOR} found...${NC}"
 
 # Initialize apt and install prerequisite packages
 function init_env() {
@@ -22,7 +22,7 @@ function init_env() {
     sudo apt install -y curl lua5.3 perl 
   elif [ $OS = 'Darwin' ]; then
     if [ ! type brew >/dev/null 2>&1 ]; then
-      echo "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
+      echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
       # On MacOS ruby is pre-installed already
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
@@ -35,14 +35,14 @@ function install_gfw() {
     ln -sfnv $HOME/myConfigs/gfw/apt.conf $HOME/.apt.conf
 
     if ! type tsocks >/dev/null 2>&1; then
-      echo -e '${COLOR}Installing tsocks...${NC}'
+      echo -e "${COLOR}Installing tsocks...${NC}"
       sudo apt install -y tsocks
     fi
     ln -sfnv $HOME/myConfigs/gfw/tsocks.conf $HOME/.tsocks.conf
 
     SS_PACKAGE=$(dpkg -l | cut -d " " -f 3 | grep "shadowsocks-qt5")
     if [ -z "$SS_PACKAGE" ]; then
-      echo "${COLOR}Add ${COLOR1}ss-qt5${COLOR} ppa...${NC}"
+      echo -e "${COLOR}Add ${COLOR1}ss-qt5${COLOR} ppa...${NC}"
       sudo apt-add-repository -y ppa:hzwhuang/ss-qt5
       # Replace official launchpad address with reverse proxy from USTC
       sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" hzwhuang-ubuntu-ss-qt5-$(lsb_release).list
@@ -60,7 +60,7 @@ function install_gfw() {
     fi
 
     echo -e "${COLOR}GFW initialized.${NC}"
-    echo "${COLOR}Please run '${COLOR1}ss-qt5${COLOR}' and configure some shadowsocks server..."
+    echo -e "${COLOR}Please run '${COLOR1}ss-qt5${COLOR}' and configure some shadowsocks server..."
   fi
 }
 
@@ -72,7 +72,7 @@ function install_git() {
     GIT_SOURCE_PROXY="^deb http://launchpad.proxy.ustclug.org/git-core/ppa/ubuntu $(lsb_release -c -s) main"
     APT_SOURCE=$(grep -E "$GIT_SOURCE|$GIT_SOURCE_PROXY" /etc/apt/sources.list.d/*.list)
     if [ -z "$APT_SOURCE" ]; then
-      echo "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
+      echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
       sudo apt-add-repository -y ppa:git-core/ppa
       # Replace official launchpad address with reverse proxy from USTC
       sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" git-core-ubuntu-ppa-$(lsb_release).list
@@ -80,7 +80,7 @@ function install_git() {
     fi
 
     if [ -z $(dpkg -l | awk '{print $2}' | grep -e '^git$') ]; then
-      echo "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
+      echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
       sudo apt $APT_PROXY install -y git
     fi
   elif [ $OS = 'Darwin']; then
@@ -129,12 +129,12 @@ function install_git() {
   fi
 
   if [ -e $HOME/.ssh/id_rsa.pub ]; then
-    echo "${COLOR1}.ssh/id_rsa.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
+    echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
     cat $HOME/.ssh/id_rsa.pub
   else
-    echo "${COLOR1}.ssh/id_rsa.pub${COLOR} was not found, generating it now...${NC}"
+    echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was not found, generating it now...${NC}"
     ssh-keygen
-    echo "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea"
+    echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea"
     cat $HOME/.ssh/id_rsa.pub
   fi
 }
@@ -143,19 +143,19 @@ function install_ruby() {
   if [ $OS = 'Linux' ]; then
     RUBY_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "ruby-full")
     if [ -z "$RUBY_PACKAGE" ]; then
-      echo "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
+      echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
       sudo apt $APT_PROXY install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
     fi
   fi
 
-  echo "${COLOR}Replace official repo with taobao mirror...${NC}"
+  echo -e "${COLOR}Replace official repo with taobao mirror...${NC}"
   gem sources --add https://ruby.taobao.org/ --remove https://rubygems.org/
   gem sources -l
 
-  echo "${COLOR}Installing bundler...${NC}"
+  echo -e "${COLOR}Installing bundler...${NC}"
   sudo gem install bundler
 
-  echo "${COLOR}Configurate bundler to use taobao mirror...${NC}"
+  echo -e "${COLOR}Configurate bundler to use taobao mirror...${NC}"
   bundle config mirror.https://rubygems.org https://ruby.taobao.org
 }
 
@@ -167,9 +167,9 @@ function fetch_myConfigs() {
 
   mkdir -p $HOME/git
   if [ -d $HOME/git/myConfigs ]; then
-    echo "${COLOR1}git/myConfigs${COLOR} already exists.${NC}"
+    echo -e "${COLOR1}git/myConfigs${COLOR} already exists.${NC}"
   else
-    echo "${COLOR}Fetch myConfigs...${NC}"
+    echo -e "${COLOR}Fetch myConfigs...${NC}"
     git clone git@git.yusiwen.cc:yusiwen/myConfigs.git $HOME/git/myConfigs
 
     CURDIR=$(pwd)
@@ -196,12 +196,12 @@ function install_python() {
   fi
 
   if ! type pip >/dev/null 2>&1; then
-    echo "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
+    echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
     sudo apt install -y python-pip
   fi
   
   if ! type pip3 >/dev/null 2>&1; then
-    echo "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
+    echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
     sudo apt install -y python3-pip
   fi
   
@@ -209,7 +209,7 @@ function install_python() {
   ln -sfnv $HOME/myConfig/python/pip.conf $HOME/.pip/pip.conf
   
   if ! type virtualenv >/dev/null 2>&1; then
-    echo "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
+    echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
     sudo apt install -y virtualenv
   fi
 }
@@ -217,35 +217,35 @@ function install_python() {
 # Node.js
 function install_node() {
   if ! type curl >/dev/null 2>&1; then
-    echo "${COLOR}Installing ${COLOR1}curl${COLOR}...${NC}"
+    echo -e "${COLOR}Installing ${COLOR1}curl${COLOR}...${NC}"
     sudo apt install -y curl
   fi
   
   NODE_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "nodejs")
   if [ -z "$NODE_PACKAGE" ]; then
   
-    echo "[1] Node.js v4"
-    echo "[2] Node.js v6"
-    echo "[3] Node.js v8"
-    echo -n "Choose version[3]:"
+    echo -e "[1] Node.js v4"
+    echo -e "[2] Node.js v6"
+    echo -e "[3] Node.js v8"
+    echo -e -n "Choose version[3]:"
     read version
   
     if [ -z $version ]; then
       version='3'
     fi
   
-    if echo "$version" | grep -iq "^1"; then
+    if echo -e "$version" | grep -iq "^1"; then
       curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
-    elif echo "$version" | grep -iq "^2"; then
+    elif echo -e "$version" | grep -iq "^2"; then
       curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-    elif echo "$version" | grep -iq "^3"; then
+    elif echo -e "$version" | grep -iq "^3"; then
       curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     else
-      echo "Nahh!"
+      echo -e "Nahh!"
       exit
     fi
   
-    echo "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
+    echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
     sudo apt $APT_PROXY install -y nodejs
   fi
   
@@ -260,11 +260,11 @@ function install_zsh() {
   fi
   
   if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
-    echo "${COLOR}Current SHELL is not ${COLOR1}ZSH${NC}"
+    echo -e "${COLOR}Current SHELL is not ${COLOR1}ZSH${NC}"
     if [ ! -e /usr/bin/zsh ]; then
-      echo "${COLOR}Installing ${COLOR1}ZSH${COLOR}...${NC}"
+      echo -e "${COLOR}Installing ${COLOR1}ZSH${COLOR}...${NC}"
       sudo apt $APT_PROXY install -y zsh
-      echo "${COLOR}Change SHELL to /usr/bin/zsh ...${NC}"
+      echo -e "${COLOR}Change SHELL to /usr/bin/zsh ...${NC}"
       chsh -s /usr/bin/zsh
     fi
   fi
@@ -291,58 +291,58 @@ function install_vim() {
       # Check if ubuntu-server is installed or not
       PACKAGE=$(dpkg -l | grep ubuntu-server)
       if [ ! -z "$PACKAGE" ]; then
-        echo "${COLOR}Ubuntu server edition found.${NC}"
+        echo -e "${COLOR}Ubuntu server edition found.${NC}"
         VIM_PACKAGE=vim
       else
-        echo "${COLOR}Ubuntu desktop edition found.${NC}"
+        echo -e "${COLOR}Ubuntu desktop edition found.${NC}"
         if [ -z $DISPLAY ]; then
-          echo "${COLOR}No \$DISPLAY found.${NC}"
+          echo -e "${COLOR}No DISPLAY found.${NC}"
           VIM_PACKAGE=vim
         else
-          echo "${COLOR}\$DISPLAY found.${NC}"
+          echo -e "${COLOR}DISPLAY found.${NC}"
           VIM_PACKAGE=vim-gtk
         fi
       fi
   
       VIM_PPA=/etc/apt/sources.list.d/jonathonf-ubuntu-vim-$(lsb_release -s -c).list
       if [ ! -e $VIM_PPA ]; then
-        echo "${COLOR}No latest vim ppa found, adding ${COLOR1}ppa:jonathonf/vim${COLOR}...${NC}"
+        echo -e "${COLOR}No latest vim ppa found, adding ${COLOR1}ppa:jonathonf/vim${COLOR}...${NC}"
         sudo add-apt-repository -y ppa:jonathonf/vim
         sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $VIM_PPA 
         sudo apt update
       fi
   
-      echo "${COLOR}Ubuntu is found, checking ${COLOR1}$VIM_PACKAGE${COLOR1}...${NC}"
+      echo -e "${COLOR}Ubuntu is found, checking ${COLOR1}$VIM_PACKAGE${COLOR1}...${NC}"
       # Check if VIM_PACKAGE is installed or not
       PACKAGE=$(dpkg -l | grep $VIM_PACKAGE)
       if [ -z "$PACKAGE" ]; then
-        echo "$VIM_PACKAGE is not found."
+        echo -e "$VIM_PACKAGE is not found."
         # Install VIM_PACKAGE
-        echo "${COLOR}Install ${COLOR1}$VIM_PACKAGE${COLOR}...${NC}"
+        echo -e "${COLOR}Install ${COLOR1}$VIM_PACKAGE${COLOR}...${NC}"
         sudo apt $APT_PROXY install -y $VIM_PACKAGE
       else
-        echo "${COLOR1}$VIM_PACKAGE${COLOR} is found, trying to find latest upgrades...${NC}"
+        echo -e "${COLOR1}$VIM_PACKAGE${COLOR} is found, trying to find latest upgrades...${NC}"
         sudo apt update && sudo apt upgrade
       fi
   
-      echo "${COLOR}Install supplementary tools...${NC}"
+      echo -e "${COLOR}Install supplementary tools...${NC}"
       sudo apt $APT_PROXY install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby perl
     fi
   elif [ $(uname) = 'Darwin' ]; then
-    echo 'Darwin is found, checking vim...'
+    echo -e 'Darwin is found, checking vim...'
     PACKAGE=$(brew list|grep vim)
     if [ -z "$PACKAGE" ]; then
-      echo 'vim is not found. Installing vim...'
+      echo -e 'vim is not found. Installing vim...'
       brew install vim vim --with-python3
-      echo 'Installing vim...Done.'
+      echo -e 'Installing vim...Done.'
     else
-      echo 'vim is found.'
+      echo -e 'vim is found.'
     fi
   
-    echo 'Install supplementary tools...'
+    echo -e 'Install supplementary tools...'
     brew install ctags the_silver_searcher cscope astyle
   else
-    echo 'Unknown OS, please make sure vim is installed.'
+    echo -e 'Unknown OS, please make sure vim is installed.'
   fi
   
   if [ ! -d "$VIM_HOME" ]; then
@@ -377,7 +377,7 @@ function install_vim() {
   # NeoVim {{{
   NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-$(lsb_release -s -c).list
   if [ ! -e $NVIM_PPA ]; then
-    echo "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/stable${COLOR}...${NC}"
+    echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/stable${COLOR}...${NC}"
     sudo add-apt-repository -y ppa:neovim-ppa/stable
     sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $NVIM_PPA 
     sudo apt update
@@ -392,19 +392,19 @@ function install_vim() {
   mkdir -p $VARPATH/venv
   
   if ! type virtualenv >/dev/null 2>&1; then
-    echo 'Python environment is not initialized. Initializing now...'
+    echo -e 'Python environment is not initialized. Initializing now...'
     install_python
   fi
   
   pip install -U --user neovim PyYAML
   virtualenv --system-site-packages -p /usr/bin/python2 $VARPATH/venv/neovim2
   virtualenv --system-site-packages -p /usr/bin/python3 $VARPATH/venv/neovim3
-  echo 'Initialized env for neovim, run :UpdateRemotePlugin when first startup'
+  echo -e 'Initialized env for neovim, run :UpdateRemotePlugin when first startup'
   
   # Node.js package for NeoVim
   if ! type npm >/dev/null 2>&1; then
-    echo 'Node.js environment is not initialized.'
-    echo 'Calling node.js/mkenv.sh'
+    echo -e 'Node.js environment is not initialized.'
+    echo -e 'Calling node.js/mkenv.sh'
     . $HOME/myConfigs/node.js/mkenv.sh
   fi
   npm install -g neovim
@@ -429,11 +429,11 @@ function install_rxvt() {
     
     RXVT_PACAKGE=$(dpkg -l|cut -d " " -f 3|grep "rxvt-unicode-256color")
     if [ -z "$RXVT_PACAKGE" ]; then
-      echo "Installing rxvt-unicode-256color..."
+      echo -e "Installing rxvt-unicode-256color..."
       sudo apt $APT_PROXY install -y rxvt-unicode-256color
     fi
   else
-    echo "${COLOR}rxvt-unicode-256color will only be installed on Linux.${NC}"
+    echo -e "${COLOR}rxvt-unicode-256color will only be installed on Linux.${NC}"
   fi
 }
 
@@ -443,20 +443,20 @@ function install_i3wm() {
     # Install i3wm if not exist
     APT_SOURCE=$(grep debian.sur5r.net /etc/apt/sources.list)
     if [ -z "$APT_SOURCE" ]; then
-      echo "Adding i3wm official repository to '/etc/apt/sources.list'..."
-      echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee --append /etc/apt/sources.list
-      echo "Update source..."
+      echo -e "Adding i3wm official repository to '/etc/apt/sources.list'..."
+      echo -e "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee --append /etc/apt/sources.list
+      echo -e "Update source..."
       sudo apt $APT_PROXY update
-      echo "Install i3wm official repository key..."
+      echo -e "Install i3wm official repository key..."
       sudo apt $APT_PROXY --allow-unauthenticated install -y sur5r-keyring
       sudo apt $APT_PROXY update
     fi
 
     I3_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "^i3$")
     if [ -z "$I3_PACKAGE" ]; then
-      echo "Install i3wm..."
+      echo -e "Install i3wm..."
       sudo apt $APT_PROXY install -y i3
-      echo "Install i3blocks..."
+      echo -e "Install i3blocks..."
       sudo apt $APT_PROXY install -y i3blocks
     else
       sudo apt update && sudo apt upgrade
@@ -488,11 +488,11 @@ function install_i3wm() {
     i3bang
   
     # check if 'consolekit' is installed or not
-    echo 'Checking package consolekit...'
+    echo -e 'Checking package consolekit...'
     dpkg-query -l consolekit 2>/dev/null
     if [ "$?" -eq 1 ]; then
       # Install 'consolekit'
-      echo 'Installing consolekit...'
+      echo -e 'Installing consolekit...'
       sudo apt $APT_PROXY install -y consolekit
     fi
   
@@ -510,15 +510,15 @@ function install_i3wm() {
     done
   
     # check if 'dex' is installed or not, it's needed to load xsession files
-    echo 'Checking package dex...'
+    echo -e 'Checking package dex...'
     dpkg-query -l dex 2>/dev/null
     if [ "$?" -eq 1 ]; then
       # Install 'dex'
-      echo 'Installing dex...'
+      echo -e 'Installing dex...'
       sudo apt $APT_PROXY install -y dex
     fi
   else
-    echo "${COLOR}i3wm will only be installed on Linux.${NC}"
+    echo -e "${COLOR}i3wm will only be installed on Linux.${NC}"
   fi
 }
 
@@ -547,7 +547,7 @@ function install_all() {
 }
 
 function print_info() {
-  echo "${COLOR}install.sh [all|gfw|git|myConfigs]${NC}"
+  echo -e "${COLOR}install.sh [all|gfw|git|myConfigs]${NC}"
 }
 
 case $1 in
