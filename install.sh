@@ -49,20 +49,26 @@ function install_gfw() {
 
       echo -e "${COLOR}Installing ${COLOR1}ss-qt5${COLOR}...${NC}"
       sudo apt install -y shadowsocks-qt5
+    else
+      echo -e "${COLOR1}ss-qt5${COLOR} was found.${NC}"
     fi
 
     if ! type polipo >/dev/null 2>&1; then
       echo -e "${COLOR}Installing polipo proxy...${NC}"
       sudo apt install -y polipo
+    else
+      echo -e "${COLOR1}polipo${COLOR} was found.${NC}"
     fi
-
-    echo -e "${COLOR}GFW initialized.${NC}"
-    echo -e "${COLOR}Please run '${COLOR1}ss-qt5${COLOR}' and configure some shadowsocks server...${NC}"
 
     if [ -d $HOME/myConfigs ]; then
       ln -sfnv $HOME/myConfigs/gfw/tsocks.conf $HOME/.tsocks.conf
       sudo cp $HOME/myConfigs/gfw/polipo.conf /etc/polipo/config
+    else
+      echo -e "${COLOR1}myConfigs${COLOR} was not found, please install git and fetch it from repo, then run 'install.sh gfw' again to link some configuration files.${NC}"
     fi
+
+    echo -e "${COLOR}GFW initialized.${NC}"
+    echo -e "${COLOR}Please run '${COLOR1}ss-qt5${COLOR}' and configure some shadowsocks server...${NC}"
   fi
 }
 
@@ -77,19 +83,28 @@ function install_git() {
       # Replace official launchpad address with reverse proxy from USTC
       sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
       sudo apt update
+    else
+      echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
     fi
 
     if ! type git >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
       sudo apt install -y git
+    else
+      echo -e "${COLOR1}git${COLOR} was found.${NC}"
     fi
   elif [ $OS = 'Darwin']; then
     brew install git
   fi
 
+  echo -e "${COLOR}Configuring...${NC}"
+  echo -e "${COLOR}Setting 'user.email' to 'yusiwen@gmail.com'${NC}"
   git config --global user.email "yusiwen@gmail.com"
+
+  echo -e "${COLOR}Setting 'user.name' to 'Siwen Yu'${NC}"
   git config --global user.name "Siwen Yu"
 
+  echo -e "${COLOR}Setting line feed behavior...${NC}"
   if [[ $OS = MINGW* ]]; then
     # On Windows, commit with LF and checkout with CRLF
     git config --global core.autocrlf true
@@ -100,11 +115,13 @@ function install_git() {
   # Turn on warning on convert EOL failure
   git config --global core.safecrlf warn
   
+  echo -e "${COLOR}Setting misc...${NC}"
   git config --global core.editor vim
   git config --global merge.tool vimdiff
   git config --global merge.conflictstyle diff3
   git config --global mergetool.prompt false
 
+  echo -e "${COLOR}Setting proxies...${NC}"
   if [ $OS = 'Linux' ]; then
     # On Ubuntu, use polipo as http(s) proxy
     git config --global http.proxy 'http://127.0.0.1:15355'
@@ -117,14 +134,16 @@ function install_git() {
     git config --global https.proxy 'http://127.0.0.1:1088'
   fi
 
-  if [ -d $HOME/myConfigs ]; then
-    if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
+  if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
+    if [ -d $HOME/myConfigs ]; then
       mkdir -p $HOME/.ssh
       ln -sfnv $HOME/myConfigs/git/ssh_config $HOME/.ssh/config
 
       mkdir -p $HOME/bin
       ln -sfnv $HOME/myConfigs/git/git-migrate $HOME/bin/git-migrate
       ln -sfnv $HOME/myConfigs/git/git-new-workdir $HOME/bin/git-new-workdir
+    else
+      echo -e "${COLOR1}myConfigs${COLOR} was not found, please install git and fetch it from repo, then run 'install.sh git' again to link some configuration files.${NC}"
     fi
   fi
 
@@ -141,10 +160,11 @@ function install_git() {
 
 function install_ruby() {
   if [ $OS = 'Linux' ]; then
-    RUBY_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "ruby-full")
-    if [ -z "$RUBY_PACKAGE" ]; then
+    if ! type ruby >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
       sudo apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
+    else
+      echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
     fi
   fi
 
@@ -161,7 +181,7 @@ function install_ruby() {
 
 # Initialize myConfigs repo
 function fetch_myConfigs() {
-  if [ ! type git >/dev/null 2>&1 ]; then
+  if ! type git >/dev/null 2>&1; then
     install_git
   fi
 
