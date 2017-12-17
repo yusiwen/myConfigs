@@ -75,6 +75,15 @@ function install_gfw() {
 
 # Git
 function install_git() {
+  if ! type polipo >/dev/null 2>&1; then
+    install_gfw
+    read -p "Continue? [y|N]${NC}" CONFIRM
+    case $CONFIRM in
+      [Yy]* ) ;;
+      * ) exit;;
+    esac
+  fi
+
   if [ $OS = 'Linux' ]; then
     # install git if not exist
     GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$(lsb_release -c -s).list
@@ -244,6 +253,10 @@ function install_python() {
 
 # Node.js
 function install_node() {
+  if [ ! -d $HOME/myConfigs ]; then
+    fetch_myConfigs
+  fi
+
   if ! type curl >/dev/null 2>&1; then
     echo -e "${COLOR}Installing ${COLOR1}curl${COLOR}...${NC}"
     sudo apt install -y curl
@@ -267,12 +280,12 @@ function install_node() {
     elif echo -e "$version" | grep -iq "^3"; then
       curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     else
-      echo "Nahh!"
-      exit
+      echo -e "${COLOR}Invalid input. Install v8 instead.${NC}"
+      curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     fi
   
     echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
-    sudo apt install -y nodejs
+    sudo apt -c $HOME/.apt.conf install -y nodejs
   else
     echo -e "${COLOR1}Node.js${COLOR} was found.${NC}"
   fi
@@ -290,11 +303,11 @@ function install_zsh() {
   fi
   
   if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
-    echo -e "${COLOR}Current SHELL is not ${COLOR1}ZSH${NC}"
+    echo -e "${COLOR}Current SHELL is not ${COLOR1}Zsh${NC}"
     if [ ! -e /usr/bin/zsh ]; then
-      echo -e "${COLOR}Installing ${COLOR1}ZSH${COLOR}...${NC}"
+      echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
       sudo apt install -y zsh
-      echo -e "${COLOR}Change SHELL to /usr/bin/zsh ...${NC}"
+      echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
       chsh -s /usr/bin/zsh
     fi
   fi
@@ -340,6 +353,8 @@ function install_vim() {
         sudo add-apt-repository -y ppa:jonathonf/vim
         sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $VIM_PPA 
         sudo apt update
+      else
+        echo -e "${COLOR1}ppa:jonathonf/vim${COLOR} was found${NC}"
       fi
   
       echo -e "${COLOR}Ubuntu is found, checking ${COLOR1}$VIM_PACKAGE${COLOR1}...${NC}"
@@ -411,6 +426,8 @@ function install_vim() {
     sudo add-apt-repository -y ppa:neovim-ppa/stable
     sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $NVIM_PPA 
     sudo apt update
+  else
+    echo -e "${COLOR1}ppa:neovim-ppa/stable${COLOR} was found${NC}"
   fi
 
   ln -sfnv $CONFIG_VIM/init.vim $VIM_HOME/init.vim
@@ -422,25 +439,41 @@ function install_vim() {
   mkdir -p $VARPATH/venv
   
   if ! type virtualenv >/dev/null 2>&1; then
-    echo -e 'Python environment is not initialized. Initializing now...'
+    echo -e "${COLOR}Python environment is not initialized. Initializing now...${NC}"
     install_python
   fi
   
-  pip install -U --user neovim PyYAML
-  virtualenv --system-site-packages -p /usr/bin/python2 $VARPATH/venv/neovim2
-  virtualenv --system-site-packages -p /usr/bin/python3 $VARPATH/venv/neovim3
-  echo -e 'Initialized env for neovim, run :UpdateRemotePlugin when first startup'
+  echo -e "${COLOR}Installing python package: neovim, PyYAML...${NC}"
+  NV_PYTHON_PCK=$(pip list 2>/dev/null | grep neovim | wc -l)
+  if [ $NV_PYTHON_PCK -eq 0 ]; then
+    pip install -U --user neovim
+  fi
+  NV_PYTHON_PCK=$(pip list 2>/dev/null | grep PyYAML | wc -l)
+  if [ $NV_PYTHON_PCK -eq 0 ]; then
+    pip install -U --user PyYAML
+  fi
+
+  if [ ! -d $VARPATH/venv/neovim2 ]; then
+    virtualenv --system-site-packages -p /usr/bin/python2 $VARPATH/venv/neovim2
+  fi
+  if [ ! -d $VARPATH/venv/neovim3 ]; then
+    virtualenv --system-site-packages -p /usr/bin/python3 $VARPATH/venv/neovim3
+  fi
+  echo -e "${COLOR}Initialized python environment for neovim, run ':UpdateRemotePlugin' on first startup"
   
   # Node.js package for NeoVim
   if ! type npm >/dev/null 2>&1; then
-    echo -e 'Node.js environment is not initialized.'
-    echo -e 'Calling node.js/mkenv.sh'
-    . $HOME/myConfigs/node.js/mkenv.sh
+    echo -e "${COLOR1}Node.js${COLOR} environment is not initialized. Initializing now...${NC}"
+    install_node
   fi
-  npm install -g neovim
+
+  NV_NODE_PCK=$(npm list --global | grep neovim | wc -l)
+  if [ $NV_PYTHON_PCK -eq 0 ]; then
+    npm install -g neovim
+  fi
   #}}}
   
-  npm -g install jshint jsxhint jsonlint stylelint sass-lint raml-cop markdownlint-cli write-good
+  npm install -g jshint jsxhint jsonlint stylelint sass-lint raml-cop markdownlint-cli write-good
   pip install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint
 }
 
