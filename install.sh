@@ -490,13 +490,12 @@ function install_rxvt() {
     ln -sfnv $HOME/myConfigs/X11/fonts/input-mono-compressed.xresources $HOME/.Xresources.font
     xrdb -load $HOME/.Xresources
     
-    RXVT_PACAKGE=$(dpkg -l|cut -d " " -f 3|grep "rxvt-unicode-256color")
-    if [ -z "$RXVT_PACAKGE" ]; then
-      echo -e "Installing rxvt-unicode-256color..."
+    if ! type rxvt >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}rxvt-unicode-256color${COLOR}...${NC}"
       sudo apt install -y rxvt-unicode-256color
     fi
   else
-    echo -e "${COLOR}rxvt-unicode-256color will only be installed on Linux.${NC}"
+    echo -e "${COLOR1}rxvt-unicode-256color${COLOR} will only be installed on Linux.${NC}"
   fi
 }
 
@@ -504,22 +503,20 @@ function install_rxvt() {
 function install_i3wm() {
   if [ $OS = 'Linux' ]; then
     # Install i3wm if not exist
-    APT_SOURCE=$(grep debian.sur5r.net /etc/apt/sources.list)
-    if [ -z "$APT_SOURCE" ]; then
-      echo -e "Adding i3wm official repository to '/etc/apt/sources.list'..."
-      echo -e "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee --append /etc/apt/sources.list
-      echo -e "Update source..."
+    APT_SOURCE=$(grep debian.sur5r.net /etc/apt/sources.list | wc -l)
+    if [ $APT_SOURCE -eq 0 ]; then
+      echo -e "${COLOR}Adding i3wm official repository to '/etc/apt/sources.list'...${NC}"
+      echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee --append /etc/apt/sources.list
       sudo apt update
-      echo -e "Install i3wm official repository key..."
+      echo -e "${COLOR}Install i3wm official repository key...${NC}"
       sudo apt --allow-unauthenticated install -y sur5r-keyring
       sudo apt update
     fi
 
-    I3_PACKAGE=$(dpkg -l|cut -d " " -f 3|grep "^i3$")
-    if [ -z "$I3_PACKAGE" ]; then
-      echo -e "Install i3wm..."
+    if ! type i3 >/dev/null 2>&1; then
+      echo -e "${COLOR}Install ${COLOR1}i3-wm${COLOR}...${NC}"
       sudo apt install -y i3
-      echo -e "Install i3blocks..."
+      echo -e "${COLOR}Install ${COLOR1}i3blocks${COLOR}...${NC}"
       sudo apt install -y i3blocks
     else
       sudo apt update && sudo apt upgrade
@@ -551,11 +548,11 @@ function install_i3wm() {
     i3bang
   
     # check if 'consolekit' is installed or not
-    echo -e 'Checking package consolekit...'
-    dpkg-query -l consolekit 2>/dev/null
-    if [ "$?" -eq 1 ]; then
+    echo -e "${COLOR}Checking ${COLOR1}consolekit${COLOR}...${NC}"
+    CONSOLEKIT_PCK=$(dpkg -l | grep consolekit | wc -l)
+    if [ $CONSOLEKIT_PCK -eq 0 ]; then
       # Install 'consolekit'
-      echo -e 'Installing consolekit...'
+      echo -e "${COLOR}Installing ${COLOR1}consolekit${COLOR}...${NC}"
       sudo apt install -y consolekit
     fi
   
@@ -573,11 +570,10 @@ function install_i3wm() {
     done
   
     # check if 'dex' is installed or not, it's needed to load xsession files
-    echo -e 'Checking package dex...'
-    dpkg-query -l dex 2>/dev/null
-    if [ "$?" -eq 1 ]; then
+    echo -e "${COLOR}Checking ${COLOR1}dex${COLOR}...${NC}"
+    if ! type dex >/dev/null 2>&1; then
       # Install 'dex'
-      echo -e 'Installing dex...'
+      echo -e "${COLOR}Installing ${COLOR1}dex${COLOR}...${NC}"
       sudo apt install -y dex
     fi
   else
