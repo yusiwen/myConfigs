@@ -323,30 +323,14 @@ function install_zsh() {
 function install_vim() {
   CONFIG_VIM=$HOME/myConfigs/vim
   VIM_HOME=$HOME/.vim
-  VIM_PACKAGE=
+  VIM_PACKAGE=vim
 
   if [ ! -d $CONFIG_VIM ]; then
     fetch_myConfigs
   fi
   
-  if [ $(uname) = 'Linux' ]; then
+  if [ $OS = 'Linux' ]; then
     if [ $(lsb_release -i -s) = 'Ubuntu' ]; then
-      # Check if ubuntu-server is installed or not
-      PACKAGE=$(dpkg -l | grep ubuntu-server)
-      if [ ! -z "$PACKAGE" ]; then
-        echo -e "${COLOR}Ubuntu server edition found.${NC}"
-        VIM_PACKAGE=vim
-      else
-        echo -e "${COLOR}Ubuntu desktop edition found.${NC}"
-        if [ -z $DISPLAY ]; then
-          echo -e "${COLOR}No DISPLAY found.${NC}"
-          VIM_PACKAGE=vim
-        else
-          echo -e "${COLOR}DISPLAY found.${NC}"
-          VIM_PACKAGE=vim-gtk
-        fi
-      fi
-  
       VIM_PPA=/etc/apt/sources.list.d/jonathonf-ubuntu-vim-$(lsb_release -s -c).list
       if [ ! -e $VIM_PPA ]; then
         echo -e "${COLOR}No latest vim ppa found, adding ${COLOR1}ppa:jonathonf/vim${COLOR}...${NC}"
@@ -359,9 +343,11 @@ function install_vim() {
   
       echo -e "${COLOR}Ubuntu is found, checking ${COLOR1}$VIM_PACKAGE${COLOR1}...${NC}"
       # Check if VIM_PACKAGE is installed or not
-      PACKAGE=$(dpkg -l | grep $VIM_PACKAGE)
-      if [ -z "$PACKAGE" ]; then
-        echo -e "$VIM_PACKAGE is not found."
+      set +e
+      PACKAGE=$(dpkg -l | grep $VIM_PACKAGE | cut -d ' ' -f 3 | grep ^$VIM_PACKAGE$ | wc -l)
+      set -e
+      if [ $PACKAGE -eq 0 ]; then
+        echo -e "${COLOR1}$VIM_PACKAGE${COLOR} is not found.${NC}"
         # Install VIM_PACKAGE
         echo -e "${COLOR}Install ${COLOR1}$VIM_PACKAGE${COLOR}...${NC}"
         sudo apt install -y $VIM_PACKAGE
@@ -374,20 +360,22 @@ function install_vim() {
       sudo apt install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby perl
     fi
   elif [ $(uname) = 'Darwin' ]; then
-    echo -e 'Darwin is found, checking vim...'
+    echo -e "${COLOR}Darwin is found, checking vim...${NC}"
+    set +e
     PACKAGE=$(brew list|grep vim)
+    set -e
     if [ -z "$PACKAGE" ]; then
-      echo -e 'vim is not found. Installing vim...'
+      echo -e "${COLOR1}vim${COLOR} is not found. Installing...${NC}"
       brew install vim vim --with-python3
-      echo -e 'Installing vim...Done.'
     else
-      echo -e 'vim is found.'
+      echo -e "${COLOR1}vim${COLOR} is found.${NC}"
     fi
   
-    echo -e 'Install supplementary tools...'
+    echo -e "${COLOR}Install supplementary tools...${NC}"
     brew install ctags the_silver_searcher cscope astyle
   else
-    echo -e 'Unknown OS, please make sure vim is installed.'
+    echo -e "${COLOR}Unknown OS, please make sure vim is installed.${NC}"
+    exit
   fi
   
   if [ ! -d "$VIM_HOME" ]; then
@@ -444,11 +432,15 @@ function install_vim() {
   fi
   
   echo -e "${COLOR}Installing python package: neovim, PyYAML...${NC}"
+  set +e
   NV_PYTHON_PCK=$(pip list 2>/dev/null | grep neovim | wc -l)
+  set -e
   if [ $NV_PYTHON_PCK -eq 0 ]; then
     pip install -U --user neovim
   fi
+  set +e
   NV_PYTHON_PCK=$(pip list 2>/dev/null | grep PyYAML | wc -l)
+  set -e
   if [ $NV_PYTHON_PCK -eq 0 ]; then
     pip install -U --user PyYAML
   fi
@@ -467,7 +459,9 @@ function install_vim() {
     install_node
   fi
 
+  set +e
   NV_NODE_PCK=$(npm list --global | grep neovim | wc -l)
+  set -e
   if [ $NV_PYTHON_PCK -eq 0 ]; then
     npm install -g neovim
   fi
