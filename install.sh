@@ -418,6 +418,19 @@ function install_vim() {
     echo -e "${COLOR1}ppa:neovim-ppa/stable${COLOR} was found${NC}"
   fi
 
+  set +e
+  PACKAGE=$(dpkg -l | grep neovim | cut -d ' ' -f 3 | grep ^neovim$ | wc -l)
+  set -e
+  if [ $PACKAGE -eq 0 ]; then
+    echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
+    # Install VIM_PACKAGE
+    echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
+    sudo apt install -y neovim 
+  else
+    echo -e "${COLOR1}NeoVim${COLOR} is found, trying to find latest upgrades...${NC}"
+    sudo apt update && sudo apt upgrade
+  fi
+
   ln -sfnv $CONFIG_VIM/init.vim $VIM_HOME/init.vim
   mkdir -p $HOME/.config
   ln -sfnv $HOME/.vim $HOME/.config/nvim
