@@ -432,6 +432,7 @@ function install_vim() {
   fi
 
   ln -sfnv $CONFIG_VIM/init.vim $VIM_HOME/init.vim
+  ln -sfnv $CONFIG_VIM/vimrc.neovim $VIM_HOME/vimrc.neovim
   mkdir -p $HOME/.config
   ln -sfnv $HOME/.vim $HOME/.config/nvim
   
