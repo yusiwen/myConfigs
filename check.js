@@ -11,7 +11,8 @@ var repos = [
   'felixhageloh/uebersicht', 'evolus/pencil',
   'brrd/Abricotine', 'Laverna/laverna',
   'electron/electron', 'electron/electron-api-demos',
-  'cryptomator/cryptomator', 'wallabag/wallabag'
+  'cryptomator/cryptomator', 'wallabag/wallabag',
+  'Requarks/wiki'
 ];
 
 for (var i = 0; i < repos.length; i++) {
