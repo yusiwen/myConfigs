@@ -27,3 +27,15 @@ mkdir -p /var/log/wikijs
 ```
 
 Restart `supervisor` using `systemctl`: `sudo systemctl restart supervisor`.
+
+## FAQ
+
+### Add Rsync to “Git Bash for Windows”
+
+Download the [package](http://www2.futureware.at/~nickoe/msys2-mirror/msys/x86_64/rsync-3.1.2-2-x86_64.pkg.tar.xz) from [pacman repository](http://www2.futureware.at/~nickoe/msys2-mirror/msys/x86_64/).
+
+Extract t using 7-zip and drop rsync.exe to `C:\Program Files\Git\usr\bin`.
+
+Likewise, you can find more *nix tools from pacman repository and install it manually.
+
+[Original Post](https://blog.tiger-workshop.com/add-rsync-to-git-bash-for-windows/)
