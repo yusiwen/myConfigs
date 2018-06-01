@@ -27,6 +27,10 @@ rsync -azPv root@vps01:/var/lib/jenkins/backup $TARGET_PATH/jenkins
 echo 'Backup Nginx settings...'
 rsync -azPv root@vps01:/etc/nginx $TARGET_PATH/etc
 
+# Backup Supervisor setting files from vps01
+echo 'Backup Supervisor settings...'
+rsync -azPv root@vps01:/etc/supervisor $TARGET_PATH/etc
+
 # Backup Artifactory backup files from vps01
 echo 'Backup Artifactory files...'
 rsync -azPv root@vps01:/var/opt/jfrog/artifactory/backup $TARGET_PATH/artifactory
