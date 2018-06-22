@@ -614,7 +614,7 @@ function install_all() {
 }
 
 function print_info() {
-  echo -e "${COLOR}install.sh [all|gfw|git|myConfigs]${NC}"
+  echo -e "${COLOR}install.sh [all|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh]${NC}"
 }
 
 case $1 in
