@@ -64,7 +64,11 @@ for script in $HOME/myConfigs/shell/scripts/*.script; do
 done
 
 if [ "$(uname)" != 'Darwin' ]; then
-  source /etc/zsh_command_not_found
+  if [ -f /etc/zsh_command_not_found ]; then
+    source /etc/zsh_command_not_found
+  else
+    echo '/etc/zsh_command_not_found is not found'
+  fi
 fi
 
 if [[ "$(uname)" != 'Darwin' ]]; then
