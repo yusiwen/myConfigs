@@ -1,19 +1,27 @@
 // Place your settings in this file to overwrite the default settings
 {
   "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "editor.fontFamily": "等距更纱黑体 SC",
+  "editor.fontSize": 13,
+  "editor.fontLigatures": true,
+  "editor.renderWhitespace": "all",
+
+  "files.insertFinalNewline": true,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "files.trimTrailingWhitespace": true,
+
   "vsicons.projectDetection.autoReload": true,
-  "editor.wordWrap": true,
-  "workbench.iconTheme": "material-icon-theme",
 
   "java.home": "I:/java/jdk1.8.0_144",
 
   "vim.leader": ",",
   "vim.easymotion": true,
   "vim.incsearch": true,
-  "vim.useSystemClipboard": false,
-  "vim.useCtrlKeys": false,
+  "vim.useSystemClipboard": true,
+  "vim.useCtrlKeys": true,
   "vim.hlsearch": true,
-  "vim.disableAnnoyingNeovimMessage": true,
   "vim.insertModeKeyBindings": [
     {
         "before": ["j", "j"],
@@ -35,5 +43,21 @@
     "vue"
   ],
 
-  "vetur.format.js.InsertSpaceBeforeFunctionParenthesis": true
+  "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
+  "vetur.format.js.InsertSpaceBeforeFunctionParenthesis": true,
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.colorTheme": "One Dark Pro",
+  "git.autofetch": true,
+  "gitlens.keymap": "alternate",
+  "gitlens.advanced.messages": {
+    "suppressCommitHasNoPreviousCommitWarning": false,
+    "suppressCommitNotFoundWarning": false,
+    "suppressFileNotUnderSourceControlWarning": false,
+    "suppressGitVersionWarning": false,
+    "suppressLineUncommittedWarning": false,
+    "suppressNoRepositoryWarning": false,
+    "suppressResultsExplorerNotice": false,
+    "suppressShowKeyBindingsNotice": true
+  },
+  "gitlens.historyExplorer.enabled": true
 }
