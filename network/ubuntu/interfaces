@@ -1,0 +1,19 @@
+# Network Configuration for vm-ubuntu-16.04
+# /etc/network/interfaces
+
+# interfaces(5) file used by ifup(8) and ifdown(8)
+auto lo
+iface lo inet loopback
+
+# NAT
+auto  enp0s3
+iface enp0s3 inet dhcp
+
+# Host-Only
+auto  enp0s8
+iface enp0s8 inet static
+address  192.168.56.5
+network  192.168.56.0
+netmask  255.255.255.0
+gateway  192.168.56.1
+dns-nameservers  192.168.2.1 8.8.8.8

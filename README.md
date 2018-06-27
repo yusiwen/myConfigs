@@ -31,7 +31,9 @@ Contents
 1. `misc/` miscellaneous stuffs.
 1. `mounts/` fstab configurations for home-ubuntu.
 1. `mpd/` mpd configurations.
+1. `network/` network configurations for VMs.
 1. `node.js/` Node.js settings.
+1. `oracle/` Oracle Instant Client configurations.
 1. `python/` Python settings.
 1. `razer/` Razer DeathAdder mouse polling rate configurations.
 1. `shell/` shell environments scripts.
@@ -51,7 +53,7 @@ Some important softwares. Needed after re-installing OS.
 	- [**i3wm**](https://i3wm.org/) (A tiling window manager)
 
 		See `i3/README.md`.
-	
+
 	- [**rxvt-unicode**](http://software.schmorp.de/pkg/rxvt-unicode.html) (A fork of the well known terminal emulator rxvt)
 
 		Installing from Ubuntu official repository:
@@ -361,7 +363,7 @@ Some important softwares. Needed after re-installing OS.
 		```text
 		$ sudo apt-add-repository ppa:font-manager/staging
 		```
-	
+
 	- **TLP** (Power management tools for laptop)
 
 		Remove `laptop-mode-tools` first, it conflicts with TLP.
