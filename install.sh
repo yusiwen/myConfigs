@@ -461,18 +461,19 @@ function install_vim() {
     install_python
   fi
   
+  # Install python neovim, PyYALM package site widely
   echo -e "${COLOR}Installing python package: neovim, PyYAML...${NC}"
   set +e
   NV_PYTHON_PCK=$(pip list 2>/dev/null | grep neovim | wc -l)
   set -e
   if [ $NV_PYTHON_PCK -eq 0 ]; then
-    pip install -U --user neovim
+    sudo -H pip2 install neovim
   fi
   set +e
   NV_PYTHON_PCK=$(pip list 2>/dev/null | grep PyYAML | wc -l)
   set -e
   if [ $NV_PYTHON_PCK -eq 0 ]; then
-    pip install -U --user PyYAML
+    sudo -H pip install PyYAML
   fi
 
   if [ ! -d $VARPATH/venv/neovim2 ]; then
