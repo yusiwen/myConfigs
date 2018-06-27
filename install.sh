@@ -37,20 +37,39 @@ function install_gfw() {
       sudo apt install -y tsocks
     fi
 
-    if ! type ss-qt5 >/dev/null 2>&1; then
-      SS_PPA=/etc/apt/sources.list.d/hzwhuang-ubuntu-ss-qt5-$(lsb_release -c -s).list
-      if [ ! -e $SS_PPA ]; then
-        echo -e "${COLOR}Add ${COLOR1}ss-qt5${COLOR} ppa...${NC}"
-        sudo apt-add-repository -y ppa:hzwhuang/ss-qt5
-        # Replace official launchpad address with reverse proxy from USTC
-        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $SS_PPA
-        sudo apt update
+    if [ ! $DISPLAY ]; then
+      echo -e "${COLOR}No DISPLAY found, installing shadowsocks command line tools...${NC}"
+      if ! type pip >/dev/null 2>&1; then
+        install_python
       fi
 
-      echo -e "${COLOR}Installing ${COLOR1}ss-qt5${COLOR}...${NC}"
-      sudo apt install -y shadowsocks-qt5
+      # Install the latest shadowsocks version to support chahca20-ietf-poly1305 algorithm
+      sudo apt install libsodium-dev
+      sudo pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
+
+      if ! type supervisorctl >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing supervisor...${NC}"
+        sudo apt install supervisor
+      fi
+      echo -e "${COLOR}Please run '${COLOR1}sslocal${COLOR}' and configure some shadowsocks server...${NC}"
+      echo -e "${COLOR}And use '${COLOR1}supervisor${COLOR}' to start it at bootup${NC}"
     else
-      echo -e "${COLOR1}ss-qt5${COLOR} was found.${NC}"
+      if ! type ss-qt5 >/dev/null 2>&1; then
+        SS_PPA=/etc/apt/sources.list.d/hzwhuang-ubuntu-ss-qt5-$(lsb_release -c -s).list
+        if [ ! -e $SS_PPA ]; then
+          echo -e "${COLOR}Add ${COLOR1}ss-qt5${COLOR} ppa...${NC}"
+          sudo apt-add-repository -y ppa:hzwhuang/ss-qt5
+          # Replace official launchpad address with reverse proxy from USTC
+          sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $SS_PPA
+          sudo apt update
+        fi
+
+        echo -e "${COLOR}Installing ${COLOR1}ss-qt5${COLOR}...${NC}"
+        sudo apt install -y shadowsocks-qt5
+      else
+        echo -e "${COLOR1}ss-qt5${COLOR} was found.${NC}"
+      fi
+      echo -e "${COLOR}Please run '${COLOR1}ss-qt5${COLOR}' and configure some shadowsocks server...${NC}"
     fi
 
     if ! type polipo >/dev/null 2>&1; then
@@ -69,7 +88,6 @@ function install_gfw() {
     fi
 
     echo -e "${COLOR}GFW initialized.${NC}"
-    echo -e "${COLOR}Please run '${COLOR1}ss-qt5${COLOR}' and configure some shadowsocks server...${NC}"
   fi
 }
 
@@ -93,6 +111,7 @@ function install_git() {
       # Replace official launchpad address with reverse proxy from USTC
       sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
       sudo apt update
+      sudo apt upgrade
     else
       echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
     fi
@@ -228,10 +247,6 @@ function fetch_myConfigs() {
 
 # Python
 function install_python() {
-  if [ ! -d $HOME/myConfigs ]; then
-    fetch_myConfigs
-  fi
-
   if ! type pip >/dev/null 2>&1; then
     echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
     sudo apt install -y python-pip
@@ -243,7 +258,8 @@ function install_python() {
   fi
   
   mkdir -p $HOME/.pip
-  ln -sfnv $HOME/myConfig/python/pip.conf $HOME/.pip/pip.conf
+  echo "[global]" > $HOME/.pip/pip.conf
+  echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >> $HOME/.pip/pip.conf
   
   if ! type virtualenv >/dev/null 2>&1; then
     echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
