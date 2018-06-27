@@ -19,7 +19,7 @@ function init_env() {
       sudo apt update
     fi
 
-    sudo apt install -y curl lua5.3 perl 
+    sudo apt install -y curl lua5.3 perl
   elif [ $OS = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
@@ -143,7 +143,7 @@ function install_git() {
   fi
   # Turn on warning on convert EOL failure
   git config --global core.safecrlf warn
-  
+
   echo -e "${COLOR}Setting misc...${NC}"
   git config --global core.editor vim
   git config --global merge.tool vimdiff
@@ -251,16 +251,16 @@ function install_python() {
     echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
     sudo apt install -y python-pip
   fi
-  
+
   if ! type pip3 >/dev/null 2>&1; then
     echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
     sudo apt install -y python3-pip
   fi
-  
+
   mkdir -p $HOME/.pip
   echo "[global]" > $HOME/.pip/pip.conf
   echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >> $HOME/.pip/pip.conf
-  
+
   if ! type virtualenv >/dev/null 2>&1; then
     echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
     sudo apt install -y virtualenv
@@ -277,18 +277,18 @@ function install_node() {
     echo -e "${COLOR}Installing ${COLOR1}curl${COLOR}...${NC}"
     sudo apt install -y curl
   fi
-  
+
   if ! type node >/dev/null 2>&1; then
     echo "[1] Node.js v4"
     echo "[2] Node.js v6"
     echo "[3] Node.js v8"
     echo -n "Choose version[3]:"
     read version
-  
+
     if [ -z $version ]; then
       version='3'
     fi
-  
+
     if echo -e "$version" | grep -iq "^1"; then
       curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
     elif echo -e "$version" | grep -iq "^2"; then
@@ -299,13 +299,13 @@ function install_node() {
       echo -e "${COLOR}Invalid input. Install v8 instead.${NC}"
       curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     fi
-  
+
     echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
     sudo apt -c $HOME/.apt.conf install -y nodejs
   else
     echo -e "${COLOR1}Node.js${COLOR} was found.${NC}"
   fi
-  
+
   mkdir -p $HOME/.npm-packages
   if [ ! -e $HOME/.npmrc ]; then
     cp $HOME/myConfigs/node.js/npmrc $HOME/.npmrc
@@ -317,7 +317,7 @@ function install_zsh() {
   if [ ! -d $CONFIG_SHELL ]; then
     fetch_myConfigs
   fi
-  
+
   if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
     echo -e "${COLOR}Current SHELL is not ${COLOR1}Zsh${NC}"
     if [ ! -e /usr/bin/zsh ]; then
@@ -327,7 +327,7 @@ function install_zsh() {
       chsh -s /usr/bin/zsh
     fi
   fi
-  
+
   ln -sfnv $CONFIG_SHELL/bashrc $HOME/.bashrc
   ln -sfnv $CONFIG_SHELL/bash_aliases $HOME/.bash_aliases
   ln -sfnv $CONFIG_SHELL/bash_profile $HOME/.bash_profile
@@ -344,19 +344,19 @@ function install_vim() {
   if [ ! -d $CONFIG_VIM ]; then
     fetch_myConfigs
   fi
-  
+
   if [ $OS = 'Linux' ]; then
     if [ $(lsb_release -i -s) = 'Ubuntu' ]; then
       VIM_PPA=/etc/apt/sources.list.d/jonathonf-ubuntu-vim-$(lsb_release -s -c).list
       if [ ! -e $VIM_PPA ]; then
         echo -e "${COLOR}No latest vim ppa found, adding ${COLOR1}ppa:jonathonf/vim${COLOR}...${NC}"
         sudo add-apt-repository -y ppa:jonathonf/vim
-        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $VIM_PPA 
+        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $VIM_PPA
         sudo apt update
       else
         echo -e "${COLOR1}ppa:jonathonf/vim${COLOR} was found${NC}"
       fi
-  
+
       echo -e "${COLOR}Ubuntu is found, checking ${COLOR1}$VIM_PACKAGE${COLOR1}...${NC}"
       # Check if VIM_PACKAGE is installed or not
       set +e
@@ -371,7 +371,7 @@ function install_vim() {
         echo -e "${COLOR1}$VIM_PACKAGE${COLOR} is found, trying to find latest upgrades...${NC}"
         sudo apt update && sudo apt upgrade
       fi
-  
+
       echo -e "${COLOR}Install supplementary tools...${NC}"
       sudo apt install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby perl
     fi
@@ -386,18 +386,18 @@ function install_vim() {
     else
       echo -e "${COLOR1}vim${COLOR} is found.${NC}"
     fi
-  
+
     echo -e "${COLOR}Install supplementary tools...${NC}"
     brew install ctags the_silver_searcher cscope astyle
   else
     echo -e "${COLOR}Unknown OS, please make sure vim is installed.${NC}"
     exit
   fi
-  
+
   if [ ! -d "$VIM_HOME" ]; then
     mkdir $VIM_HOME
   fi
-  
+
   ln -sfnv $CONFIG_VIM/vimrc $VIM_HOME/vimrc
   ln -sfnv $CONFIG_VIM/plugins.yaml $VIM_HOME/plugins.yaml
   ln -sfnv $CONFIG_VIM/vimrc.filetype $VIM_HOME/vimrc.filetype
@@ -409,26 +409,26 @@ function install_vim() {
   ln -sfnv $CONFIG_VIM/vimrc.nerdtree $VIM_HOME/vimrc.nerdtree
   ln -sfnv $CONFIG_VIM/vimrc.theme $VIM_HOME/vimrc.theme
   ln -sfnv $CONFIG_VIM/ctags $HOME/.ctags
-  
+
   #Default theme
   ln -sfnv $CONFIG_VIM/themes/vimrc.theme.sourcerer $HOME/.vim/vimrc.colortheme
-  
+
   # link custom color themes to $VIM_HOME
   if [ ! -L $VIM_HOME/colors ]; then
     ln -sfnv $CONFIG_VIM/colors $VIM_HOME/colors
   fi
-  
+
   # link snippets to $VIM_HOME
   if [ ! -L $VIM_HOME/snippets ]; then
     ln -sfnv $CONFIG_VIM/snippets $VIM_HOME/snippets
   fi
-  
+
   # NeoVim {{{
   NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-$(lsb_release -s -c).list
   if [ ! -e $NVIM_PPA ]; then
     echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/stable${COLOR}...${NC}"
     sudo add-apt-repository -y ppa:neovim-ppa/stable
-    sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $NVIM_PPA 
+    sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $NVIM_PPA
     sudo apt update
   else
     echo -e "${COLOR1}ppa:neovim-ppa/stable${COLOR} was found${NC}"
@@ -441,7 +441,7 @@ function install_vim() {
     echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
     # Install VIM_PACKAGE
     echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
-    sudo apt install -y neovim 
+    sudo apt install -y neovim
   else
     echo -e "${COLOR1}NeoVim${COLOR} is found, trying to find latest upgrades...${NC}"
     sudo apt update && sudo apt upgrade
@@ -451,11 +451,11 @@ function install_vim() {
   ln -sfnv $CONFIG_VIM/vimrc.neovim $VIM_HOME/vimrc.neovim
   mkdir -p $HOME/.config
   ln -sfnv $HOME/.vim $HOME/.config/nvim
-  
+
   # Initialize Python 2 & 3 environment for NeoVim
   VARPATH=$HOME/.cache/vim
   mkdir -p $VARPATH/venv
-  
+
   if ! type virtualenv >/dev/null 2>&1; then
     echo -e "${COLOR}Python environment is not initialized. Initializing now...${NC}"
     install_python
@@ -483,7 +483,7 @@ function install_vim() {
     virtualenv --system-site-packages -p /usr/bin/python3 $VARPATH/venv/neovim3
   fi
   echo -e "${COLOR}Initialized python environment for neovim, run ':UpdateRemotePlugin' on first startup"
-  
+
   # Node.js package for NeoVim
   if ! type npm >/dev/null 2>&1; then
     echo -e "${COLOR1}Node.js${COLOR} environment is not initialized. Initializing now...${NC}"
@@ -497,7 +497,7 @@ function install_vim() {
     npm install -g neovim
   fi
   #}}}
-  
+
   npm install -g jshint jsxhint jsonlint stylelint sass-lint raml-cop markdownlint-cli write-good
   pip install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint
 }
@@ -514,7 +514,7 @@ function install_rxvt() {
     # Default font, using ../change_font.sh to change fonts
     ln -sfnv $HOME/myConfigs/X11/fonts/input-mono-compressed.xresources $HOME/.Xresources.font
     xrdb -load $HOME/.Xresources
-    
+
     if ! type rxvt >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}rxvt-unicode-256color${COLOR}...${NC}"
       sudo apt install -y rxvt-unicode-256color
@@ -546,7 +546,7 @@ function install_i3wm() {
     else
       sudo apt update && sudo apt upgrade
     fi
-  
+
     CONFIG_HOME=$HOME/myConfigs/i3
     if [ ! -d $CONFIG_HOME ]; then
       fetch_myConfigs
@@ -556,11 +556,11 @@ function install_i3wm() {
     [ ! -d $I3_HOME ] && mkdir -p $I3_HOME
     ln -sfnv $CONFIG_HOME/_config $I3_HOME/_config
     ln -sfnv $CONFIG_HOME/i3blocks/i3blocks.conf $I3_HOME/i3blocks.conf
-  
+
     DUNST_HOME=$HOME/.config/dunst
     [ ! -d $DUNST_HOME ] && mkdir -p $DUNST_HOME
     ln -sfnv $CONFIG_HOME/dunst/dunstrc $DUNST_HOME/dunstrc
-  
+
     mkdir -p $HOME/bin
     ln -sfnv $CONFIG_HOME/i3bang/i3bang.rb $HOME/bin/i3bang
     # link default theme 'jellybeans' to ~/.i3/_config.colors
@@ -571,7 +571,7 @@ function install_i3wm() {
       install_ruby
     fi
     i3bang
-  
+
     # check if 'consolekit' is installed or not
     echo -e "${COLOR}Checking ${COLOR1}consolekit${COLOR}...${NC}"
     CONSOLEKIT_PCK=$(dpkg -l | grep consolekit | wc -l)
@@ -580,11 +580,11 @@ function install_i3wm() {
       echo -e "${COLOR}Installing ${COLOR1}consolekit${COLOR}...${NC}"
       sudo apt install -y consolekit
     fi
-  
+
     if [ ! -e /usr/share/xsessions/i3.desktop ]; then
       sudo cp $CONFIG_HOME/xsessions/i3.desktop /usr/share/xsessions/i3.desktop
     fi
-  
+
     # xsession autostart files
     mkdir -p $HOME/.config/autostart
     _files="$CONFIG_HOME/xsessions/autostart/*.desktop"
@@ -593,7 +593,7 @@ function install_i3wm() {
       _name=`basename $file`
       ln -sfnv $file $HOME/.config/autostart/$_name
     done
-  
+
     # check if 'dex' is installed or not, it's needed to load xsession files
     echo -e "${COLOR}Checking ${COLOR1}dex${COLOR}...${NC}"
     if ! type dex >/dev/null 2>&1; then
@@ -608,6 +608,7 @@ function install_i3wm() {
 
 function install_all() {
   init_env
+  install_python
   install_gfw
   read -p "Continue? [y|N]${NC}" CONFIRM
   case $CONFIRM in
@@ -622,7 +623,6 @@ function install_all() {
   esac
   fetch_myConfigs
   install_ruby
-  install_python
   install_node
   install_zsh
   install_vim
