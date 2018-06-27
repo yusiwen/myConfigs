@@ -301,7 +301,7 @@ function install_node() {
     fi
 
     echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
-    sudo apt -c $HOME/.apt.conf install -y nodejs
+    sudo apt install -y nodejs
   else
     echo -e "${COLOR1}Node.js${COLOR} was found.${NC}"
   fi
