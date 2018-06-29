@@ -27,7 +27,7 @@
 # fcitx.vim is only needed under Linux
 #   keep/restore fcitx state when toggling insert mode
 - repo: vim-scripts/fcitx.vim
-  if: has('unix') && system('uname') =~? '^linux'
+  if: has('unix') && system('uname') =~? '^linux' && executable('fcitx')
 # }}}
 # Commands {{{
 - {repo: Shougo/vimproc.vim, build: make, on_func: vimproc#}
