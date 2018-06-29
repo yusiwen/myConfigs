@@ -294,7 +294,7 @@ function install_python() { # {{{
       PYTHON3_PPA=/etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-$(lsb_release -c -s).list
       sudo add-apt-repository ppa:deadsnakes/ppa
       # Replace official launchpad address with reverse proxy from USTC
-      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
+      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $PYTHON3_PPA
       sudo apt-get update
       sudo apt-get install python3.6
     fi
