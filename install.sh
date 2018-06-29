@@ -292,11 +292,11 @@ function install_python() { # {{{
     if [ $IS_PYTHON_NEED_INSTALL -eq 1 ]; then
       echo -e "${COLOR}Python is out-dated, update to version 3.6...${NC}"
       PYTHON3_PPA=/etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-$(lsb_release -c -s).list
-      sudo add-apt-repository ppa:deadsnakes/ppa
+      sudo add-apt-repository -y ppa:deadsnakes/ppa
       # Replace official launchpad address with reverse proxy from USTC
       sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $PYTHON3_PPA
       sudo apt-get update
-      sudo apt-get install python3.6
+      sudo apt-get install -y python3.6
     fi
 
     if ! type pip >/dev/null 2>&1; then
@@ -628,7 +628,9 @@ function install_i3wm() { # {{{
 
     # check if 'consolekit' is installed or not
     echo -e "${COLOR}Checking ${COLOR1}consolekit${COLOR}...${NC}"
+    set +e
     CONSOLEKIT_PCK=$(dpkg -l | grep consolekit | wc -l)
+    set -e
     if [ $CONSOLEKIT_PCK -eq 0 ]; then
       # Install 'consolekit'
       echo -e "${COLOR}Installing ${COLOR1}consolekit${COLOR}...${NC}"
@@ -654,6 +656,19 @@ function install_i3wm() { # {{{
       # Install 'dex'
       echo -e "${COLOR}Installing ${COLOR1}dex${COLOR}...${NC}"
       sudo apt install -y dex
+    fi
+
+    # check if 'rofi' is installed or not
+    echo -e "${COLOR}Checking ${COLOR1}rofi${COLOR}...${NC}"
+    if ! type rofi >/dev/null 2>&1; then
+      # Install 'rofi'
+      echo -e "${COLOR}Installing ${COLOR1}rofi${COLOR}...${NC}"
+      ROFI_PPA=/etc/apt/sources.list.d/jasonpleau-ubuntu-rofi-$(lsb_release -c -s).list
+      sudo add-apt-repository -y ppa:jasonpleau/rofi
+      # Replace official launchpad address with reverse proxy from USTC
+      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $ROFI_PPA
+      sudo apt-get update
+      sudo apt-get install -y rofi
     fi
   else
     echo -e "${COLOR}i3wm will only be installed on Linux.${NC}"
