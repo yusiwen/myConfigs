@@ -547,6 +547,7 @@ endif
 " vimagit {{{
 if dein#tap('vimagit')
   nnoremap <silent> mg :Magit<CR>
+  nnoremap <silent> mgv :call magit#show_magit('h')<CR>
 endif
 " }}}
 " vim-easygit {{{
