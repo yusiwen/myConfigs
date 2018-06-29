@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 set -o pipefail
 
@@ -9,8 +10,33 @@ NC='\033[0m'
 OS=$(uname)
 echo -e "${COLOR1}$OS${COLOR} found...${NC}"
 
+function vercomp () { # {{{
+  if [[ $1 == $2 ]]; then
+    return 0
+  fi
+  local IFS=.
+  local i ver1=($1) ver2=($2)
+  # fill empty fields in ver1 with zeros
+  for ((i=${#ver1[@]}; i<${#ver2[@]}; i++)); do
+    ver1[i]=0
+  done
+  for ((i=0; i<${#ver1[@]}; i++)); do
+    if [[ -z ${ver2[i]} ]]; then
+      # fill empty fields in ver2 with zeros
+      ver2[i]=0
+    fi
+    if ((10#${ver1[i]} > 10#${ver2[i]})); then
+      return 1
+    fi
+    if ((10#${ver1[i]} < 10#${ver2[i]})); then
+      return 2
+    fi
+  done
+  return 0
+} # }}}
+
 # Initialize apt and install prerequisite packages
-function init_env() {
+function init_env() { # {{{
   if [ $OS = 'Linux' ]; then
     MIRRORS=$(grep "mirrors.aliyun.com" /etc/apt/sources.list|wc -l)
     if [ $MIRRORS -eq 0 ]; then
@@ -27,10 +53,10 @@ function init_env() {
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
   fi
-}
+} # }}}
 
 # GFW
-function install_gfw() {
+function install_gfw() { # {{{
   if [ $OS = 'Linux' ]; then
     if ! type tsocks >/dev/null 2>&1; then
       echo -e "${COLOR}Installing tsocks...${NC}"
@@ -89,10 +115,10 @@ function install_gfw() {
 
     echo -e "${COLOR}GFW initialized.${NC}"
   fi
-}
+} # }}}
 
 # Git
-function install_git() {
+function install_git() { # {{{
   if ! type polipo >/dev/null 2>&1; then
     install_gfw
     read -p "Continue? [y|N]${NC}" CONFIRM
@@ -185,9 +211,9 @@ function install_git() {
     echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea"
     cat $HOME/.ssh/id_rsa.pub
   fi
-}
+} # }}}
 
-function install_ruby() {
+function install_ruby() { # {{{
   if [ $OS = 'Linux' ]; then
     if ! type ruby >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
@@ -206,10 +232,10 @@ function install_ruby() {
 
   echo -e "${COLOR}Configurate bundler to use taobao mirror...${NC}"
   bundle config mirror.https://rubygems.org https://ruby.taobao.org
-}
+} # }}}
 
 # Initialize myConfigs repo
-function fetch_myConfigs() {
+function fetch_myConfigs() { # {{{
   if ! type git >/dev/null 2>&1; then
     install_git
   fi
@@ -243,32 +269,58 @@ function fetch_myConfigs() {
     sudo cp $HOME/myConfigs/gfw/polipo.conf /etc/polipo/config
     sudo systemctl restart polipo
   fi
-}
+} # }}}
 
-# Python
-function install_python() {
-  if ! type pip >/dev/null 2>&1; then
-    echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
-    sudo apt install -y python-pip
+function install_python() { # {{{
+  if [ $OS = 'Linux' ]; then
+    IS_PYTHON_NEED_INSTALL=0
+
+    if [ ! type python3 &>/dev/null ]; then
+      IS_PYTHON_NEED_INSTALL=1
+    else
+      PYTHON_VERSION=`python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))'`
+      echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
+
+      set +e
+      vercomp $PYTHON_VERSION 3.6
+      if [ $? -eq 2 ]; then
+        IS_PYTHON_NEED_INSTALL=1
+      fi
+      set -e
+    fi
+
+    if [ $IS_PYTHON_NEED_INSTALL -eq 1 ]; then
+      echo -e "${COLOR}Python is out-dated, update to version 3.6...${NC}"
+      PYTHON3_PPA=/etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-$(lsb_release -c -s).list
+      sudo add-apt-repository ppa:deadsnakes/ppa
+      # Replace official launchpad address with reverse proxy from USTC
+      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
+      sudo apt-get update
+      sudo apt-get install python3.6
+    fi
+
+    if ! type pip >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
+      sudo apt install -y python-pip
+    fi
+
+    if ! type pip3 >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
+      sudo apt install -y python3-pip
+    fi
+
+    mkdir -p $HOME/.pip
+    echo "[global]" > $HOME/.pip/pip.conf
+    echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >> $HOME/.pip/pip.conf
+
+    if ! type virtualenv >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
+      sudo apt install -y virtualenv
+    fi
   fi
+} # }}}
 
-  if ! type pip3 >/dev/null 2>&1; then
-    echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
-    sudo apt install -y python3-pip
-  fi
-
-  mkdir -p $HOME/.pip
-  echo "[global]" > $HOME/.pip/pip.conf
-  echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >> $HOME/.pip/pip.conf
-
-  if ! type virtualenv >/dev/null 2>&1; then
-    echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
-    sudo apt install -y virtualenv
-  fi
-}
-
-# Node.js
-function install_node() {
+function install_node() { # {{{
   if [ ! -d $HOME/myConfigs ]; then
     fetch_myConfigs
   fi
@@ -310,9 +362,9 @@ function install_node() {
   if [ ! -e $HOME/.npmrc ]; then
     cp $HOME/myConfigs/node.js/npmrc $HOME/.npmrc
   fi
-}
+} # }}}
 
-function install_zsh() {
+function install_zsh() { # {{{
   CONFIG_SHELL=$HOME/myConfigs/shell
   if [ ! -d $CONFIG_SHELL ]; then
     fetch_myConfigs
@@ -334,9 +386,9 @@ function install_zsh() {
   ln -sfnv $CONFIG_SHELL/profile $HOME/.profile
   ln -sfnv $CONFIG_SHELL/zshrc $HOME/.zshrc
   ln -sfnv $CONFIG_SHELL/oh-my-zsh $HOME/.oh-my-zsh
-}
+} # }}}
 
-function install_vim() {
+function install_vim() { # {{{
   CONFIG_VIM=$HOME/myConfigs/vim
   VIM_HOME=$HOME/.vim
   VIM_PACKAGE=vim
@@ -500,9 +552,9 @@ function install_vim() {
 
   npm install -g jshint jsxhint jsonlint stylelint sass-lint raml-cop markdownlint-cli write-good
   pip install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint
-}
+} #}}}
 
-function install_rxvt() {
+function install_rxvt() { # {{{
   if [ $OS = 'Linux' ]; then
     if [ ! -d $HOME/myConfigs ]; then
       fetch_myConfigs
@@ -522,10 +574,9 @@ function install_rxvt() {
   else
     echo -e "${COLOR1}rxvt-unicode-256color${COLOR} will only be installed on Linux.${NC}"
   fi
-}
+} # }}}
 
-# i3wm
-function install_i3wm() {
+function install_i3wm() { # {{{
   if [ $OS = 'Linux' ]; then
     # Install i3wm if not exist
     APT_SOURCE=$(grep debian.sur5r.net /etc/apt/sources.list | wc -l)
@@ -604,9 +655,9 @@ function install_i3wm() {
   else
     echo -e "${COLOR}i3wm will only be installed on Linux.${NC}"
   fi
-}
+} # }}}
 
-function install_all() {
+function install_all() { # {{{
   init_env
   install_python
   install_gfw
@@ -628,7 +679,7 @@ function install_all() {
   install_vim
   install_rxvt
   install_i3wm
-}
+} # }}}
 
 function print_info() {
   echo -e "${COLOR}install.sh [all|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh]${NC}"
@@ -649,3 +700,4 @@ case $1 in
   *) print_info;;
 esac
 
+# vim: fdm=marker
