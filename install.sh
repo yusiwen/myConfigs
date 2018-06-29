@@ -63,40 +63,25 @@ function install_gfw() { # {{{
       sudo apt install -y tsocks
     fi
 
-    if [ ! $DISPLAY ]; then
-      echo -e "${COLOR}No DISPLAY found, installing shadowsocks command line tools...${NC}"
-      if ! type pip >/dev/null 2>&1; then
-        install_python
-      fi
-
-      # Install the latest shadowsocks version to support chahca20-ietf-poly1305 algorithm
-      sudo apt install libsodium-dev
-      sudo pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
-
-      if ! type supervisorctl >/dev/null 2>&1; then
-        echo -e "${COLOR}Installing supervisor...${NC}"
-        sudo apt install supervisor
-      fi
-      echo -e "${COLOR}Please run '${COLOR1}sslocal${COLOR}' and configure some shadowsocks server...${NC}"
-      echo -e "${COLOR}And use '${COLOR1}supervisor${COLOR}' to start it at bootup${NC}"
-    else
-      if ! type ss-qt5 >/dev/null 2>&1; then
-        SS_PPA=/etc/apt/sources.list.d/hzwhuang-ubuntu-ss-qt5-$(lsb_release -c -s).list
-        if [ ! -e $SS_PPA ]; then
-          echo -e "${COLOR}Add ${COLOR1}ss-qt5${COLOR} ppa...${NC}"
-          sudo apt-add-repository -y ppa:hzwhuang/ss-qt5
-          # Replace official launchpad address with reverse proxy from USTC
-          sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $SS_PPA
-          sudo apt update
-        fi
-
-        echo -e "${COLOR}Installing ${COLOR1}ss-qt5${COLOR}...${NC}"
-        sudo apt install -y shadowsocks-qt5
-      else
-        echo -e "${COLOR1}ss-qt5${COLOR} was found.${NC}"
-      fi
-      echo -e "${COLOR}Please run '${COLOR1}ss-qt5${COLOR}' and configure some shadowsocks server...${NC}"
+    if ! type pip >/dev/null 2>&1; then
+      install_python
     fi
+
+    # Install the latest shadowsocks version to support chahca20-ietf-poly1305 algorithm
+    echo -e "${COLOR}Checking shadowsocks command line tools...${NC}"
+    sudo apt install -y libsodium-dev
+    if ! type sslocal >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing shadowsocks command line tools...${NC}"
+      sudo -H pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
+    fi
+
+    if ! type supervisorctl >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing supervisor...${NC}"
+      sudo apt install -y supervisor
+    fi
+
+    echo -e "${COLOR}Please create config file at ${COLOR1}'/etc/shadowsocks.json'${COLOR} and run '${COLOR1}sslocal${COLOR}'...${NC}"
+    echo -e "${COLOR}And use '${COLOR1}supervisor${COLOR}' to start it at bootup${NC}"
 
     if ! type polipo >/dev/null 2>&1; then
       echo -e "${COLOR}Installing polipo proxy...${NC}"
@@ -109,6 +94,8 @@ function install_gfw() { # {{{
       ln -sfnv $HOME/myConfigs/gfw/tsocks.conf $HOME/.tsocks.conf
       sudo cp $HOME/myConfigs/gfw/polipo.conf /etc/polipo/config
       sudo systemctl restart polipo
+
+      sudo cp $HOME/myConfigs/gfw/supervisor-shadowsocks.conf /etc/supervisor/conf.d/shadowsocks.conf
     else
       echo -e "${COLOR1}myConfigs${COLOR} was not found, please install git and fetch it from repo, then run 'install.sh gfw' again to link some configuration files.${NC}"
     fi
