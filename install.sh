@@ -579,10 +579,13 @@ function install_rxvt() { # {{{
 function install_i3wm() { # {{{
   if [ $OS = 'Linux' ]; then
     # Install i3wm if not exist
+    set +e
     APT_SOURCE=$(grep debian.sur5r.net /etc/apt/sources.list | wc -l)
+    set -e
     if [ $APT_SOURCE -eq 0 ]; then
       echo -e "${COLOR}Adding i3wm official repository to '/etc/apt/sources.list'...${NC}"
       echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee --append /etc/apt/sources.list
+      sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E3CA1A89941C42E6
       sudo apt update
       echo -e "${COLOR}Install i3wm official repository key...${NC}"
       sudo apt --allow-unauthenticated install -y sur5r-keyring
