@@ -6,6 +6,8 @@
 " Required before loading plugins!
 let g:mapleader="\<Space>"
 let g:maplocalleader=';'
+nnoremap ^] <Nop>
+nnoremap ^[ <Nop>
 
 " Release keymappings prefixes, evict entirely for use of plug-ins.
 nnoremap <Space>  <Nop>

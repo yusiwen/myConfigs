@@ -18,7 +18,7 @@
 # Underlines the word under the cursor
 - repo: itchyny/vim-cursorword
   hook_add: |
-    autocmd MyAutoCmd FileType denite,qf,nerdtree let b:cursorword=0
+    autocmd MyAutoCmd FileType denite,qf,nerdtree,magit let b:cursorword=0
     autocmd MyAutoCmd InsertEnter * let b:cursorword=0
     autocmd MyAutoCmd InsertLeave * let b:cursorword=1
 # sublime text style multiple selection
@@ -43,6 +43,7 @@
 - repo: chemzqm/vim-easygit
   on_cmd: [Gadd, Gcd, Glcd, Gcommit, Gblame, Gstatus, Gdiff, Gbrowse, Gpush]
   hook_source: let g:easygit_enable_command = 1
+- {repo: lambdalisue/gina.vim, on_cmd: Gina}
 
 # displays tags in a window
 - repo: majutsushi/tagbar
