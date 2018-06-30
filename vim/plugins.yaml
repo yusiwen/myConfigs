@@ -27,7 +27,7 @@
 # fcitx.vim is only needed under Linux
 #   keep/restore fcitx state when toggling insert mode
 - repo: vim-scripts/fcitx.vim
-  if: has('unix') && system('uname') =~? '^linux'
+  if: has('unix') && system('uname') =~? '^linux' && executable('fcitx')
 # }}}
 # Commands {{{
 - {repo: Shougo/vimproc.vim, build: make, on_func: vimproc#}
@@ -39,7 +39,7 @@
 - {repo: Xuyuanp/nerdtree-git-plugin, on_source: nerdtree}
 
 # git wrapper
-- {repo: jreybert/vimagit, on_cmd: Magit}
+- {repo: jreybert/vimagit, on_cmd: Magit, on_func: magit#show_magit}
 - repo: chemzqm/vim-easygit
   on_cmd: [Gadd, Gcd, Glcd, Gcommit, Gblame, Gstatus, Gdiff, Gbrowse, Gpush]
   hook_source: let g:easygit_enable_command = 1

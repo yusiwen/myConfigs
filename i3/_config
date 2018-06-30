@@ -9,12 +9,8 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 # {{{ Global variables
-!?<HOSTNAME=home-ubuntu
 set $mod Mod4
->
-!?<HOSTNAME=vm-ubuntu-guest
 set $mod Mod4
->
 !?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
 set $mod Mod1
 >
@@ -336,7 +332,7 @@ for_window [class="!!<\
   ^Gimp$,^Gpick$,^feh$,^Fcitx-config-gtk3$,^Telegram$,\
   ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,\
   ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,\
-  ^Pidgin$,^File-roller$,^shadowsocks-qt5$,^Gvim$,\
+  ^Pidgin$,^File-roller$,^Gvim$,\
   ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$\
   >"] floating enable
 # }}}
@@ -347,7 +343,7 @@ exec --no-startup-id !!<\
   xcompmgr -n,dunst,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
   thunar --daemon,urxvtd -q -o -f,\
-  orage,ss-qt5
+  orage
 exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
 >
 !?<HOSTNAME=yusiwen-Aspire-S3
