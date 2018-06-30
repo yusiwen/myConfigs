@@ -1,0 +1,7 @@
+! ~/.Xresources.font
+
+URxvt.font: xft:Sarasa Mono SC:Regular:size=9
+URxvt.boldFont: xft:Sarasa Mono SC:Bold:size=9
+URxvt.italicFont: xft:Sarasa Mono SC:Italic:size=9
+URxvt.boldItalicFont: xft:Sarasa Mono SC:Bold Italic:size=9
+URxvt.letterSpace: -1
