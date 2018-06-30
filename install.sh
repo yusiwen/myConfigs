@@ -448,6 +448,7 @@ function install_vim() { # {{{
   ln -sfnv $CONFIG_VIM/vimrc.nerdtree $VIM_HOME/vimrc.nerdtree
   ln -sfnv $CONFIG_VIM/vimrc.theme $VIM_HOME/vimrc.theme
   ln -sfnv $CONFIG_VIM/ctags $HOME/.ctags
+  ln -sfnv $CONFIG_VIM/spell $VIM_HOME/spell
 
   #Default theme
   ln -sfnv $CONFIG_VIM/themes/vimrc.theme.sourcerer $HOME/.vim/vimrc.colortheme
