@@ -3,7 +3,7 @@
 VIM_THEME_DIR="$HOME/myConfigs/vim/themes"
 VIM_THEME_FILE="$HOME/.vim/vimrc.colortheme"
 
-X11_THEME_DIR="$HOME/myConfigs/X11/themes"
+X11_THEME_DIR="$HOME/myConfigs/X11/themes/color-schemes/"
 X11_THEME_FILE="$HOME/.Xresources.theme"
 BASE16_THEME_SHELL="$HOME/.base16rc"
 

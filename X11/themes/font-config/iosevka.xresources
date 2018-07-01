@@ -1,0 +1,7 @@
+! ~/.Xresources.font
+
+URxvt.font: xft:Iosevka:Regular:size=9,xft:WenQuanYi Mirco Hei Mono:Regular:size=9
+URxvt.boldFont: xft:Iosevka:Bold:size=9,xft:WenQuanYi Mirco Hei Mono:Regular:size=9
+URxvt.italicFont: xft:Iosevka:Italic:size=9,xft:WenQuanYi Mirco Hei Mono:Regular:size=9
+URxvt.boldItalicFont: xft:Iosevka:Bold Italic:size=9,xft:WenQuanYi Mirco Hei Mono:Regular:size=9
+URxvt.letterSpace: 0

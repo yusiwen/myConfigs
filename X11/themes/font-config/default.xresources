@@ -1,0 +1,7 @@
+! ~/.Xresources.font
+
+URxvt.font: xft:Ubuntu Mono:Regular:size=10,xft:WenQuanYi Micro Hei Mono:Regular:size=10:minspace=true
+URxvt.boldFont: xft:Ubuntu Mono:Bold:size=10,xft:WenQuanYi Micro Hei Mono:Regular:size=10:minspace=true
+URxvt.italicFont: xft:Ubuntu Mono:Italic:size=10,xft:WenQuanYi Micro Hei Mono:Regular:size=10:minspace=true
+URxvt.boldItalicFont: xft:Ubuntu Mono:Bold Italic:size=10,xft:WenQuanYi Micro Hei Mono:Regular:size=10:minspace=true
+URxvt.letterSpace: -1

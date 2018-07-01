@@ -1,7 +1,0 @@
-! ~/.Xresources.font
-
-URxvt.font: xft:Input Mono Compressed:Regular:size=9,xft:Sarasa Mono SC:Regular:size=9:minspace=true
-URxvt.boldFont: xft:Input Mono Compressed:Bold:size=9,xft:Sarasa Mono SC:Bold:size=9:minspace=true
-URxvt.italicFont: xft:Input Mono Compressed:Italic:size=9,xft:Sarasa Mono SC:Italic:size=9:minspace=true
-URxvt.boldItalicFont: xft:Input Mono Compressed:Bold Italic:size=9,xft:Sarasa Mono SC:Bold Italic:size=9:minspace=true
-URxvt.letterSpace: -1

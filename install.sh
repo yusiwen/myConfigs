@@ -500,7 +500,7 @@ function install_vim() { # {{{
     echo -e "${COLOR}Python environment is not initialized. Initializing now...${NC}"
     install_python
   fi
-  
+
   # Install python neovim, PyYALM package site widely
   echo -e "${COLOR}Installing python package: neovim, PyYAML...${NC}"
   set +e
@@ -549,10 +549,8 @@ function install_rxvt() { # {{{
     fi
 
     ln -sfnv $HOME/myConfigs/X11/Xresources $HOME/.Xresources
-    # Default color theme, using ../change_theme.sh to change themes
-    ln -sfnv $HOME/myConfigs/X11/themes/jellybeans.xresources $HOME/.Xresources.theme
-    # Default font, using ../change_font.sh to change fonts
-    ln -sfnv $HOME/myConfigs/X11/fonts/input-mono-compressed.xresources $HOME/.Xresources.font
+    $HOME/myConfigs/change_font.sh
+    $HOME/myConfigs/change_theme.sh
     xrdb -load $HOME/.Xresources
 
     if ! type rxvt >/dev/null 2>&1; then
