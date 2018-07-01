@@ -137,8 +137,14 @@ if [ -z "$TERMINAL" ]; then
 fi
 
 if [ -z "$EDITOR" ]; then
-  export EDITOR=vim
-  export GIT_EDITOR="${EDITOR} -X"
+  if type nvim >/dev/null 2>&1; then
+    export EDITOR=nvim
+  elif type vim >/dev/null 2>&1; then
+    export EDITOR=vim
+  else
+    export EDITOR=nano
+  fi
+  export GIT_EDITOR="${EDITOR}"
 fi
 
 if [ -z "$HOSTNAME" ]; then
