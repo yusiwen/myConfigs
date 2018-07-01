@@ -85,7 +85,7 @@ nmap <silent> <Leader>th :nohlsearch<CR>
 nmap <silent> <Leader>tw :setlocal wrap! breakindent!<CR>
 " }}}
 " Tabs Navigatoin {{{
-nnoremap <silent> <C-t> :<C-u>tabnew<CR>
+nnoremap <silent> ge :<C-u>tabnew<CR>
 nnoremap <silent> g0 :<C-u>tabfirst<CR>
 nnoremap <silent> g$ :<C-u>tablast<CR>
 nnoremap <silent> gp :<C-u>tabprevious<CR>
