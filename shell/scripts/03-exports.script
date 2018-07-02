@@ -30,10 +30,8 @@ if [ -z "$ORACLE_HOME" ]; then
       #   it can only be set in '/etc/ld.so.conf.d/XXX.conf' and run 'ldconfig'
       if [ -z "$LD_LIBRARY_PATH" ]; then
         export LD_LIBRARY_PATH=$ORACLE_HOME
-        export TEST_PARAM=$ORACLE_HOME
       else
         export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
-        export TEST_PARAM='YES'
       fi
     fi
   fi
