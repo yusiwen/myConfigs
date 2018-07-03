@@ -165,4 +165,12 @@ if [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
 fi
 #}}}
 
+# Source any extended scrips stored in $HOME/.exports/ folder
+if [ -d $HOME/.exports ]; then
+  for script in $HOME/.exports/*; do
+    if [ -e $script ]; then
+      source "$script"
+    fi
+  done
+fi
 # vim: foldmethod=marker :
