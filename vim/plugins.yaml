@@ -160,6 +160,7 @@
     let g:gutentags_generate_on_missing = 0
     let g:gutentags_generate_on_new = 0
 
+# emmet-vim is a vim plug-in which provides support for expanding abbreviations similar to emmet.
 - repo: mattn/emmet-vim
   if: empty($VIM_MINIMAL)
   on_event: InsertEnter
@@ -213,6 +214,7 @@
 - {repo: Shougo/neosnippet-snippets, if: empty($VIM_MINIMAL)}
 - {repo: Shougo/context_filetype.vim, lazy: 1, if: empty($VIM_MINIMAL)}
 
+# jedi-vim is a VIM binding to the python autocompletion library Jedi.
 - repo: davidhalter/jedi-vim
   if: empty($VIM_MINIMAL)
   on_ft: python
