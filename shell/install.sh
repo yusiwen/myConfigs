@@ -1,3 +1,3 @@
 #!/bin/sh
 
-source ../install.sh zsh
+../install.sh zsh

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-source ../install.sh python
+../install.sh python

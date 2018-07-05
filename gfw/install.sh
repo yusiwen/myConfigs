@@ -1,3 +1,3 @@
 #!/bin/bash
 
-source ../install.sh gfw
+../install.sh gfw
