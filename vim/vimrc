@@ -456,11 +456,19 @@ let g:neomake_ansible_enabled_makers = ['yamllint']
 " vim-multiple_cursors {{{
 " make NeoComplete compatible with vim-multiple-cursors
 function! Multiple_cursors_before()
-  execute 'NeoCompleteLock'
+  if (has('nvim'))
+    let b:deoplete_disable_auto_complete = 1
+  else
+    execute 'NeoCompleteLock'
+  endif
 endfunction
 
 function! Multiple_cursors_after()
-  execute 'NeoCompleteUnlock'
+  if (has('nvim'))
+    let b:deoplete_disable_auto_complete = 0
+  else
+    execute 'NeoCompleteUnlock'
+  endif
 endfunction
 " }}}
 " }}}
