@@ -328,21 +328,23 @@ function install_node() { # {{{
       version='3'
     fi
 
+    NODE_PPA=/etc/apt/sources.list.d/nodesource.list
     if echo -e "$version" | grep -iq "^1"; then
       curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+      sudo sed -i "s/deb\.nodesource\.com\/node_4.x/mirrors\.tuna\.tsinghua\.edu\.cn\/nodesource\/deb_4.x/g" $NODE_PAA
     elif echo -e "$version" | grep -iq "^2"; then
       curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-    elif echo -e "$version" | grep -iq "^3"; then
-      curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+      sudo sed -i "s/deb\.nodesource\.com\/node_6.x/mirrors\.tuna\.tsinghua\.edu\.cn\/nodesource\/deb_6.x/g" $NODE_PAA
     else
       echo -e "${COLOR}Invalid input. Install v8 instead.${NC}"
       curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+      sudo sed -i "s/deb\.nodesource\.com\/node_8.x/mirrors\.tuna\.tsinghua\.edu\.cn\/nodesource\/deb_8.x/g" $NODE_PAA
     fi
 
     echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
     sudo apt install -y nodejs
   else
-    echo -e "${COLOR1}Node.js${COLOR} was found.${NC}"
+    echo -e "${COLOR1}Node.js($(node -v))${COLOR} was found.${NC}"
   fi
 
   mkdir -p $HOME/.npm-packages
