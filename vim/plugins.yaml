@@ -5,12 +5,15 @@
 # Non-lazy plugins {{{
 - repo: Shougo/dein.vim
 - repo: rafi/vim-badge
+# Provides the branch name of the current git repository, ":echo gitbranch#name()"
 - repo: itchyny/vim-gitbranch
+# Peekaboo extends " and @ in normal mode and <C-R> in insert mode so you can see the contents of the registers.
 - repo: junegunn/vim-peekaboo
 # Heuristically set buffer options
 - repo: tpope/vim-sleuth
+# An efficient alternative to the standard matchparen plugin
 - repo: itchyny/vim-parenmatch
-# colorize text in the form #rrggbb or #rgb
+# Colorize text in the form #rrggbb or #rgb
 - repo: lilydjwg/colorizer
   hook_source: |
     let g:colorizer_nomap = 1
@@ -23,9 +26,11 @@
     autocmd MyAutoCmd InsertLeave * let b:cursorword=1
 # sublime text style multiple selection
 - repo: terryma/vim-multiple-cursors
+# accelerated smooth scroll
+- repo: yonchu/accelerated-smooth-scroll
 
+# Keep/restore fcitx state when toggling insert mode
 # fcitx.vim is only needed under Linux
-#   keep/restore fcitx state when toggling insert mode
 - repo: vim-scripts/fcitx.vim
   if: has('unix') && system('uname') =~? '^linux' && executable('fcitx')
 # }}}
@@ -70,14 +75,21 @@
     let g:EasyMotion_use_smartsign_us = 1
     let g:EasyMotion_startofline = 0
     hi link EasyMotionMoveHL Search
-
+# Mimic tmux's display-pane feature, which enables you to choose a window interactively.
 - {repo: t9md/vim-choosewin, on_map: {n: <Plug>}}
+# Comment stuff out
 - {repo: tpope/vim-commentary, on_map: <Plug>Commentary}
+# Ultimate hex editing system with Vim
 - {repo: Shougo/vinarise.vim, on_cmd: Vinarise}
+# Make blockwise Visual mode more useful
 - {repo: kana/vim-niceblock, on_map: {x: <Plug>}}
+# The ultimate undo history visualizer for VIM
 - {repo: mbbill/undotree, on_cmd: UndotreeToggle}
+# The interactive scratchpad for hackers
 - {repo: metakirby5/codi.vim, on_cmd: Codi, if: empty($VIM_MINIMAL)}
+# Uncover usage problems in your writing
 - {repo: reedes/vim-wordy, on_cmd: [Wordy, NextWordy, PrevWordy]}
+# Far.vim makes it easier to find and replace text through multiple files
 - {repo: brooth/far.vim, on_cmd: [Far, Farp, F]}
 # text filtering and alignment
 - {repo: godlygeek/tabular, on_cmd: Tabularize}
@@ -91,9 +103,6 @@
 # Interface {{{
 - {repo: haya14busa/vim-asterisk, on_map: {nv: <Plug>}}
 - {repo: rhysd/accelerated-jk, on_map: {n: <Plug>}}
-# accelerated smooth scroll
-- repo: yonchu/accelerated-smooth-scroll
-
 # shows a git diff in the gutter
 - repo: airblade/vim-gitgutter
   on_path: .*
