@@ -1,5 +1,23 @@
 #!/bin/sh
 
+#{{{ Distribution Information
+# Determine OS platform
+UNAME=$(uname)
+# If Linux, try to determine specific distribution
+if [ "$UNAME" = "Linux" ]; then
+  # If available, use LSB to identify distribution
+  if [ -f /etc/lsb-release -o -d /etc/lsb-release.d ]; then
+    export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
+  # Otherwise, use release info file
+  else
+    export DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+  fi
+fi
+# For everything else (or if above failed), just use generic identifier
+[ "$DISTRO" = "" ] && export DISTRO=$UNAME
+unset UNAME
+#}}}
+
 #{{{ NeoVim
 export XDG_CONFIG_HOME=$HOME/.config
 mkdir -p "$XDG_CONFIG_HOME"
