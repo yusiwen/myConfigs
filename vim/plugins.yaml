@@ -54,6 +54,7 @@
 - repo: majutsushi/tagbar
   if: empty($VIM_MINIMAL)
   on_cmd: TagbarToggle
+  on_func: tagbar#currenttag
   hook_source: |
     let g:tagbar_width = 40
     let g:tagbar_iconchars = ['+', '-']
@@ -99,6 +100,8 @@
 # easy code formatting in Vim by integrating existing code formatters
 - repo: Chiel92/vim-autoformat
   on_cmd: Autoformat
+- repo: tpope/vim-eunuch
+  on_cmd: [Delete, Unlink, Move, Rename, Chmod, Mkdir, Cfind, Clocate, Lfind, Wall, SudoWrite, SudoEdit]
 # }}}
 # Interface {{{
 - {repo: haya14busa/vim-asterisk, on_map: {nv: <Plug>}}

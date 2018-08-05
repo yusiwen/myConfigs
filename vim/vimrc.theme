@@ -136,7 +136,7 @@ endfunction
 " &modified         whether or not file was modified
 "
 " %-5.x - syntax to add 5 chars of padding to some element x
-let s:stl  = " %7*%{&paste ? 'ρ' : ''}%*"         " Paste symbol
+let s:stl  = " %7*%{&paste ? 'P' : ''}%*"         " Paste symbol
 let s:stl .= '%4* %{FileMode()} %*'               " Modified symbol
 let s:stl .= '%3* %{BufferNumber()} %*'           " Buffer number and edit flag
 let s:stl .= '%8* %{EditMode()} %*'               " Edit mode
@@ -146,6 +146,7 @@ let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
 let s:stl .= "%5*%( %{badge#trails('WS:%s')} %)" " Whitespace
 let s:stl .= '%(%{badge#syntax()} %)%*'           " syntax check
 let s:stl .= '%='                                 " Align to right
+let s:stl .= "%3*%{tagbar#currenttag('  [%s]  ', '')}%*"  " Current tag
 let s:stl .= '%{badge#format()} %*'               " File format
 let s:stl .= '%( %{&fenc} %)'                     " File encoding
 let s:stl .= '%*%( %{&ft} %)'                     " File type
