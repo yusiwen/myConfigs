@@ -419,8 +419,8 @@ if dein#tap('nerdtree')
   let g:NERDTreeMapCloseChildren = 'T'
   let g:NERDTreeMapToggleHidden = '.'
 
-  nnoremap <silent> <LocalLeader>e :<C-u>NERDTreeToggle<CR>
-  nnoremap <silent> <LocalLeader>a :<C-u>NERDTreeFind<CR>
+  nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
+  nnoremap <silent> <Leader>ea :<C-u>NERDTreeFind<CR>
 endif
 " }}}
 " vim-commentary {{{

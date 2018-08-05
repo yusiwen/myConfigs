@@ -28,6 +28,8 @@
 - repo: terryma/vim-multiple-cursors
 # accelerated smooth scroll
 - repo: yonchu/accelerated-smooth-scroll
+# enable repeating supported plugin maps with "."
+- repo: tpope/vim-repeat
 
 # Keep/restore fcitx state when toggling insert mode
 # fcitx.vim is only needed under Linux
@@ -100,6 +102,7 @@
 # easy code formatting in Vim by integrating existing code formatters
 - repo: Chiel92/vim-autoformat
   on_cmd: Autoformat
+# Vim sugar for the UNIX shell commands that need it the most
 - repo: tpope/vim-eunuch
   on_cmd: [Delete, Unlink, Move, Rename, Chmod, Mkdir, Cfind, Clocate, Lfind, Wall, SudoWrite, SudoEdit]
 # }}}

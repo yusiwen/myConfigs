@@ -4,8 +4,8 @@ scriptencoding=utf-8
 
 " INTERFACE
 call denite#custom#option('_', {
-  \ 'prompt': 'λ:',
-  \ 'empty': 0,
+  \ 'prompt': '>>',
+  \ 'empty': 1,
   \ 'winheight': 16,
   \ 'short_source_names': 1,
   \ 'vertical_preview': 1,
@@ -32,6 +32,7 @@ call denite#custom#source(
   \ 'converters', ['converter_relative_word'])
 
 " FIND and GREP COMMANDS
+call denite#custom#source('grep', 'args', ['', '', '!']) " force interactive grep
 if executable('ag')
   " The Silver Searcher
   call denite#custom#var('file_rec', 'command',

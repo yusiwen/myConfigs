@@ -276,8 +276,8 @@ Key   | Mode | Action
 
 Key   | Mode | Action
 ----- |:----:| ------------------
-`;`+`e` | Normal | Toggle file explorer
-`;`+`a` | Normal | Toggle file explorer on current file
+`<leader>`+`e` | Normal | Toggle file explorer
+`<leader>`+`ea` | Normal | Toggle file explorer on current file
 | **Within _NERDTree_ buffers** |||
 `h/j/k/l` | Normal | Movement + collapse/expand + file open
 `w` | Normal | Toggle window size
