@@ -202,7 +202,7 @@
 
 - repo: Shougo/neocomplete.vim
   depends: context_filetype.vim
-  if: "!has('nvim') && has('lua') && empty($VIM_MINIMAL)"
+  if: has('lua') && empty($VIM_MINIMAL) && !has('nvim')
   on_event: InsertEnter
   hook_add: |
     let g:neocomplete#data_directory = $VARPATH.'/complete'
@@ -267,7 +267,7 @@
     let g:tern_request_timeout = 1
     let g:tern_show_signature_in_pum = 0
 - repo: wellle/tmux-complete.vim
-  if: has('nvim') && empty($VIM_MINIMAL)
+  if: has('nvim') && empty($VIM_MINIMAL) && !has('win16') && !has('win32') && !has('win64')
   on_event: InsertEnter
   hook_add: let g:tmuxcomplete#trigger = ''
 
