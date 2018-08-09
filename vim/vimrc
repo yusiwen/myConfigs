@@ -233,21 +233,23 @@ set sessionoptions-=buffers
 set sessionoptions+=tabpages
 " }}}
 " GUI or no GUI, that's the question {{{
-if has('gui_running')
-  set guicursor+=a:blinkon0       " Cursor doesn't blink - it's annoying
-  set guioptions-=m               " No Menubar
-  set guioptions-=T               " No Toolbar
-  set guioptions-=l               " No Scrollbar left
-  set guioptions-=L               " No Scrollbar left when split
-  set guioptions-=r               " No Scrollbar right
-  set guioptions-=r               " No Scrollbar right when split
+if !has('nvim')
+  if has('gui_running')
+    set guicursor+=a:blinkon0       " Cursor doesn't blink - it's annoying
+    set guioptions-=m               " No Menubar
+    set guioptions-=T               " No Toolbar
+    set guioptions-=l               " No Scrollbar left
+    set guioptions-=L               " No Scrollbar left when split
+    set guioptions-=r               " No Scrollbar right
+    set guioptions-=r               " No Scrollbar right when split
 
-  set guifont=Input\ Mono\ Compressed\ Regular\ 10
+    set guifont=Input\ Mono\ Compressed\ Regular\ 10
 
-  set lines=50                    " Height
-  set columns=130                 " Width
-else
-  set t_Co=256
+    set lines=50                    " Height
+    set columns=130                 " Width
+  else
+    set t_Co=256
+  endif
 endif
 " }}}
 " Tabstops & Indents {{{
