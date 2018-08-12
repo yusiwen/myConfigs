@@ -11,7 +11,7 @@ theme_precmd () {
         zstyle ':vcs_info:*' formats ' [%b%c%u%B%F{green}]'
     else
         zstyle ':vcs_info:*' formats ' [%b%c%u%B%F{red}●%F{green}]'
-    fi 
+    fi
 
     vcs_info
 }
