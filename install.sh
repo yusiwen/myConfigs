@@ -8,7 +8,9 @@ COLOR1='\033[1;32m'
 NC='\033[0m'
 
 OS=$(uname)
-echo -e "${COLOR1}$OS${COLOR} found...${NC}"
+echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
+DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO${COLOR} found...${NC}"
 
 function vercomp () { # {{{
   if [[ $1 == $2 ]]; then
@@ -688,7 +690,7 @@ function install_all() { # {{{
 } # }}}
 
 function print_info() {
-  echo -e "${COLOR}install.sh [all|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [all|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh]${NC}"
 }
 
 case $1 in

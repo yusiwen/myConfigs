@@ -31,12 +31,12 @@ Contents
 1. `misc/` miscellaneous stuffs.
 1. `mounts/` fstab configurations for home-ubuntu.
 1. `mpd/` mpd configurations.
-1. `network/` network configurations for VMs.
 1. `node.js/` Node.js settings.
 1. `oracle/` Oracle Instant Client configurations.
 1. `python/` Python settings.
 1. `razer/` Razer DeathAdder mouse polling rate configurations.
 1. `shell/` shell environments scripts.
+1. `system/` system & network configurations for VMs.
 1. `vim/` VIM configurations.
 1. `X11/` X11 scripts.
 1. `change_font.sh` script for changing font.
