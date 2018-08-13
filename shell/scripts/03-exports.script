@@ -2,9 +2,9 @@
 
 #{{{ Distribution Information
 # Determine OS platform
-UNAME=$(uname)
+export OS=$(uname)
 # If Linux, try to determine specific distribution
-if [ "$UNAME" = "Linux" ]; then
+if [ "$OS" = "Linux" ]; then
   # If available, use LSB to identify distribution
   if [ -f /etc/lsb-release -o -d /etc/lsb-release.d ]; then
     export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
@@ -14,8 +14,7 @@ if [ "$UNAME" = "Linux" ]; then
   fi
 fi
 # For everything else (or if above failed), just use generic identifier
-[ "$DISTRO" = "" ] && export DISTRO=$UNAME
-unset UNAME
+[ "$DISTRO" = "" ] && export DISTRO=$OS
 #}}}
 
 #{{{ NeoVim

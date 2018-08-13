@@ -63,15 +63,19 @@ for script in $HOME/myConfigs/shell/scripts/*.script; do
   source "$script"
 done
 
-if [ "$(uname)" != 'Darwin' ]; then
-  if [ -f /etc/zsh_command_not_found ]; then
-    source /etc/zsh_command_not_found
-  else
-    echo '/etc/zsh_command_not_found is not found'
+if [ -z "$OS" ]; then
+  export OS=$(uname)
+fi
+
+if [ "$OS" = 'Linux' ]; then
+  if [ "$DISTRO" = 'Ubuntu' ]; then
+    if [ -f /etc/zsh_command_not_found ]; then
+      source /etc/zsh_command_not_found
+    fi
   fi
 fi
 
-if [[ "$(uname)" != 'Darwin' ]]; then
+if [[ "$OS" != 'Darwin' ]]; then
   if [[ $(tty) =~ \/dev\/tty[0-9]* ]]; then
     if ! fbterm_loc="$(type -p fbterm)" || [ -z "$fbterm_loc" ]; then
       fbterm
