@@ -314,12 +314,12 @@ if has('nvim') && dein#tap('deoplete.nvim')
   " 3. Otherwise, if preceding chars are whitespace, insert tab char
   " 4. Otherwise, start manual autocomplete
   imap <silent><expr><Tab> pumvisible() ? "\<Down>"
-    \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+    \ : (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)"
     \ : (<SID>is_whitespace() ? "\<Tab>"
     \ : deoplete#manual_complete()))
 
   smap <silent><expr><Tab> pumvisible() ? "\<Down>"
-    \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+    \ : (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)"
     \ : (<SID>is_whitespace() ? "\<Tab>"
     \ : deoplete#manual_complete()))
 
