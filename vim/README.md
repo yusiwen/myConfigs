@@ -265,12 +265,14 @@ Key   | Mode | Action
 | **Within _Denite_ mode** |||
 `Escape` | Normal/Insert | Toggle modes
 `jj` | Insert | Leave Insert mode
+`qq` | Insert | Quit Denite mode
 `Ctrl`+`y` | Insert | Redraw
 `r` | Normal | Redraw
 `st` | Normal | Open in a new tab
 `sg` | Normal | Open in a vertical split
 `sv` | Normal | Open in a split
 `'` | Normal | Toggle mark current candidate
+`X` | Normal | Toggle quick move
 
 ### Plugin: NERDTree
 
