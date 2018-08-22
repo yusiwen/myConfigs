@@ -98,7 +98,7 @@ hi Underlined           cterm=underline ctermfg=111  ctermbg=NONE
 hi Error                cterm=NONE      ctermfg=231  ctermbg=196
 hi Ignore               cterm=NONE      ctermfg=234  ctermbg=NONE
 hi PreProc              cterm=bold      ctermfg=66   ctermbg=NONE guifg=#528b8b gui=NONE
-hi Todo                 cterm=bold      ctermfg=96   ctermbg=234  guifg=#8f6f8f guibg=#202020 gui=bold
+hi Todo                 cterm=bold      ctermfg=96   ctermbg=NONE guifg=#8f6f8f guibg=NONE    gui=bold
 
 hi diffOldFile          cterm=NONE      ctermfg=67   ctermbg=NONE guifg=#88afcb guibg=NONE    gui=italic
 hi diffNewFile          cterm=NONE      ctermfg=67   ctermbg=NONE guifg=#88afcb guibg=NONE    gui=italic
