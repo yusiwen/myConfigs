@@ -179,14 +179,15 @@ augroup END "}}}
 " }}}
 " Plugin: NERDTree icons and highlights {{{
 let g:NERDTreeIndicatorMapCustom = {
-  \ 'Modified':  '·',
+  \ 'Modified':  '»',
   \ 'Staged':    '✚',
-  \ 'Untracked': '✭',
-  \ 'Renamed':   '➜',
-  \ 'Unmerged':  '≠',
+  \ 'Untracked': '★',
+  \ 'Renamed':   '→',
+  \ 'Unmerged':  '±',
   \ 'Deleted':   '✖',
-  \ 'Dirty':     '⁖',
+  \ 'Dirty':     '≈',
   \ 'Clean':     '✓',
+  \ 'Ignored':   '≠',
   \ 'Unknown':   '?'
   \ }
 
