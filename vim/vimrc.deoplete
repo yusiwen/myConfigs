@@ -65,17 +65,20 @@ let g:deoplete#omni#input_patterns.javascript = ''
 " }}}
 " Ranking and Marks " {{{
 " Default rank is 100, higher is better.
-call deoplete#custom#source('omni',          'mark', '⌾')
-call deoplete#custom#source('ternjs',        'mark', '⌁')
-call deoplete#custom#source('jedi',          'mark', '⌁')
-call deoplete#custom#source('vim',           'mark', '⌁')
-call deoplete#custom#source('neosnippet',    'mark', '⌘')
+call deoplete#custom#source('omni',          'mark', 'O')
+call deoplete#custom#source('ternjs',        'mark', '')
+call deoplete#custom#source('jedi',          'mark', '')
+call deoplete#custom#source('go',            'mark', 'G')
+call deoplete#custom#source('vim',           'mark', 'V')
+call deoplete#custom#source('neosnippet',    'mark', '')
 call deoplete#custom#source('tag',           'mark', 'T')
-call deoplete#custom#source('around',        'mark', '↻')
+call deoplete#custom#source('around',        'mark', 'ﰇ')
 call deoplete#custom#source('buffer',        'mark', 'B')
 call deoplete#custom#source('tmux-complete', 'mark', 'M')
 call deoplete#custom#source('syntax',        'mark', '♯')
+call deoplete#custom#source('member',        'mark', '.')
 
+call deoplete#custom#source('go',            'rank', 650)
 call deoplete#custom#source('vim',           'rank', 630)
 call deoplete#custom#source('ternjs',        'rank', 620)
 call deoplete#custom#source('jedi',          'rank', 610)
