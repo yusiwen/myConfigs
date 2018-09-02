@@ -1,3 +1,3 @@
 #!/bin/sh
 
-source ../install.sh rxvt
+../install.sh rxvt

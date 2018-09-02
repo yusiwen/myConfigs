@@ -1,8 +1,6 @@
 #!/bin/sh
 
-if [ -z "$LS_COLORS" ]; then
-  if [ "$(uname)" != 'Darwin' ]; then
-    eval "$(dircolors -b "$HOME/myConfigs/shell/LS_COLORS/LS_COLORS")"
-  fi
+if [ "$(uname)" != 'Darwin' ]; then
+  eval "$(dircolors -b "$HOME/myConfigs/shell/LS_COLORS/LS_COLORS")"
 fi
 
