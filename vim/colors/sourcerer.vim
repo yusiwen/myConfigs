@@ -58,14 +58,14 @@ hi SpellBad             cterm=underline ctermfg=196  ctermbg=NONE guifg=NONE    
 hi SpellCap             cterm=underline ctermfg=21   ctermbg=NONE guifg=NONE    guibg=NONE    gui=undercurl guisp=#0000ff
 hi SpellLocal           cterm=underline ctermfg=30   ctermbg=NONE guifg=NONE    guibg=NONE    gui=undercurl guisp=#008b8b
 hi SpellRare            cterm=underline ctermfg=201  ctermbg=NONE guifg=NONE    guibg=NONE    gui=undercurl guisp=#ff00ff
-hi StatusLine           cterm=bold      ctermfg=13   ctermbg=237  guifg=#8181a6 guibg=#3a3a3a gui=bold
+hi StatusLine           cterm=bold      ctermfg=60   ctermbg=237  guifg=#5f5f87 guibg=#3a3a3a gui=bold
 hi StatusLineNC         cterm=NONE      ctermfg=238  ctermbg=234  guifg=#444444 guibg=#1c1c1c gui=italic
 hi StatusLineAlert      cterm=NONE      ctermfg=231  ctermbg=1    guifg=#ffffff guibg=#aa4450 gui=NONE
 hi StatusLineUnalert    cterm=NONE      ctermfg=244  ctermbg=237  guifg=#808080 guibg=#3a3a3a gui=NONE
 hi TabLine              cterm=bold      ctermfg=244  ctermbg=239  guifg=#808080 guibg=#4e4e4e gui=bold
-hi TabLineFill          cterm=NONE      ctermfg=13   ctermbg=237  guifg=#8181a6 guibg=#3a3a3a gui=NONE
-hi TabLineSel           cterm=bold      ctermfg=255  ctermbg=13   guifg=#eeeeee guibg=#8181a6 gui=bold
-hi TabLineSelShade      cterm=NONE      ctermfg=235  ctermbg=13   guifg=#262626 guibg=#8181a6
+hi TabLineFill          cterm=NONE      ctermfg=60   ctermbg=237  guifg=#5f5f87 guibg=#3a3a3a gui=NONE
+hi TabLineSel           cterm=bold      ctermfg=255  ctermbg=60   guifg=#eeeeee guibg=#5f5f87 gui=bold
+hi TabLineSelShade      cterm=NONE      ctermfg=235  ctermbg=60   guifg=#262626 guibg=#5f5f87
 hi TabLineAlt           cterm=NONE      ctermfg=252  ctermbg=238  guifg=#D0D0D0 guibg=#444444
 hi TabLineAltShade      cterm=NONE      ctermfg=238  ctermbg=236  guifg=#444444 guibg=#303030
 hi Title                cterm=bold      ctermfg=66   ctermbg=NONE guifg=#5f8787 guibg=NONE    gui=bold
