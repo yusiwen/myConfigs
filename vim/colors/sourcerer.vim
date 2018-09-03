@@ -36,7 +36,7 @@ hi DiffAdd              cterm=NONE      ctermfg=16   ctermbg=71   guifg=#000000 
 hi DiffDelete           cterm=NONE      ctermfg=16   ctermbg=124  guifg=#000000 guibg=#770d0d gui=NONE
 hi DiffChange           cterm=NONE      ctermfg=16   ctermbg=68   guifg=#000000 guibg=#465e8f gui=NONE
 hi DiffText             cterm=NONE      ctermfg=16   ctermbg=117  guifg=#000000 guibg=#5e8fa7 gui=NONE
-hi Directory            cterm=bold      ctermfg=33   ctermbg=NONE guifg=#0d5ea7 guibg=NONE    gui=bold
+hi Directory            cterm=bold      ctermfg=67   ctermbg=NONE guifg=#5f87af guibg=NONE    gui=bold
 hi ErrorMsg             cterm=bold      ctermfg=203  ctermbg=NONE guifg=#a74646 guibg=NONE    gui=bold
 hi FoldColumn           cterm=bold      ctermfg=243  ctermbg=239  guifg=#545454 guibg=#3c3c3c gui=bold
 hi Folded               cterm=NONE      ctermfg=fg   ctermbg=239  guifg=fg      guibg=#3c3c3c gui=NONE
