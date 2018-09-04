@@ -116,7 +116,9 @@ fi
 
 #{{{ Ruby
 if which ruby &>/dev/null && which gem &>/dev/null; then
-  PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
+  export GEM_HOME=$(ruby -e 'puts Gem.user_dir')
+  export GEM_PATH=$GEM_HOME
+  PATH="$GEM_HOME/bin:$PATH"
   export PATH
 fi
 #}}}
