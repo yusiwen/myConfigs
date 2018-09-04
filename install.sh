@@ -210,17 +210,25 @@ function install_ruby() { # {{{
     else
       echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
     fi
+  elif [ $OS = 'Darwin' ]; then
+    if ! type ruby >/dev/null 2>&1; then
+      brew install ruby
+    else
+      echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
+    fi
+  else
+    echo -e "${COLOR}OS not supported${NC}"
   fi
 
-  echo -e "${COLOR}Replace official repo with taobao mirror...${NC}"
-  gem sources --add https://ruby.taobao.org/ --remove https://rubygems.org/
+  echo -e "${COLOR}Replace official repo with Ruby-China mirror...${NC}"
+  gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/
   gem sources -l
 
   echo -e "${COLOR}Installing bundler...${NC}"
-  sudo gem install bundler
+  gem install --user-install bundler
 
-  echo -e "${COLOR}Configurate bundler to use taobao mirror...${NC}"
-  bundle config mirror.https://rubygems.org https://ruby.taobao.org
+  echo -e "${COLOR}Configurate bundler to use Ruby-China mirror...${NC}"
+  bundle config mirror.https://rubygems.org https://gems.ruby-china.com
 } # }}}
 
 # Initialize myConfigs repo
