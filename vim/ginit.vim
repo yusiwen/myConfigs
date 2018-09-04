@@ -1,0 +1,1 @@
+Guifont! Sarasa Term SC:h10
