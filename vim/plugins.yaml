@@ -146,7 +146,7 @@
   hook_source: source $VIMPATH/vimrc.goyo
 
 # Asynchronous linting and make framework for Neovim/Vim
-- repo: benekastah/neomake
+- repo: neomake/neomake
   on_cmd: [Neomake, NeomakeInfo, NeomakeToggle, NeomakeDisable, NeomakeEnable]
   hook_add: |
     let g:lint_filetypes = [
