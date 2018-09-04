@@ -105,6 +105,9 @@
 # Vim sugar for the UNIX shell commands that need it the most
 - repo: tpope/vim-eunuch
   on_cmd: [Delete, Unlink, Move, Rename, Chmod, Mkdir, Cfind, Clocate, Lfind, Wall, SudoWrite, SudoEdit]
+- repo: vimlab/split-term.vim
+  if: has('nvim')
+  on_cmd: [Term, VTerm]
 # }}}
 # Interface {{{
 - {repo: haya14busa/vim-asterisk, on_map: {nv: <Plug>}}
