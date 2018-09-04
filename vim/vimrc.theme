@@ -8,7 +8,7 @@ execute 'source ' . expand('$VIMPATH/vimrc.colortheme')
 function! Tabline() abort "{{{
   " Active project tab
   let s:tabline =
-    \ '%#TabLineAlt# %{badge#project()} >'.
+    \ '%#TabLineAlt# %{badge#project()} '.
     \ '%#TabLineAltShade#'.
     \ '%#TabLineFill#  '
 
