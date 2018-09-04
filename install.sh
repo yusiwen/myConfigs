@@ -9,7 +9,11 @@ NC='\033[0m'
 
 OS=$(uname)
 echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
-DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+if [ -e /etc/os-release ]; then
+  DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+else
+  DISTRO=$OS
+fi
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO${COLOR} found...${NC}"
 
 function vercomp () { # {{{
