@@ -182,7 +182,7 @@ if [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
 fi
 
 # Use mirror for Homebrew-bottles
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-beottles
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 #}}}
 
 # Source any extended scrips stored in $HOME/.exports/ folder
