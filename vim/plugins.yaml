@@ -165,6 +165,13 @@
       \| endif
     autocmd VimEnter * NeomakeDisable
 
+- repo: itchyny/calendar.vim
+  if: empty($VIM_MINIMAL)
+  on_cmd: Calendar
+  hook_source: |
+    let g:calendar_google_calendar = 0
+    let g:calendar_google_task = 0
+
 # Personal Wiki for Vim
 - repo: vimwiki/vimwiki
   if: empty($VIM_MINIMAL)
