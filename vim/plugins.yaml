@@ -164,6 +164,31 @@
       \|   Neomake tidy
       \| endif
     autocmd VimEnter * NeomakeDisable
+
+# Personal Wiki for Vim
+- repo: vimwiki/vimwiki
+  if: empty($VIM_MINIMAL)
+  on_map: { n: <Plug> }
+  on_cmd: [ VimwikiIndex, VimwikiUISelect ]
+  hook_add: |
+    let g:vimwiki_use_calendar = 1
+    let g:vimwiki_hl_headers = 1
+    let g:vimwiki_hl_cb_checked = 1
+    let g:vimwiki_autowriteall = 0
+  hook_source: |
+    let g:vimwiki_list = [
+    \   { 'auto_toc': 1,
+    \     'path': '~/git/wiki/',
+    \     'index': 'home',
+    \     'syntax': 'markdown',
+    \     'ext': '.md' },
+    \   { 'diary_header': 'Diary',
+    \     'diary_link_fmt': '%Y-%m-%d',
+    \     'auto_toc': 1,
+    \     'path': '~/git/diary/',
+    \     'syntax': 'markdown',
+    \     'ext': '.md' }
+    \ ]
 # }}}
 # Completion {{{
 - repo: ludovicchabant/vim-gutentags
