@@ -74,8 +74,8 @@ nmap <S-Tab> <C-w>W
 
 " Show highlight names under cursor
 nmap <silent> gh :echo 'hi<'.synIDattr(synID(line('.'), col('.'), 1), 'name')
-        \.'> trans<'.synIDattr(synID(line('.'), col('.'), 0), 'name').'> lo<'
-        \.synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>'<CR>
+  \.'> trans<'.synIDattr(synID(line('.'), col('.'), 0), 'name').'> lo<'
+  \.synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>'<CR>
 " }}}
 " Toggle editor visuals {{{
 nmap <silent> <Leader>ts :setlocal spell!<CR>
@@ -124,8 +124,8 @@ function! s:toggle_background()
   if l:scheme =~# 'dark' || l:scheme =~# 'light'
     " Rotate between different theme backgrounds
     execute 'colorscheme' (l:scheme =~# 'dark'
-          \ ? substitute(l:scheme, 'dark', 'light', '')
-          \ : substitute(l:scheme, 'light', 'dark', ''))
+      \ ? substitute(l:scheme, 'dark', 'light', '')
+      \ : substitute(l:scheme, 'light', 'dark', ''))
   else
     execute 'set background='.(&background ==# 'dark' ? 'light' : 'dark')
     if ! exists('g:colors_name')
@@ -169,15 +169,15 @@ if has('mac')
 
   " Use Dash on Mac, for context help
   if executable('/Applications/Dash.app/Contents/MacOS/Dash')
-    autocmd MyAutoCmd FileType ansible,go,php,css,less,html,markdown
+    autocmd MyAutoCmd FileType yaml.ansible,go,php,css,less,html,markdown
       \ nmap <silent><buffer> K :!open -g dash://"<C-R>=split(&ft, '\.')[0]<CR>:<cword>"&<CR><CR>
     autocmd MyAutoCmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
       \ nmap <silent><buffer> K :!open -g dash://"<cword>"&<CR><CR>
   endif
 
-" Use Zeal on Linux for context help
+  " Use Zeal on Linux for context help
 elseif executable('zeal')
-  autocmd MyAutoCmd FileType ansible,go,php,css,less,html,markdown
+  autocmd MyAutoCmd FileType yaml.ansible,go,php,css,less,html,markdown
     \ nmap <silent><buffer> K :!zeal --query "<C-R>=split(&ft, '\.')[0]<CR>:<cword>"&<CR><CR>
   autocmd MyAutoCmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
     \ nmap <silent><buffer> K :!zeal --query "<cword>"&<CR><CR>
@@ -193,7 +193,7 @@ nnoremap <silent> <Leader>ml :call <SID>append_modeline()<CR>
 " See: http://vim.wikia.com/wiki/Modeline_magic
 function! s:append_modeline() "{{{
   let l:modeline = printf(' vim: set ts=%d sw=%d tw=%d %set :',
-        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+    \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
   let l:modeline = substitute(&commentstring, '%s', l:modeline, '')
   call append(line('$'), l:modeline)
 endfunction "}}}
@@ -211,6 +211,14 @@ nnoremap <silent> [Window]x  :<C-u>call <SID>BufferEmpty()<CR>
 nnoremap <silent> [Window]sv :split<CR>:wincmd p<CR>:e#<CR>
 nnoremap <silent> [Window]sg :vsplit<CR>:wincmd p<CR>:e#<CR>
 
+function! WipeHiddenBuffers() " {{{
+  let tpbl=[]
+  call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
+  for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
+    silent execute 'bwipeout' buf
+  endfor
+endfunction " }}}
+
 function! s:BufferEmpty() " {{{
   let l:current = bufnr('%')
   if ! getbufvar(l:current, '&modified')
@@ -226,6 +234,19 @@ function! s:SweepBuffers() " {{{
     execute 'silent bdelete' join(s:hidden)
   endif
 endfunction " }}}
+
+" OpenChangedFiles COMMAND
+" Open a split for each dirty file in git
+function! OpenChangedFiles() " {{{
+  only " Close all windows, unless they're modified
+  let status =
+    \ system('git status -s | grep "^ \?\(M\|A\|UU\)" | sed "s/^.\{3\}//"')
+  let filenames = split(status, "\n")
+  exec 'edit ' . filenames[0]
+  for filename in filenames[1:]
+    exec 'sp ' . filename
+  endfor
+endfunction " }}}
 " }}}
 " Tags {{{
 nmap <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
@@ -236,8 +257,8 @@ nmap <C-]>h :sp <CR>:exec("tag ".expand("<cword>"))<CR>
 " denite.nvim {{{
 if dein#tap('denite.nvim')
   nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh<CR>
-  nnoremap <silent><LocalLeader>f :<C-u>Denite file_rec<CR>
-  nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file_old -default-action=switch<CR>
+  nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
+  nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file/old -default-action=switch<CR>
   nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec -default-action=cd<CR>
   nnoremap <silent><LocalLeader>v :<C-u>Denite register -buffer-name=register<CR>
   xnoremap <silent><LocalLeader>v :<C-u>Denite register -buffer-name=register -default-action=replace<CR>
@@ -245,7 +266,8 @@ if dein#tap('denite.nvim')
   nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list<CR>
   nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>
   nnoremap <silent><LocalLeader>g :<C-u>Denite grep<CR>
-  nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file_point<CR>
+  nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file/point<CR>
+  nnoremap <silent><LocalLeader>u :<C-u>Denite junkfile:new junkfile<CR>
   nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
   nnoremap <silent><LocalLeader>s :<C-u>Denite session -buffer-name=list<CR>
   nnoremap <silent><expr> <LocalLeader>t &filetype == 'help' ? "g\<C-]>" :
@@ -264,7 +286,7 @@ if dein#tap('denite.nvim')
   nnoremap <silent> <Leader>gc :<C-u>Denite gitchanged:<CR>
 
   " Open Denite with word under cursor or selection
-  nnoremap <silent> <Leader>gf :DeniteCursorWord file_rec<CR>
+  nnoremap <silent> <Leader>gf :DeniteCursorWord file/rec<CR>
   nnoremap <silent> <Leader>gg :DeniteCursorWord grep<CR>
   vnoremap <silent> <Leader>gg
     \ :<C-u>call <SID>get_selection('/')<CR>
@@ -393,12 +415,12 @@ if dein#tap('neosnippet.vim')
 
   " SuperTab like snippets behavior.
   imap <expr><TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ neosnippet#expandable_or_jumpable() ?
-        \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    \ pumvisible() ? "\<C-n>" :
+    \ neosnippet#expandable_or_jumpable() ?
+    \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
   smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "
-        \<Plug>(neosnippet_expand_or_jump)"
-        \: "\<TAB>"
+    \<Plug>(neosnippet_expand_or_jump)"
+    \: "\<TAB>"
 endif
 " }}}
 " emmet-vim {{{
@@ -524,7 +546,7 @@ endif
 " vim-bookmarks {{{
 if dein#tap('vim-bookmarks')
   nmap ma :<C-u>cgetexpr bm#location_list()<CR>
-        \ :<C-u>Denite quickfix -buffer-name=list<CR>
+    \ :<C-u>Denite quickfix -buffer-name=list<CR>
   nmap mn <Plug>BookmarkNext
   nmap mp <Plug>BookmarkPrev
   nmap mm <Plug>BookmarkToggle
@@ -567,7 +589,7 @@ endif
 if dein#tap('tern_for_vim')
   autocmd MyAutoCmd FileType javascript,jsx,javascript.jsx
     \  nnoremap <silent><buffer> K          :<C-u>TernDoc<CR>
-    \| nnoremap <silent><buffer> <C-]>      :<C-u>TernDef<CR>
+    \| nnoremap <silent><buffer> <C-]>      :<C-u>TernDefSplit<CR>
     \| nnoremap <silent><buffer> <Leader>g  :<C-u>TernType<CR>
     \| nnoremap <silent><buffer> <Leader>n  :<C-u>TernRefs<CR>
     \| nnoremap <silent><buffer> <Leader>r  :<C-u>TernRename<CR>

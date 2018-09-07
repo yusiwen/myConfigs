@@ -23,9 +23,9 @@ let s:menus.project.command_candidates = [
 let s:menus.files = { 'description': 'File tools' }
 let s:menus.files.command_candidates = [
   \   ['▶ Denite: Find in files…    │ ;g',  'Denite grep:.'],
-  \   ['▶ Denite: Find files        │ ;f',  'Denite file_rec'],
+  \   ['▶ Denite: Find files        │ ;f',  'Denite file/rec'],
   \   ['▶ Denite: Buffers           │ ;b',  'Denite buffer'],
-  \   ['▶ Denite: MRU               │',  'Denite file_old'],
+  \   ['▶ Denite: MRU               │',  'Denite file/old'],
   \   ['▶ Denite: Line              │ ;/',  'Denite line'],
   \ ]
 

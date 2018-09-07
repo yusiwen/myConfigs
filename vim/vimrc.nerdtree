@@ -12,13 +12,36 @@ let g:NERDTreeHijackNetrw = 1
 let g:NERDTreeBookmarksFile = $VARPATH.'/treemarks'
 let g:NERDTreeIgnore = [
   \ '\.git$', '\.hg$', '\.svn$', '\.stversions$', '\.pyc$', '\.svn$',
-  \ '\.DS_Store$', '\.sass-cache$', '__pycache__$', '\.egg-info$'
+  \ '\.DS_Store$', '\.sass-cache$', '__pycache__$', '\.egg-info$', '\.cache$'
   \ ]
 
 autocmd MyAutoCmd FileType nerdtree call s:nerdtree_settings()
 function! s:nerdtree_settings() abort
   setlocal expandtab " Enabling vim-indent-guides
   vertical resize 35
+endfunction
+
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+autocmd MyAutoCmd WinEnter * if exists('t:NERDTreeBufName') &&
+  \ bufwinnr(t:NERDTreeBufName) != -1 && winnr("$") == 1 | q | endif
+
+" if the current window is NERDTree, move focus to the next window
+autocmd MyAutoCmd TabLeave * call s:NERDTreeUnfocus()
+function! s:NERDTreeUnfocus()
+  if exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) == winnr()
+    let l:winNum = 1
+    while (l:winNum <= winnr('$'))
+      let l:buf = winbufnr(l:winNum)
+      if buflisted(l:buf) && getbufvar(l:buf, '&modifiable') == 1 &&
+        \ ! empty(getbufvar(l:buf, '&buftype'))
+        exec l:winNum.'wincmd w'
+        return
+      endif
+      let l:winNum = l:winNum + 1
+    endwhile
+    wincmd w
+  endif
 endfunction
 
 " Private helpers {{{
@@ -119,7 +142,7 @@ call NERDTreeAddKeyMap({
   \ 'scope': 'Node' })
 
 function! s:find_in_path(node)
-  execute 'Denite file_rec:'.s:get_containing_dir(a:node)
+  execute 'Denite file/rec:'.s:get_containing_dir(a:node)
 endfunction
 
 function! s:grep_dir(node)
@@ -272,8 +295,8 @@ function! s:execute_system_associated(filenode)
     let s:is_windows = has('win16') || has('win32') || has('win64') || has('win95')
     let s:is_cygwin = has('win32unix')
     let s:is_mac = !s:is_windows && !s:is_cygwin
-          \ && (has('mac') || has('macunix') || has('gui_macvim') ||
-          \   (!isdirectory('/proc') && executable('sw_vers')))
+      \ && (has('mac') || has('macunix') || has('gui_macvim') ||
+      \   (!isdirectory('/proc') && executable('sw_vers')))
     " As of 7.4.122, the system()'s 1st argument is converted internally by Vim.
     " Note that Patch 7.4.122 does not convert system()'s 2nd argument and
     " return-value. We must convert them manually.
@@ -288,33 +311,33 @@ function! s:execute_system_associated(filenode)
       " Note:
       "   # and % required to be escaped (:help cmdline-special)
       silent execute printf(
-            \ '!start rundll32 url.dll,FileProtocolHandler %s',
-            \ escape(l:filename, '#%'),
-            \)
+        \ '!start rundll32 url.dll,FileProtocolHandler %s',
+        \ escape(l:filename, '#%'),
+        \)
     elseif s:is_cygwin
       " Cygwin.
       call system(printf('%s %s', 'cygstart',
-            \ shellescape(l:filename)))
+        \ shellescape(l:filename)))
     elseif executable('xdg-open')
       " Linux.
       call system(printf('%s %s &', 'xdg-open',
-            \ shellescape(l:filename)))
+        \ shellescape(l:filename)))
     elseif exists('$KDE_FULL_SESSION') && $KDE_FULL_SESSION ==# 'true'
       " KDE.
       call system(printf('%s %s &', 'kioclient exec',
-            \ shellescape(l:filename)))
+        \ shellescape(l:filename)))
     elseif exists('$GNOME_DESKTOP_SESSION_ID')
       " GNOME.
       call system(printf('%s %s &', 'gnome-open',
-            \ shellescape(l:filename)))
+        \ shellescape(l:filename)))
     elseif executable('exo-open')
       " Xfce.
       call system(printf('%s %s &', 'exo-open',
-            \ shellescape(l:filename)))
+        \ shellescape(l:filename)))
     elseif s:is_mac && executable('open')
       " Mac OS.
       call system(printf('%s %s &', 'open',
-            \ shellescape(l:filename)))
+        \ shellescape(l:filename)))
     else
       throw 'vital: System.File: open(): Not supported.'
     endif
