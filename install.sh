@@ -557,7 +557,7 @@ function install_vim() { # {{{
   #}}}
 
   npm install -g jshint jsxhint jsonlint stylelint sass-lint raml-cop markdownlint-cli write-good
-  pip install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint
+  pip install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
 } #}}}
 
 function install_rxvt() { # {{{

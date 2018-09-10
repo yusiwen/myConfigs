@@ -713,6 +713,9 @@ let g:formatters_c = ['my_clang_c']
 let g:formatdef_my_astyle_cpp = '"astyle --mode=c --style=google -xdk1W1pcH".(&expandtab ? "s".shiftwidth() : "t")'
 let g:formatdef_my_clang_cpp = '"clang-format -style=file"'
 let g:formatters_cpp = ['my_clang_cpp']
+
+let g:formatdef_my_yapf_python = '"yapf --style pep8"'
+let g:formatters_python = ['my_yapf_python']
 "}}}
 " }}}
 " vim: set foldmethod=marker ts=2 sw=2 tw=80 expandtab :
