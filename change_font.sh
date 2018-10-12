@@ -1,15 +1,28 @@
 #!/bin/sh
 
+if [ $OS != 'Linux' ]; then
+  echo "Only Linux is suppported!"
+  exit 0
+fi
+
 X11_FONT_DIR="$HOME/myConfigs/X11/themes/font-config"
 X11_FONT_FILE="$HOME/.Xresources.font"
 X11_FONT_INSTALLATION_DIR="$HOME/.local/share/fonts"
 FONT_ZIP_DIR="$HOME/myConfigs/X11/fonts"
 
 echo "Checking WenQuanYi Micro Hei Mono fonts..."
-PACKAGE=$(dpkg -l | grep fonts-wqy-microhei | cut -d ' ' -f 3 | grep ^fonts-wqy-microhei$ | wc -l)
-if [ $PACKAGE -eq 0 ]; then
-  echo "Installing WenQuanYi Micro Hei Mono fonts..."
-  sudo apt install -y fonts-wqy-microhei
+if [ $DISTRO = 'Ubuntu' ]; then
+  PACKAGE=$(dpkg -l | grep fonts-wqy-microhei | cut -d ' ' -f 3 | grep ^fonts-wqy-microhei$ | wc -l)
+  if [ $PACKAGE -eq 0 ]; then
+    echo "Installing WenQuanYi Micro Hei Mono fonts..."
+    sudo apt install -y fonts-wqy-microhei
+  fi
+elif [ $DISTRO = 'ManjaroLinux' ]; then
+  PACKAGE=$(pacman -Q | grep wqy-microhei | wc -l)
+  if [ $PACKAGE -eq 0 ]; then
+    echo "Installing WenQuanYi Micro Hei Mono fonts..."
+    sudo pacman -S wqy-microhei
+  fi
 fi
 
 echo "[1] Input Mono Compressed"

@@ -21,7 +21,9 @@ change_theme()
 
     echo "Setting theme to '$1'..."
 
-    ln -sfnv $VIM_THEME_DIR/vimrc.theme.$1 $VIM_THEME_FILE
+    if [ -e $VIM_THEME_DIR/vimrc.theme.$1 ]; then
+      ln -sfnv $VIM_THEME_DIR/vimrc.theme.$1 $VIM_THEME_FILE
+    fi
 
     BASE16=
     if echo "$1" | $GREP "^base16"; then
@@ -33,10 +35,12 @@ change_theme()
       rm -f $BASE16_THEME_SHELL
     fi
 
-    # Check if mutt is installed or not
-    PACKAGE=$(dpkg -l | grep mutt)
-    if [ ! -z "$PACKAGE" ]; then
-      ln -sfnv $MUTT_THEME_DIR/$1$BASE16.muttrc $MUTT_THEME_FILE
+    if [ $DISTRO = 'Ubuntu' ]; then
+      # Check if mutt is installed or not
+      PACKAGE=$(dpkg -l | grep mutt)
+      if [ ! -z "$PACKAGE" ]; then
+        ln -sfnv $MUTT_THEME_DIR/$1$BASE16.muttrc $MUTT_THEME_FILE
+      fi
     fi
 
     echo "Reloading xresources..."
@@ -57,6 +61,7 @@ echo "[8] Base16-Solarized Dark"
 echo "[9] Base16-Tomorrow"
 echo "[0] Base16-Twilight"
 echo "[a] Dracula"
+echo "[b] Manjaro-i3 Default"
 echo -n "Choose theme[3]: "
 read number
 
@@ -84,8 +89,10 @@ elif echo "$number" | grep -iq "^9"; then
   change_theme base16-tomorrow
 elif echo "$number" | grep -iq "^0"; then
   change_theme base16-twilight
-elif echo "$number" | grep -iq "^a"; then
+elif echo "$number" | grep -iq "^[a|A]$"; then
   change_theme dracula
+elif echo "$number" | grep -iq "^[b|B]$"; then
+  change_theme manjaro-i3
 else
   echo "Nahh!"
   exit

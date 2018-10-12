@@ -574,14 +574,19 @@ function install_rxvt() { # {{{
       fetch_myConfigs
     fi
 
+    if [ -e $HOME/.Xresources ]; then
+      cp $HOME/.Xresources $HOME/.Xresources.backup
+    fi
     ln -sfnv $HOME/myConfigs/X11/Xresources $HOME/.Xresources
     $HOME/myConfigs/change_font.sh
     $HOME/myConfigs/change_theme.sh
     xrdb -load $HOME/.Xresources
 
-    if ! type rxvt >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing ${COLOR1}rxvt-unicode-256color${COLOR}...${NC}"
-      sudo apt install -y rxvt-unicode-256color
+    if [ $DISTRO = 'Ubuntu' ]; then
+      if ! type rxvt >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing ${COLOR1}rxvt-unicode-256color${COLOR}...${NC}"
+        sudo apt install -y rxvt-unicode-256color
+      fi
     fi
   else
     echo -e "${COLOR1}rxvt-unicode-256color${COLOR} will only be installed on Linux.${NC}"
