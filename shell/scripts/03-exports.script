@@ -182,6 +182,12 @@ if [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
   export PATH
 fi
 
+# Add $HOME/bin to $PATH if exists && not added
+if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  PATH="${PATH:+"$PATH:"}$HOME/.local/bin"
+  export PATH
+fi
+
 # Use mirror for Homebrew-bottles
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 #}}}
