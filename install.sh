@@ -112,34 +112,27 @@ function install_gfw() { # {{{
 
 # Git
 function install_git() { # {{{
-  if ! type polipo >/dev/null 2>&1; then
-    install_gfw
-    read -p "Continue? [y|N]${NC}" CONFIRM
-    case $CONFIRM in
-      [Yy]* ) ;;
-      * ) exit;;
-    esac
-  fi
-
   if [ $OS = 'Linux' ]; then
-    # install git if not exist
-    GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$(lsb_release -c -s).list
-    if [ ! -e $GIT_PPA ]; then
-      echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
-      sudo apt-add-repository -y ppa:git-core/ppa
-      # Replace official launchpad address with reverse proxy from USTC
-      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
-      sudo apt update
-      sudo apt upgrade
-    else
-      echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
-    fi
+    if [ $DISTRO = 'Ubuntu' ]; then
+      # install git if not exist
+      GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$(lsb_release -c -s).list
+      if [ ! -e $GIT_PPA ]; then
+        echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
+        sudo apt-add-repository -y ppa:git-core/ppa
+        # Replace official launchpad address with reverse proxy from USTC
+        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
+        sudo apt update
+        sudo apt upgrade
+      else
+        echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
+      fi
 
-    if ! type git >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
-      sudo apt install -y git
-    else
-      echo -e "${COLOR1}git${COLOR} was found.${NC}"
+      if ! type git >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
+        sudo apt install -y git
+      else
+        echo -e "${COLOR1}git${COLOR} was found.${NC}"
+      fi
     fi
   elif [ $OS = 'Darwin']; then
     brew install git
@@ -169,24 +162,39 @@ function install_git() { # {{{
   git config --global merge.conflictstyle diff3
   git config --global mergetool.prompt false
 
-  echo -e "${COLOR}Setting proxies...${NC}"
-  if [ $OS = 'Linux' ]; then
-    # On Ubuntu, use polipo as http(s) proxy
-    git config --global http.proxy 'http://127.0.0.1:15355'
-    git config --global https.proxy 'http://127.0.0.1:15355'
-  elif [ $OS = 'Darwin' ]; then
-    git config --global http.proxy 'http://127.0.0.1:1087'
-    git config --global https.proxy 'http://127.0.0.1:1087'
-  else
-    git config --global http.proxy 'http://127.0.0.1:1088'
-    git config --global https.proxy 'http://127.0.0.1:1088'
+  echo -ne "${COLOR1}Set proxies? [y|N]${NC}"
+  read result
+  if echo "$result" | grep -iq "^[y|Y]$"; then
+    if ! type polipo >/dev/null 2>&1; then
+      install_gfw
+      read -p "Continue? [y|N]${NC}" CONFIRM
+      case $CONFIRM in
+        [Yy]* ) ;;
+        * ) exit;;
+      esac
+    fi
+
+    echo -e "${COLOR}Setting proxies...${NC}"
+    if [ $OS = 'Linux' ]; then
+      # On Ubuntu, use polipo as http(s) proxy
+      git config --global http.proxy 'http://127.0.0.1:15355'
+      git config --global https.proxy 'http://127.0.0.1:15355'
+    elif [ $OS = 'Darwin' ]; then
+      git config --global http.proxy 'http://127.0.0.1:1087'
+      git config --global https.proxy 'http://127.0.0.1:1087'
+    else
+      git config --global http.proxy 'http://127.0.0.1:1088'
+      git config --global https.proxy 'http://127.0.0.1:1088'
+    fi
+
+    if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
+      mkdir -p $HOME/.ssh
+      ln -sfnv $HOME/myConfigs/git/ssh_config $HOME/.ssh/config
+    fi
   fi
 
   if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
     if [ -d $HOME/myConfigs ]; then
-      mkdir -p $HOME/.ssh
-      ln -sfnv $HOME/myConfigs/git/ssh_config $HOME/.ssh/config
-
       mkdir -p $HOME/bin
       ln -sfnv $HOME/myConfigs/git/git-migrate $HOME/bin/git-migrate
       ln -sfnv $HOME/myConfigs/git/git-new-workdir $HOME/bin/git-new-workdir
