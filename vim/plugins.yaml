@@ -30,11 +30,17 @@
 - repo: yonchu/accelerated-smooth-scroll
 # enable repeating supported plugin maps with "."
 - repo: tpope/vim-repeat
-
 # Keep/restore fcitx state when toggling insert mode
 # fcitx.vim is only needed under Linux
 - repo: vim-scripts/fcitx.vim
   if: has('unix') && system('uname') =~? '^linux' && executable('fcitx')
+
+# Colorschemes
+- repo: chriskempson/base16-vim
+- repo: morhetz/gruvbox
+- repo: dracula/vim
+- repo: nanotech/jellybeans.vim
+- repo: altercation/vim-colors-solarized
 # }}}
 # Commands {{{
 - {repo: Shougo/vimproc.vim, build: make, on_func: vimproc#}

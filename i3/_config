@@ -10,8 +10,7 @@
 
 # {{{ Global variables
 set $mod Mod4
-set $mod Mod4
-!?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
+!?<HOSTNAME=vm-pd-ubuntu1804
 set $mod Mod1
 >
 
@@ -63,12 +62,13 @@ floating_modifier $mod
 # }}}
 
 # {{{ Colors
-!#<~/.i3/_config.colors>
-#                       border            backgr     text
-client.focused          $FOCUSED_BORDER   $FOCUSED   $FOCUSED_TEXT
-client.focused_inactive $INACTIVE_BORDER  $INACTIVE  $INACTIVE_TEXT
-client.unfocused        $UNFOCUSED_BORDER $UNFOCUSED $UNFOCUSED_TEXT
-client.urgent           $URGENT_BORDER    $URGENT    $URGENT_TEXT
+!#<~/.i3/config.colors>
+#                       border            backgr     text            indicator
+client.focused          $FOCUSED_BORDER   $FOCUSED   $FOCUSED_TEXT   $FOCUSED_INDIC
+client.focused_inactive $INACTIVE_BORDER  $INACTIVE  $INACTIVE_TEXT  $INACTIVE_INDIC
+client.unfocused        $UNFOCUSED_BORDER $UNFOCUSED $UNFOCUSED_TEXT $UNFOCUSED_INDIC
+client.urgent           $URGENT_BORDER    $URGENT    $URGENT_TEXT    $URGENT_INDIC
+client.placeholder      $PLCHOLDER_BORDER $PLCHOLDER $PLCHOLDER_TEXT $PLCHOLDER_INDIC
 
 client.background       $BACKGROUND
 # }}}
@@ -248,10 +248,12 @@ bar {
     background $BAR_BACKGROUND
     statusline $BAR_STATUSLINE
     separator  $BAR_SEPARATOR
+
     focused_workspace  $BAR_FOCUSED_BORDER  $BAR_FOCUSED  $BAR_FOCUSED_TEXT
     active_workspace   $BAR_ACTIVE_BORDER   $BAR_ACTIVE   $BAR_ACTIVE_TEXT
     inactive_workspace $BAR_INACTIVE_BORDER $BAR_INACTIVE $BAR_INACTIVE_TEXT
     urgent_workspace   $BAR_URGENT_BORDER   $BAR_URGENT   $BAR_URGENT_TEXT
+    binding_mode       $BAR_BINDING_BORDER  $BAR_BINDING  $BAR_BINDING_TEXT
   }
 }
 # }}}
@@ -343,28 +345,79 @@ exec --no-startup-id !!<\
   xcompmgr -n,dunst,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
   thunar --daemon,urxvtd -q -o -f,\
-  orage
-exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
+# orage
+exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
+# exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
 >
 !?<HOSTNAME=yusiwen-Aspire-S3
 exec --no-startup-id !!<\
   xbacklight -set 75,remmina -i,blueman-applet>
->
-!?<HOSTNAME=home-ubuntu
-exec --no-startup-id dropboxd
-exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
-exec dex -ae i3
 >
 !?<HOSTNAME=vm-ubuntu-guest
 exec --no-startup-id dex -ae i3
 exec --no-startup-id i3-msg Workspace 1:Main
 exec --no-startup-id i3-sensible-terminal
 >
-!?<HOSTNAME=yusiwen-Parallels-Virtual-Platform
+!?<HOSTNAME=vm-pd-ubuntu1804
+exec --no-startup-id dex -ae i3
+exec --no-startup-id xsetroot -solid "#0b5e6b"
 exec --no-startup-id !!<\
   i3-msg Workspace 1:Main,\
   i3-sensible-terminal>
-exec dex -ae i3
 >
 # }}}
 
+# {{{ i3-gaps
+# Set inner/outer gaps
+gaps inner 8
+gaps outer -2
+
+# Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
+# gaps inner|outer current|all set|plus|minus <px>
+# gaps inner all set 10
+# gaps outer all plus 5
+
+# Smart gaps (gaps used if only more than one container on the workspace)
+smart_gaps on
+
+# Smart borders (draw borders around container only if it is not the only container on this workspace)
+# on|no_gaps (on=always activate and no_gaps=only activate if the gap size to the edge of the screen is 0)
+smart_borders on
+
+# Press $mod+Shift+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+  bindsym o      mode "$mode_gaps_outer"
+  bindsym i      mode "$mode_gaps_inner"
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+mode "$mode_gaps_inner" {
+  bindsym plus  gaps inner current plus 5
+  bindsym minus gaps inner current minus 5
+  bindsym 0     gaps inner current set 0
+
+  bindsym Shift+plus  gaps inner all plus 5
+  bindsym Shift+minus gaps inner all minus 5
+  bindsym Shift+0     gaps inner all set 0
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+  bindsym plus  gaps outer current plus 5
+  bindsym minus gaps outer current minus 5
+  bindsym 0     gaps outer current set 0
+
+  bindsym Shift+plus  gaps outer all plus 5
+  bindsym Shift+minus gaps outer all minus 5
+  bindsym Shift+0     gaps outer all set 0
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+# }}}

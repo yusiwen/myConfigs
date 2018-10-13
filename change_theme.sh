@@ -1,5 +1,8 @@
 #!/bin/sh
 
+I3_THEME_DIR="$HOME/myConfigs/i3/colors"
+I3_THEME_FILE="$HOME/.i3/config.colors"
+
 VIM_THEME_DIR="$HOME/myConfigs/vim/themes"
 VIM_THEME_FILE="$HOME/.vim/vimrc.colortheme"
 
@@ -23,6 +26,11 @@ change_theme()
 
     if [ -e $VIM_THEME_DIR/vimrc.theme.$1 ]; then
       ln -sfnv $VIM_THEME_DIR/vimrc.theme.$1 $VIM_THEME_FILE
+    fi
+
+    if [ -e $I3_THEME_DIR/_config.$1 ]; then
+      ln -sfnv $I3_THEME_DIR/_config.$1 $I3_THEME_FILE
+      i3bang
     fi
 
     BASE16=
@@ -61,7 +69,8 @@ echo "[8] Base16-Solarized Dark"
 echo "[9] Base16-Tomorrow"
 echo "[0] Base16-Twilight"
 echo "[a] Dracula"
-echo "[b] Manjaro-i3 Default"
+echo "[b] Manjaro-i3"
+echo "[c] Solarized-Dark"
 echo -n "Choose theme[3]: "
 read number
 
@@ -93,6 +102,8 @@ elif echo "$number" | grep -iq "^[a|A]$"; then
   change_theme dracula
 elif echo "$number" | grep -iq "^[b|B]$"; then
   change_theme manjaro-i3
+elif echo "$number" | grep -iq "^[c|C]$"; then
+  change_theme solarized
 else
   echo "Nahh!"
   exit
