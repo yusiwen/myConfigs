@@ -44,14 +44,17 @@ function vercomp () { # {{{
 # Initialize apt and install prerequisite packages
 function init_env() { # {{{
   if [ $OS = 'Linux' ]; then
-    MIRRORS=$(grep "mirrors.aliyun.com" /etc/apt/sources.list|wc -l)
-    if [ $MIRRORS -eq 0 ]; then
-      sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
-      sudo sed -i "^deb http:\/\/.*\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
-      sudo apt update
-    fi
+    if [ $DISTRO = 'Ubuntu' ]; then
+      MIRRORS=$(grep "mirrors.aliyun.com" /etc/apt/sources.list|wc -l)
+      if [ $MIRRORS -eq 0 ]; then
+        echo -e "${COLOR}Setting Ubuntu apt source to aliyun...${NC}"
+        sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
+        sudo sed -i "^deb http:\/\/.*\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
+        sudo apt update
+      fi
 
-    sudo apt install -y curl lua5.3 perl
+      sudo apt install -y curl lua5.3 perl
+    fi
   elif [ $OS = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
@@ -340,31 +343,22 @@ function install_node() { # {{{
   fi
 
   if ! type node >/dev/null 2>&1; then
-    echo "[1] Node.js v4"
-    echo "[2] Node.js v6"
-    echo "[3] Node.js v8"
-    echo -n "Choose version[3]:"
-    read version
+    if [ $OS = 'Linux' ]; then
+      if [ $DISTRO = 'Ubuntu' ]; then
+        NODE_PPA=/etc/apt/sources.list.d/nodesource.list
+        echo -e "${COLOR}Installing Node.js v10...${NC}"
+        curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+        sudo sed -i "s/deb\.nodesource\.com\/node_10.x/mirrors\.tuna\.tsinghua\.edu\.cn\/nodesource\/deb_10.x/g" $NODE_PAA
 
-    if [ -z $version ]; then
-      version='3'
+        echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
+        sudo apt install -y nodejs
+      fi
+    elif [ $OS = 'Darwin' ]; then
+      if ! type brew >/dev/null 2>&1; then
+        init_env
+      fi
+      brew install node
     fi
-
-    NODE_PPA=/etc/apt/sources.list.d/nodesource.list
-    if echo -e "$version" | grep -iq "^1"; then
-      curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
-      sudo sed -i "s/deb\.nodesource\.com\/node_4.x/mirrors\.tuna\.tsinghua\.edu\.cn\/nodesource\/deb_4.x/g" $NODE_PAA
-    elif echo -e "$version" | grep -iq "^2"; then
-      curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-      sudo sed -i "s/deb\.nodesource\.com\/node_6.x/mirrors\.tuna\.tsinghua\.edu\.cn\/nodesource\/deb_6.x/g" $NODE_PAA
-    else
-      echo -e "${COLOR}Invalid input. Install v8 instead.${NC}"
-      curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-      sudo sed -i "s/deb\.nodesource\.com\/node_8.x/mirrors\.tuna\.tsinghua\.edu\.cn\/nodesource\/deb_8.x/g" $NODE_PAA
-    fi
-
-    echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
-    sudo apt install -y nodejs
   else
     echo -e "${COLOR1}Node.js($(node -v))${COLOR} was found.${NC}"
   fi
@@ -722,6 +716,7 @@ function print_info() {
 
 case $1 in
   all) install_all;;
+  init) init_env;;
   gfw) install_gfw;;
   git) install_git;;
   ruby) install_ruby;;
