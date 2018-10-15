@@ -12,6 +12,9 @@ FONT_ZIP_DIR="$HOME/myConfigs/X11/fonts"
 
 echo "Checking WenQuanYi Micro Hei Mono fonts..."
 if [ $DISTRO = 'Ubuntu' ]; then
+  if ! type 7z >/dev/null 2>&1; then
+    sudo apt install p7zip-full
+  fi
   PACKAGE=$(dpkg -l | grep fonts-wqy-microhei | cut -d ' ' -f 3 | grep ^fonts-wqy-microhei$ | wc -l)
   if [ $PACKAGE -eq 0 ]; then
     echo "Installing WenQuanYi Micro Hei Mono fonts..."
