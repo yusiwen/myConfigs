@@ -13,6 +13,9 @@ set $mod Mod4
 !?<HOSTNAME=vm-pd-ubuntu1804
 set $mod Mod1
 >
+!?<HOSTNAME=vm-pd-ubuntu-min
+set $mod Mod1
+>
 
 set $TERM urxvtc
 set $BROWSER google-chrome
@@ -373,6 +376,7 @@ exec_always --no-startup-id xsetroot -solid "#0b5e6b"; compton -b
 exec --no-startup-id !!<\
   i3-msg Workspace 1:Main,\
   i3-sensible-terminal>
+exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 >
 # }}}
 

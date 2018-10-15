@@ -55,7 +55,7 @@ function init_env() { # {{{
         sudo apt update
       fi
 
-      sudo apt install -y curl lua5.3 perl
+      sudo apt install -y curl lua5.3 perl silversearch-ag p7zip-full
     fi
   elif [ $OS = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
@@ -223,7 +223,7 @@ function install_ruby() { # {{{
   if [ $OS = 'Linux' ]; then
     if ! type ruby >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
-      sudo apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
+      sudo apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
     else
       echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
     fi
@@ -240,12 +240,20 @@ function install_ruby() { # {{{
   echo -e "${COLOR}Replace official repo with Ruby-China mirror...${NC}"
   gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/
   gem sources -l
+  echo -e "${COLOR}Replace official repo with Ruby-China mirror...OK${NC}"
 
-  echo -e "${COLOR}Installing bundler...${NC}"
-  gem install --user-install bundler
+  export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
+  if ! type bundle >/dev/null 2>&1; then
+    echo -e "${COLOR}Installing bundler...${NC}"
+    gem install --user-install bundler
+    echo -e "${COLOR}Installing bundler...OK${NC}"
+  else
+    echo -e "${COLOR1}bundler${COLOR} was found.${NC}"
+  fi
 
   echo -e "${COLOR}Configurate bundler to use Ruby-China mirror...${NC}"
   bundle config mirror.https://rubygems.org https://gems.ruby-china.com
+  echo -e "${COLOR}Configurate bundler to use Ruby-China mirror...OK${NC}"
 } # }}}
 
 # Initialize myConfigs repo
@@ -591,27 +599,42 @@ function install_rxvt() { # {{{
 
 function install_i3wm() { # {{{
   if [ $OS = 'Linux' ]; then
-    # Install i3wm if not exist
-    set +e
-    APT_SOURCE=$(grep debian.sur5r.net /etc/apt/sources.list | wc -l)
-    set -e
-    if [ $APT_SOURCE -eq 0 ]; then
-      echo -e "${COLOR}Adding i3wm official repository to '/etc/apt/sources.list'...${NC}"
-      echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" | sudo tee --append /etc/apt/sources.list
-      sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E3CA1A89941C42E6
-      sudo apt update
-      echo -e "${COLOR}Install i3wm official repository key...${NC}"
-      sudo apt --allow-unauthenticated install -y sur5r-keyring
-      sudo apt update
+    # Install i3-gaps if not exist
+    if ! type i3 >/dev/null 2>&1; then
+      echo -e "${COLOR}Install ${COLOR1}i3${COLOR}...${NC}"
+      sudo apt install -y i3
     fi
 
-    if ! type i3 >/dev/null 2>&1; then
-      echo -e "${COLOR}Install ${COLOR1}i3-wm${COLOR}...${NC}"
-      sudo apt install -y i3
-      echo -e "${COLOR}Install ${COLOR1}i3blocks${COLOR}...${NC}"
-      sudo apt install -y i3blocks
-    else
-      sudo apt update && sudo apt upgrade
+    sudo apt install libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm0 libxcb-xrm-dev automake
+    if [ ! -d ~/git/i3-gaps ]; then
+      mkdir -p ~/git
+      if ! type git >/dev/null 2>&1; then
+        install_git
+      fi
+      pushd ~/git
+      git clone https://www.github.com/Airblader/i3 i3-gaps
+      cd  ~/git/i3-gaps
+      autoreconf --force --install
+      rm -rf build/
+      mkdir -p build && cd build/
+      ../configure --prefix=/usr --sysconfdir=/etc --disable-sanitizers
+      make
+      sudo make install
+      popd && popd && popd
+    fi
+
+    # Polybar
+    sudo apt install cmake cmake-data pkg-config libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-randr0-dev libxcb-composite0-dev python-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-xrm-dev libxcb-cursor-dev libjsoncpp-dev libjsoncpp1
+    if [ ! -d ~/git/polybar ]; then
+      mkdir -p ~/git
+      pushd ~/git
+      git clone --recursive https://github.com/jaagr/polybar
+      cd polybar
+      mkdir -p build
+      cd build
+      cmake ..
+      sudo make install
+      popd && popd && popd
     fi
 
     CONFIG_HOME=$HOME/myConfigs/i3
@@ -624,6 +647,10 @@ function install_i3wm() { # {{{
     ln -sfnv $CONFIG_HOME/_config $I3_HOME/_config
     ln -sfnv $CONFIG_HOME/i3blocks/i3blocks.conf $I3_HOME/i3blocks.conf
 
+    mkdir -p ~/.config/polybar
+    ln -sfnv $CONFIG_HOME/polybar.config ~/.config/polybar/config
+    ln -sfnv $CONFIG_HOME/compton.conf ~/.config/compton.conf
+
     DUNST_HOME=$HOME/.config/dunst
     [ ! -d $DUNST_HOME ] && mkdir -p $DUNST_HOME
     ln -sfnv $CONFIG_HOME/dunst/dunstrc $DUNST_HOME/dunstrc
@@ -631,7 +658,7 @@ function install_i3wm() { # {{{
     mkdir -p $HOME/bin
     ln -sfnv $CONFIG_HOME/i3bang/i3bang.rb $HOME/bin/i3bang
     # link default theme 'jellybeans' to ~/.i3/_config.colors
-    ln -sfnv $CONFIG_HOME/colors/_config.jellybeans $I3_HOME/_config.colors
+    ln -sfnv $CONFIG_HOME/colors/_config.jellybeans $I3_HOME/config.colors
 
     # check if 'ruby' is installed or not
     if ! type ruby >/dev/null 2>&1; then
@@ -640,36 +667,36 @@ function install_i3wm() { # {{{
     i3bang
 
     # check if 'consolekit' is installed or not
-    echo -e "${COLOR}Checking ${COLOR1}consolekit${COLOR}...${NC}"
-    set +e
-    CONSOLEKIT_PCK=$(dpkg -l | grep consolekit | wc -l)
-    set -e
-    if [ $CONSOLEKIT_PCK -eq 0 ]; then
-      # Install 'consolekit'
-      echo -e "${COLOR}Installing ${COLOR1}consolekit${COLOR}...${NC}"
-      sudo apt install -y consolekit
-    fi
+    #echo -e "${COLOR}Checking ${COLOR1}consolekit${COLOR}...${NC}"
+    #set +e
+    #CONSOLEKIT_PCK=$(dpkg -l | grep consolekit | wc -l)
+    #set -e
+    #if [ $CONSOLEKIT_PCK -eq 0 ]; then
+    #  # Install 'consolekit'
+    #  echo -e "${COLOR}Installing ${COLOR1}consolekit${COLOR}...${NC}"
+    #  sudo apt install -y consolekit
+    #fi
 
-    if [ ! -e /usr/share/xsessions/i3.desktop ]; then
-      sudo cp $CONFIG_HOME/xsessions/i3.desktop /usr/share/xsessions/i3.desktop
-    fi
+    #if [ ! -e /usr/share/xsessions/i3.desktop ]; then
+    #  sudo cp $CONFIG_HOME/xsessions/i3.desktop /usr/share/xsessions/i3.desktop
+    #fi
 
-    # xsession autostart files
-    mkdir -p $HOME/.config/autostart
-    _files="$CONFIG_HOME/xsessions/autostart/*.desktop"
-    for file in $_files
-    do
-      _name=`basename $file`
-      ln -sfnv $file $HOME/.config/autostart/$_name
-    done
+    ## xsession autostart files
+    #mkdir -p $HOME/.config/autostart
+    #_files="$CONFIG_HOME/xsessions/autostart/*.desktop"
+    #for file in $_files
+    #do
+    #  _name=`basename $file`
+    #  ln -sfnv $file $HOME/.config/autostart/$_name
+    #done
 
     # check if 'dex' is installed or not, it's needed to load xsession files
-    echo -e "${COLOR}Checking ${COLOR1}dex${COLOR}...${NC}"
-    if ! type dex >/dev/null 2>&1; then
-      # Install 'dex'
-      echo -e "${COLOR}Installing ${COLOR1}dex${COLOR}...${NC}"
-      sudo apt install -y dex
-    fi
+    # echo -e "${COLOR}Checking ${COLOR1}dex${COLOR}...${NC}"
+    # if ! type dex >/dev/null 2>&1; then
+    #   # Install 'dex'
+    #   echo -e "${COLOR}Installing ${COLOR1}dex${COLOR}...${NC}"
+    #   sudo apt install -y dex
+    # fi
 
     # check if 'rofi' is installed or not
     echo -e "${COLOR}Checking ${COLOR1}rofi${COLOR}...${NC}"
