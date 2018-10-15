@@ -40,7 +40,7 @@ rofi.bc: #CC9752
 rofi.bw: 2
 rofi.location: 6
 rofi.padding: 2
-rofi.yoffset: -22
+rofi.yoffset: 0
 rofi.xoffset: 0
 rofi.fixed-num-lines: true
 rofi.hmode: false

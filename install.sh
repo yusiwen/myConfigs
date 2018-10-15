@@ -413,7 +413,7 @@ function install_vim() { # {{{
   fi
 
   if [ $OS = 'Linux' ]; then
-    if [ $(lsb_release -i -s) = 'Ubuntu' ]; then
+    if [ $DISTRO = 'Ubuntu' ]; then
       VIM_PPA=/etc/apt/sources.list.d/jonathonf-ubuntu-vim-$(lsb_release -s -c).list
       if [ ! -e $VIM_PPA ]; then
         echo -e "${COLOR}No latest vim ppa found, adding ${COLOR1}ppa:jonathonf/vim${COLOR}...${NC}"
@@ -676,27 +676,6 @@ function install_i3wm() { # {{{
     #  echo -e "${COLOR}Installing ${COLOR1}consolekit${COLOR}...${NC}"
     #  sudo apt install -y consolekit
     #fi
-
-    #if [ ! -e /usr/share/xsessions/i3.desktop ]; then
-    #  sudo cp $CONFIG_HOME/xsessions/i3.desktop /usr/share/xsessions/i3.desktop
-    #fi
-
-    ## xsession autostart files
-    #mkdir -p $HOME/.config/autostart
-    #_files="$CONFIG_HOME/xsessions/autostart/*.desktop"
-    #for file in $_files
-    #do
-    #  _name=`basename $file`
-    #  ln -sfnv $file $HOME/.config/autostart/$_name
-    #done
-
-    # check if 'dex' is installed or not, it's needed to load xsession files
-    # echo -e "${COLOR}Checking ${COLOR1}dex${COLOR}...${NC}"
-    # if ! type dex >/dev/null 2>&1; then
-    #   # Install 'dex'
-    #   echo -e "${COLOR}Installing ${COLOR1}dex${COLOR}...${NC}"
-    #   sudo apt install -y dex
-    # fi
 
     # check if 'rofi' is installed or not
     echo -e "${COLOR}Checking ${COLOR1}rofi${COLOR}...${NC}"
