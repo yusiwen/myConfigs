@@ -238,24 +238,24 @@ bindsym --release !!<Caps_Lock,Num_Lock> \
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-!?<HOSTNAME=home-ubuntu
-  tray_output $left_screen   # put system tray to left screen in home-ubuntu
->
-  status_command i3blocks -c ~/.i3/i3blocks.conf
-
-  colors {
-    background $BAR_BACKGROUND
-    statusline $BAR_STATUSLINE
-    separator  $BAR_SEPARATOR
-
-    focused_workspace  $BAR_FOCUSED_BORDER  $BAR_FOCUSED  $BAR_FOCUSED_TEXT
-    active_workspace   $BAR_ACTIVE_BORDER   $BAR_ACTIVE   $BAR_ACTIVE_TEXT
-    inactive_workspace $BAR_INACTIVE_BORDER $BAR_INACTIVE $BAR_INACTIVE_TEXT
-    urgent_workspace   $BAR_URGENT_BORDER   $BAR_URGENT   $BAR_URGENT_TEXT
-    binding_mode       $BAR_BINDING_BORDER  $BAR_BINDING  $BAR_BINDING_TEXT
-  }
-}
+#bar {
+#!?<HOSTNAME=home-ubuntu
+#  tray_output $left_screen   # put system tray to left screen in home-ubuntu
+#>
+#  status_command i3blocks -c ~/.i3/i3blocks.conf
+#
+#  colors {
+#    background $BAR_BACKGROUND
+#    statusline $BAR_STATUSLINE
+#    separator  $BAR_SEPARATOR
+#
+#    focused_workspace  $BAR_FOCUSED_BORDER  $BAR_FOCUSED  $BAR_FOCUSED_TEXT
+#    active_workspace   $BAR_ACTIVE_BORDER   $BAR_ACTIVE   $BAR_ACTIVE_TEXT
+#    inactive_workspace $BAR_INACTIVE_BORDER $BAR_INACTIVE $BAR_INACTIVE_TEXT
+#    urgent_workspace   $BAR_URGENT_BORDER   $BAR_URGENT   $BAR_URGENT_TEXT
+#    binding_mode       $BAR_BINDING_BORDER  $BAR_BINDING  $BAR_BINDING_TEXT
+#  }
+#}
 # }}}
 
 # {{{ Custom keybindings
@@ -342,11 +342,12 @@ for_window [class="!!<\
 # {{{ Auto-startup settings
 exec --no-startup-id !!<\
   xrdb -merge ~/.Xresources,\
-  xcompmgr -n,dunst,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
+  dunst,\
   thunar --daemon,urxvtd -q -o -f,\
+  xautolock -time 15 -locker 'i3lock -c 1d1d1d'
 # orage
-exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
+# exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
 # exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
 >
 !?<HOSTNAME=yusiwen-Aspire-S3
@@ -360,7 +361,15 @@ exec --no-startup-id i3-sensible-terminal
 >
 !?<HOSTNAME=vm-pd-ubuntu1804
 exec --no-startup-id dex -ae i3
-exec --no-startup-id xsetroot -solid "#0b5e6b"
+exec_always --no-startup-id xsetroot -solid "#0b5e6b"; compton -b
+exec --no-startup-id !!<\
+  i3-msg Workspace 1:Main,\
+  i3-sensible-terminal>
+exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
+>
+
+!?<HOSTNAME=vm-pd-ubuntu-min
+exec_always --no-startup-id xsetroot -solid "#0b5e6b"; compton -b
 exec --no-startup-id !!<\
   i3-msg Workspace 1:Main,\
   i3-sensible-terminal>
@@ -370,7 +379,7 @@ exec --no-startup-id !!<\
 # {{{ i3-gaps
 # Set inner/outer gaps
 gaps inner 8
-gaps outer -2
+gaps outer -4
 
 # Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
 # gaps inner|outer current|all set|plus|minus <px>
