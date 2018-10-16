@@ -379,7 +379,7 @@ exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 
 !?<HOSTNAME=vm-pd-ubuntu-min
 exec /usr/bin/prlcc
-exec_always --no-startup-id hsetroot -solid "#0b5e6b"; compton -b
+exec_always --no-startup-id hsetroot -solid "#528b8b"; compton -b
 exec --no-startup-id !!<\
   i3-msg Workspace 1:Main,\
   i3-sensible-terminal>
