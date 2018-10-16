@@ -126,6 +126,7 @@ function install_git() { # {{{
         sudo apt-add-repository -y ppa:git-core/ppa
         # Replace official launchpad address with reverse proxy from USTC
         sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
+        echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
         sudo apt update
         sudo apt upgrade
       else
@@ -135,12 +136,19 @@ function install_git() { # {{{
       if ! type git >/dev/null 2>&1; then
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
         sudo apt install -y git
+        echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}git${COLOR} was found.${NC}"
       fi
+    else
+      echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
+      exit 1
     fi
   elif [ $OS = 'Darwin']; then
     brew install git
+  else
+    echo -e "${COLOR}OS not supported${NC}"
+    exit 1
   fi
 
   echo -e "${COLOR}Configuring...${NC}"
@@ -221,11 +229,17 @@ function install_git() { # {{{
 
 function install_ruby() { # {{{
   if [ $OS = 'Linux' ]; then
-    if ! type ruby >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
-      sudo apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
+    if [ $DISTRO = 'Ubuntu' ]; then
+      if ! type ruby >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
+        sudo apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
+        echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
+      else
+        echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
+      fi
     else
-      echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
+      echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
+      exit 1
     fi
   elif [ $OS = 'Darwin' ]; then
     if ! type ruby >/dev/null 2>&1; then
@@ -235,6 +249,7 @@ function install_ruby() { # {{{
     fi
   else
     echo -e "${COLOR}OS not supported${NC}"
+    exit 1
   fi
 
   echo -e "${COLOR}Replace official repo with Ruby-China mirror...${NC}"
@@ -311,34 +326,55 @@ function install_python() { # {{{
       set -e
     fi
 
-    if [ $IS_PYTHON_NEED_INSTALL -eq 1 ]; then
-      echo -e "${COLOR}Python is out-dated, update to version 3.6...${NC}"
-      PYTHON3_PPA=/etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-$(lsb_release -c -s).list
-      sudo add-apt-repository -y ppa:deadsnakes/ppa
-      # Replace official launchpad address with reverse proxy from USTC
-      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $PYTHON3_PPA
-      sudo apt-get update
-      sudo apt-get install -y python3.6
+    if [ $DISTRO = 'Ubuntu' ]; then
+      if [ $IS_PYTHON_NEED_INSTALL -eq 1 ]; then
+        echo -e "${COLOR}Python3 is out-dated, update to version 3.6...${NC}"
+        PYTHON3_PPA=/etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-$(lsb_release -c -s).list
+        sudo add-apt-repository -y ppa:deadsnakes/ppa
+        # Replace official launchpad address with reverse proxy from USTC
+        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $PYTHON3_PPA
+        sudo apt-get update
+        sudo apt-get install -y python3.6
+      fi
+
+      if ! type pip >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
+        sudo apt install -y python-pip
+      fi
+
+      if ! type pip3 >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
+        sudo apt install -y python3-pip
+      fi
+
+      mkdir -p $HOME/.pip
+      echo "[global]" > $HOME/.pip/pip.conf
+      echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >> $HOME/.pip/pip.conf
+
+      if ! type virtualenv >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
+        sudo apt install -y virtualenv
+      fi
+    else
+      echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
+      exit 1
+    fi
+  elif [ $OS = 'Darwin' ]; then
+    if ! type brew >/dev/null 2>&1; then
+      init_env
     fi
 
-    if ! type pip >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
-      sudo apt install -y python-pip
-    fi
+    # Homebrew's python has pip included
+    brew install python
 
-    if ! type pip3 >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
-      sudo apt install -y python3-pip
-    fi
+    mkdir -p $HOME/.config/pip
+    echo "[global]" > $HOME/.config/pip/pip.conf
+    echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >> $HOME/.config/pip/pip.conf
 
-    mkdir -p $HOME/.pip
-    echo "[global]" > $HOME/.pip/pip.conf
-    echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >> $HOME/.pip/pip.conf
-
-    if ! type virtualenv >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
-      sudo apt install -y virtualenv
-    fi
+    pip install virtualenv
+  else
+    echo -e "${COLOR}OS not supported${NC}"
+    exit 1
   fi
 } # }}}
 
@@ -347,16 +383,16 @@ function install_node() { # {{{
     fetch_myConfigs
   fi
 
-  if ! type curl >/dev/null 2>&1; then
-    echo -e "${COLOR}Installing ${COLOR1}curl${COLOR}...${NC}"
-    sudo apt install -y curl
-  fi
-
   if ! type node >/dev/null 2>&1; then
     if [ $OS = 'Linux' ]; then
       if [ $DISTRO = 'Ubuntu' ]; then
         NODE_PPA=/etc/apt/sources.list.d/nodesource.list
         echo -e "${COLOR}Installing Node.js v10...${NC}"
+
+        if ! type curl >/dev/null 2>&1; then
+          echo -e "${COLOR}Installing ${COLOR1}curl${COLOR}...${NC}"
+          sudo apt install -y curl
+        fi
         curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
         sudo sed -i "s/deb\.nodesource\.com\/node_10.x/mirrors\.tuna\.tsinghua\.edu\.cn\/nodesource\/deb_10.x/g" $NODE_PAA
 
@@ -599,95 +635,97 @@ function install_rxvt() { # {{{
 
 function install_i3wm() { # {{{
   if [ $OS = 'Linux' ]; then
-    # Install i3-gaps if not exist
-    if ! type i3 >/dev/null 2>&1; then
-      echo -e "${COLOR}Install ${COLOR1}i3${COLOR}...${NC}"
-      sudo apt install -y i3
-    fi
-
-    sudo apt install libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm0 libxcb-xrm-dev automake
-    if [ ! -d ~/git/i3-gaps ]; then
-      mkdir -p ~/git
-      if ! type git >/dev/null 2>&1; then
-        install_git
+    if [ $DISTRO = 'Ubuntu' ]; then
+      # Install i3-gaps if not exist
+      if ! type i3 >/dev/null 2>&1; then
+        echo -e "${COLOR}Install ${COLOR1}i3${COLOR}...${NC}"
+        sudo apt install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings i3 ubuntu-drivers-common mesa-utils mesa-utils-extra compton xorg xserver-xorg hsetroot
       fi
-      pushd ~/git
-      git clone https://www.github.com/Airblader/i3 i3-gaps
-      cd  ~/git/i3-gaps
-      autoreconf --force --install
-      rm -rf build/
-      mkdir -p build && cd build/
-      ../configure --prefix=/usr --sysconfdir=/etc --disable-sanitizers
-      make
-      sudo make install
-      popd && popd && popd
-    fi
 
-    # Polybar
-    sudo apt install cmake cmake-data pkg-config libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-randr0-dev libxcb-composite0-dev python-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-xrm-dev libxcb-cursor-dev libjsoncpp-dev libjsoncpp1
-    if [ ! -d ~/git/polybar ]; then
-      mkdir -p ~/git
-      pushd ~/git
-      git clone --recursive https://github.com/jaagr/polybar
-      cd polybar
-      mkdir -p build
-      cd build
-      cmake ..
-      sudo make install
-      popd && popd && popd
-    fi
+      sudo apt install libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm0 libxcb-xrm-dev automake
+      if [ ! -d ~/git/i3-gaps ]; then
+        mkdir -p ~/git
+        if ! type git >/dev/null 2>&1; then
+          install_git
+        fi
+        pushd ~/git
+        git clone https://www.github.com/Airblader/i3 i3-gaps
+        cd  ~/git/i3-gaps
+        autoreconf --force --install
+        rm -rf build/
+        mkdir -p build && cd build/
+        ../configure --prefix=/usr --sysconfdir=/etc --disable-sanitizers
+        make
+        sudo make install
+        popd && popd && popd
+      fi
 
-    CONFIG_HOME=$HOME/myConfigs/i3
-    if [ ! -d $CONFIG_HOME ]; then
-      fetch_myConfigs
-    fi
+      # Polybar
+      sudo apt install cmake cmake-data pkg-config libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-randr0-dev libxcb-composite0-dev python-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-xrm-dev libxcb-cursor-dev libjsoncpp-dev libjsoncpp1
+      if [ ! -d ~/git/polybar ]; then
+        mkdir -p ~/git
+        pushd ~/git
+        git clone --recursive https://github.com/jaagr/polybar
+        cd polybar
+        mkdir -p build
+        cd build
+        cmake ..
+        sudo make install
+        popd && popd && popd
+      fi
 
-    I3_HOME=$HOME/.i3
-    [ ! -d $I3_HOME ] && mkdir -p $I3_HOME
-    ln -sfnv $CONFIG_HOME/_config $I3_HOME/_config
-    ln -sfnv $CONFIG_HOME/i3blocks/i3blocks.conf $I3_HOME/i3blocks.conf
+      CONFIG_HOME=$HOME/myConfigs/i3
+      if [ ! -d $CONFIG_HOME ]; then
+        fetch_myConfigs
+      fi
 
-    mkdir -p ~/.config/polybar
-    ln -sfnv $CONFIG_HOME/polybar.config ~/.config/polybar/config
-    ln -sfnv $CONFIG_HOME/compton.conf ~/.config/compton.conf
+      I3_HOME=$HOME/.i3
+      [ ! -d $I3_HOME ] && mkdir -p $I3_HOME
+      ln -sfnv $CONFIG_HOME/_config $I3_HOME/_config
+      ln -sfnv $CONFIG_HOME/i3blocks/i3blocks.conf $I3_HOME/i3blocks.conf
 
-    DUNST_HOME=$HOME/.config/dunst
-    [ ! -d $DUNST_HOME ] && mkdir -p $DUNST_HOME
-    ln -sfnv $CONFIG_HOME/dunst/dunstrc $DUNST_HOME/dunstrc
+      mkdir -p ~/.config/polybar
+      ln -sfnv $CONFIG_HOME/polybar.config ~/.config/polybar/config
+      ln -sfnv $CONFIG_HOME/compton.conf ~/.config/compton.conf
 
-    mkdir -p $HOME/bin
-    ln -sfnv $CONFIG_HOME/i3bang/i3bang.rb $HOME/bin/i3bang
-    # link default theme 'jellybeans' to ~/.i3/_config.colors
-    ln -sfnv $CONFIG_HOME/colors/_config.jellybeans $I3_HOME/config.colors
+      DUNST_HOME=$HOME/.config/dunst
+      [ ! -d $DUNST_HOME ] && mkdir -p $DUNST_HOME
+      ln -sfnv $CONFIG_HOME/dunst/dunstrc $DUNST_HOME/dunstrc
 
-    # check if 'ruby' is installed or not
-    if ! type ruby >/dev/null 2>&1; then
-      install_ruby
-    fi
-    i3bang
+      mkdir -p $HOME/bin
+      ln -sfnv $CONFIG_HOME/i3bang/i3bang.rb $HOME/bin/i3bang
+      # link default theme 'jellybeans' to ~/.i3/_config.colors
+      ln -sfnv $CONFIG_HOME/colors/_config.jellybeans $I3_HOME/config.colors
 
-    # check if 'consolekit' is installed or not
-    #echo -e "${COLOR}Checking ${COLOR1}consolekit${COLOR}...${NC}"
-    #set +e
-    #CONSOLEKIT_PCK=$(dpkg -l | grep consolekit | wc -l)
-    #set -e
-    #if [ $CONSOLEKIT_PCK -eq 0 ]; then
-    #  # Install 'consolekit'
-    #  echo -e "${COLOR}Installing ${COLOR1}consolekit${COLOR}...${NC}"
-    #  sudo apt install -y consolekit
-    #fi
+      # check if 'ruby' is installed or not
+      if ! type ruby >/dev/null 2>&1; then
+        install_ruby
+      fi
+      i3bang
 
-    # check if 'rofi' is installed or not
-    echo -e "${COLOR}Checking ${COLOR1}rofi${COLOR}...${NC}"
-    if ! type rofi >/dev/null 2>&1; then
-      # Install 'rofi'
-      echo -e "${COLOR}Installing ${COLOR1}rofi${COLOR}...${NC}"
-      ROFI_PPA=/etc/apt/sources.list.d/jasonpleau-ubuntu-rofi-$(lsb_release -c -s).list
-      sudo add-apt-repository -y ppa:jasonpleau/rofi
-      # Replace official launchpad address with reverse proxy from USTC
-      sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $ROFI_PPA
-      sudo apt-get update
-      sudo apt-get install -y rofi
+      # check if 'consolekit' is installed or not
+      #echo -e "${COLOR}Checking ${COLOR1}consolekit${COLOR}...${NC}"
+      #set +e
+      #CONSOLEKIT_PCK=$(dpkg -l | grep consolekit | wc -l)
+      #set -e
+      #if [ $CONSOLEKIT_PCK -eq 0 ]; then
+      #  # Install 'consolekit'
+      #  echo -e "${COLOR}Installing ${COLOR1}consolekit${COLOR}...${NC}"
+      #  sudo apt install -y consolekit
+      #fi
+
+      # check if 'rofi' is installed or not
+      echo -e "${COLOR}Checking ${COLOR1}rofi${COLOR}...${NC}"
+      if ! type rofi >/dev/null 2>&1; then
+        # Install 'rofi'
+        echo -e "${COLOR}Installing ${COLOR1}rofi${COLOR}...${NC}"
+        ROFI_PPA=/etc/apt/sources.list.d/jasonpleau-ubuntu-rofi-$(lsb_release -c -s).list
+        sudo add-apt-repository -y ppa:jasonpleau/rofi
+        # Replace official launchpad address with reverse proxy from USTC
+        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $ROFI_PPA
+        sudo apt-get update
+        sudo apt-get install -y rofi
+      fi
     fi
   else
     echo -e "${COLOR}i3wm will only be installed on Linux.${NC}"
