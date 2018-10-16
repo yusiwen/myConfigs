@@ -20,6 +20,9 @@ set $mod Mod1
 set $TERM urxvtc
 set $BROWSER google-chrome
 set $FM thunar
+!?<HOSTNAME=vm-pd-ubuntu-min
+set $FM pcmanfm
+>
 set $FM_CMD mc
 set $PLAYER ncmpcpp
 set $MUA mutt
@@ -221,8 +224,8 @@ bindsym $mod+grave mode "Jump"
 
 # {{{ Screenshot mode settings
 mode "Screenshot >> (F)ullscreen, (S)elect, (R)ecord" {
-  bindsym f exec "escrotum", mode "default"
-  bindsym --release s exec "escrotum -s", mode "default"
+  bindsym f exec "scrot", mode "default"
+  bindsym --release s exec "scrot -s", mode "default"
   bindsym --release r exec "simplescreenrecorder", mode "default"
 
   # back to normal: Enter or Escape
@@ -338,21 +341,23 @@ for_window [class="!!<\
   ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,\
   ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,\
   ^Pidgin$,^File-roller$,^Gvim$,\
-  ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$\
+  ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$,\
+  ^Nm-connection-editor$,^Pcmanfm$,^SimpleScreenRecorder$\
   >"] floating enable
 # }}}
 
 # {{{ Auto-startup settings
+# exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
+# exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
 exec --no-startup-id !!<\
   xrdb -merge ~/.Xresources,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
   dunst,\
 #  thunar --daemon,\
   urxvtd -q -o -f,\
-  xautolock -time 15 -locker 'i3lock -c 1d1d1d'
+  xautolock -time 15 -locker 'i3lock -c 1d1d1d',\
+  nm-applet
 # orage
-# exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
-# exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
 >
 !?<HOSTNAME=yusiwen-Aspire-S3
 exec --no-startup-id !!<\
