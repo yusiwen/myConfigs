@@ -342,7 +342,7 @@ for_window [class="!!<\
   ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,\
   ^Pidgin$,^File-roller$,^Gvim$,\
   ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$,\
-  ^Nm-connection-editor$,^Pcmanfm$,^SimpleScreenRecorder$\
+  ^Nm-connection-editor$,^Pcmanfm$,^SimpleScreenRecorder$,^Bleachbit$\
   >"] floating enable
 # }}}
 
