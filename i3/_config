@@ -9,10 +9,9 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 # {{{ Global variables
+# Default $mod is Mod4(Win-key)
 set $mod Mod4
-!?<HOSTNAME=vm-pd-ubuntu1804
-set $mod Mod1
->
+
 !?<HOSTNAME=vm-pd-ubuntu-min
 set $mod Mod1
 >
@@ -140,16 +139,14 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
-!?<HOSTNAME=yusiwen-Aspire-S3
-# Screen brightness controls
+# Screen brightness controls, needs 'xbacklight'
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
 
-# Pulse Audio controls
+# Pulse Audio controls, needs 'pulseaudio'
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +1% #increase sound volume
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -1% #decrease sound volume
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
->
 # }}}
 
 # {{{ Mode settings
@@ -190,7 +187,7 @@ bindsym $mod+Shift+q mode "Exit >> (L)ogout, (S)uspend, (R)eboot, (P)oweroff, Lo
 # }}}
 
 # {{{ Jump mode settings
-mode "Jump" {
+mode "Jump >> Mark(a), Goto(g)" {
   # hardcoded focus keybindings
   bindsym b [class="^Google-chrome$"] focus, mode "default"
   bindsym w [class="^URxvt$" instance="$IRC"] focus, mode "default"
@@ -219,7 +216,7 @@ mode "Jump" {
   bindsym !!<Return,Escape> mode "default"
 }
 
-bindsym $mod+grave mode "Jump"
+bindsym $mod+grave mode "Jump >> Mark(a), Goto(g)"
 # }}}
 
 # {{{ Screenshot mode settings
@@ -359,24 +356,11 @@ exec --no-startup-id !!<\
   nm-applet
 # orage
 >
-!?<HOSTNAME=yusiwen-Aspire-S3
-exec --no-startup-id !!<\
-  xbacklight -set 75,remmina -i,blueman-applet>
->
 !?<HOSTNAME=vm-ubuntu-guest
 exec --no-startup-id dex -ae i3
 exec --no-startup-id i3-msg Workspace 1:Main
 exec --no-startup-id i3-sensible-terminal
 >
-!?<HOSTNAME=vm-pd-ubuntu1804
-exec --no-startup-id dex -ae i3
-exec_always --no-startup-id hsetroot -solid "#0b5e6b"; compton -b
-exec --no-startup-id !!<\
-  i3-msg Workspace 1:Main,\
-  i3-sensible-terminal>
-exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
->
-
 !?<HOSTNAME=vm-pd-ubuntu-min
 exec /usr/bin/prlcc
 exec_always --no-startup-id hsetroot -solid "#528b8b"; compton -b
