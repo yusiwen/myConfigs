@@ -77,7 +77,7 @@ fi
 
 if [[ "$OS" != 'Darwin' ]]; then
   if [[ $(tty) =~ \/dev\/tty[0-9]* ]]; then
-    if ! fbterm_loc="$(type -p fbterm)" || [ -z "$fbterm_loc" ]; then
+    if type fbterm >/dev/null 2>&1; then
       fbterm
     fi
   fi

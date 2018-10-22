@@ -349,13 +349,17 @@ for_window [class="!!<\
 exec --no-startup-id !!<\
   xrdb -merge ~/.Xresources,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
-  dunst,\
+  compton -b,dunst,\
 #  thunar --daemon,\
   urxvtd -q -o -f,\
   xautolock -time 15 -locker 'i3lock -c 1d1d1d',\
+  hsetroot -solid "#528b8b",\
+  i3-msg Workspace 1:Main,i3-sensible-terminal,\
   nm-applet
 # orage
 >
+exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
+
 !?<HOSTNAME=vm-ubuntu-guest
 exec --no-startup-id dex -ae i3
 exec --no-startup-id i3-msg Workspace 1:Main
@@ -363,11 +367,6 @@ exec --no-startup-id i3-sensible-terminal
 >
 !?<HOSTNAME=vm-pd-ubuntu-min
 exec /usr/bin/prlcc
-exec_always --no-startup-id hsetroot -solid "#528b8b"; compton -b
-exec --no-startup-id !!<\
-  i3-msg Workspace 1:Main,\
-  i3-sensible-terminal>
-exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 >
 # }}}
 

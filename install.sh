@@ -55,7 +55,7 @@ function init_env() { # {{{
         sudo apt update
       fi
 
-      sudo apt install -y curl lua5.3 perl silversearch-ag p7zip-full
+      sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full
     fi
   elif [ $OS = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
@@ -390,11 +390,13 @@ function install_node() { # {{{
         echo -e "${COLOR}Installing Node.js v10...${NC}"
 
         if ! type curl >/dev/null 2>&1; then
-          echo -e "${COLOR}Installing ${COLOR1}curl${COLOR}...${NC}"
-          sudo apt install -y curl
+          init_env
         fi
-        curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-        sudo sed -i "s/deb\.nodesource\.com\/node_10.x/mirrors\.tuna\.tsinghua\.edu\.cn\/nodesource\/deb_10.x/g" $NODE_PAA
+        curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
+
+        echo 'deb https://mirrors.tuna.tsinghua.edu.cn/nodesource/deb_10.x bionic main' | sudo tee  nodesource.list
+        echo-src 'deb https://mirrors.tuna.tsinghua.edu.cn/nodesource/deb_10.x bionic main' | sudo tee --append  nodesource.list
+	sudo apt update
 
         echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
         sudo apt install -y nodejs
