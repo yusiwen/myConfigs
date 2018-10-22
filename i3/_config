@@ -360,11 +360,6 @@ exec --no-startup-id !!<\
 >
 exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 
-!?<HOSTNAME=vm-ubuntu-guest
-exec --no-startup-id dex -ae i3
-exec --no-startup-id i3-msg Workspace 1:Main
-exec --no-startup-id i3-sensible-terminal
->
 !?<HOSTNAME=vm-pd-ubuntu-min
 exec /usr/bin/prlcc
 >
