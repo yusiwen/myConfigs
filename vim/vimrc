@@ -293,7 +293,7 @@ if has('folding')
 endif
 
 " Improved Vim fold-text
-" See: http://www.gregsexton.org/2011/03/improving-the-text-displayed-in-a-fold/
+" See: http://gregsexton.org/2011/03/27/improving-the-text-displayed-in-a-vim-fold.html
 function! FoldText()
   " Get first non-blank line
   let fs = v:foldstart
