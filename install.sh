@@ -415,6 +415,8 @@ function install_node() { # {{{
   if [ ! -e $HOME/.npmrc ]; then
     cp $HOME/myConfigs/node.js/npmrc $HOME/.npmrc
   fi
+
+  npm install -g yarn eslint npm-check npm-check-updates
 } # }}}
 
 function install_zsh() { # {{{
