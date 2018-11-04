@@ -8,7 +8,7 @@ local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
 
 # primary prompt
 PROMPT='$FG[237]------------------------------------------------------------%{$reset_color%}$(vi_mode_prompt_info)
-$FG[032]%~\
+$FG[037]%~\
 %{$reset_color%}$(git_super_status) \
 $FG[105]%(!.#.»)%{$reset_color%} '
 PROMPT2='%{$fg[red]%}\ %{$reset_color%}'
