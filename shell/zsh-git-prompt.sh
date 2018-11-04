@@ -1,108 +1,141 @@
-# https://github.com/olivierverdier/zsh-git-prompt/blob/master/zshrc.sh
-# To install source this file from your .zshrc file
+# https://github.com/woefe/git-prompt.zsh
+# zsh-git-prompt a lightweight git prompt for zsh.
+# Copyright © 2018 Wolfgang Popp
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+# OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# see documentation at http://linux.die.net/man/1/zshexpn
-# A: finds the absolute path, even if this is symlinked
-# h: equivalent to dirname
-export __GIT_PROMPT_DIR=${0:A:h}
 
-export GIT_PROMPT_EXECUTABLE=${GIT_PROMPT_EXECUTABLE:-"python"}
-
-# Initialize colors.
-autoload -U colors
-colors
-
-# Allow for functions in the prompt.
 setopt PROMPT_SUBST
 
-autoload -U add-zsh-hook
+function git_super_status() {
+  git status --branch --porcelain=v2 2>&1 | awk '
+    BEGIN {
+      RED = "%F{red}";
+      MAGENTA = "%F{magenta}";
+      GREEN = "%F{green}";
+      BLUE = "%F{blue}";
+      BOLD = "%B";
+      NB = "%b";
+      NC = "%f";
 
-add-zsh-hook chpwd chpwd_update_git_vars
-add-zsh-hook preexec preexec_update_git_vars
-add-zsh-hook precmd precmd_update_git_vars
+      fatal = 0;
+      oid = "";
+      head = "";
+      ahead = 0;
+      behind = 0;
+      untracked = 0;
+      unmerged = 0;
+      staged = 0;
+      unstaged = 0;
+    }
 
-## Function definitions
-function preexec_update_git_vars() {
-  case "$2" in
-    git*|hub*|gh*|stg*)
-    __EXECUTED_GIT_COMMAND=1
-    ;;
-  esac
+    $1 == "fatal:" {
+      fatal = 1;
+    }
+
+    $2 == "branch.oid" {
+      oid = $3;
+    }
+
+    $2 == "branch.head" {
+      head = $3;
+    }
+
+    $2 == "branch.ab" {
+      ahead = $3;
+      behind = $4;
+    }
+
+    $1 == "?" {
+      ++untracked;
+    }
+
+    $1 == "u" {
+      ++unmerged;
+    }
+
+    $1 == "1" || $1 == "2" {
+      split($2, arr, "");
+      if (arr[1] != ".") {
+        ++staged;
+      }
+      if (arr[2] != ".") {
+        ++unstaged;
+      }
+    }
+
+    END {
+      if (fatal == 1) {
+        exit(1);
+      }
+
+      printf "(";
+
+      printf "%s", MAGENTA
+      printf "%s", BOLD
+      if (head == "(detached)") {
+        printf ":%s", substr(oid, 0, 7);
+      } else {
+        printf "%s", head;
+      }
+      printf "%s", NB
+      printf "%s", NC
+
+      if (behind < 0) {
+        printf "↓%d", behind * -1;
+      }
+
+      if (ahead > 0) {
+        printf "↑%d", ahead;
+      }
+
+      printf "|";
+
+      if (unmerged > 0) {
+        printf "%s", RED
+        printf "✖%d", unmerged;
+        printf "%s", NC
+      }
+
+      if (staged > 0) {
+        printf "%s", RED
+        printf "●%d", staged;
+        printf "%s", NC
+      }
+
+      if (unstaged > 0) {
+        printf "%s", BLUE
+        printf "✚%d", unstaged;
+        printf "%s", NC
+      }
+
+      if (untracked > 0) {
+        printf "…%d", untracked;
+      }
+
+      if (unmerged == 0 && staged == 0 && unstaged == 0 && untracked == 0) {
+        printf "%s", GREEN
+        printf "✔"
+        printf "%s", NC
+      }
+
+      printf ")";
+    }
+  '
 }
-
-function precmd_update_git_vars() {
-  if [ -n "$__EXECUTED_GIT_COMMAND" ] || [ ! -n "$ZSH_THEME_GIT_PROMPT_CACHE" ]; then
-    update_current_git_vars
-    unset __EXECUTED_GIT_COMMAND
-  fi
-}
-
-function chpwd_update_git_vars() {
-  update_current_git_vars
-}
-
-function update_current_git_vars() {
-  unset __CURRENT_GIT_STATUS
-
-  if [[ "$GIT_PROMPT_EXECUTABLE" == "python" ]]; then
-    local gitstatus="$__GIT_PROMPT_DIR/gitstatus.py"
-    _GIT_STATUS=`python ${gitstatus} 2>/dev/null`
-  fi
-  if [[ "$GIT_PROMPT_EXECUTABLE" == "haskell" ]]; then
-    _GIT_STATUS=`git status --porcelain --branch &> /dev/null | $__GIT_PROMPT_DIR/src/.bin/gitstatus`
-  fi
-
-  __CURRENT_GIT_STATUS=("${(@s: :)_GIT_STATUS}")
-  GIT_BRANCH=$__CURRENT_GIT_STATUS[1]
-  GIT_AHEAD=$__CURRENT_GIT_STATUS[2]
-  GIT_BEHIND=$__CURRENT_GIT_STATUS[3]
-  GIT_STAGED=$__CURRENT_GIT_STATUS[4]
-  GIT_CONFLICTS=$__CURRENT_GIT_STATUS[5]
-  GIT_CHANGED=$__CURRENT_GIT_STATUS[6]
-  GIT_UNTRACKED=$__CURRENT_GIT_STATUS[7]
-}
-
-git_super_status() {
-  precmd_update_git_vars
-  if [ -n "$__CURRENT_GIT_STATUS" ]; then
-    STATUS="$ZSH_THEME_GIT_PROMPT_PREFIX$ZSH_THEME_GIT_PROMPT_BRANCH$GIT_BRANCH%{${reset_color}%}"
-    if [ "$GIT_BEHIND" -ne "0" ]; then
-      STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_BEHIND$GIT_BEHIND%{${reset_color}%}"
-    fi
-    if [ "$GIT_AHEAD" -ne "0" ]; then
-      STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_AHEAD$GIT_AHEAD%{${reset_color}%}"
-    fi
-    STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_SEPARATOR"
-    if [ "$GIT_STAGED" -ne "0" ]; then
-      STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_STAGED$GIT_STAGED%{${reset_color}%}"
-    fi
-    if [ "$GIT_CONFLICTS" -ne "0" ]; then
-      STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_CONFLICTS$GIT_CONFLICTS%{${reset_color}%}"
-    fi
-    if [ "$GIT_CHANGED" -ne "0" ]; then
-      STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_CHANGED$GIT_CHANGED%{${reset_color}%}"
-    fi
-    if [ "$GIT_UNTRACKED" -ne "0" ]; then
-      STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_UNTRACKED%{${reset_color}%}"
-    fi
-    if [ "$GIT_CHANGED" -eq "0" ] && [ "$GIT_CONFLICTS" -eq "0" ] && [ "$GIT_STAGED" -eq "0" ] && [ "$GIT_UNTRACKED" -eq "0" ]; then
-      STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_CLEAN"
-    fi
-    STATUS="$STATUS%{${reset_color}%}$ZSH_THEME_GIT_PROMPT_SUFFIX"
-    echo "$STATUS"
-  fi
-}
-
-# Default values for the appearance of the prompt. Configure at will.
-ZSH_THEME_GIT_PROMPT_PREFIX="("
-ZSH_THEME_GIT_PROMPT_SUFFIX=")"
-ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
-ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
-ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[red]%}%{●%G%}"
-ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}%{✖%G%}"
-ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[blue]%}%{✚%G%}"
-ZSH_THEME_GIT_PROMPT_BEHIND="%{↓%G%}"
-ZSH_THEME_GIT_PROMPT_AHEAD="%{↑%G%}"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%{…%G%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
-
