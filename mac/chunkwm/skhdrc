@@ -86,12 +86,6 @@
 # open terminal, blazingly fast compared to iTerm/Hyper
 cmd - return : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance -d ~
 
-# open qutebrowser
-cmd + shift - return : ~/Scripts/qtb.sh
-
-# open mpv
-cmd - m : open -na /Applications/mpv.app $(pbpaste)
-
 # close focused window
 alt - w : chunkc tiling::window --close
 
@@ -260,4 +254,4 @@ ctrl + alt - w : chunkc tiling::desktop --deserialize ~/.chunkwm_layouts/dev_1
 
 # toggle ffm.so
 cmd + ctrl + alt - m : chunkc core::unload ffm.so
-cmd + ctrl + alt + shift -m : chunkc core::load ffm.so
+cmd + ctrl + alt + shift - m : chunkc core::load ffm.so
