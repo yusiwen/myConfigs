@@ -56,6 +56,8 @@ KEYTIMEOUT=1
 
 source "$ZSH/oh-my-zsh.sh"
 
+source "$HOME/myConfigs/shell/zsh-git-prompt.sh"
+
 # Customize to your needs...
 
 # Load all of my custom scripts
