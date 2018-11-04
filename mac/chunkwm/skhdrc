@@ -257,3 +257,7 @@ ctrl + alt - s : chunkc tiling::desktop --layout monocle
 ctrl + alt - d : chunkc tiling::desktop --layout float
 
 ctrl + alt - w : chunkc tiling::desktop --deserialize ~/.chunkwm_layouts/dev_1
+
+# toggle ffm.so
+cmd + ctrl + alt - m : chunkc core::unload ffm.so
+cmd + ctrl + alt + shift -m : chunkc core::load ffm.so
