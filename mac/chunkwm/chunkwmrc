@@ -141,6 +141,7 @@ chunkc tiling::rule --owner 访达 --state float &
 chunkc tiling::rule --owner 微信 --state float &
 chunkc tiling::rule --owner 华为手机助手 --state float &
 chunkc tiling::rule --owner QQ --state float &
+chunkc tiling::rule --owner Anki --state float &
 chunkc tiling::rule --owner \"Google Chrome\" --name \"Google Keep\" --state float &
 chunkc tiling::rule --owner \"App Store\" --state float &
 chunkc tiling::rule --owner \"Alfred Preferences\" --state float &
