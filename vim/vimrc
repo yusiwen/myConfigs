@@ -68,7 +68,7 @@ function! s:dein_load_yaml(filename) abort
   python3 << endpython
 import vim, yaml
 with open(vim.eval('a:filename'), 'r') as f:
-  vim.vars['dein_plugins'] = yaml.load(f.read())
+  vim.vars['dein_plugins'] = yaml.load(f.read(), Loader=yaml.SafeLoader)
 endpython
   endif
 
@@ -293,7 +293,7 @@ if has('folding')
 endif
 
 " Improved Vim fold-text
-" See: http://www.gregsexton.org/2011/03/improving-the-text-displayed-in-a-fold/
+" See: http://gregsexton.org/2011/03/27/improving-the-text-displayed-in-a-vim-fold.html
 function! FoldText()
   " Get first non-blank line
   let fs = v:foldstart

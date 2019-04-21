@@ -282,7 +282,7 @@ function fetch_myConfigs() { # {{{
     echo -e "${COLOR1}git/myConfigs${COLOR} already exists.${NC}"
   else
     echo -e "${COLOR}Fetch myConfigs...${NC}"
-    git clone git@git.yusiwen.cc:yusiwen/myConfigs.git $HOME/git/myConfigs
+    git clone git@git.yusiwen.cn:yusiwen/myConfigs.git $HOME/git/myConfigs
 
     CURDIR=$(pwd)
     cd $HOME/git/myConfigs
@@ -415,6 +415,8 @@ function install_node() { # {{{
   if [ ! -e $HOME/.npmrc ]; then
     cp $HOME/myConfigs/node.js/npmrc $HOME/.npmrc
   fi
+
+  npm install -g yarn eslint npm-check npm-check-updates
 } # }}}
 
 function install_zsh() { # {{{
@@ -651,12 +653,12 @@ function install_i3wm() { # {{{
           install_git
         fi
         pushd ~/git
-        git clone https://www.github.com/Airblader/i3 i3-gaps
+        git clone https://github.com/Airblader/i3.git i3-gaps
         cd  ~/git/i3-gaps
         autoreconf --force --install
         rm -rf build/
         mkdir -p build && cd build/
-        ../configure --prefix=/usr --sysconfdir=/etc --disable-sanitizers
+        ../configure --disable-sanitizers
         make
         sudo make install
         popd && popd && popd
@@ -667,7 +669,7 @@ function install_i3wm() { # {{{
       if [ ! -d ~/git/polybar ]; then
         mkdir -p ~/git
         pushd ~/git
-        git clone --recursive https://github.com/jaagr/polybar
+        git clone --recursive https://github.com/jaagr/polybar.git
         cd polybar
         mkdir -p build
         cd build
