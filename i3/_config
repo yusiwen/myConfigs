@@ -18,10 +18,7 @@ set $mod Mod1
 
 set $TERM urxvtc
 set $BROWSER google-chrome
-set $FM thunar
-!?<HOSTNAME=vm-pd-ubuntu-min
 set $FM pcmanfm
->
 set $FM_CMD mc
 set $PLAYER ncmpcpp
 set $MUA mutt
@@ -346,10 +343,12 @@ for_window [class="!!<\
 # {{{ Auto-startup settings
 # exec --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
 # exec --no-startup-id ~/myConfigs/i3/i3.autostart.sh
+exec_always --no-startup-id compton -b
 exec --no-startup-id !!<\
   xrdb -merge ~/.Xresources,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
-  compton -b,dunst,\
+#  compton -b,\
+#  dunst,\
 #  thunar --daemon,\
   urxvtd -q -o -f,\
   xautolock -time 15 -locker 'i3lock -c 1d1d1d',\
@@ -359,9 +358,11 @@ exec --no-startup-id !!<\
 # orage
 >
 exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
-
 !?<HOSTNAME=vm-pd-ubuntu-min
-exec /usr/bin/prlcc
+exec --no-startup-id /usr/bin/prlcc
+>
+!?<HOSTNAME=vm-ubuntu-min
+exec --no-startup-id /usr/bin/vmware-user-suid-wrapper
 >
 # }}}
 
