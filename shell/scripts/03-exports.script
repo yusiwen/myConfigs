@@ -188,6 +188,12 @@ if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
   export PATH
 fi
 
+# Homebrew's sbin path
+if [ -d "/usr/local/sbin" ] && [[ ":$PATH:" != *":/usr/local/sbin:"* ]]; then
+  PATH="/usr/local/sbin:$PATH"
+  export PATH
+fi
+
 # Use mirror for Homebrew-bottles
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 #}}}
