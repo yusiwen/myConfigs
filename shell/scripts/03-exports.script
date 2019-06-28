@@ -31,7 +31,7 @@ mkdir -p "$XDG_DATA_HOME"
 if [ -z "$ORACLE_HOME" ]; then
   CLIENT_INSTALLATION_PATH="/opt/oracle"
   if [ -d "$CLIENT_INSTALLATION_PATH" ]; then
-    ORACLE_HOME=$(/bin/ls -dr $CLIENT_INSTALLATION_PATH/instantclient*/ | head -1)
+    ORACLE_HOME=$(/bin/ls -dr $CLIENT_INSTALLATION_PATH/instantclient*/ 2>/dev/null | head -1)
     if [ ! -z "$ORACLE_HOME" ]; then
       # truncate trailing '/'
       ORACLE_HOME=$(printf '%s' "${ORACLE_HOME%/}")
@@ -55,6 +55,16 @@ if [ -z "$ORACLE_HOME" ]; then
 fi
 #}}}
 
+#{{{ MySQL Connector
+MYSQL_CONNECTOR_INST_PATH="/opt/mysql"
+if [ -d "$MYSQL_CONNECTOR_INST_PATH" ]; then
+  MYSQL_CONNECTOR=$(/bin/ls -dr $MYSQL_CONNECTOR_INST_PATH/mysql-connector*/ 2>/dev/null | head -1)
+  if [ ! -z "$MYSQL_CONNECTOR" ]; then
+    export PATH=$PATH:$MYSQL_CONNECTOR/bin
+  fi
+fi
+#}}}
+
 #{{{ Java
 if [ -z "$JAVA_HOME" ]; then
   if [ "$(uname)" = 'Darwin' ]; then
@@ -66,7 +76,7 @@ if [ -z "$JAVA_HOME" ]; then
     JDK_INSTALLATION_PATH='/opt/java'
     if [ -d "$JDK_INSTALLATION_PATH" ]; then
       # select the newest version of JDK to be JAVA_HOME
-      JAVA_NAME=$(/bin/ls -dr $JDK_INSTALLATION_PATH/j*/ | head -1)
+      JAVA_NAME=$(/bin/ls -dr $JDK_INSTALLATION_PATH/j*/ 2>/dev/null| head -1)
       # set JAVA_HOME (truncated trailing '/')
       JAVA_HOME=$(printf '%s' "${JAVA_NAME%/}")
     else
@@ -84,7 +94,7 @@ fi
 if [ -z "$M2_HOME" ]; then
   MVN_INSTALLATION_PATH="$HOME/maven"
   if [ -d "$MVN_INSTALLATION_PATH" ]; then
-    MVN_NAME=$(/bin/ls -dr "$MVN_INSTALLATION_PATH"/*-maven-*/ | head -1)
+    MVN_NAME=$(/bin/ls -dr "$MVN_INSTALLATION_PATH"/*-maven-*/ 2>/dev/null | head -1)
     # set M2_HOME (truncated trailing '/')
     M2_HOME=$(printf '%s' "${MVN_NAME%/}")
     if [ ! -z "$M2_HOME" ]; then
