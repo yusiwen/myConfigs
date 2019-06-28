@@ -8,13 +8,24 @@ COLOR1='\033[1;32m'
 NC='\033[0m'
 
 OS=$(uname)
+CODENAME=
+OS_NAME=
+OS_VERSION=
 echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
 if [ -e /etc/os-release ]; then
-  DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+  ID=$(awk -F= '/^ID_LIKE/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+  if [ "$ID" = "ubuntu" ]; then
+    DISTRO="Ubuntu"
+    CODENAME=$(grep "^UBUNTU_CODENAME" /etc/os-release | cut -d'=' -f2)
+  else
+    DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+  fi
+  OS_NAME=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+  OS_VERSION=$(grep "^VERSION_ID" /etc/os-release | cut -d'=' -f2)
 else
   DISTRO=$OS
 fi
-echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO${COLOR} found...${NC}"
+echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
 
 function vercomp () { # {{{
   if [[ $1 == $2 ]]; then
@@ -52,9 +63,10 @@ function init_env() { # {{{
         echo -e "${COLOR}Setting Ubuntu apt source to aliyun...${NC}"
         sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
         sudo sed -i "s/^deb http:\/\/.*archive\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
-        sudo apt update
       fi
 
+      sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
+      sudo apt update
       sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full
     fi
   elif [ $OS = 'Darwin' ]; then
@@ -120,12 +132,12 @@ function install_git() { # {{{
   if [ $OS = 'Linux' ]; then
     if [ $DISTRO = 'Ubuntu' ]; then
       # install git if not exist
-      GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$(lsb_release -c -s).list
+      GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
       if [ ! -e $GIT_PPA ]; then
         echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
         sudo apt-add-repository -y ppa:git-core/ppa
         # Replace official launchpad address with reverse proxy from USTC
-        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
+        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
         echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
         sudo apt update
         sudo apt upgrade
@@ -329,10 +341,10 @@ function install_python() { # {{{
     if [ $DISTRO = 'Ubuntu' ]; then
       if [ $IS_PYTHON_NEED_INSTALL -eq 1 ]; then
         echo -e "${COLOR}Python3 is out-dated, update to version 3.6...${NC}"
-        PYTHON3_PPA=/etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-$(lsb_release -c -s).list
+        PYTHON3_PPA=/etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-$CODENAME.list
         sudo add-apt-repository -y ppa:deadsnakes/ppa
         # Replace official launchpad address with reverse proxy from USTC
-        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $PYTHON3_PPA
+        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" $PYTHON3_PPA
         sudo apt-get update
         sudo apt-get install -y python3.6
       fi
@@ -348,8 +360,16 @@ function install_python() { # {{{
       fi
 
       mkdir -p $HOME/.pip
-      echo "[global]" > $HOME/.pip/pip.conf
-      echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >> $HOME/.pip/pip.conf
+      if [ -d $HOME/myConfigs ]; then
+        ln -sfnv $HOME/myConfigs/python/pip.conf $HOME/.pip/pip.conf
+      else
+        # Using aliyun as mirror
+        echo '[global]' > $HOME/.pip/pip.conf
+        echo 'index-url = https://mirrors.aliyun.com/pypi/simple/' >> $HOME/.pip/pip.conf
+        echo '' >> $HOME/.pip/pip.conf
+        echo '[install]' >> $HOME/.pip/pip.conf
+        echo 'trusted-host=mirrors.aliyun.com' >> $HOME/.pip/pip.conf
+      fi
 
       if ! type virtualenv >/dev/null 2>&1; then
         echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
@@ -392,10 +412,11 @@ function install_node() { # {{{
         if ! type curl >/dev/null 2>&1; then
           init_env
         fi
-        curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 
-        echo 'deb https://mirrors.tuna.tsinghua.edu.cn/nodesource/deb_10.x bionic main' | sudo tee  nodesource.list
-        echo-src 'deb https://mirrors.tuna.tsinghua.edu.cn/nodesource/deb_10.x bionic main' | sudo tee --append  nodesource.list
+        curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
+
+        echo "deb https://mirrors.ustc.edu.cn/nodesource/deb/node_10.x $CODENAME main" | sudo tee $NODE_PPA
+        echo "deb-src https://mirrors.ustc.edu.cn/nodesource/deb/node_10.x $CODENAME main" | sudo tee --append $NODE_PPA
 	sudo apt update
 
         echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
@@ -454,11 +475,11 @@ function install_vim() { # {{{
 
   if [ $OS = 'Linux' ]; then
     if [ $DISTRO = 'Ubuntu' ]; then
-      VIM_PPA=/etc/apt/sources.list.d/jonathonf-ubuntu-vim-$(lsb_release -s -c).list
+      VIM_PPA=/etc/apt/sources.list.d/jonathonf-ubuntu-vim-$CODENAME.list
       if [ ! -e $VIM_PPA ]; then
         echo -e "${COLOR}No latest vim ppa found, adding ${COLOR1}ppa:jonathonf/vim${COLOR}...${NC}"
         sudo add-apt-repository -y ppa:jonathonf/vim
-        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $VIM_PPA
+        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" $VIM_PPA
         sudo apt update
       else
         echo -e "${COLOR1}ppa:jonathonf/vim${COLOR} was found${NC}"
@@ -534,11 +555,11 @@ function install_vim() { # {{{
   fi
 
   # NeoVim {{{
-  NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-$(lsb_release -s -c).list
+  NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-$CODENAME.list
   if [ ! -e $NVIM_PPA ]; then
     echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/stable${COLOR}...${NC}"
     sudo add-apt-repository -y ppa:neovim-ppa/stable
-    sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $NVIM_PPA
+    sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" $NVIM_PPA
     sudo apt update
   else
     echo -e "${COLOR1}ppa:neovim-ppa/stable${COLOR} was found${NC}"
@@ -577,7 +598,7 @@ function install_vim() { # {{{
   NV_PYTHON_PCK=$(pip list 2>/dev/null | grep neovim | wc -l)
   set -e
   if [ $NV_PYTHON_PCK -eq 0 ]; then
-    sudo -H pip2 install neovim
+    sudo -H pip install neovim
   fi
   set +e
   NV_PYTHON_PCK=$(pip list 2>/dev/null | grep PyYAML | wc -l)
@@ -723,10 +744,10 @@ function install_i3wm() { # {{{
       if ! type rofi >/dev/null 2>&1; then
         # Install 'rofi'
         echo -e "${COLOR}Installing ${COLOR1}rofi${COLOR}...${NC}"
-        ROFI_PPA=/etc/apt/sources.list.d/jasonpleau-ubuntu-rofi-$(lsb_release -c -s).list
+        ROFI_PPA=/etc/apt/sources.list.d/jasonpleau-ubuntu-rofi-$CODENAME.list
         sudo add-apt-repository -y ppa:jasonpleau/rofi
         # Replace official launchpad address with reverse proxy from USTC
-        sudo sed -i "s/ppa\.launchpad\.net/launchpad\.proxy\.ustclug\.org/g" $ROFI_PPA
+        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" $ROFI_PPA
         sudo apt-get update
         sudo apt-get install -y rofi
       fi
@@ -761,7 +782,7 @@ function install_all() { # {{{
 } # }}}
 
 function print_info() {
-  echo -e "\nUsage:\n${COLOR}install.sh [all|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh]${NC}"
 }
 
 case $1 in
