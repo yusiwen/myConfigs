@@ -161,12 +161,7 @@ if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
   PATH="$HOME/.local/bin:$PATH"
   export PATH
 fi
-if [ "$OS" = 'Darwin' ]; then
-  PATH="$HOME/Library/Python/3.6/bin:$PATH"
-  export PATH
-fi
 export WORKON_HOME=$HOME/venv
-
 #}}}
 
 #{{{ Misc
