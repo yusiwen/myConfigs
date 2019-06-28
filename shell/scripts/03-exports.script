@@ -4,7 +4,7 @@
 # Determine OS platform
 export OS=$(uname)
 # If Linux, try to determine specific distribution
-if [ "$OS" = "Linux" ]; then
+if [ "$OS" = 'Linux' ]; then
   # If available, use LSB to identify distribution
   if [ -f /etc/lsb-release -o -d /etc/lsb-release.d ]; then
     export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
@@ -14,7 +14,7 @@ if [ "$OS" = "Linux" ]; then
   fi
 fi
 # For everything else (or if above failed), just use generic identifier
-[ "$DISTRO" = "" ] && export DISTRO=$OS
+[ "$DISTRO" = '' ] && export DISTRO=$OS
 #}}}
 
 #{{{ NeoVim
@@ -50,6 +50,10 @@ if [ -z "$ORACLE_HOME" ]; then
       else
         export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
       fi
+
+      if [ "$OS" = 'Darwin' ]; then
+        export DYLD_LIBRARY_PATH=$ORACLE_HOME
+      fi
     fi
   fi
 fi
@@ -67,7 +71,7 @@ fi
 
 #{{{ Java
 if [ -z "$JAVA_HOME" ]; then
-  if [ "$(uname)" = 'Darwin' ]; then
+  if [ "$OS" = 'Darwin' ]; then
     # MacOS
     JAVA_HOME=$(/usr/libexec/java_home)
   else
@@ -148,7 +152,7 @@ if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
   PATH="$HOME/.local/bin:$PATH"
   export PATH
 fi
-if [ "$(uname)" = 'Darwin' ]; then
+if [ "$OS" = 'Darwin' ]; then
   PATH="$HOME/Library/Python/3.6/bin:$PATH"
   export PATH
 fi
@@ -195,6 +199,12 @@ fi
 # Add $HOME/bin to $PATH if exists && not added
 if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
   PATH="${PATH:+"$PATH:"}$HOME/.local/bin"
+  export PATH
+fi
+
+# Homebrew's sbin path
+if [ -d "/usr/local/sbin" ] && [[ ":$PATH:" != *":/usr/local/sbin:"* ]]; then
+  PATH="/usr/local/sbin:$PATH"
   export PATH
 fi
 
