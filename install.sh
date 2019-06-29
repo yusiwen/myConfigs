@@ -13,8 +13,9 @@ OS_NAME=
 OS_VERSION=
 echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
 if [ -e /etc/os-release ]; then
-  ID=$(awk -F= '/^ID_LIKE/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
-  if [ "$ID" = "ubuntu" ]; then
+  ID=$(grep "^ID=" /etc/os-release | cut -d'=' -f2)
+  ID_LIKE=$(awk -F= '/^ID_LIKE/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+  if [ "$ID" = "ubuntu" ] || [ "$ID_LIKE" = "ubuntu" ]; then
     DISTRO="Ubuntu"
     CODENAME=$(grep "^UBUNTU_CODENAME" /etc/os-release | cut -d'=' -f2)
   else
@@ -65,7 +66,9 @@ function init_env() { # {{{
         sudo sed -i "s/^deb http:\/\/.*archive\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
       fi
 
-      sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
+      if ls /etc/apt/sources.list.d/*.list 1>/dev/null 2>&1; then
+        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
+      fi
       sudo apt update
       sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full
     fi
@@ -140,7 +143,7 @@ function install_git() { # {{{
         sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
         echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
         sudo apt update
-        sudo apt upgrade
+        sudo apt upgrade -y
       else
         echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
       fi
@@ -497,7 +500,7 @@ function install_vim() { # {{{
         sudo apt install -y $VIM_PACKAGE
       else
         echo -e "${COLOR1}$VIM_PACKAGE${COLOR} is found, trying to find latest upgrades...${NC}"
-        sudo apt update && sudo apt upgrade
+        sudo apt update && sudo apt upgrade -y
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
