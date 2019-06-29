@@ -65,7 +65,7 @@ if [ -d "$MYSQL_CONNECTOR_INST_PATH" ]; then
   MYSQL_CONNECTOR=$(/bin/ls -dr $MYSQL_CONNECTOR_INST_PATH/mysql-connector*/ 2>/dev/null | head -1)
   if [ ! -z "$MYSQL_CONNECTOR" ]; then
     # truncate trailing '/'
-    MYSQL_CONNECTOR=$(printf '%s' "${MYSQL_CONNECTOR%/}")
+    export MYSQL_CONNECTOR=$(printf '%s' "${MYSQL_CONNECTOR%/}")
     export PATH=$PATH:$MYSQL_CONNECTOR/bin
     # NOTE: On Ubuntu, 'LD_LIBRARY_PATH' can't be set in .profile,
     #   it can only be set in '/etc/ld.so.conf.d/XXX.conf' and run 'ldconfig'
