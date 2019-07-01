@@ -256,7 +256,7 @@ nmap <C-]>h :sp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " denite.nvim {{{
 if dein#tap('denite.nvim')
-  nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh<CR>
+  nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
   nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
   nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file/old -default-action=switch<CR>
   nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec -default-action=cd<CR>
@@ -286,8 +286,9 @@ if dein#tap('denite.nvim')
   nnoremap <silent> <Leader>gc :<C-u>Denite gitchanged:<CR>
 
   " Open Denite with word under cursor or selection
+  nnoremap <silent> <Leader>gt :DeniteCursorWord tag:include -buffer-name=tag -immediately<CR>
   nnoremap <silent> <Leader>gf :DeniteCursorWord file/rec<CR>
-  nnoremap <silent> <Leader>gg :DeniteCursorWord grep<CR>
+  nnoremap <silent> <Leader>gg :DeniteCursorWord grep -buffer-name=search<CR>
   vnoremap <silent> <Leader>gg
     \ :<C-u>call <SID>get_selection('/')<CR>
     \ :execute 'Denite grep:::'.@/<CR><CR>
