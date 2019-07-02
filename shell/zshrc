@@ -97,7 +97,7 @@ if [[ -f "$HOME/.fzf.zsh" ]]; then
 fi
 
 # Fix wrong permissions on WSL
-if grep -q Microsoft /proc/version; then
+if grep -q Microsoft /proc/version 2>/dev/null; then
   if [ "$(umask)" = '0000' ] || [ "$(umask)" = '000' ]; then
     umask 0022
   fi
