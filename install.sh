@@ -190,56 +190,17 @@ function install_git() { # {{{
   git config --global merge.conflictstyle diff3
   git config --global mergetool.prompt false
 
-  echo -ne "${COLOR1}Set proxies? [y|N]${NC}"
-  read result
-  if echo "$result" | grep -iq "^[y|Y]$"; then
-    if ! type polipo >/dev/null 2>&1; then
-      install_gfw
-      read -p "Continue? [y|N]${NC}" CONFIRM
-      case $CONFIRM in
-        [Yy]* ) ;;
-        * ) exit;;
-      esac
-    fi
-
-    echo -e "${COLOR}Setting proxies...${NC}"
-    if [ $OS = 'Linux' ]; then
-      # On Ubuntu, use polipo as http(s) proxy
-      git config --global http.proxy 'http://127.0.0.1:15355'
-      git config --global https.proxy 'http://127.0.0.1:15355'
-    elif [ $OS = 'Darwin' ]; then
-      git config --global http.proxy 'http://127.0.0.1:1087'
-      git config --global https.proxy 'http://127.0.0.1:1087'
-    else
-      git config --global http.proxy 'http://127.0.0.1:1088'
-      git config --global https.proxy 'http://127.0.0.1:1088'
-    fi
-
-    if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
-      mkdir -p $HOME/.ssh
-      ln -sfnv $HOME/myConfigs/git/ssh_config $HOME/.ssh/config
-    fi
-  fi
-
-  if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
-    if [ -d $HOME/myConfigs ]; then
-      mkdir -p $HOME/bin
-      ln -sfnv $HOME/myConfigs/git/git-migrate $HOME/bin/git-migrate
-      ln -sfnv $HOME/myConfigs/git/git-new-workdir $HOME/bin/git-new-workdir
-    else
-      echo -e "${COLOR1}myConfigs${COLOR} was not found, please install git and fetch it from repo, then run 'install.sh git' again to link some configuration files.${NC}"
-    fi
-  fi
-
   if [ -e $HOME/.ssh/id_rsa.pub ]; then
     echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
     cat $HOME/.ssh/id_rsa.pub
   else
     echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was not found, generating it now...${NC}"
     ssh-keygen
-    echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea"
+    echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea${NC}"
     cat $HOME/.ssh/id_rsa.pub
   fi
+
+  echo -e "${COLOR}You need 'commitizen', 'cz-customizable' to run git commit conventions, run './install.sh node' to setup.${NC}"
 } # }}}
 
 function install_ruby() { # {{{
@@ -420,7 +381,7 @@ function install_node() { # {{{
 
         echo "deb https://mirrors.ustc.edu.cn/nodesource/deb/node_10.x $CODENAME main" | sudo tee $NODE_PPA
         echo "deb-src https://mirrors.ustc.edu.cn/nodesource/deb/node_10.x $CODENAME main" | sudo tee --append $NODE_PPA
-	sudo apt update
+        sudo apt update -y
 
         echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
         sudo apt install -y nodejs
@@ -440,7 +401,11 @@ function install_node() { # {{{
     cp $HOME/myConfigs/node.js/npmrc $HOME/.npmrc
   fi
 
+  echo -e "${COLOR1}Installing yarn, eslint...${NC}"
   npm install -g yarn eslint npm-check npm-check-updates
+  # Install cli tools for git commit conventions
+  echo -e "${COLOR1}Installing Commitizen, cz-customizable, standard-version...${NC}"
+  npm install -g commitizen cz-customizable standard-version
 } # }}}
 
 function install_zsh() { # {{{
