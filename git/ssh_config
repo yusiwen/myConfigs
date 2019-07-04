@@ -6,3 +6,20 @@ Host bitbucket.org
   User git
   ProxyCommand nc -x 127.0.0.1:1088 %h %p
 
+Host vm-pd-centos
+  HostName 192.168.2.52
+  User yusiwen
+  Port 1022
+
+Host vm-centos
+  HostName 192.168.2.65
+  User yusiwen
+
+Host aspire-s3
+  HostName 192.168.2.53
+  User yusiwen
+
+Host macbook
+  HostName 192.168.2.52
+  User yusiwen
+
