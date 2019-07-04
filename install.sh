@@ -212,6 +212,13 @@ function install_ruby() { # {{{
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
+        set +e
+        PACKAGE=$(dpkg -l | grep ruby-full | wc -l)
+        set -e
+        if [ $PACKAGE -eq 0 ]; then
+          echo -e "${COLOR}Installing ${COLOR1}ruby-full${COLOR}...${NC}"
+          sudo apt install -y ruby-full
+        fi
       fi
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
@@ -469,7 +476,7 @@ function install_vim() { # {{{
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
-      sudo apt install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby perl
+      sudo apt install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby-full perl
     fi
   elif [ $(uname) = 'Darwin' ]; then
     echo -e "${COLOR}Darwin is found, checking vim...${NC}"
