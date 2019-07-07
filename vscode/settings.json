@@ -26,7 +26,8 @@
     }
   ],
   "vim.handleKeys": {
-    "<C-k>": false
+    "<C-k>": false,
+    "<C-a>": false
   },
 
   "java.home": "I:/java/jdk1.8.0_144",
