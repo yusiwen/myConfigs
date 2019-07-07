@@ -6,20 +6,35 @@ Host bitbucket.org
   User git
   ProxyCommand nc -x 127.0.0.1:1088 %h %p
 
+# CentOS parallels desktop vm on macbook
 Host vm-pd-centos
   HostName 192.168.2.52
   User yusiwen
   Port 1022
 
+# CentOS vm on virtualbox(at HOME-DESKTOP and Aspire Notebook)
 Host vm-centos
+  HostName 192.168.2.61
+  User yusiwen
+
+# CentOS vm on VMWare(at HOME-DESKTOP)
+Host vm-centos-2
   HostName 192.168.2.65
   User yusiwen
 
-Host aspire-s3
+# Aspire Notebook with Ubuntu 18.04 LTS
+Host aspire-s3-371
   HostName 192.168.2.53
   User yusiwen
 
+# Macbook
 Host macbook
   HostName 192.168.2.52
   User yusiwen
+
+# CentOS parallels desktop vm on macbook with Oracle XE
+Host vm-pd-database
+  HostName 192.168.2.52
+  User yusiwen
+  Port 1042
 
