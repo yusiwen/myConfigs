@@ -2,19 +2,16 @@
 {
   "editor.tabSize": 2,
   "editor.wordWrap": "on",
-  "editor.fontFamily": "等距更纱黑体 SC",
+  "editor.fontFamily": "'Sarasa Mono SC', 'Fira Code', Consolas, 'Courier New', monospace",
   "editor.fontSize": 13,
   "editor.fontLigatures": true,
-  "editor.renderWhitespace": "all",
+  "editor.renderWhitespace": "boundary",
+  "editor.cursorStyle": "underline",
+  "editor.minimap.enabled": false,
+  "editor.suggestSelection": "first",
 
   "files.insertFinalNewline": true,
-  "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 1000,
   "files.trimTrailingWhitespace": true,
-
-  "vsicons.projectDetection.autoReload": true,
-
-  "java.home": "I:/java/jdk1.8.0_144",
 
   "vim.leader": ",",
   "vim.easymotion": true,
@@ -24,15 +21,17 @@
   "vim.hlsearch": true,
   "vim.insertModeKeyBindings": [
     {
-        "before": ["j", "j"],
-        "after": ["<Esc>"]
+      "before": ["j", "j"],
+      "after": ["<Esc>"]
     }
   ],
+  "vim.handleKeys": {
+    "<C-k>": false
+  },
 
-  "extensions.ignoreRecommendations": false,
+  "java.home": "I:/java/jdk1.8.0_144",
 
   "rust.mode": "legacy",
-  "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe",
   "rust.rustup": {
     "toolchain": "stable-x86_64-pc-windows-gnu"
   },
@@ -45,8 +44,10 @@
 
   "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
   "vetur.format.js.InsertSpaceBeforeFunctionParenthesis": true,
-  "workbench.iconTheme": "vscode-icons",
-  "workbench.colorTheme": "One Dark Pro",
+  "cmake.configureOnOpen": true,
+
+  "git.path": "G:\\apps\\cmder-v1.3.11\\vendor\\git-for-windows\\bin\\git.exe",
+  "git.enableSmartCommit": true,
   "git.autofetch": true,
   "gitlens.keymap": "alternate",
   "gitlens.advanced.messages": {
@@ -59,5 +60,25 @@
     "suppressResultsExplorerNotice": false,
     "suppressShowKeyBindingsNotice": true
   },
-  "gitlens.historyExplorer.enabled": true
+
+  "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe",
+  "terminal.integrated.fontFamily": "Sarasa Term SC",
+  "terminal.integrated.fontSize": 12,
+
+  "extensions.ignoreRecommendations": false,
+
+  "workbench.colorTheme": "Material Theme Palenight High Contrast",
+  "workbench.iconTheme": "vscode-icons",
+  "vsicons.projectDetection.autoReload": true,
+
+  "files.associations": {},
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java"
+  },
+  "[cpp]": {
+    "editor.defaultFormatter": "xaver.clang-format"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "xaver.clang-format"
+  }
 }
