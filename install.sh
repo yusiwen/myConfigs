@@ -13,8 +13,9 @@ OS_NAME=
 OS_VERSION=
 echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
 if [ -e /etc/os-release ]; then
-  ID=$(awk -F= '/^ID_LIKE/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
-  if [ "$ID" = "ubuntu" ]; then
+  ID=$(grep "^ID=" /etc/os-release | cut -d'=' -f2)
+  ID_LIKE=$(awk -F= '/^ID_LIKE/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+  if [ "$ID" = "ubuntu" ] || [ "$ID_LIKE" = "ubuntu" ]; then
     DISTRO="Ubuntu"
     CODENAME=$(grep "^UBUNTU_CODENAME" /etc/os-release | cut -d'=' -f2)
   else
@@ -65,7 +66,9 @@ function init_env() { # {{{
         sudo sed -i "s/^deb http:\/\/.*archive\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
       fi
 
-      sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
+      if ls /etc/apt/sources.list.d/*.list 1>/dev/null 2>&1; then
+        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
+      fi
       sudo apt update
       sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full
     fi
@@ -140,7 +143,7 @@ function install_git() { # {{{
         sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" $GIT_PPA
         echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
         sudo apt update
-        sudo apt upgrade
+        sudo apt upgrade -y
       else
         echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
       fi
@@ -187,56 +190,17 @@ function install_git() { # {{{
   git config --global merge.conflictstyle diff3
   git config --global mergetool.prompt false
 
-  echo -ne "${COLOR1}Set proxies? [y|N]${NC}"
-  read result
-  if echo "$result" | grep -iq "^[y|Y]$"; then
-    if ! type polipo >/dev/null 2>&1; then
-      install_gfw
-      read -p "Continue? [y|N]${NC}" CONFIRM
-      case $CONFIRM in
-        [Yy]* ) ;;
-        * ) exit;;
-      esac
-    fi
-
-    echo -e "${COLOR}Setting proxies...${NC}"
-    if [ $OS = 'Linux' ]; then
-      # On Ubuntu, use polipo as http(s) proxy
-      git config --global http.proxy 'http://127.0.0.1:15355'
-      git config --global https.proxy 'http://127.0.0.1:15355'
-    elif [ $OS = 'Darwin' ]; then
-      git config --global http.proxy 'http://127.0.0.1:1087'
-      git config --global https.proxy 'http://127.0.0.1:1087'
-    else
-      git config --global http.proxy 'http://127.0.0.1:1088'
-      git config --global https.proxy 'http://127.0.0.1:1088'
-    fi
-
-    if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
-      mkdir -p $HOME/.ssh
-      ln -sfnv $HOME/myConfigs/git/ssh_config $HOME/.ssh/config
-    fi
-  fi
-
-  if [ $OS = 'Linux' ] || [ $OS = 'Darwin' ]; then
-    if [ -d $HOME/myConfigs ]; then
-      mkdir -p $HOME/bin
-      ln -sfnv $HOME/myConfigs/git/git-migrate $HOME/bin/git-migrate
-      ln -sfnv $HOME/myConfigs/git/git-new-workdir $HOME/bin/git-new-workdir
-    else
-      echo -e "${COLOR1}myConfigs${COLOR} was not found, please install git and fetch it from repo, then run 'install.sh git' again to link some configuration files.${NC}"
-    fi
-  fi
-
   if [ -e $HOME/.ssh/id_rsa.pub ]; then
     echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
     cat $HOME/.ssh/id_rsa.pub
   else
     echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was not found, generating it now...${NC}"
     ssh-keygen
-    echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea"
+    echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea${NC}"
     cat $HOME/.ssh/id_rsa.pub
   fi
+
+  echo -e "${COLOR}You need 'commitizen', 'cz-customizable' to run git commit conventions, run './install.sh node' to setup.${NC}"
 } # }}}
 
 function install_ruby() { # {{{
@@ -248,6 +212,13 @@ function install_ruby() { # {{{
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
+        set +e
+        PACKAGE=$(dpkg -l | grep ruby-full | wc -l)
+        set -e
+        if [ $PACKAGE -eq 0 ]; then
+          echo -e "${COLOR}Installing ${COLOR1}ruby-full${COLOR}...${NC}"
+          sudo apt install -y ruby-full
+        fi
       fi
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
@@ -417,7 +388,7 @@ function install_node() { # {{{
 
         echo "deb https://mirrors.ustc.edu.cn/nodesource/deb/node_10.x $CODENAME main" | sudo tee $NODE_PPA
         echo "deb-src https://mirrors.ustc.edu.cn/nodesource/deb/node_10.x $CODENAME main" | sudo tee --append $NODE_PPA
-	sudo apt update
+        sudo apt update -y
 
         echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
         sudo apt install -y nodejs
@@ -437,7 +408,11 @@ function install_node() { # {{{
     cp $HOME/myConfigs/node.js/npmrc $HOME/.npmrc
   fi
 
+  echo -e "${COLOR1}Installing yarn, eslint...${NC}"
   npm install -g yarn eslint npm-check npm-check-updates
+  # Install cli tools for git commit conventions
+  echo -e "${COLOR1}Installing Commitizen, cz-customizable, standard-version...${NC}"
+  npm install -g commitizen cz-customizable standard-version
 } # }}}
 
 function install_zsh() { # {{{
@@ -497,11 +472,11 @@ function install_vim() { # {{{
         sudo apt install -y $VIM_PACKAGE
       else
         echo -e "${COLOR1}$VIM_PACKAGE${COLOR} is found, trying to find latest upgrades...${NC}"
-        sudo apt update && sudo apt upgrade
+        sudo apt update && sudo apt upgrade -y
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
-      sudo apt install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby perl
+      sudo apt install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby-full perl
     fi
   elif [ $(uname) = 'Darwin' ]; then
     echo -e "${COLOR}Darwin is found, checking vim...${NC}"

@@ -36,13 +36,6 @@ if [ -f ~/.bash_aliases ]; then
   source ~/.bash_aliases
 fi
 
-if [[ $(tty) == \/dev\/tty[0-9]* ]] ; then
-  fbterm
-fi
-
-# Fix wrong permissions on WSL
-if grep -q Microsoft /proc/version; then
-  if [ "$(umask)" = '0000' ]; then
-    umask 0022
-  fi
+if [ -t 2 ]; then
+  exec zsh
 fi
