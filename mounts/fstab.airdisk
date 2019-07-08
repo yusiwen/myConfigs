@@ -1,0 +1,4 @@
+# Example file for mount AirDisk on boot time
+# Install cifs-utils first: sudo apt install cifs-utils
+
+//192.168.2.101/AirDisk-A /mnt/AirDisk cifs user=AirDisk,pass=*******,vers=1.0,uid=1000,gid=1000,file_mode=0755,dir_mode=0755
