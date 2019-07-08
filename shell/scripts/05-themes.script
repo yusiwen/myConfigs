@@ -11,8 +11,10 @@ eval my_dark='$FG[237]'
 eval my_gray='$FG[241]'
 eval my_orange='$FG[214]'
 
+NEWLINE=$'\n'
+
 # primary prompt
-PROMPT='$my_dark- $my_gray%n@%m $my_dark--------------------------------------\
+PROMPT='${NEWLINE}$my_dark- $my_gray%n@%m $my_dark--------------------------------------\
 %{$reset_color%} $(vi_mode_prompt_info)
 $FG[037]%~\
 %{$reset_color%}$(git_super_status) \
