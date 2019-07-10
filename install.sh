@@ -411,8 +411,8 @@ function install_node() { # {{{
   echo -e "${COLOR1}Installing yarn, eslint...${NC}"
   npm install -g yarn eslint npm-check npm-check-updates
   # Install cli tools for git commit conventions
-  echo -e "${COLOR1}Installing Commitizen, cz-customizable, standard-version...${NC}"
-  npm install -g commitizen cz-customizable standard-version
+  echo -e "${COLOR1}Installing conventional-changelog-cli, Commitizen, cz-customizable, standard-version...${NC}"
+  npm install -g conventional-changelog-cli commitizen cz-customizable standard-version
 } # }}}
 
 function install_zsh() { # {{{
