@@ -10,13 +10,17 @@
   "editor.minimap.enabled": false,
   "editor.suggestSelection": "first",
 
+  "search.usePCRE2": true,
+  "search.useIgnoreFiles": true,
+  "search.useReplacePreview": true,
+
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
 
   "vim.leader": ",",
   "vim.easymotion": true,
   "vim.incsearch": true,
-  "vim.useSystemClipboard": true,
+  "vim.useSystemClipboard": false,
   "vim.useCtrlKeys": true,
   "vim.hlsearch": true,
   "vim.insertModeKeyBindings": [
@@ -29,8 +33,6 @@
     "<C-k>": false,
     "<C-a>": false
   },
-
-  "java.home": "I:/java/jdk1.8.0_144",
 
   "rust.mode": "legacy",
   "rust.rustup": {
@@ -67,8 +69,6 @@
   "terminal.integrated.fontSize": 12,
 
   "extensions.ignoreRecommendations": false,
-
-  "workbench.colorTheme": "Material Theme Palenight High Contrast",
   "workbench.iconTheme": "vscode-icons",
   "vsicons.projectDetection.autoReload": true,
 
@@ -81,5 +81,37 @@
   },
   "[javascript]": {
     "editor.defaultFormatter": "xaver.clang-format"
-  }
+  },
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "git.confirmSync": false,
+  "workbench.colorCustomizations": {
+    "activityBarBadge.background": "#7CB342",
+    "list.activeSelectionForeground": "#7CB342",
+    "list.inactiveSelectionForeground": "#7CB342",
+    "list.highlightForeground": "#7CB342",
+    "scrollbarSlider.activeBackground": "#7CB34250",
+    "editorSuggestWidget.highlightForeground": "#7CB342",
+    "textLink.foreground": "#7CB342",
+    "progressBar.background": "#7CB342",
+    "pickerGroup.foreground": "#7CB342",
+    "tab.activeBorder": "#7CB342",
+    "notificationLink.foreground": "#7CB342",
+    "editorWidget.resizeBorder": "#7CB342",
+    "editorWidget.border": "#7CB342",
+    "settings.modifiedItemIndicator": "#7CB342",
+    "settings.headerForeground": "#7CB342",
+    "panelTitle.activeBorder": "#7CB342",
+    "breadcrumb.activeSelectionForeground": "#7CB342",
+    "menu.selectionForeground": "#7CB342",
+    "menubar.selectionForeground": "#7CB342",
+    "editor.findMatchBorder": "#7CB342",
+    "selection.background": "#7CB34240"
+  },
+  "materialTheme.accent": "Lime",
+  "workbench.colorTheme": "Material Theme Palenight High Contrast"
 }
