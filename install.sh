@@ -702,7 +702,7 @@ function install_i3wm() { # {{{
       if ! type ruby >/dev/null 2>&1; then
         install_ruby
       fi
-      i3bang
+      $HOME/myConfigs/i3/i3bang/i3bang.rb
 
       # check if 'consolekit' is installed or not
       #echo -e "${COLOR}Checking ${COLOR1}consolekit${COLOR}...${NC}"
