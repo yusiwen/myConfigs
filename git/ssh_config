@@ -27,6 +27,11 @@ Host aspire-s3-371
   HostName 192.168.2.53
   User yusiwen
 
+# DeskMini-Server with Ubuntu 19.04
+Host deskmini-server
+  HostName 192.168.2.54
+  User yusiwen
+
 # Macbook
 Host macbook
   HostName 192.168.2.52
