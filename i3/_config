@@ -315,7 +315,7 @@ assign [class="^Geary$|^Thunderbird$"] $ws3
 assign [class="^URxvt$" instance="$MUA" title="$MUA"] $ws3
 assign [class="^WizNote$|^Evince$"] $ws4
 assign [class="^libprs500$" instance="^calibre-gui$"] $ws4
-assign [class="^Vmplayer$|^VirtualBox$"] $ws5
+assign [class="^Vmplayer$|^VirtualBox Manager$"] $ws5
 assign [class="^Eclipse$" instance="^Eclipse$"] $ws6
 assign [class="^jetbrains-idea-|^Atom$"] $ws6
 assign [class="Wps|Et|Wpp|^libreoffice"] $ws7
@@ -350,11 +350,13 @@ exec --no-startup-id !!<\
 #  compton -b,\
 #  dunst,\
 #  thunar --daemon,\
+  ~/Shadowsocks-Qt5-3.0.1-x86_64.AppImage,\
   urxvtd -q -o -f,\
   xautolock -time 15 -locker 'i3lock -c 1d1d1d',\
   hsetroot -solid "#528b8b",\
   i3-msg Workspace 1:Main,i3-sensible-terminal,\
-  nm-applet
+  fcitx -d
+# nm-applet
 # orage
 >
 exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
