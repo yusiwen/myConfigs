@@ -70,7 +70,7 @@ function init_env() { # {{{
         sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
       fi
       sudo apt update
-      sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full gdebi-core
+      sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat
     fi
   elif [ $OS = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
