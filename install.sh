@@ -70,7 +70,7 @@ function init_env() { # {{{
         sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
       fi
       sudo apt update
-      sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat
+      sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat apt-transport-https
     fi
   elif [ $OS = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
@@ -733,6 +733,43 @@ function install_i3wm() { # {{{
   fi
 } # }}}
 
+function install_docker() { # {{{
+  if [ $OS = 'Linux' ]; then
+    if [ $DISTRO = 'Ubuntu' ]; then
+      echo -e "${COLOR}Ubuntu is found, checking ${COLOR1}docker${COLOR}...${NC}"
+      if ! type docker >/dev/null 2>&1; then
+        echo -e "${COLOR1}docker${COLOR} is not found, installing...${NC}"
+        echo -e "${COLOR}Installing prerequisite packages...${NC}"
+        sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+        echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
+        curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+        echo -e "${COLOR}Installing docker-ce...${NC}"
+        sudo apt-get -y update
+        sudo apt-get -y install docker-ce
+      else
+        echo -e "${COLOR1}$(docker -v)${COLOR} is found...${NC}"
+      fi
+
+      if [ ! -e /etc/docker/daemon.json ]; then
+        sudo cp $HOME/myConfig/docker/daemon.json /etc/docker/daemon.json
+      fi
+    fi
+  else
+    echo -e "${COLOR}Unsupported on this OS.${NC}"
+  fi
+} # }}}
+
+function install_llvm() { # {{{
+  if [ $OS = 'Linux' ]; then
+    if [ $DISTRO = 'Ubuntu' ]; then
+      sudo apt install -y llvm clang clang-format clang-tidy clang-tools lldb lld
+    fi
+  else
+    echo -e "${COLOR}OS not supported.${NC}"
+  fi
+} # }}}
+
 function install_all() { # {{{
   init_env
   install_python
@@ -757,9 +794,9 @@ function install_all() { # {{{
   install_i3wm
 } # }}}
 
-function print_info() {
+function print_info() { # {{{
   echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh]${NC}"
-}
+} # }}}
 
 case $1 in
   all) install_all;;
@@ -774,6 +811,7 @@ case $1 in
   vim) install_vim;;
   rxvt) install_rxvt;;
   i3wm) install_i3wm;;
+  docker) install_docker;;
   *) print_info;;
 esac
 
