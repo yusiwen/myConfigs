@@ -656,7 +656,7 @@ function install_i3wm() { # {{{
         rm -rf build/
         mkdir -p build && cd build/
         ../configure --disable-sanitizers
-        make
+        make -j4
         sudo make install
         popd && popd && popd
       fi
@@ -672,6 +672,34 @@ function install_i3wm() { # {{{
         cd build
         cmake ..
         sudo make install
+        popd && popd && popd
+      fi
+
+      # jgmenu
+      if [ ! -d ~/git/jgmenu ]; then
+        mkdir -p ~/git
+        pushd ~/git
+        git clone https://github.com/johanmalm/jgmenu.git
+        cd jgmenu
+        ./scripts/install-debian-dependencies.sh
+        make -j4
+        sudo make prefix=/usr/local install
+        popd && popd
+      fi
+
+      # albert
+      sudo apt install qtbase5-dev qtdeclarative5-dev libqt5svg5-dev libqt5x11extras5-dev libqt5charts5-dev libmuparser-dev
+      if [ ! -d ~/git/albert ]; then
+        mkdir -p ~/git
+        pushd ~/git
+        git clone --recursive https://github.com/albertlauncher/albert.git
+        cd albert
+        mkdir -p build
+        cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+        make -j4
+        sudo make install
+        jgmenu init --theme=greeneye
         popd && popd && popd
       fi
 
