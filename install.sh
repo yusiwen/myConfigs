@@ -71,6 +71,8 @@ function init_env() { # {{{
       fi
       sudo apt update
       sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat apt-transport-https
+    elif [ $DISTRO = 'CentOS' ]; then
+      sudo yum install -y net-tools
     fi
   elif [ $OS = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
@@ -155,6 +157,13 @@ function install_git() { # {{{
       else
         echo -e "${COLOR1}git${COLOR} was found.${NC}"
       fi
+    elif [ $DISTRO = 'CentOS' ]; then
+      PACKAGE=$(yum list installed | grep ^ius-release.noarch | wc -l)
+      if [ $PACKAGE = 0 ]; then
+        sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+      fi
+
+      sudo yum -y install git2u-all
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
       exit 1
@@ -295,7 +304,7 @@ function install_python() { # {{{
   if [ $OS = 'Linux' ]; then
     IS_PYTHON_NEED_INSTALL=0
 
-    if [ ! type python3 &>/dev/null ]; then
+    if ! type python3 &>/dev/null; then
       IS_PYTHON_NEED_INSTALL=1
     else
       PYTHON_VERSION=`python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))'`
@@ -329,26 +338,39 @@ function install_python() { # {{{
         echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
         sudo apt install -y python3-pip
       fi
+    elif [ $DISTRO = 'CentOS' ]; then
+      if [ $IS_PYTHON_NEED_INSTALL -eq 1 ]; then
+        PACKAGE=$(yum list installed | grep ^ius-release.noarch | wc -l)
+        if [ $PACKAGE = 0 ]; then
+          sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+        fi
 
-      mkdir -p $HOME/.pip
-      if [ -d $HOME/myConfigs ]; then
-        ln -sfnv $HOME/myConfigs/python/pip.conf $HOME/.pip/pip.conf
-      else
-        # Using aliyun as mirror
-        echo '[global]' > $HOME/.pip/pip.conf
-        echo 'index-url = https://mirrors.aliyun.com/pypi/simple/' >> $HOME/.pip/pip.conf
-        echo '' >> $HOME/.pip/pip.conf
-        echo '[install]' >> $HOME/.pip/pip.conf
-        echo 'trusted-host=mirrors.aliyun.com' >> $HOME/.pip/pip.conf
-      fi
-
-      if ! type virtualenv >/dev/null 2>&1; then
-        echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
-        sudo apt install -y virtualenv
+        sudo yum update -y
+        sudo yum install -y python36u python36u-pip python2-pip
+        sudo ln -snv /usr/bin/python3.6 /usr/bin/python3
+        sudo ln -snv /usr/bin/pip3.6 /usr/bin/pip3
       fi
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
       exit 1
+    fi
+
+    mkdir -p $HOME/.pip
+    if [ -d $HOME/myConfigs ]; then
+      ln -sfnv $HOME/myConfigs/python/pip.conf $HOME/.pip/pip.conf
+    else
+      # Using aliyun as mirror
+      echo '[global]' > $HOME/.pip/pip.conf
+      echo 'index-url = https://mirrors.aliyun.com/pypi/simple/' >> $HOME/.pip/pip.conf
+      echo '' >> $HOME/.pip/pip.conf
+      echo '[install]' >> $HOME/.pip/pip.conf
+      echo 'trusted-host=mirrors.aliyun.com' >> $HOME/.pip/pip.conf
+    fi
+
+    if ! type virtualenv >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
+      pip install --user virtualenv
+      pip3 install --user virutalenv
     fi
   elif [ $OS = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
@@ -362,7 +384,8 @@ function install_python() { # {{{
     echo "[global]" > $HOME/.config/pip/pip.conf
     echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >> $HOME/.config/pip/pip.conf
 
-    pip install virtualenv
+    pip install --user virtualenv
+    pip3 install --user virtualenv
   else
     echo -e "${COLOR}OS not supported${NC}"
     exit 1
@@ -392,6 +415,13 @@ function install_node() { # {{{
 
         echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
         sudo apt install -y nodejs
+      elif [ $DISTRO = 'CentOS' ]; then
+        PACKAGE=$(yum list installed | grep ^nodesource-release.noarch | wc -l)
+        if [ $PACKAGE = 0 ]; then
+          curl -sL https://rpm.nodesource.com/setup_8.x | sudo bash -
+        fi
+
+        sudo yum -y install nodejs
       fi
     elif [ $OS = 'Darwin' ]; then
       if ! type brew >/dev/null 2>&1; then
@@ -425,7 +455,12 @@ function install_zsh() { # {{{
     echo -e "${COLOR}Current SHELL is not ${COLOR1}Zsh${NC}"
     if [ ! -e /usr/bin/zsh ]; then
       echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
-      sudo apt install -y zsh
+      if [ $DISTRO = 'Ubuntu' ]; then
+        sudo apt install -y zsh
+      elif [ $DISTRO = 'CentOS' ]; then
+        sudo yum install -y zsh
+        echo '/usr/bin/zsh' | sudo tee -a /etc/shells
+      fi
       echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
       chsh -s /usr/bin/zsh
     fi
@@ -477,6 +512,8 @@ function install_vim() { # {{{
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
       sudo apt install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby-full perl
+    elif [ $DISTRO = 'CentOS' ]; then
+      echo -e "${COLOR}Please install vim 8.0 manually${NC}"
     fi
   elif [ $(uname) = 'Darwin' ]; then
     echo -e "${COLOR}Darwin is found, checking vim...${NC}"
@@ -531,28 +568,46 @@ function install_vim() { # {{{
   fi
 
   # NeoVim {{{
-  NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-$CODENAME.list
-  if [ ! -e $NVIM_PPA ]; then
-    echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/stable${COLOR}...${NC}"
-    sudo add-apt-repository -y ppa:neovim-ppa/stable
-    sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" $NVIM_PPA
-    sudo apt update
-  else
-    echo -e "${COLOR1}ppa:neovim-ppa/stable${COLOR} was found${NC}"
+  if [ $OS = 'Linux' ]; then
+    if [ $DISTRO = 'Ubuntu' ]; then
+      NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-$CODENAME.list
+      if [ ! -e $NVIM_PPA ]; then
+        echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/stable${COLOR}...${NC}"
+        sudo add-apt-repository -y ppa:neovim-ppa/stable
+        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" $NVIM_PPA
+        sudo apt update
+      else
+        echo -e "${COLOR1}ppa:neovim-ppa/stable${COLOR} was found${NC}"
+      fi
+
+      set +e
+      PACKAGE=$(dpkg -l | grep neovim | cut -d ' ' -f 3 | grep ^neovim$ | wc -l)
+      set -e
+      if [ $PACKAGE -eq 0 ]; then
+        echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
+        # Install VIM_PACKAGE
+        echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
+        sudo apt install -y neovim
+      else
+        echo -e "${COLOR1}NeoVim${COLOR} is found, trying to find latest upgrades...${NC}"
+        sudo apt update && sudo apt upgrade
+      fi
+    elif [ $DISTRO = 'CentOS' ]; then
+      set +e
+      PACKAGE=$(yum list installed | grep ^epel-release.noarch | wc -l)
+      set -e
+      if [ $PACKAGE = 0 ]; then
+        echo -e "${COLOR}No latest NeoVim source found, adding ${COLOR1}epel-release-latest-7${COLOR}...${NC}"
+        sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+      else
+        echo -e "${COLOR1}epel-release-latest-7${COLOR} was found${NC}"
+      fi
+
+      echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
+      sudo yum install -y neovim python2-neovim python36-neovim
+    fi
   fi
 
-  set +e
-  PACKAGE=$(dpkg -l | grep neovim | cut -d ' ' -f 3 | grep ^neovim$ | wc -l)
-  set -e
-  if [ $PACKAGE -eq 0 ]; then
-    echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
-    # Install VIM_PACKAGE
-    echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
-    sudo apt install -y neovim
-  else
-    echo -e "${COLOR1}NeoVim${COLOR} is found, trying to find latest upgrades...${NC}"
-    sudo apt update && sudo apt upgrade
-  fi
 
   ln -sfnv $CONFIG_VIM/init.vim $VIM_HOME/init.vim
   ln -sfnv $CONFIG_VIM/vimrc.neovim $VIM_HOME/vimrc.neovim
@@ -792,6 +847,15 @@ function install_llvm() { # {{{
   if [ $OS = 'Linux' ]; then
     if [ $DISTRO = 'Ubuntu' ]; then
       sudo apt install -y llvm clang clang-format clang-tidy clang-tools lldb lld
+    elif [ $DISTRO = 'CentOS' ]; then
+      set +e
+      PACKAGE=$(yum list installed | grep ^centos-release-scl | wc -l)
+      set -e
+      if [ $PACKAGE -eq 0 ]; then
+        sudo yum install -y centos-release-scl
+      fi
+
+      sudo yum install -y devtoolset-7 llvm-toolset-7 llvm-toolset-7-clang-analyzer llvm-toolset-7-clang-tools-extra llvm-toolset-7-git-clang-format
     fi
   else
     echo -e "${COLOR}OS not supported.${NC}"
@@ -839,6 +903,7 @@ case $1 in
   vim) install_vim;;
   rxvt) install_rxvt;;
   i3wm) install_i3wm;;
+  llvm) install_llvm;;
   docker) install_docker;;
   *) print_info;;
 esac
