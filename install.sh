@@ -72,7 +72,7 @@ function init_env() { # {{{
       sudo apt update
       sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat apt-transport-https
     elif [ $DISTRO = 'CentOS' ]; then
-      sudo yum install -y net-tools
+      sudo yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man
     fi
   elif [ $OS = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
@@ -513,7 +513,7 @@ function install_vim() { # {{{
       echo -e "${COLOR}Install supplementary tools...${NC}"
       sudo apt install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby-full perl
     elif [ $DISTRO = 'CentOS' ]; then
-      echo -e "${COLOR}Please install vim 8.0 manually${NC}"
+      echo -e "${COLOR}There is no available source of vim80 for CentOS, please install vim 8.0 manually${NC}"
     fi
   elif [ $(uname) = 'Darwin' ]; then
     echo -e "${COLOR}Darwin is found, checking vim...${NC}"
@@ -629,13 +629,15 @@ function install_vim() { # {{{
   NV_PYTHON_PCK=$(pip list 2>/dev/null | grep neovim | wc -l)
   set -e
   if [ $NV_PYTHON_PCK -eq 0 ]; then
-    sudo -H pip install neovim
+    pip install --user neovim
+    pip3 install --user neovim
   fi
   set +e
   NV_PYTHON_PCK=$(pip list 2>/dev/null | grep PyYAML | wc -l)
   set -e
   if [ $NV_PYTHON_PCK -eq 0 ]; then
-    sudo -H pip install PyYAML
+    pip install --user PyYAML
+    pip3 install --user PyYAML
   fi
 
   if [ ! -d $VARPATH/venv/neovim2 ]; then
@@ -662,6 +664,7 @@ function install_vim() { # {{{
 
   npm install -g jshint jsxhint jsonlint stylelint sass-lint raml-cop markdownlint-cli write-good
   pip install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
+  pip3 install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
 } #}}}
 
 function install_rxvt() { # {{{
@@ -862,6 +865,36 @@ function install_llvm() { # {{{
   fi
 } # }}}
 
+function install_mysql() { # {{{
+  if [ $OS = 'Linux' ]; then
+    if [ $DISTRO = 'Ubuntu' ]; then
+      echo 'Not implemented yet, waiting for my update'
+    elif [ $DISTRO = 'CentOS' ]; then
+      set +e
+      PACKAGE=$(yum list installed | grep ^mysql57-community-release | wc -l)
+      set -e
+      if [ $PACKAGE -eq 0 ]; then
+        echo -e "${COLOR}Add repo ${COLOR1}mysql57-community-release${COLOR}...${NC}"
+        sudo yum install -y https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+        echo -e "${COLOR}Add repo ${COLOR1}mysql57-community-release${COLOR}...OK${NC}"
+      fi
+
+      sudo yum install -y mysql-community-server
+      echo -e "${COLOR}Open port for mysql server in firewalld...${NC}"
+      sudo firewall-cmd --zone=public --add-service=mysql --permanent
+      sudo firewall-cmd --reload
+      echo -e "${COLOR}Open port for mysql server in firewalld...OK${NC}"
+      echo -e "${COLOR}Your temporary root password will be in ${COLOR1}/var/log/mysqld.log${COLOR} when you start mysqld for the first time${NC}"
+      echo -e "${COLOR}Please login with this temporary password, and change it immediately using:${NC}"
+      echo -e "${COLOR1}ALTER USER 'root'@'localhost' IDENTIFIED BY '<new-password>'${NC}"
+      echo -e "${COLOR}And add this configurations in ${COLOR1}/etc/my.cnf${COLOR} for better encoding process${NC}"
+      printf "#----------\n[client]\ndefault-character-set=utf8\n\n[mysqld]\ndefault-storage-engine=INNODB\ncharacter-set-server=utf8\ncollation-server=utf8_general_ci\ncollation-server=utf8_bin\ncollation-server=utf8_unicode_ci\n#----------\n"
+    fi
+  else
+    echo -e "${COLOR}OS not supported.${NC}"
+  fi
+} # }}}
+
 function install_all() { # {{{
   init_env
   install_python
@@ -905,6 +938,7 @@ case $1 in
   i3wm) install_i3wm;;
   llvm) install_llvm;;
   docker) install_docker;;
+  mysql) install_mysql;;
   *) print_info;;
 esac
 
