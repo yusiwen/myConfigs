@@ -93,3 +93,5 @@ alias nv='nvim'
 alias mvn-no-javadoc='mvn -Dmaven.javadoc.skip=true'
 alias mvn-no-test='mvn -Dmaven.test.skip=true'
 
+# youtube-dl
+alias ytd='youtube-dl --proxy socks5://127.0.0.1:1088 -r 500K'
