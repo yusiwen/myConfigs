@@ -895,6 +895,18 @@ function install_mysql() { # {{{
   fi
 } # }}}
 
+function install_samba() { # {{{
+  if [ $OS = 'Linux' ]; then
+    if [ $DISTRO = 'Ubuntu' ]; then
+      sudo apt install -y samba samba-common
+      sudo cp $HOME/git/myConfigs/samba/smb.conf /etc/samba/smb.conf
+      sudo smbpasswd -a yusiwen
+      sudo systemctl restart smbd
+      sudo systemctl enable smbd
+    fi
+  fi
+} # }}}
+
 function install_all() { # {{{
   init_env
   install_python
@@ -939,6 +951,7 @@ case $1 in
   llvm) install_llvm;;
   docker) install_docker;;
   mysql) install_mysql;;
+  samba) install_samba;;
   *) print_info;;
 esac
 
