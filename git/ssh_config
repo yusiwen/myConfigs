@@ -12,7 +12,12 @@ Host vm-pd-centos
   User yusiwen
   Port 1022
 
-# CentOS vm on virtualbox(at HOME-DESKTOP and Aspire Notebook)
+# CentOS vm on vmware workstation server(at DeskMini-Server)
+Host vm-centos-shared
+  HostName 192.168.2.60
+  User yusiwen
+
+# CentOS vm on virtualbox(at DeskMini-Server)
 Host vm-centos
   HostName 192.168.2.61
   User yusiwen
