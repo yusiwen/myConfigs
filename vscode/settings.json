@@ -20,7 +20,7 @@
   "vim.leader": ",",
   "vim.easymotion": true,
   "vim.incsearch": true,
-  "vim.useSystemClipboard": false,
+  "vim.useSystemClipboard": true,
   "vim.useCtrlKeys": true,
   "vim.hlsearch": true,
   "vim.insertModeKeyBindings": [
@@ -69,7 +69,7 @@
   "terminal.integrated.fontSize": 12,
 
   "extensions.ignoreRecommendations": false,
-  "workbench.iconTheme": "vscode-icons",
+  "workbench.iconTheme": "material-icon-theme",
   "vsicons.projectDetection.autoReload": true,
 
   "files.associations": {},
@@ -113,5 +113,9 @@
     "selection.background": "#7CB34240"
   },
   "materialTheme.accent": "Lime",
-  "workbench.colorTheme": "Material Theme Palenight High Contrast"
+  "workbench.colorTheme": "Material Theme Palenight High Contrast",
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "git.ignoreLegacyWarning": true,
 }
