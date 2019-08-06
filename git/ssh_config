@@ -12,7 +12,12 @@ Host vm-pd-centos
   User yusiwen
   Port 1022
 
-# CentOS vm on virtualbox(at HOME-DESKTOP and Aspire Notebook)
+# CentOS vm on vmware workstation server(at DeskMini-Server)
+Host vm-centos-shared
+  HostName 192.168.2.60
+  User yusiwen
+
+# CentOS vm on virtualbox(at DeskMini-Server)
 Host vm-centos
   HostName 192.168.2.61
   User yusiwen
@@ -25,6 +30,11 @@ Host vm-centos-2
 # Aspire Notebook with Ubuntu 18.04 LTS
 Host aspire-s3-371
   HostName 192.168.2.53
+  User yusiwen
+
+# DeskMini-Server with Ubuntu 19.04
+Host deskmini-server
+  HostName 192.168.2.54
   User yusiwen
 
 # Macbook
