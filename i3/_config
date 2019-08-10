@@ -286,8 +286,8 @@ bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWork
 # bind key for an emergence terminal in floating mode
 bindsym $mod+Shift+Return exec $TERM -name emergence_terminal && i3-msg '[instance="^emergence_terminal$"] floating enable'
 # rofi
-bindsym $mod+d exec rofi -show run
-bindsym $mod+Shift+d exec rofi -show drun
+bindsym $mod+d exec rofi -show drun
+bindsym $mod+Shift+d exec rofi -show run
 # }}}
 
 # {{{ Workspace settings
