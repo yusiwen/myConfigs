@@ -288,6 +288,8 @@ bindsym $mod+Shift+Return exec $TERM -name emergence_terminal && i3-msg '[instan
 # rofi
 bindsym $mod+d exec rofi -show drun
 bindsym $mod+Shift+d exec rofi -show run
+bindsym $mod+Tab exec rofi -show window
+
 # }}}
 
 # {{{ Workspace settings
