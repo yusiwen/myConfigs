@@ -180,7 +180,7 @@ mode "Exit >> (L)ogout, (S)uspend, (R)eboot, (P)oweroff, Loc(K)" {
   bindsym !!<Return,Escape> mode "default"
 }
 
-bindsym $mod+Shift+q mode "Exit >> (L)ogout, (S)uspend, (R)eboot, (P)oweroff, Loc(K)"
+bindsym $mod+Shift+slash mode "Exit >> (L)ogout, (S)uspend, (R)eboot, (P)oweroff, Loc(K)"
 # }}}
 
 # {{{ Jump mode settings
