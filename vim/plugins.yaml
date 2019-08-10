@@ -30,6 +30,8 @@
 - repo: yonchu/accelerated-smooth-scroll
 # enable repeating supported plugin maps with "."
 - repo: tpope/vim-repeat
+# An alternative sudo.vim for Vim and Neovim, limited support sudo in Windows
+- repo: lambdalisue/suda.vim
 # Keep/restore fcitx state when toggling insert mode
 # fcitx.vim is only needed under Linux
 - repo: vim-scripts/fcitx.vim
