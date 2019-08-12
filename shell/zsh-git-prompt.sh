@@ -1,6 +1,6 @@
 # https://github.com/woefe/git-prompt.zsh
-# zsh-git-prompt a lightweight git prompt for zsh.
-# Copyright © 2018 Wolfgang Popp
+# git-prompt.zsh -- a lightweight git prompt for zsh.
+# Copyright © 2019 Wolfgang Popp
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the "Software"),
@@ -20,122 +20,283 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 # OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+autoload -U colors && colors
 
+: "${ZSH_THEME_GIT_PROMPT_PREFIX="["}"
+: "${ZSH_THEME_GIT_PROMPT_SUFFIX="] "}"
+: "${ZSH_THEME_GIT_PROMPT_SEPARATOR="|"}"
+: "${ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"}"
+: "${ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"}"
+: "${ZSH_THEME_GIT_PROMPT_BEHIND="↓"}"
+: "${ZSH_THEME_GIT_PROMPT_AHEAD="↑"}"
+: "${ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"}"
+: "${ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}●"}"
+: "${ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"}"
+: "${ZSH_THEME_GIT_PROMPT_UNTRACKED="…"}"
+: "${ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"}"
+: "${ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"}"
+
+# Disable promptinit if it is loaded
+(( $+functions[promptinit] )) && {promptinit; prompt off}
+
+# Allow parameter and command substitution in the prompt
 setopt PROMPT_SUBST
 
-function git_super_status() {
-  git status --branch --porcelain=v2 2>&1 | awk '
-    BEGIN {
-      RED = "%F{red}";
-      MAGENTA = "%F{magenta}";
-      GREEN = "%F{green}";
-      BLUE = "%F{blue}";
-      BOLD = "%B";
-      NB = "%b";
-      NC = "%f";
+# Override PROMPT if it does not use the gitprompt function
+[[ "$PROMPT" != *gitprompt* && "$RPROMPT" != *gitprompt* ]] \
+    && PROMPT='%B%40<..<%~ %b$(gitprompt)%(?.%F{blue}❯%f%F{cyan}❯%f%F{green}❯%f.%F{red}❯❯❯%f) '
 
-      fatal = 0;
-      oid = "";
-      head = "";
-      ahead = 0;
-      behind = 0;
-      untracked = 0;
-      unmerged = 0;
-      staged = 0;
-      unstaged = 0;
-    }
+# Find an awk implementation
+# Prefer nawk over mawk and mawk over awk
+(( $+commands[mawk] )) && : "${ZSH_GIT_PROMPT_AWK_CMD:=mawk}"
+(( $+commands[nawk] )) && : "${ZSH_GIT_PROMPT_AWK_CMD:=nawk}"
+                          : "${ZSH_GIT_PROMPT_AWK_CMD:=awk}"
 
-    $1 == "fatal:" {
-      fatal = 1;
-    }
+function _zsh_git_prompt_git_status() {
+    emulate -L zsh
+    {
+        [[ -n "$ZSH_GIT_PROMPT_SHOW_STASH" ]] && (
+            c=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
+            [[ -n "$c" ]] && echo "# stash.count $c"
+        )
+        command git status --branch --porcelain=v2 2>&1 || echo "fatal: git command failed"
+    } | $ZSH_GIT_PROMPT_AWK_CMD \
+        -v PREFIX="$ZSH_THEME_GIT_PROMPT_PREFIX" \
+        -v SUFFIX="$ZSH_THEME_GIT_PROMPT_SUFFIX" \
+        -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_SEPARATOR" \
+        -v DETACHED="$ZSH_THEME_GIT_PROMPT_DETACHED" \
+        -v BRANCH="$ZSH_THEME_GIT_PROMPT_BRANCH" \
+        -v BEHIND="$ZSH_THEME_GIT_PROMPT_BEHIND" \
+        -v AHEAD="$ZSH_THEME_GIT_PROMPT_AHEAD" \
+        -v UNMERGED="$ZSH_THEME_GIT_PROMPT_UNMERGED" \
+        -v STAGED="$ZSH_THEME_GIT_PROMPT_STAGED" \
+        -v UNSTAGED="$ZSH_THEME_GIT_PROMPT_UNSTAGED" \
+        -v UNTRACKED="$ZSH_THEME_GIT_PROMPT_UNTRACKED" \
+        -v STASHED="$ZSH_THEME_GIT_PROMPT_STASHED" \
+        -v CLEAN="$ZSH_THEME_GIT_PROMPT_CLEAN" \
+        -v RC="%{$reset_color%}" \
+        '
+            BEGIN {
+                ORS = "";
 
-    $2 == "branch.oid" {
-      oid = $3;
-    }
+                fatal = 0;
+                oid = "";
+                head = "";
+                ahead = 0;
+                behind = 0;
+                untracked = 0;
+                unmerged = 0;
+                staged = 0;
+                unstaged = 0;
+                stashed = 0;
+            }
 
-    $2 == "branch.head" {
-      head = $3;
-    }
+            $1 == "fatal:" {
+                fatal = 1;
+            }
 
-    $2 == "branch.ab" {
-      ahead = $3;
-      behind = $4;
-    }
+            $2 == "branch.oid" {
+                oid = $3;
+            }
 
-    $1 == "?" {
-      ++untracked;
-    }
+            $2 == "branch.head" {
+                head = $3;
+            }
 
-    $1 == "u" {
-      ++unmerged;
-    }
+            $2 == "branch.ab" {
+                ahead = $3;
+                behind = $4;
+            }
 
-    $1 == "1" || $1 == "2" {
-      split($2, arr, "");
-      if (arr[1] != ".") {
-        ++staged;
-      }
-      if (arr[2] != ".") {
-        ++unstaged;
-      }
-    }
+            $1 == "?" {
+                ++untracked;
+            }
 
-    END {
-      if (fatal == 1) {
-        exit(1);
-      }
+            $1 == "u" {
+                ++unmerged;
+            }
 
-      printf "(";
+            $1 == "1" || $1 == "2" {
+                split($2, arr, "");
+                if (arr[1] != ".") {
+                    ++staged;
+                }
+                if (arr[2] != ".") {
+                    ++unstaged;
+                }
+            }
 
-      printf "%s", MAGENTA
-      printf "%s", BOLD
-      if (head == "(detached)") {
-        printf ":%s", substr(oid, 0, 7);
-      } else {
-        printf "%s", head;
-      }
-      printf "%s", NB
-      printf "%s", NC
+            $2 == "stash.count" {
+                stashed = $3;
+            }
 
-      if (behind < 0) {
-        printf "↓%d", behind * -1;
-      }
+            END {
+                if (fatal == 1) {
+                    exit(1);
+                }
 
-      if (ahead > 0) {
-        printf "↑%d", ahead;
-      }
+                print PREFIX;
+                print RC;
 
-      printf "|";
+                if (head == "(detached)") {
+                    print DETACHED;
+                    print substr(oid, 0, 7);
+                } else {
+                    print BRANCH;
+                    gsub("%", "%%", head);
+                    print head;
+                }
+                print RC;
 
-      if (unmerged > 0) {
-        printf "%s", RED
-        printf "✖%d", unmerged;
-        printf "%s", NC
-      }
+                if (behind < 0) {
+                    print BEHIND;
+                    printf "%d", behind * -1;
+                    print RC;
+                }
 
-      if (staged > 0) {
-        printf "%s", RED
-        printf "●%d", staged;
-        printf "%s", NC
-      }
+                if (ahead > 0) {
+                    print AHEAD;
+                    printf "%d", ahead;
+                    print RC;
+                }
 
-      if (unstaged > 0) {
-        printf "%s", BLUE
-        printf "✚%d", unstaged;
-        printf "%s", NC
-      }
+                print SEPARATOR;
 
-      if (untracked > 0) {
-        printf "…%d", untracked;
-      }
+                if (unmerged > 0) {
+                    print UNMERGED;
+                    print unmerged;
+                    print RC;
+                }
 
-      if (unmerged == 0 && staged == 0 && unstaged == 0 && untracked == 0) {
-        printf "%s", GREEN
-        printf "✔"
-        printf "%s", NC
-      }
+                if (staged > 0) {
+                    print STAGED;
+                    print staged;
+                    print RC;
+                }
 
-      printf ")";
-    }
-  '
+                if (unstaged > 0) {
+                    print UNSTAGED;
+                    print unstaged;
+                    print RC;
+                }
+
+                if (untracked > 0) {
+                    print UNTRACKED;
+                    print untracked;
+                    print RC;
+                }
+
+                if (stashed > 0) {
+                    print STASHED;
+                    print stashed;
+                    print RC;
+                }
+
+                if (unmerged == 0 && staged == 0 && unstaged == 0 && untracked == 0) {
+                    print CLEAN;
+                    print RC;
+                }
+
+                print SUFFIX;
+                print RC;
+            }
+        '
 }
+
+
+# The async code is taken from
+# https://github.com/zsh-users/zsh-autosuggestions/blob/master/src/async.zsh
+
+zmodload zsh/system
+
+function _zsh_git_prompt_async_request() {
+    typeset -g _ZSH_GIT_PROMPT_ASYNC_FD _ZSH_GIT_PROMPT_ASYNC_PID
+
+    # If we've got a pending request, cancel it
+    if [[ -n "$_ZSH_GIT_PROMPT_ASYNC_FD" ]] && { true <&$_ZSH_GIT_PROMPT_ASYNC_FD } 2>/dev/null; then
+
+        # Close the file descriptor and remove the handler
+        exec {_ZSH_GIT_PROMPT_ASYNC_FD}<&-
+        zle -F $_ZSH_GIT_PROMPT_ASYNC_FD
+
+        # Zsh will make a new process group for the child process only if job
+        # control is enabled (MONITOR option)
+        if [[ -o MONITOR ]]; then
+            # Send the signal to the process group to kill any processes that may
+            # have been forked by the suggestion strategy
+            kill -TERM -$_ZSH_GIT_PROMPT_ASYNC_PID 2>/dev/null
+        else
+            # Kill just the child process since it wasn't placed in a new process
+            # group. If the suggestion strategy forked any child processes they may
+            # be orphaned and left behind.
+            kill -TERM $_ZSH_GIT_PROMPT_ASYNC_PID 2>/dev/null
+        fi
+    fi
+
+    # Fork a process to fetch the git status and open a pipe to read from it
+    exec {_ZSH_GIT_PROMPT_ASYNC_FD}< <(
+        # Tell parent process our pid
+        echo $sysparams[pid]
+
+        _zsh_git_prompt_git_status
+    )
+
+    # There's a weird bug here where ^C stops working unless we force a fork
+    # See https://github.com/zsh-users/zsh-autosuggestions/issues/364
+    command true
+
+    # Read the pid from the child process
+    read _ZSH_GIT_PROMPT_ASYNC_PID <&$_ZSH_GIT_PROMPT_ASYNC_FD
+
+    # When the fd is readable, call the response handler
+    zle -F "$_ZSH_GIT_PROMPT_ASYNC_FD" _zsh_git_prompt_callback
+}
+
+# Called when new data is ready to be read from the pipe
+# First arg will be fd ready for reading
+# Second arg will be passed in case of error
+_ZSH_GIT_PROMPT_STATUS_OUTPUT=""
+function _zsh_git_prompt_callback() {
+    emulate -L zsh
+    local old_status="$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
+
+    if [[ -z "$2" || "$2" == "hup" ]]; then
+        # Read output from fd
+        _ZSH_GIT_PROMPT_STATUS_OUTPUT="$(cat <&$1)"
+        if [[ "$old_status" != "$_ZSH_GIT_PROMPT_STATUS_OUTPUT" ]];then
+            zle reset-prompt
+            zle -R
+        fi
+
+        # Close the fd
+        exec {1}<&-
+    fi
+
+    # Always remove the handler
+    zle -F "$1"
+
+    # Unset global FD variable to prevent closing user created FDs in the precmd hook
+    unset _ZSH_GIT_PROMPT_ASYNC_FD
+}
+
+function _zsh_git_prompt_precmd_hook() {
+    [[ -n "$ZSH_GIT_PROMPT_FORCE_BLANK" ]] && _ZSH_GIT_PROMPT_STATUS_OUTPUT=""
+    _zsh_git_prompt_async_request
+}
+
+if (( $+commands[git] )); then
+    if [[ -z "$ZSH_GIT_PROMPT_NO_ASYNC" ]]; then
+        autoload -U add-zsh-hook \
+            && add-zsh-hook precmd _zsh_git_prompt_precmd_hook
+
+        function gitprompt() {
+            echo -n "$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
+        }
+    else
+        function gitprompt() {
+            _zsh_git_prompt_git_status
+        }
+    fi
+else
+    function gitprompt() { }
+fi
