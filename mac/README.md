@@ -10,6 +10,41 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 Then, install `vim`, `cscope`, `ctags`, `git`, `lua`, `macvim`, `node`, `openssl`, `vim` using `brew install XXX` command.
 
+### Mirror for homebrew formula
+
+Using 清华大学开源软件镜像站's homebrew formula mirror:
+
+```sh
+git -C "$(brew --repo)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git
+git -C "$(brew --repo homebrew/core)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git
+git -C "$(brew --repo homebrew/cask)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-cask.git
+brew update
+```
+
+Rollback:
+
+```sh
+git -C "$(brew --repo)" remote set-url origin https://github.com/Homebrew/brew.git
+git -C "$(brew --repo homebrew/core)" remote set-url origin https://github.com/Homebrew/homebrew-core.git
+git -C "$(brew --repo homebrew/cask)" remote set-url origin https://github.com/Homebrew/homebrew-cask.git
+brew update
+```
+
+### Mirror for homebrew-bottles
+
+Temporary usage:
+
+```sh
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+```
+
+Long-term usage:
+
+```sh
+echo 'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles' >> ~/.bash_profile
+source ~/.bash_profile
+```
+
 ## iTerm2
 
 Download latest iTerm2 from [official site](https://www.iterm2.com)
