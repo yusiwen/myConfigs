@@ -1,4 +1,6 @@
-# https://github.com/woefe/git-prompt.zsh
+# Taken from https://github.com/woefe/git-prompt.zsh
+# Edit by yusiwen(yusiwen@gmail.com) making it compatible with oh-my-zsh
+#
 # git-prompt.zsh -- a lightweight git prompt for zsh.
 # Copyright © 2019 Wolfgang Popp
 #
@@ -22,19 +24,19 @@
 
 autoload -U colors && colors
 
-: "${ZSH_THEME_GIT_PROMPT_PREFIX="["}"
-: "${ZSH_THEME_GIT_PROMPT_SUFFIX="] "}"
-: "${ZSH_THEME_GIT_PROMPT_SEPARATOR="|"}"
-: "${ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"}"
-: "${ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"}"
-: "${ZSH_THEME_GIT_PROMPT_BEHIND="↓"}"
-: "${ZSH_THEME_GIT_PROMPT_AHEAD="↑"}"
-: "${ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"}"
-: "${ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}●"}"
-: "${ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"}"
-: "${ZSH_THEME_GIT_PROMPT_UNTRACKED="…"}"
-: "${ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"}"
-: "${ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"}"
+ZSH_THEME_GIT_PROMPT_PREFIX="["
+ZSH_THEME_GIT_PROMPT_SUFFIX="] "
+ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
+ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
+ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="↓"
+ZSH_THEME_GIT_PROMPT_AHEAD="↑"
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"
+ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}●"
+ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
+ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"
+ZSH_THEME_GIT_PROMPT_CLN="%{$fg[green]%}✔"
 
 # Disable promptinit if it is loaded
 (( $+functions[promptinit] )) && {promptinit; prompt off}
@@ -73,7 +75,7 @@ function _zsh_git_prompt_git_status() {
         -v UNSTAGED="$ZSH_THEME_GIT_PROMPT_UNSTAGED" \
         -v UNTRACKED="$ZSH_THEME_GIT_PROMPT_UNTRACKED" \
         -v STASHED="$ZSH_THEME_GIT_PROMPT_STASHED" \
-        -v CLEAN="$ZSH_THEME_GIT_PROMPT_CLEAN" \
+        -v CLEAN="$ZSH_THEME_GIT_PROMPT_CLN" \
         -v RC="%{$reset_color%}" \
         '
             BEGIN {
