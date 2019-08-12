@@ -17,7 +17,7 @@ NEWLINE=$'\n'
 PROMPT='${NEWLINE}$my_dark- $my_gray%n@%m $my_dark--------------------------------------\
 %{$reset_color%} $(vi_mode_prompt_info)
 $FG[037]%~\
-%{$reset_color%}$(git_super_status) \
+%{$reset_color%}$(gitprompt) \
 $FG[105]%(!.#.»)%{$reset_color%} '
 PROMPT2='%{$fg[red]%}\ %{$reset_color%}'
 RPS1='${return_code}'
