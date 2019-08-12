@@ -1,7 +1,7 @@
 # Dunst configuartion file
 # Put it in ~/.config/dunst
 [global]
-    font = Monospace 9
+    font = Monospace 10
     allow_markup = yes
     format = "<b>%s</b>\n%b"
     sort = yes

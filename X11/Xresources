@@ -31,7 +31,7 @@ rofi.opacity: 85
 rofi.width: 100
 rofi.lines: 7
 rofi.columns: 4
-rofi.font: Terminus 9
+rofi.font: Terminus 10
 rofi.fg: #E5DBCF
 rofi.bg: #0F3B5F
 rofi.hlfg: #0F3B5F
