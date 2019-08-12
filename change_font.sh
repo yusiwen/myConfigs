@@ -32,6 +32,7 @@ echo "[1] Input Mono Compressed"
 echo "[2] Iosevka"
 echo "[3] Iosevka Slab"
 echo "[4] Fira Code"
+echo "[5] Sarasa Mono"
 echo "[0] Default(Ubuntu Mono + WenQuanYi Mirco Hei Mono)"
 echo -n "Choose font[0]: "
 read number
@@ -84,6 +85,16 @@ elif echo "$number" | grep -iq "^4"; then
   fi
   echo "Setting font to 'Fira Code'..."
   ln -sfnv $X11_FONT_DIR/firacode.xresources $X11_FONT_FILE
+elif echo "$number" | grep -iq "^5"; then
+  RESULT=$(fc-list | grep 'Sarasa Mono' | wc -l)
+  if [ $RESULT -eq 0 ]; then
+    echo "Please install Sarasa-Mono fonts manually"
+    echo "Downloading fonts here: https://github.com/be5invis/Sarasa-Gothic/releases"
+    echo "And extract 'sarasa-term-sc*.ttf' to '.local/share/fonts/truetype/sarasa-term'"
+    echo "Execute 'fc-cache -fv'"
+  fi
+  echo "Setting font to 'Sarasa Mono'..."
+  ln -sfnv $X11_FONT_DIR/sarasa-mono.xresources $X11_FONT_FILE
 else
   echo "Use default settings..."
   ln -sfnv $X11_FONT_DIR/default.xresources $X11_FONT_FILE
