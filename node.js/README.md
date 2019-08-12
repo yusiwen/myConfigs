@@ -4,13 +4,13 @@
 
 Using [Taobao mirror](https://npm.taobao.org/):
 
-```
+```sh
 npm install -g cnpm --registry=https://registry.npm.taobao.org
 ```
 
 or
 
-```
+```sh
 alias cnpm="npm --registry=https://registry.npm.taobao.org \
 --cache=$HOME/.npm/.cache/cnpm \
 --disturl=https://npm.taobao.org/dist \
@@ -27,7 +27,7 @@ $ echo '\n#alias for cnpm\nalias cnpm="npm --registry=https://registry.npm.taoba
 
 Using Taobao mirror:
 
-```
+```sh
 yarn config set registry https://registry.npm.taobao.org
 ```
 
@@ -35,7 +35,7 @@ See [here](https://cnodejs.org/topic/57ff0541487e1e4578afb48d)
 
 ## Advanced steps
 
-```
+```sh
 # 注册模块镜像
 npm set registry https://registry.npm.taobao.org
 # node-gyp 编译依赖的 node 源码镜像

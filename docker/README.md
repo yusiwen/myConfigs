@@ -3,7 +3,7 @@
 ## Insallation
 
 ```sh
-$ sudo apt install docker.io
+sudo apt install docker.io
 ```
 
 ## Fix "No {swap,memory} limit support"

@@ -1,56 +1,55 @@
-Eclipse Setup
-=============
+# Eclipse Setup
 
-### Location & Startup
+## Location & Startup
 
-  Set `$IDE_HOME` environment variable to your home directory of all IDEs, such as `/opt/ide`.
+Set `$IDE_HOME` environment variable to your home directory of all IDEs, such as `/opt/ide`.
 
-  Install eclipse in `$IDE_HOME/eclipse` directory.
+Install eclipse in `$IDE_HOME/eclipse` directory.
 
-  Change directory name to version name, such as `$IDE_HOME/eclipse/eclipse-java-luna-SR2`.
+Change directory name to version name, such as `$IDE_HOME/eclipse/eclipse-java-luna-SR2`.
 
-  Use `ec.py` script to start eclipse.
+Use `ec.py` script to start eclipse.
 
-### Upgrade components
+## Upgrade components
 
-  1. Mylyn latest version
+1. Mylyn latest version
 
     Update site url: http://download.eclipse.org/mylyn/releases/latest
 
-  2. EGit latest version
+1. EGit latest version
 
     Update site url: http://download.eclipse.org/egit/updates
 
-  3. m2e latest version
+1. m2e latest version
 
     Update site url: http://download.eclipse.org/technology/m2e/releases
 
-  4. subclipse
+1. subclipse
 
     Update site url: http://subclipse.tigris.org/update_1.10.x
 
-  5. eclipse-color-theme
+1. eclipse-color-theme
 
     Update site url: http://eclipse-color-theme.github.com/update
 
-  6. Jeeeyul's theme
+1. Jeeeyul's theme
 
     Update site url: http://eclipse.jeeeyul.net/update/
 
-  7. EditBox
+1. EditBox
 
     Update site url: http://editbox.sourceforge.net/updates
 
-### Subclipse JavaHL library
+## Subclipse JavaHL library
 
-  ```text
-  $ sudo apt-get install libsvn-java
-  ```
+```sh
+sudo apt-get install libsvn-java
+```
 
-  Tell Java where to find the JavaHL library is to specify the following when starting the JVM:
+Tell Java where to find the JavaHL library is to specify the following when starting the JVM:
 
-  ```text
-  -Djava.library.path=/usr/lib/x86_64-linux-gnu/jni
-  ```
+```sh
+-Djava.library.path=/usr/lib/x86_64-linux-gnu/jni
+```
 
-  For more details, please check out this subclipse official [wiki page](http://subclipse.tigris.org/wiki/JavaHL#head-bb1dd50f9ec2f0d8c32246430c00e237d27a04fe)
+For more details, please check out this subclipse official [wiki page](http://subclipse.tigris.org/wiki/JavaHL#head-bb1dd50f9ec2f0d8c32246430c00e237d27a04fe)

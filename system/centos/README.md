@@ -1,6 +1,6 @@
 # Setup for CentOS
 
-# Mirror for CentOS
+## Mirror for CentOS
 
 Use TUNA(清华大学开源软件镜像站) mirror for CentOS
 
