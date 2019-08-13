@@ -39,17 +39,17 @@ else
 fi
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
 
-function vercomp () { # {{{
+function vercomp() { # {{{
   if [[ $1 == $2 ]]; then
     return 0
   fi
   local IFS=.
   local i ver1=($1) ver2=($2)
   # fill empty fields in ver1 with zeros
-  for ((i=${#ver1[@]}; i<${#ver2[@]}; i++)); do
+  for ((i = ${#ver1[@]}; i < ${#ver2[@]}; i++)); do
     ver1[i]=0
   done
-  for ((i=0; i<${#ver1[@]}; i++)); do
+  for ((i = 0; i < ${#ver1[@]}; i++)); do
     if [[ -z ${ver2[i]} ]]; then
       # fill empty fields in ver2 with zeros
       ver2[i]=0
@@ -69,7 +69,7 @@ function init_env() { # {{{
   if [ $OS = 'Linux' ]; then
     if [ $DISTRO = 'Ubuntu' ]; then
       set +e
-      MIRRORS=$(grep "mirrors.aliyun.com" /etc/apt/sources.list|wc -l)
+      MIRRORS=$(grep "mirrors.aliyun.com" /etc/apt/sources.list | wc -l)
       set -e
       if [ $MIRRORS -eq 0 ]; then
         echo -e "${COLOR}Setting Ubuntu apt source to aliyun...${NC}"
@@ -194,7 +194,7 @@ function install_git() { # {{{
   git config --global user.name "Siwen Yu"
 
   echo -e "${COLOR}Setting line feed behavior...${NC}"
-  if [[ $OS = MINGW* ]]; then
+  if [[ $OS == MINGW* ]]; then
     # On Windows, commit with LF and checkout with CRLF
     git config --global core.autocrlf true
   else
@@ -318,7 +318,7 @@ function install_python() { # {{{
     if ! type python3 &>/dev/null; then
       IS_PYTHON_NEED_INSTALL=1
     else
-      PYTHON_VERSION=`python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))'`
+      PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
       echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
 
       set +e
@@ -371,11 +371,11 @@ function install_python() { # {{{
       ln -sfnv $HOME/myConfigs/python/pip.conf $HOME/.pip/pip.conf
     else
       # Using aliyun as mirror
-      echo '[global]' > $HOME/.pip/pip.conf
-      echo 'index-url = https://mirrors.aliyun.com/pypi/simple/' >> $HOME/.pip/pip.conf
-      echo '' >> $HOME/.pip/pip.conf
-      echo '[install]' >> $HOME/.pip/pip.conf
-      echo 'trusted-host=mirrors.aliyun.com' >> $HOME/.pip/pip.conf
+      echo '[global]' >$HOME/.pip/pip.conf
+      echo 'index-url = https://mirrors.aliyun.com/pypi/simple/' >>$HOME/.pip/pip.conf
+      echo '' >>$HOME/.pip/pip.conf
+      echo '[install]' >>$HOME/.pip/pip.conf
+      echo 'trusted-host=mirrors.aliyun.com' >>$HOME/.pip/pip.conf
     fi
 
     if ! type virtualenv >/dev/null 2>&1; then
@@ -392,8 +392,8 @@ function install_python() { # {{{
     brew install python
 
     mkdir -p $HOME/.config/pip
-    echo "[global]" > $HOME/.config/pip/pip.conf
-    echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >> $HOME/.config/pip/pip.conf
+    echo "[global]" >$HOME/.config/pip/pip.conf
+    echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >>$HOME/.config/pip/pip.conf
 
     pip install --user virtualenv
     pip3 install --user virtualenv
@@ -529,7 +529,7 @@ function install_vim() { # {{{
   elif [ $(uname) = 'Darwin' ]; then
     echo -e "${COLOR}Darwin is found, checking vim...${NC}"
     set +e
-    PACKAGE=$(brew list|grep vim)
+    PACKAGE=$(brew list | grep vim)
     set -e
     if [ -z "$PACKAGE" ]; then
       echo -e "${COLOR1}vim${COLOR} is not found. Installing...${NC}"
@@ -618,7 +618,6 @@ function install_vim() { # {{{
       sudo yum install -y neovim python2-neovim python36-neovim
     fi
   fi
-
 
   ln -sfnv $CONFIG_VIM/init.vim $VIM_HOME/init.vim
   ln -sfnv $CONFIG_VIM/vimrc.neovim $VIM_HOME/vimrc.neovim
@@ -720,7 +719,7 @@ function install_i3wm() { # {{{
         fi
         pushd ~/git
         git clone https://github.com/Airblader/i3.git i3-gaps
-        cd  ~/git/i3-gaps
+        cd ~/git/i3-gaps
         autoreconf --force --install
         rm -rf build/
         mkdir -p build && cd build/
@@ -924,14 +923,14 @@ function install_all() { # {{{
   install_gfw
   read -p "Continue? [y|N]${NC}" CONFIRM
   case $CONFIRM in
-    [Yy]* ) ;;
-    * ) exit;;
+  [Yy]*) ;;
+  *) exit ;;
   esac
   install_git
   read -p "Continue? [y|N]${NC}" CONFIRM
   case $CONFIRM in
-    [Yy]* ) ;;
-    * ) exit;;
+  [Yy]*) ;;
+  *) exit ;;
   esac
   fetch_myConfigs
   install_ruby
@@ -947,23 +946,23 @@ function print_info() { # {{{
 } # }}}
 
 case $1 in
-  all) install_all;;
-  init) init_env;;
-  gfw) install_gfw;;
-  git) install_git;;
-  ruby) install_ruby;;
-  myConfigs) fetch_myConfigs;;
-  python) install_python;;
-  node) install_node;;
-  zsh) install_zsh;;
-  vim) install_vim;;
-  rxvt) install_rxvt;;
-  i3wm) install_i3wm;;
-  llvm) install_llvm;;
-  docker) install_docker;;
-  mysql) install_mysql;;
-  samba) install_samba;;
-  *) print_info;;
+all) install_all ;;
+init) init_env ;;
+gfw) install_gfw ;;
+git) install_git ;;
+ruby) install_ruby ;;
+myConfigs) fetch_myConfigs ;;
+python) install_python ;;
+node) install_node ;;
+zsh) install_zsh ;;
+vim) install_vim ;;
+rxvt) install_rxvt ;;
+i3wm) install_i3wm ;;
+llvm) install_llvm ;;
+docker) install_docker ;;
+mysql) install_mysql ;;
+samba) install_samba ;;
+*) print_info ;;
 esac
 
 # vim: fdm=marker
