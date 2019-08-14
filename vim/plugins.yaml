@@ -4,7 +4,6 @@
 
 # Non-lazy plugins {{{
 - repo: Shougo/dein.vim
-- repo: rafi/vim-badge
 # Provides the branch name of the current git repository, ":echo gitbranch#name()"
 - repo: itchyny/vim-gitbranch
 # Peekaboo extends " and @ in normal mode and <C-R> in insert mode so you can see the contents of the registers.
@@ -30,20 +29,22 @@
 - repo: yonchu/accelerated-smooth-scroll
 # enable repeating supported plugin maps with "."
 - repo: tpope/vim-repeat
-# An alternative sudo.vim for Vim and Neovim, limited support sudo in Windows
-- repo: lambdalisue/suda.vim
 # Keep/restore fcitx state when toggling insert mode
 # fcitx.vim is only needed under Linux
 - repo: vim-scripts/fcitx.vim
   if: has('unix') && system('uname') =~? '^linux' && executable('fcitx')
 
 # Colorschemes
-- repo: chriskempson/base16-vim
-- repo: morhetz/gruvbox
-- repo: dracula/vim
-- repo: nanotech/jellybeans.vim
-- repo: altercation/vim-colors-solarized
+# - repo: chriskempson/base16-vim
+# - repo: morhetz/gruvbox
+# - repo: dracula/vim
+# - repo: nanotech/jellybeans.vim
+# - repo: altercation/vim-colors-solarized
 # }}}
+
+# Lazy loading
+# =====================================
+
 # Commands {{{
 - {repo: Shougo/vimproc.vim, build: make, on_func: vimproc#}
 - repo: scrooloose/nerdtree
@@ -206,6 +207,11 @@
     \     'syntax': 'markdown',
     \     'ext': '.md' }
     \ ]
+
+# An alternative sudo.vim for Vim and Neovim, limited support sudo in Windows
+- repo: lambdalisue/suda.vim
+  on_event: BufRead
+  hook_add: let g:suda_smart_edit = 1
 # }}}
 # Completion {{{
 - repo: ludovicchabant/vim-gutentags
@@ -349,6 +355,7 @@
 - {repo: cakebaker/scss-syntax.vim, on_ft: [scss, sass]}
 - {repo: groenewege/vim-less, on_ft: less}
 - {repo: othree/csscomplete.vim, on_ft: css}
+- {repo: iloginow/vim-stylus, on_ft: stylus } # or wavded/vim-stylus ?
 - {repo: mustache/vim-mustache-handlebars, on_ft: html}
 - {repo: pearofducks/ansible-vim, on_ft: [yaml.ansible, ansible_hosts]}
 
@@ -380,16 +387,23 @@
 - repo: plasticboy/vim-markdown
   on_ft: markdown
   hook_add: |
-    let g:vim_markdown_override_foldtext = 0
-    let g:vim_markdown_initial_foldlevel = 999
+    let g:vim_markdown_folding_level = 6
+    let g:vim_markdown_emphasis_multiline = 0
     let g:vim_markdown_new_list_item_indent = 2
     let g:vim_markdown_frontmatter = 1
     let g:vim_markdown_conceal = 0
+    let g:vim_markdown_edit_url_in = 'vsplit'
+    let g:vim_markdown_strikethrough = 1
     let g:vim_markdown_fenced_languages = [
       \ 'c++=cpp',
       \ 'viml=vim',
       \ 'bash=sh',
-      \ 'ini=dosini'
+      \ 'ini=dosini',
+      \ 'js=javascript',
+      \ 'json=javascript',
+      \ 'docker=Dockerfile',
+      \ 'makefile=make',
+      \ 'py=python'
       \ ]
 
 - repo: rhysd/vim-gfm-syntax
@@ -416,23 +430,28 @@
 - {repo: raimon49/requirements.txt.vim, on_ft: requirements}
 
 - {repo: tbastos/vim-lua, on_ft: lua}
-- {repo: osyo-manga/vim-monster, on_ft: ruby}
-- {repo: toyamarinyon/vim-swift, on_ft: swift}
+- {repo: vim-ruby/vim-ruby, on_ft: ruby }
+- {repo: keith/swift.vim, on_ft: swift }
 - {repo: vim-jp/syntax-vim-ex, on_ft: vim}
 
 - {repo: chrisbra/csv.vim, on_ft: csv}
 - {repo: tpope/vim-git, on_ft: [gitcommit, gitrebase, gitconfig]}
 - {repo: ekalinin/Dockerfile.vim, on_ft: [Dockerfile, yaml.docker-compose]}
-- {repo: andreshazard/vim-logreview, on_ft: logreview}
+- {repo: MTDL9/vim-log-highlighting, on_ft: log }
 
 - {repo: cespare/vim-toml, on_ft: toml}
 - {repo: mboughaba/i3config.vim, on_ft: i3config}
 - {repo: dag/vim-fish, on_ft: fish}
 - {repo: jstrater/mpvim, on_ft: portfile}
 - {repo: robbles/logstash.vim, on_ft: logstash}
-- {repo: exu/pgsql.vim, on_ft: pgsql}
-- {repo: othree/nginx-contrib-vim, on_ft: nginx}
+- {repo: lifepillar/pgsql.vim, on_ft: pgsql }
+- {repo: chr4/nginx.vim, on_ft: nginx }
 - {repo: IN3D/vim-raml, on_ft: raml}
+
+- repo: hashivim/vim-terraform
+  on_ft: terraform
+  on_cmd: [ Terraform, TerraformFmt ]
+  hook_source: let g:terraform_fmt_on_save = 1
 # }}}
 # Operators {{{
 - {repo: kana/vim-operator-user, lazy: 1}

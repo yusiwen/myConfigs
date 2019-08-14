@@ -1,24 +1,6 @@
 " Mapping for vim & plugins
 " ===========================================================
 
-" Global Mappings {{{
-" Use spacebar as leader and ; as secondary-leader
-" Required before loading plugins!
-let g:mapleader="\<Space>"
-let g:maplocalleader=';'
-nnoremap ^] <Nop>
-nnoremap ^[ <Nop>
-
-" Release keymappings prefixes, evict entirely for use of plug-ins.
-nnoremap <Space>  <Nop>
-xnoremap <Space>  <Nop>
-nnoremap ,        <Nop>
-xnoremap ,        <Nop>
-nnoremap ;        <Nop>
-xnoremap ;        <Nop>
-nnoremap m        <Nop>
-xnoremap m        <Nop>
-" }}}
 " General Keybindings & Mappings {{{
 set pastetoggle=<F10>
 
@@ -162,6 +144,11 @@ noremap  mj :m+<CR>
 " Last session management shortcuts
 nmap <Leader>se :<C-u>SessionSave last<CR>
 nmap <Leader>os :<C-u>execute 'source '.g:session_directory.'/last.vim'<CR>
+
+" Context-aware action-menu, neovim only (see plugin/actionmenu.vim)
+if has('nvim-0.4.0')
+	nmap <silent> <LocalLeader>c :<C-u>ActionMenu<CR>
+endif
 
 if has('mac')
   " Open the macOS dictionary on current word

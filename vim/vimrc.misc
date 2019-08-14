@@ -1,0 +1,39 @@
+" Settings for miscellaneous plugins
+" ----------------------------------------------------------------------
+
+" Plugins {{{
+" Neomake {{{
+let g:neomake_open_list = 2
+let g:neomake_verbose = 1
+let g:airline#extensions#neomake#enabled = 1
+
+" JAVASCRIPT / JSX
+let g:neomake_jsx_enabled_makers = ['eslint']
+let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_javascript_eslint_exe = './node_modules/.bin/eslint'
+
+" YAML / ANSIBLE
+let g:neomake_yaml_enabled_makers = ['yamllint']
+let g:neomake_ansible_enabled_makers = ['yamllint']
+" }}}
+" vim-multiple_cursors {{{
+" make NeoComplete compatible with vim-multiple-cursors
+function! Multiple_cursors_before()
+  if (has('nvim'))
+    let b:deoplete_disable_auto_complete = 1
+  else
+    execute 'NeoCompleteLock'
+  endif
+endfunction
+
+function! Multiple_cursors_after()
+  if (has('nvim'))
+    let b:deoplete_disable_auto_complete = 0
+  else
+    execute 'NeoCompleteUnlock'
+  endif
+endfunction
+" }}}
+" }}}
+
+" vim: set foldmethod=marker ts=2 sw=2 tw=80 expandtab :
