@@ -420,7 +420,6 @@
 - repo: Shougo/denite.nvim
   on_cmd: Denite
   hook_source: source $VIMPATH/vimrc.denite
-  hook_post_source: source $VIMPATH/vimrc.denite.menu
 
 - {repo: Shougo/neoyank.vim, on_source: denite.nvim, on_event: TextYankPost}
 - {repo: Shougo/junkfile.vim, on_source: denite.nvim}

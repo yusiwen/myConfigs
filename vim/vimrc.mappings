@@ -263,7 +263,6 @@ if dein#tap('denite.nvim')
   nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
   nnoremap <silent><LocalLeader>z :<C-u>Denite z<CR>
   nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
-  nnoremap <silent><LocalLeader>` :<C-u>Denite menu<CR>
 
   " chemzqm/denite-git
   nnoremap <silent> <Leader>gl :<C-u>Denite gitlog:all<CR>

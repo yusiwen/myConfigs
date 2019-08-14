@@ -57,7 +57,6 @@
   ln -sf ~/git/myConfigs/vim/plugins.yaml ~/.vim/plugins.yaml
   ln -sf ~/git/myConfigs/vim/init.vim ~/.vim/init.vim
   ln -sf ~/git/myConfigs/vim/vimrc.denite ~/.vim/vimrc.denite
-  ln -sf ~/git/myConfigs/vim/vimrc.denite.menu ~/.vim/vimrc.denite.menu
   ln -sf ~/git/myConfigs/vim/vimrc.deoplete ~/.vim/vimrc.deoplete
   ln -sf ~/git/myConfigs/vim/vimrc.filetype ~/.vim/vimrc.filetype
   ln -sf ~/git/myConfigs/vim/vimrc.goyo ~/.vim/vimrc.goyo
