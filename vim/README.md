@@ -14,14 +14,14 @@
 - Linters:
   - Node.js based linters:
 
-    ```
+    ```sh
     npm -g install jshint jsxhint jsonlint stylelint sass-lint
     npm -g install raml-cop markdownlint-cli write-good
     ```
 
   - Python based linters:
 
-    ```
+    ```sh
     pip install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint
     ```
 
@@ -34,52 +34,54 @@
 
 1. Install vim & neovim:
 
-  ```text
+  ```sh
   # Add this PPA if you want to install latest vim release on Ubuntu earlier than 17.04
-  $ sudo add-apt-repository ppa:jonathonf/vim
-  $ sudo apt-get install vim-gtk
+  sudo add-apt-repository ppa:jonathonf/vim
+  sudo apt-get install vim-gtk
 
-  # Insall NeoVim latest stable
-  $ sudo add-apt-repository ppa:neovim-ppa/stable
-  $ sudo apt-get insall neovim
+  # Insall NeoVim latest unstable development repo
+  sudo add-apt-repository ppa:neovim-ppa/unstable
+  sudo apt-get insall neovim
   ```
 
 1. Link setting files to ~/.vim
 
-  ```text
-  $ mkdir -p ~/.vim
-  $ ln -sf ~/git/myConfigs/vim/vimrc ~/.vim/vimrc
-  $ ln -sf ~/git/myConfigs/vim/colors ~/.vim/colors
-  $ ln -sf ~/git/myConfigs/vim/ftplugin ~/.vim/ftplugin
-  $ ln -sf ~/git/myConfigs/vim/plugin ~/.vim/plugin
-  $ ln -sf ~/git/myConfigs/vim/snippets ~/.vim/snippets
-  $ ln -sf ~/git/myConfigs/vim/plugins.yaml ~/.vim/plugins.yaml
-  $ ln -sf ~/git/myConfigs/vim/init.vim ~/.vim/init.vim
-  $ ln -sf ~/git/myConfigs/vim/vimrc.denite ~/.vim/vimrc.denite
-  $ ln -sf ~/git/myConfigs/vim/vimrc.denite.menu ~/.vim/vimrc.denite.menu
-  $ ln -sf ~/git/myConfigs/vim/vimrc.deoplete ~/.vim/vimrc.deoplete
-  $ ln -sf ~/git/myConfigs/vim/vimrc.filetype ~/.vim/vimrc.filetype
-  $ ln -sf ~/git/myConfigs/vim/vimrc.goyo ~/.vim/vimrc.goyo
-  $ ln -sf ~/git/myConfigs/vim/vimrc.mappings ~/.vim/vimrc.mappings
-  $ ln -sf ~/git/myConfigs/vim/vimrc.neocomplete ~/.vim/vimrc.neocomplete
-  $ ln -sf ~/git/myConfigs/vim/vimrc.neovim ~/.vim/vimrc.neovim
-  $ ln -sf ~/git/myConfigs/vim/vimrc.nerdtree ~/.vim/vimrc.nerdtree
-  $ ln -sf ~/git/myConfigs/vim/vimrc.theme ~/.vim/vimrc.theme
+  ```sh
+  mkdir -p ~/.vim
+  ln -sf ~/git/myConfigs/vim/vimrc ~/.vim/vimrc
+  ln -sf ~/git/myConfigs/vim/autoload ~/.vim/autoload
+  ln -sf ~/git/myConfigs/vim/colors ~/.vim/colors
+  ln -sf ~/git/myConfigs/vim/ftplugin ~/.vim/ftplugin
+  ln -sf ~/git/myConfigs/vim/plugin ~/.vim/plugin
+  ln -sf ~/git/myConfigs/vim/snippets ~/.vim/snippets
+  ln -sf ~/git/myConfigs/vim/plugins.yaml ~/.vim/plugins.yaml
+  ln -sf ~/git/myConfigs/vim/init.vim ~/.vim/init.vim
+  ln -sf ~/git/myConfigs/vim/vimrc.denite ~/.vim/vimrc.denite
+  ln -sf ~/git/myConfigs/vim/vimrc.denite.menu ~/.vim/vimrc.denite.menu
+  ln -sf ~/git/myConfigs/vim/vimrc.deoplete ~/.vim/vimrc.deoplete
+  ln -sf ~/git/myConfigs/vim/vimrc.filetype ~/.vim/vimrc.filetype
+  ln -sf ~/git/myConfigs/vim/vimrc.goyo ~/.vim/vimrc.goyo
+  ln -sf ~/git/myConfigs/vim/vimrc.mappings ~/.vim/vimrc.mappings
+  ln -sf ~/git/myConfigs/vim/vimrc.neocomplete ~/.vim/vimrc.neocomplete
+  ln -sf ~/git/myConfigs/vim/vimrc.neovim ~/.vim/vimrc.neovim
+  ln -sf ~/git/myConfigs/vim/vimrc.defx ~/.vim/vimrc.defx
+  ln -sf ~/git/myConfigs/vim/vimrc.misc ~/.vim/vimrc.misc
+  ln -sf ~/git/myConfigs/vim/vimrc.theme ~/.vim/vimrc.theme
 
-  $ ln -sf ~/git/myConfigs/vim/themes/vimrc.theme.sourcerer ~/.vim/vimrc.colortheme
+  ln -sf ~/git/myConfigs/vim/themes/vimrc.theme.sourcerer ~/.vim/vimrc.colortheme
 
-  $ ln -sf ~/.vim ~/.config/nvim
+  ln -sf ~/.vim ~/.config/nvim
   ```
 
 ### Windows
 
 1. Prerequisites
 
-  - [NeoVim](https://neovim.io/)
-  - [Python3](https://www.python.org/downloads/)
-  - [VirtualEnv](https://virtualenv.pypa.io/en/stable/)
+    - [NeoVim](https://neovim.io/)
+    - [Python3](https://www.python.org/downloads/)
+    - [VirtualEnv](https://virtualenv.pypa.io/en/stable/)
 
-  Make sure their executables are in `%PATH%`.
+    Make sure their executables are in `%PATH%`.
 
 1. NeoVim configuration files
 
@@ -87,26 +89,26 @@
 
 1. Python environments
 
-  Intall python3 to, for example, `I:\Python37`, run commands below:
-  
-  ```shell
-  pip install virtualenv
-  md %userprofile%\.cache\vim\env
-  virtaulenv --system-site-pacakges %userprofile%\.cache\vim\env\neovim3
-  ```
-  
-  In `%userprofile%\.cache\vim\env\neovim3\Scripts`, run `activate.bat` to activate this virtualenv, then:
-  
-  ```shell
-  pip install neovim PyYAML pycodestyle pyflakes flake8 vim-vint proselint yamllint
-  ```
+    Intall python3 to, for example, `I:\Python37`, run commands below:
+
+    ```sh
+    pip install virtualenv
+    md %userprofile%\.cache\vim\env
+    virtaulenv --system-site-pacakges %userprofile%\.cache\vim\env\neovim3
+    ```
+
+    In `%userprofile%\.cache\vim\env\neovim3\Scripts`, run `activate.bat` to activate this virtualenv, then:
+
+    ```sh
+    pip install neovim PyYAML pycodestyle pyflakes flake8 vim-vint proselint yamllint
+    ```
 
 ## Custom Key-mappings
 
 Note that,
 
-* Leader key is set as <kbd>Space</kbd>
-* Local-leader is set as <kbd>;</kbd> and used for Denite & NERDTree
+- Leader key is set as `Space`
+- Local-leader is set as `;` and used for Denite & NERDTree
 
 Key   | Mode | Action
 ----- |:----:| ------------------
