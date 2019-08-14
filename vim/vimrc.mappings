@@ -246,8 +246,8 @@ if dein#tap('denite.nvim')
   nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
   nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file/old -default-action=switch<CR>
   nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec -default-action=cd<CR>
-  nnoremap <silent><LocalLeader>v :<C-u>Denite register -buffer-name=register<CR>
-  xnoremap <silent><LocalLeader>v :<C-u>Denite register -buffer-name=register -default-action=replace<CR>
+  nnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register<CR>
+  xnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register -default-action=replace<CR>
   nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list<CR>
   nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list<CR>
   nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>
@@ -689,14 +689,16 @@ if has('nvim') && dein#tap('deoplete.nvim')
   imap     <expr><C-u> pumvisible() ? "\<PageUp>" : "\<C-u>"
 
   " Undo completion
-  inoremap <expr><C-g> deoplete#undo_completion()
+  " inoremap <expr><C-g> deoplete#undo_completion()
 
   " Redraw candidates
-  inoremap <expr><C-l> deoplete#refresh()
+  inoremap <expr><C-g> deoplete#refresh()
+  inoremap <expr><C-e> deoplete#cancel_popup()
+  inoremap <silent><expr><C-l> deoplete#complete_common_string()
 
   " <CR>: If popup menu visible, expand snippet or close popup with selection,
   "       Otherwise, check if within empty pair and use delimitMate.
-  imap <silent><expr><CR> pumvisible() ? (neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<C-y>")
+  inoremap <silent><expr><CR> pumvisible() ? deoplete#close_popup()
     \ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
 
   " <Tab> completion:
@@ -705,12 +707,12 @@ if has('nvim') && dein#tap('deoplete.nvim')
   " 3. Otherwise, if preceding chars are whitespace, insert tab char
   " 4. Otherwise, start manual autocomplete
   imap <silent><expr><Tab> pumvisible() ? "\<Down>"
-    \ : (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)"
+    \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
     \ : (<SID>is_whitespace() ? "\<Tab>"
     \ : deoplete#manual_complete()))
 
   smap <silent><expr><Tab> pumvisible() ? "\<Down>"
-    \ : (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)"
+    \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
     \ : (<SID>is_whitespace() ? "\<Tab>"
     \ : deoplete#manual_complete()))
 
