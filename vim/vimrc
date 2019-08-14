@@ -71,8 +71,8 @@ if has('vim_starting')
   let g:mapleader="\<Space>"
   let g:maplocalleader=';'
 
-  nnoremap ^] <Nop>
-  nnoremap ^[ <Nop>
+  nnoremap ^]       <Nop>
+  nnoremap ^[       <Nop>
 
   " Release keymappings prefixes, evict entirely for use of plug-ins.
   nnoremap <Space>  <Nop>
@@ -106,7 +106,7 @@ endif
 " Load user scripts with confidential information
 " or pre-settings like g:elite_mode
 if filereadable(g:etc#vim_path.'/.vault.vim')
-	call etc#util#source_file('.vault.vim')
+  call etc#util#source_file('.vault.vim')
 endif
 
 call etc#init()
@@ -118,12 +118,12 @@ call etc#util#source_file('vimrc.theme')
 
 " Load user custom local settings
 if filereadable(g:etc#vim_path.'/local.vim')
-	call etc#util#source_file('local.vim')
+  call etc#util#source_file('local.vim')
 endif
 
 " Trigger colorscheme events when vimrc is reloaded within vim
 if ! has('vim_starting')
-	doautocmd ColorScheme
+  doautocmd ColorScheme
 endif
 
 set secure
