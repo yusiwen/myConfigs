@@ -172,77 +172,37 @@ let s:stl_nc .= '%{&ft} '                         " File type
 " }}}
 
 let s:disable_statusline =
-  \ 'denite\|vista\|unite\|vimfiler\|tagbar\|nerdtree\|undotree\|gundo\|diff\|peekaboo\|sidemenu'
+  \ 'denite\|vista\|unite\|vimfiler\|tagbar\|undotree\|gundo\|diff\|peekaboo\|sidemenu'
 
 " Toggle Statusline {{{
-augroup statusline
-  autocmd!
-  autocmd FileType,WinEnter,BufWinEnter,BufReadPost *
-    \ if &filetype !~? s:disable_statusline
-    \ | let &l:statusline = s:stl
-    \ | endif
-  autocmd WinLeave *
-    \ if &filetype !~? s:disable_statusline
-    \ | let &l:statusline = s:stl_nc
-    \ | endif
-augroup END "}}}
-" }}}
-" Plugin: NERDTree icons and highlights {{{
-let g:NERDTreeIndicatorMapCustom = {
-  \ 'Modified':  '»',
-  \ 'Staged':    '✚',
-  \ 'Untracked': '★',
-  \ 'Renamed':   '→',
-  \ 'Unmerged':  '±',
-  \ 'Deleted':   '✖',
-  \ 'Dirty':     '≈',
-  \ 'Clean':     '✓',
-  \ 'Ignored':   '≠',
-  \ 'Unknown':   '?'
-  \ }
-
-let g:NERDTreeDirArrowExpandable = '+'
-let g:NERDTreeDirArrowCollapsible = '-'
-
-highlight! NERDTreeOpenable ctermfg=132 guifg=#af5f87
-highlight! def link NERDTreeClosable NERDTreeOpenable
-
-highlight! NERDTreeFile ctermfg=246 guifg=#949494
-highlight! NERDTreeExecFile ctermfg=246 guifg=#949494
-
-highlight! clear NERDTreeFlags
-highlight! NERDTreeFlags ctermfg=234 guifg=#1c1c1c
-highlight! NERDTreeCWD ctermfg=243 guifg=#767676
-
-highlight! NERDTreeGitStatusModified ctermfg=1 guifg=#aa4450
-highlight! NERDTreeGitStatusStaged ctermfg=10 guifg=#b1d631
-highlight! NERDTreeGitStatusUntracked ctermfg=12 guifg=#90b0d1
-highlight! def link NERDTreeGitStatusRenamed Title
-highlight! def link NERDTreeGitStatusUnmerged Label
-highlight! def link NERDTreeGitStatusDirDirty Constant
-highlight! def link NERDTreeGitStatusDirClean DiffAdd
-highlight! def link NERDTreeGitStatusUnknown Comment
-
-function! s:NERDTreeHighlight()
-  for l:name in keys(g:NERDTreeIndicatorMapCustom)
-    let l:icon = g:NERDTreeIndicatorMapCustom[l:name]
-    if empty(l:icon)
-      continue
-    endif
-    let l:prefix = index(['Dirty', 'Clean'], l:name) > -1 ? 'Dir' : ''
-    let l:hiname = escape('NERDTreeGitStatus'.l:prefix.l:name, '~')
-    execute 'syntax match '.l:hiname.' #'.l:icon.'# containedin=NERDTreeFlags'
-  endfor
-
-  syntax match hideBracketsInNerdTree "\]" contained conceal containedin=NERDTreeFlags
-  syntax match hideBracketsInNerdTree "\[" contained conceal containedin=NERDTreeFlags
+function! s:setstatus()
+  if &filetype =~? 'defx'
+    let &l:statusline = '%y %<%=%{b:defx["context"]["buffer_name"]}%= %l/%L'
+  elseif &filetype !~? s:disable_statusline
+    let &l:statusline = s:stl
+  endif
 endfunction
 
-augroup nerdtree-highlights
+function! s:setstatusinactive()
+  if &filetype =~? 'defx'
+    let &l:statusline = '%y %= %l/%L'
+  elseif &filetype !~? s:disable_statusline
+    let &l:statusline = s:stl_nc
+  endif
+endfunction
+
+augroup statusline
   autocmd!
-  autocmd FileType nerdtree call s:NERDTreeHighlight()
-augroup END
-"}}}
+  autocmd FileType,WinEnter,BufWinEnter,BufReadPost * call s:setstatus()
+  autocmd WinLeave * call s:setstatusinactive()
+  autocmd BufNewFile,ShellCmdPost,BufWritePost * call s:setstatus()
+  autocmd FileChangedShellPost,ColorScheme * call s:setstatus()
+  " autocmd FileReadPre,ShellCmdPost,FileWritePost * call s:setstatus()
+  autocmd User CocStatusChange,CocGitStatusChange call s:setstatus()
+  autocmd User CocDiagnosticChange call s:setstatus()
+  autocmd User GutentagsUpdating call s:setstatus()
+augroup END "}}}
+" }}}
 " Plugin: Neomake icons {{{
 let g:neomake_error_sign = {'text': '!', 'texthl': 'ErrorMsg'}
 let g:neomake_warning_sign = {'text': '!', 'texthl': 'WarningSyntax'}

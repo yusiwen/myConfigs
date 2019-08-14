@@ -597,7 +597,7 @@ function install_vim() { # {{{
   ln -sfnv "$CONFIG_VIM"/vimrc.deoplete "$VIM_HOME"/vimrc.deoplete
   ln -sfnv "$CONFIG_VIM"/vimrc.denite "$VIM_HOME"/vimrc.denite
   ln -sfnv "$CONFIG_VIM"/vimrc.denite.menu "$VIM_HOME"/vimrc.denite.menu
-  ln -sfnv "$CONFIG_VIM"/vimrc.nerdtree "$VIM_HOME"/vimrc.nerdtree
+  ln -sfnv "$CONFIG_VIM"/vimrc.defx "$VIM_HOME"/vimrc.defx
   ln -sfnv "$CONFIG_VIM"/vimrc.goyo "$VIM_HOME"/vimrc.goyo
   ln -sfnv "$CONFIG_VIM"/vimrc.theme "$VIM_HOME"/vimrc.theme
   ln -sfnv "$CONFIG_VIM"/ctags "$HOME"/.ctags

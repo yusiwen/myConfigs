@@ -13,8 +13,8 @@ let s:menus.dein.command_candidates = [
 
 let s:menus.project = { 'description': 'Project & structure' }
 let s:menus.project.command_candidates = [
-  \   ['▶ File Explorer │ ;e',          'NERDTree'],
-  \   ['▶ Outline       │ <Leader>o',   'TagbarToggle'],
+  \   ['▶ File Explorer │ ;e',          'Defx'],
+  \   ['▶ Outline       │ <Leader>o',   'Vista!!'],
   \   ['▶ Git Status    │ <Leader>gs',  'Denite gitstatus'],
   \   ['▶ Bookmarks     │ ma',          'Bookmarks'],
   \   ['▶ Undo Tree     │ <Leader>un',  'UndotreeToggle'],
@@ -22,7 +22,7 @@ let s:menus.project.command_candidates = [
 
 let s:menus.files = { 'description': 'File tools' }
 let s:menus.files.command_candidates = [
-  \   ['▶ Denite: Find in files…    │ ;g',  'Denite grep:.'],
+  \   ['▶ Denite: Find in files…   │ ;g',  'Denite grep:.'],
   \   ['▶ Denite: Find files        │ ;f',  'Denite file/rec'],
   \   ['▶ Denite: Buffers           │ ;b',  'Denite buffer'],
   \   ['▶ Denite: MRU               │',  'Denite file/old'],
@@ -39,8 +39,8 @@ let s:menus.tools.command_candidates = [
   \   ['▶ Thesaurus          │', 'Thesaurus'],
   \   ['▶ Xterm color-table  │', 'XtermColorTable'],
   \   ['▶ Hex editor         │', 'Vinarise'],
-  \   ['▶ Tag-bar            │', 'TagbarToggle'],
-  \   ['▶ File explorer      │', 'NERDTree'],
+  \   ['▶ Tag-bar            │', 'Vista!!'],
+  \   ['▶ File explorer      │', 'Defx'],
   \   ['▶ Codi (python)      │', 'Codi python'],
   \ ]
 

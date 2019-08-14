@@ -147,7 +147,7 @@ nmap <Leader>os :<C-u>execute 'source '.g:session_directory.'/last.vim'<CR>
 
 " Context-aware action-menu, neovim only (see plugin/actionmenu.vim)
 if has('nvim-0.4.0')
-	nmap <silent> <LocalLeader>c :<C-u>ActionMenu<CR>
+  nmap <silent> <LocalLeader>c :<C-u>ActionMenu<CR>
 endif
 
 if has('mac')
@@ -288,6 +288,13 @@ if dein#tap('denite.nvim')
   endfunction
 endif
 
+if dein#tap('defx.nvim')
+  nnoremap <silent> <LocalLeader>e
+    \ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
+  nnoremap <silent> <LocalLeader>a
+    \ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
+endif
+
 if dein#tap('vim-denite-z')
   command! -nargs=+ -complete=file Z
     \ call denite#start([{'name': 'z', 'args': [<q-args>], {'immediately': 1}}])
@@ -396,7 +403,7 @@ endif
 " }}}
 " vista.vim {{{
 if dein#tap('vista.vim')
-	nnoremap <silent> <Leader>o :<C-u>Vista!!<CR>
+  nnoremap <silent> <Leader>o :<C-u>Vista!!<CR>
 endif
 " }}}
 " neosnippet.vim {{{
@@ -421,21 +428,6 @@ if dein#tap('emmet-vim')
   autocmd MyAutoCmd FileType html,css,jsx,javascript,javascript.jsx
     \ EmmetInstall
     \ | imap <buffer> <C-Return> <Plug>(emmet-expand-abbr)
-endif
-" }}}
-" NerdTree {{{
-if dein#tap('nerdtree')
-  let g:NERDTreeMapOpenSplit = 'sv'
-  let g:NERDTreeMapOpenVSplit = 'sg'
-  let g:NERDTreeMapOpenInTab = 'st'
-  let g:NERDTreeMapOpenInTabSilent = 'sT'
-  let g:NERDTreeMapUpdirKeepOpen = '<BS>'
-  let g:NERDTreeMapOpenRecursively = 't'
-  let g:NERDTreeMapCloseChildren = 'T'
-  let g:NERDTreeMapToggleHidden = '.'
-
-  nnoremap <silent> <Leader>e :<C-u>NERDTreeToggle<CR>
-  nnoremap <silent> <Leader>ea :<C-u>NERDTreeFind<CR>
 endif
 " }}}
 " vim-commentary {{{
