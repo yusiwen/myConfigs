@@ -35,9 +35,9 @@ if has('vim_starting')
 endif
 " }}}
 " Load less plugins while SSHing to remote machines {{{
-if len($SSH_CLIENT)
-  let $VIM_MINIMAL = 1
-endif
+" if len($SSH_CLIENT)
+"   let $VIM_MINIMAL = 1
+" endif
 " }}}
 " Disable default plugins {{{
 let g:loaded_getscript = 1
