@@ -209,13 +209,13 @@ function install_git() { # {{{
       sudo yum -y install git2u-all
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
-      exit 1
+      return
     fi
   elif [ "$OS" = 'Darwin' ]; then
     brew install git
   else
     echo -e "${COLOR}OS not supported${NC}"
-    exit 1
+    return
   fi
 
   echo -e "${COLOR}Configuring...${NC}"
@@ -274,7 +274,7 @@ function install_ruby() { # {{{
       fi
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
-      exit 1
+      return
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if ! type ruby >/dev/null 2>&1; then
@@ -284,7 +284,7 @@ function install_ruby() { # {{{
     fi
   else
     echo -e "${COLOR}OS not supported${NC}"
-    exit 1
+    return
   fi
 
   echo -e "${COLOR}Replace official repo with Ruby-China mirror...${NC}"
@@ -396,7 +396,7 @@ function install_python() { # {{{
       fi
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
-      exit 1
+      return
     fi
 
     mkdir -p "$HOME"/.pip
@@ -434,7 +434,7 @@ function install_python() { # {{{
     pip3 install --user virtualenv
   else
     echo -e "${COLOR}OS not supported${NC}"
-    exit 1
+    return
   fi
 } # }}}
 
@@ -561,7 +561,7 @@ function install_vim() { # {{{
     elif [ "$DISTRO" = 'CentOS' ]; then
       echo -e "${COLOR}There is no available source of vim80 for CentOS, please install vim 8.0 manually${NC}"
     fi
-  elif [ "$(uname)" = 'Darwin' ]; then
+  elif [ "$OS" = 'Darwin' ]; then
     echo -e "${COLOR}Darwin is found, checking vim...${NC}"
     set +e
     PACKAGE=$(brew list | grep vim)
@@ -574,10 +574,10 @@ function install_vim() { # {{{
     fi
 
     echo -e "${COLOR}Install supplementary tools...${NC}"
-    brew install ctags the_silver_searcher cscope astyle
+    brew install the_silver_searcher cscope astyle
   else
     echo -e "${COLOR}Unknown OS, please make sure vim is installed.${NC}"
-    exit
+    return
   fi
 
   if [ ! -d "$VIM_HOME" ]; then
@@ -655,6 +655,11 @@ function install_vim() { # {{{
       echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
       sudo yum install -y neovim python2-neovim python36-neovim
     fi
+  elif [ "$OS" = 'Darwin' ]; then
+    brew install --HEAD neovim
+  else
+    echo -e "${COLOR}Unknown OS, please make sure neovim is installed.${NC}"
+    return
   fi
 
   ln -sfnv "$CONFIG_VIM"/init.vim "$VIM_HOME"/init.vim
