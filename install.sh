@@ -68,9 +68,6 @@ function vercomp() { # {{{
 function init_env() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      set +e
-      MIRRORS=$(grep -c "mirrors.aliyun.com" /etc/apt/sources.list)
-      set -e
       if [ "$MIRRORS" -eq 0 ]; then
         echo -e "${COLOR}Setting Ubuntu apt source to aliyun...${NC}"
         sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
@@ -93,6 +90,41 @@ function init_env() { # {{{
     fi
   fi
 } # }}}
+
+# Universal Ctags
+function install_universal_ctags() {
+  if [ "$OS" = 'Linux' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ]; then
+      set +e
+      PACKAGE=$(dpkg -l | grep exuberant-ctags | cut -d ' ' -f 3 | grep -c ^exuberant-ctags$)
+      set -e
+      if [ "$PACKAGE" -eq 1 ]; then
+        echo -e "${COLOR}Finding exuberant-ctags, it's very old, uninstalling it..${NC}"
+        sudo apt purge exuberant-ctags
+      fi
+    elif [ "$DISTRO" = 'CentOS' ]; then
+      sudo yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man
+    fi
+
+    sudo apt install autoconf pkg-config
+    if [ ! -d ~/git/universal-ctags ]; then
+      mkdir -p ~/git
+      if ! type git >/dev/null 2>&1; then
+        install_git
+      fi
+      pushd ~/git
+      git clone https://github.com/universal-ctags/ctags.git universal-ctags
+      cd ~/git/universal-ctags
+      ./autogen.sh
+      ./configure --prefix=/usr/local
+      make -j4
+      sudo make install
+      popd && popd
+    fi
+  elif [ "$OS" = 'Darwin' ]; then
+    brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+  fi
+}
 
 # GFW
 function install_gfw() { # {{{
@@ -525,7 +557,7 @@ function install_vim() { # {{{
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
-      sudo apt install -y exuberant-ctags silversearcher-ag cscope astyle lua5.3 ruby-full perl
+      sudo apt install -y silversearcher-ag cscope astyle lua5.3 ruby-full perl
     elif [ "$DISTRO" = 'CentOS' ]; then
       echo -e "${COLOR}There is no available source of vim80 for CentOS, please install vim 8.0 manually${NC}"
     fi
@@ -968,6 +1000,7 @@ llvm) install_llvm ;;
 docker) install_docker ;;
 mysql) install_mysql ;;
 samba) install_samba ;;
+ctags) install_universal_ctags ;;
 *) print_info ;;
 esac
 
