@@ -394,6 +394,11 @@ if !has('nvim') && dein#tap('neocomplete.vim')
   endfunction "}}}
 endif
 " }}}
+" vista.vim {{{
+if dein#tap('vista.vim')
+	nnoremap <silent> <Leader>o :<C-u>Vista!!<CR>
+endif
+" }}}
 " neosnippet.vim {{{
 if dein#tap('neosnippet.vim')
   " Plugin key-mappings.
@@ -479,11 +484,6 @@ if dein#tap('vim-easymotion')
   omap s/ <Plug>(easymotion-tn)
   map  sn <Plug>(easymotion-next)
   map  sp <Plug>(easymotion-prev)
-endif
-" }}}
-" TagBar {{{
-if dein#tap('tagbar')
-  nnoremap <silent> <Leader>o :<C-u>TagbarToggle<CR>
 endif
 " }}}
 " vim-operator-surround {{{

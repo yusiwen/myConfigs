@@ -100,6 +100,16 @@ function! BufferNumber()
   return s:bufno
 endfunction
 
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
+" By default vista.vim never run if you don't call it explicitly.
+"
+" If you want to show the nearest function in your statusline automatically,
+" you can add the following line to your vimrc
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
 " Status line detail:
 " -------------------
 "
@@ -146,7 +156,7 @@ let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
 let s:stl .= "%5*%( %{badge#trails('WS:%s')} %)" " Whitespace
 let s:stl .= '%(%{badge#syntax()} %)%*'           " syntax check
 let s:stl .= '%='                                 " Align to right
-let s:stl .= "%3*%(%{tagbar#currenttag(' %s ', '')}%)%*  "   " Current tag
+let s:stl .= "%3*%(%{NearestMethodOrFunction()}%)%*  "   " Current tag
 let s:stl .= '%{badge#format()} %*'               " File format
 let s:stl .= '%( %{&fenc} %)'                     " File encoding
 let s:stl .= '%*%( %{&ft} %)'                     " File type
@@ -162,7 +172,7 @@ let s:stl_nc .= '%{&ft} '                         " File type
 " }}}
 
 let s:disable_statusline =
-  \ 'denite\|unite\|vimfiler\|tagbar\|nerdtree\|undotree\|gundo\|diff\|peekaboo\|sidemenu'
+  \ 'denite\|vista\|unite\|vimfiler\|tagbar\|nerdtree\|undotree\|gundo\|diff\|peekaboo\|sidemenu'
 
 " Toggle Statusline {{{
 augroup statusline
@@ -232,9 +242,6 @@ augroup nerdtree-highlights
   autocmd!
   autocmd FileType nerdtree call s:NERDTreeHighlight()
 augroup END
-"}}}
-" Plugin: Tagbar icons {{{
-let g:tagbar_iconchars = ['▷', '◢']
 "}}}
 " Plugin: Neomake icons {{{
 let g:neomake_error_sign = {'text': '!', 'texthl': 'ErrorMsg'}

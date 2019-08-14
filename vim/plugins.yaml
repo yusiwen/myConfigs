@@ -61,23 +61,6 @@
   hook_source: let g:easygit_enable_command = 1
 - {repo: lambdalisue/gina.vim, on_cmd: Gina}
 
-# displays tags in a window
-- repo: majutsushi/tagbar
-  if: empty($VIM_MINIMAL)
-  on_cmd: TagbarToggle
-  on_func: tagbar#currenttag
-  hook_source: |
-    let g:tagbar_width = 40
-    let g:tagbar_iconchars = ['+', '-']
-    if executable('jsctags')
-      let g:tagbar_type_javascript = {'ctagsbin': 'jsctags'}
-    endif
-    if has('mac') || has('macunix') || has('gui_macvim')
-      let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
-    endif
-- repo: lvht/tagbar-markdown
-  depends: majutsushi/tagbar
-
 # Vim motions on speed!
 - repo: easymotion/vim-easymotion
   on_map: {n: <Plug>}
@@ -186,8 +169,8 @@
 # Personal Wiki for Vim
 - repo: vimwiki/vimwiki
   if: empty($VIM_MINIMAL)
-  on_map: { n: <Plug> }
-  on_cmd: [ VimwikiIndex, VimwikiUISelect ]
+  on_map: {n: <Plug>}
+  on_cmd: [VimwikiIndex, VimwikiUISelect]
   hook_add: |
     let g:vimwiki_use_calendar = 1
     let g:vimwiki_hl_headers = 1
@@ -212,6 +195,32 @@
 - repo: lambdalisue/suda.vim
   on_event: BufRead
   hook_add: let g:suda_smart_edit = 1
+
+- repo: tyru/open-browser.vim
+  on_map: {nxv: <Plug>(openbrowser}
+  on_cmd: [OpenBrowser, OpenBrowserSearch, OpenBrowserSmartSearch]
+
+- repo: tyru/open-browser-unicode.vim
+  depends: open-browser.vim
+  on_cmd: OpenBrowserUnicode
+
+- repo: tyru/open-browser-github.vim
+  depends: open-browser.vim
+  on_cmd: [OpenGithubFile, OpenGithubIssue, OpenGithubProject]
+
+- repo: mzlogin/vim-markdown-toc
+  on_cmd: [GenTocGFM, GenTocRedcarpet, GenTocGitLab, UpdateToc]
+  hook_source: let g:vmt_auto_update_on_save = 0
+
+- repo: liuchengxu/vista.vim
+  on_cmd: Vista
+  hook_source: |
+    let g:vista#renderer#enable_icon = 1
+    let g:vista_echo_cursor_strategy = 'scroll'
+
+- repo: beloglazov/vim-online-thesaurus  # FIXME
+  on_cmd: [OnlineThesaurusCurrentWord, Thesaurus]
+  hook_source: let g:online_thesaurus_map_keys = 0
 # }}}
 # Completion {{{
 - repo: ludovicchabant/vim-gutentags
@@ -225,6 +234,14 @@
     let g:gutentags_generate_on_write = 1
     let g:gutentags_generate_on_missing = 1
     let g:gutentags_generate_on_new = 0
+    let g:gutentags_exclude_project_root = [ '/usr/local' ]
+    let g:gutentags_exclude_filetypes = [ 'defx', 'denite', 'vista' ]
+    let g:gutentags_ctags_exclude_wildignore = 1
+    let g:gutentags_ctags_exclude = [
+      \ '.idea', '.cache', '.tox', '.bundle', 'build', 'dist',
+      \ '*/wp-admin', '*/wp-content', '*/wp-includes',
+      \ '*/application/vendor', '*/vendor/ckeditor', '*/media/vendor'
+      \ ]
 
 # emmet-vim is a vim plug-in which provides support for expanding abbreviations similar to emmet.
 - repo: mattn/emmet-vim
