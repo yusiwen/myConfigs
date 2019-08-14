@@ -619,14 +619,14 @@ function install_vim() { # {{{
   # NeoVim {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-$CODENAME.list
+      NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$CODENAME.list
       if [ ! -e "$NVIM_PPA" ]; then
-        echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/stable${COLOR}...${NC}"
-        sudo add-apt-repository -y ppa:neovim-ppa/stable
+        echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/unstable${COLOR}...${NC}"
+        sudo add-apt-repository -y ppa:neovim-ppa/unstable
         sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$NVIM_PPA"
         sudo apt update
       else
-        echo -e "${COLOR1}ppa:neovim-ppa/stable${COLOR} was found${NC}"
+        echo -e "${COLOR1}ppa:neovim-ppa/unstable${COLOR} was found${NC}"
       fi
 
       set +e
@@ -672,21 +672,9 @@ function install_vim() { # {{{
   fi
 
   # Install python neovim, PyYALM package site widely
-  echo -e "${COLOR}Installing python package: neovim, PyYAML...${NC}"
-  set +e
-  NV_PYTHON_PCK=$(pip list 2>/dev/null | grep -c neovim)
-  set -e
-  if [ "$NV_PYTHON_PCK" -eq 0 ]; then
-    pip install --user neovim
-    pip3 install --user neovim
-  fi
-  set +e
-  NV_PYTHON_PCK=$(pip list 2>/dev/null | grep -c PyYAML)
-  set -e
-  if [ "$NV_PYTHON_PCK" -eq 0 ]; then
-    pip install --user PyYAML
-    pip3 install --user PyYAML
-  fi
+  echo -e "${COLOR}Installing python package: neovim, PyYAML, pynvim...${NC}"
+  pip install --user --upgrade neovim pynvim PyYAML
+  pip3 install --user --upgrade neovim pynvim PyYAML
 
   if [ ! -d "$VARPATH"/venv/neovim2 ]; then
     virtualenv --system-site-packages -p /usr/bin/python2 "$VARPATH"/venv/neovim2
@@ -711,8 +699,8 @@ function install_vim() { # {{{
   #}}}
 
   npm install -g jshint jsxhint jsonlint stylelint sass-lint raml-cop markdownlint-cli write-good
-  pip install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
-  pip3 install --user pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
+  pip install --user --upgrade pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
+  pip3 install --user --upgrade pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
 } #}}}
 
 function install_rxvt() { # {{{
