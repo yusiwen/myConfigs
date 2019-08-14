@@ -322,54 +322,6 @@
     source $VIMPATH/vimrc.deoplete
     call deoplete#enable()
 
-- repo: Shougo/neocomplete.vim
-  depends: context_filetype.vim
-  if: has('lua') && empty($VIM_MINIMAL) && !has('nvim')
-  on_event: InsertEnter
-  hook_add: |
-    let g:neocomplete#data_directory = $VARPATH.'/complete'
-    let g:neocomplete#enable_at_startup = 1
-  hook_source: source $VIMPATH/vimrc.neocomplete
-
-- repo: Shougo/neosnippet.vim
-  depends: [neosnippet-snippets, context_filetype.vim]
-  if: empty($VIM_MINIMAL)
-  on_event: InsertCharPre
-  on_ft: snippet
-  hook_add: |
-    let g:neosnippet#data_directory = $VARPATH.'/snippets'
-    let g:neosnippet#snippets_directory=expand('$VIMPATH/snippets')
-  hook_source: |
-    let g:neosnippet#enable_snipmate_compatibility = 1
-    let g:neosnippet#enable_completed_snippet = 1
-    let g:neosnippet#expand_word_boundary = 1
-    autocmd MyAutoCmd CompleteDone * call neosnippet#complete_done()
-    autocmd MyAutoCmd InsertLeave * NeoSnippetClearMarkers
-    if has('conceal')
-      set conceallevel=2 concealcursor=niv
-    endif
-
-- {repo: Shougo/neosnippet-snippets, if: empty($VIM_MINIMAL)}
-- {repo: Shougo/context_filetype.vim, lazy: 1, if: empty($VIM_MINIMAL)}
-
-# jedi-vim is a VIM binding to the python autocompletion library Jedi.
-- repo: davidhalter/jedi-vim
-  if: empty($VIM_MINIMAL)
-  on_ft: python
-  hook_add: |
-    let g:jedi#completions_enabled = 0
-    let g:jedi#auto_vim_configuration = 0
-    let g:jedi#smart_auto_mappings = 0
-    let g:jedi#show_call_signatures = 1
-  hook_source: |
-    let g:jedi#use_tag_stack = 0
-    let g:jedi#popup_select_first = 0
-    let g:jedi#popup_on_dot = 0
-    let g:jedi#max_doc_height = 100
-    let g:jedi#quickfix_window_height = 10
-    let g:jedi#use_splits_not_buffers = 'right'
-
-# Only NeoVim {{{
 - repo: zchee/deoplete-go
   if: has('nvim') && empty($VIM_MINIMAL)
   on_ft: go
@@ -389,6 +341,11 @@
   hook_source: |
     let g:tern_request_timeout = 1
     let g:tern_show_signature_in_pum = 0
+
+- repo: fszymanski/deoplete-emoji
+  on_ft: [ markdown, gitcommit ]
+  on_event: InsertEnter
+
 - repo: wellle/tmux-complete.vim
   if: has('nvim') && empty($VIM_MINIMAL) && !has('win16') && !has('win32') && !has('win64')
   on_event: InsertEnter
@@ -406,7 +363,58 @@
     let g:tern_show_signature_in_pum = 0
   hook_post_source: |
     autocmd MyAutoCmd FileType javascript setlocal omnifunc=tern#Complete
-# }}}
+
+- repo: Shougo/neosnippet.vim
+  depends: [neosnippet-snippets, context_filetype.vim]
+  if: empty($VIM_MINIMAL)
+  on_event: InsertCharPre
+  on_ft: snippet
+  hook_add: |
+    let g:neosnippet#data_directory = $VARPATH.'/snippets'
+    let g:neosnippet#snippets_directory=expand('$VIMPATH/snippets')
+  hook_source: |
+    let g:neosnippet#enable_snipmate_compatibility = 1
+    let g:neosnippet#enable_completed_snippet = 1
+    let g:neosnippet#expand_word_boundary = 1
+    autocmd MyAutoCmd CompleteDone * call neosnippet#complete_done()
+    autocmd MyAutoCmd InsertLeave * NeoSnippetClearMarkers
+    if has('conceal')
+      set conceallevel=2 concealcursor=niv
+    endif
+
+- repo: Shougo/echodoc.vim
+  on_event: CompleteDone
+  hook_post_source: call echodoc#enable()
+
+- repo: ncm2/float-preview.nvim
+  if: has('nvim')
+  on_event: InsertEnter
+  hook_add: |
+    let g:float_preview#docked = 0
+    let g:float_preview#max_width = 80
+
+- { repo: Shougo/neosnippet-snippets, on_event: InsertEnter }
+- { repo: Shougo/context_filetype.vim, on_event: InsertEnter }
+- { repo: Shougo/neco-vim, on_ft: vim }
+- { repo: Shougo/neoinclude.vim, on_source: deoplete.nvim }
+- { repo: Shougo/neco-syntax, on_source: deoplete.nvim }
+
+# jedi-vim is a VIM binding to the python autocompletion library Jedi.
+- repo: davidhalter/jedi-vim
+  if: empty($VIM_MINIMAL)
+  on_ft: python
+  hook_add: |
+    let g:jedi#completions_enabled = 0
+    let g:jedi#auto_vim_configuration = 0
+    let g:jedi#smart_auto_mappings = 0
+    let g:jedi#show_call_signatures = 1
+  hook_source: |
+    let g:jedi#use_tag_stack = 0
+    let g:jedi#popup_select_first = 0
+    let g:jedi#popup_on_dot = 0
+    let g:jedi#max_doc_height = 100
+    let g:jedi#quickfix_window_height = 10
+    let g:jedi#use_splits_not_buffers = 'right'
 # }}}
 # Denite {{{
 - repo: Shougo/denite.nvim

@@ -306,7 +306,8 @@ endif
 " neosnippet.vim {{{
 if dein#tap('neosnippet.vim')
   " Plugin key-mappings.
-  imap <expr><C-o> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<ESC>o"
+  imap <expr><C-o> neosnippet#expandable_or_jumpable()
+    \ ? "\<Plug>(neosnippet_expand_or_jump)" : "\<ESC>o"
   smap <C-o>       <Plug>(neosnippet_expand_or_jump)
   xmap <C-o>       <Plug>(neosnippet_expand_target)
 
