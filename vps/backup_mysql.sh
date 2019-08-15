@@ -55,7 +55,7 @@
 KEEP_DAYS='90'
 
 # Where to store backup copies.
-export BACKUP_ROOTDIR="/var/vmail/backup"
+export BACKUP_ROOTDIR="/var/lib/mysql/backup"
 
 # MySQL username. Root user is required to dump all databases.
 export MYSQL_ROOT_USER='root'
