@@ -153,24 +153,13 @@ if has('mac')
   " Open the macOS dictionary on current word
   nmap <Leader>? :!open dict://<cword><CR><CR>
 
-  " Use Dash on Mac, for context help
-  if executable('/Applications/Dash.app/Contents/MacOS/Dash')
-    autocmd MyAutoCmd FileType yaml.ansible,go,php,css,less,html,markdown
-      \ nmap <silent><buffer> K :!open -g dash://"<C-R>=split(&ft, '\.')[0]<CR>:<cword>"&<CR><CR>
-    autocmd MyAutoCmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
-      \ nmap <silent><buffer> K :!open -g dash://"<cword>"&<CR><CR>
+  " Use Marked for real-time Markdown preview
+  "
+  if executable('/Applications/Marked 2.app/Contents/MacOS/Marked 2')
+    autocmd user_events FileType markdown
+      \ nmap <buffer><Leader>P :silent !open -a Marked\ 2.app '%:p'<CR>
   endif
-
-  " Use Zeal on Linux for context help
-elseif executable('zeal')
-  autocmd MyAutoCmd FileType yaml.ansible,go,php,css,less,html,markdown
-    \ nmap <silent><buffer> K :!zeal --query "<C-R>=split(&ft, '\.')[0]<CR>:<cword>"&<CR><CR>
-  autocmd MyAutoCmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
-    \ nmap <silent><buffer> K :!zeal --query "<cword>"&<CR><CR>
 endif
-" }}}
-" Display diff from last save {{{
-command! DiffOrig vert new | setlocal bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
 " }}}
 " Append modeline to EOF {{{
 nnoremap <silent> <Leader>ml :call <SID>append_modeline()<CR>
@@ -307,8 +296,8 @@ if dein#tap('neosnippet.vim')
   " Plugin key-mappings.
   imap <expr><C-o> neosnippet#expandable_or_jumpable()
     \ ? "\<Plug>(neosnippet_expand_or_jump)" : "\<ESC>o"
-  smap <C-o>       <Plug>(neosnippet_expand_or_jump)
-  xmap <C-o>       <Plug>(neosnippet_expand_target)
+  smap <silent>L     <Plug>(neosnippet_jump_or_expand)
+  xmap <silent>L     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
 "  imap <expr><TAB>
