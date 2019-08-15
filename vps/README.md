@@ -33,6 +33,30 @@ Add line as following
 0 2 * * MON (cd /var/lib/gitea && /usr/local/bin/gitea/gitea dump)
 ```
 
+### MySQL
+
+Add new file `.my.cnf` in root's home
+
+```text
+[client]
+user=root
+password="PASSWORD"
+```
+
+Make this file read-only
+
+```sh
+chmod 400 .my.cnf
+```
+
+In `backup_mysql.sh`, edit the line `export DATABASES='mysql YOUR_DATABASE_NAME'`, add databases which need to be backed up
+
+Add line as following in root's crontab
+
+```text
+30   3   *   *   *   /bin/bash /var/lib/mysql/backup/backup_mysql.sh
+```
+
 ## FAQ
 
 ### Add Rsync to “Git Bash for Windows”
