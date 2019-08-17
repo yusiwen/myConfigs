@@ -114,8 +114,6 @@ autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 "
 " %-5.x - syntax to add 5 chars of padding to some element x
 let s:stl  = " %7*%{&paste ? 'P' : ''}%*"         " Paste symbol
-"let s:stl .= '%4* %{FileMode()} %*'               " Modified symbol
-let s:stl .= "%4*%{&readonly ? '' : '#'}%*"       " Modified symbol
 let s:stl .= '%4* %{FileMode()} %*'               " Modified symbol
 let s:stl .= '%3* %{BufferNumber()} %*'           " Buffer number and edit flag
 let s:stl .= '%8* %{EditMode()} %*'               " Edit mode
