@@ -676,9 +676,9 @@ function install_vim() { # {{{
   fi
 
   # Install python neovim, PyYALM package site widely
-  echo -e "${COLOR}Installing python package: neovim, PyYAML, pynvim...${NC}"
-  pip install --user --upgrade neovim pynvim PyYAML
-  pip3 install --user --upgrade neovim pynvim PyYAML
+  echo -e "${COLOR}Installing python package: PyYAML, pynvim...${NC}"
+  pip install --user --upgrade pynvim PyYAML
+  pip3 install --user --upgrade pynvim PyYAML
 
   if [ ! -d "$VARPATH"/venv/neovim2 ]; then
     virtualenv --system-site-packages -p /usr/bin/python2 "$VARPATH"/venv/neovim2
