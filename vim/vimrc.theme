@@ -155,6 +155,7 @@ let s:stl .= ' %<'                                " Truncate here
 let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
 let s:stl .= "%5*%( %{badge#trails('WS:%s')} %)" " Whitespace
 let s:stl .= '%(%{badge#syntax()} %)%*'           " syntax check
+let s:stl .= '%3*%{badge#indexing()}%*'           " Indexing tags indicator
 let s:stl .= '%='                                 " Align to right
 let s:stl .= "%3*%(%{NearestMethodOrFunction()}%)%*  "   " Current tag
 let s:stl .= '%{badge#format()} %*'               " File format
@@ -172,7 +173,7 @@ let s:stl_nc .= '%{&ft} '                         " File type
 " }}}
 
 let s:disable_statusline =
-  \ 'denite\|vista\|unite\|vimfiler\|tagbar\|undotree\|gundo\|diff\|peekaboo\|sidemenu'
+  \ 'denite\|vista\|vimfiler\|undotree\|gundo\|diff\|peekaboo\|sidemenu'
 
 " Toggle Statusline {{{
 function! s:setstatus()

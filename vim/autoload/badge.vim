@@ -24,13 +24,17 @@ let g:badge_filename_max_dir_chars =
 " Less verbosity on specific filetypes (regexp)
 let g:badge_quiet_filetypes =
   \ get(g:, 'badge_quiet_filetypes',
-  \ 'qf\|help\|denite\|unite\|vimfiler\|gundo\|diff\|fugitive\|gitv\|magit')
+  \ 'qf\|help\|denite\|vimfiler\|gundo\|diff\|fugitive\|gitv\|magit')
+
+let g:badge_loading =
+  \ get(g:, 'badge_loading',
+  \ ['⠃', '⠁', '⠉', '⠈', '⠐', '⠠', '⢠', '⣠', '⠄', '⠂'])
 " }}}
 
 " Clear cache on save {{{
 augroup statusline_cache
   autocmd!
-  autocmd BufWritePre *
+  autocmd BufWritePre,WinEnter,BufReadPost *
     \ unlet! b:badge_cache_trails b:badge_cache_syntax b:badge_cache_filename
 augroup END
 " }}}
@@ -90,7 +94,11 @@ function! badge#filename() abort " {{{
   endif
 
   " VimFiler status string
-  if &filetype ==# 'vimfiler'
+  if &filetype ==# 'defx'
+    let b:badge_cache_filename = b:defx['context']['buffer_name']
+  elseif &filetype ==# 'magit'
+    let b:badge_cache_filename = magit#git#top_dir()
+  elseif &filetype ==# 'vimfiler'
     let b:badge_cache_filename = vimfiler#get_status_string()
   " Empty if owned by certain plugins
   elseif &filetype =~? g:badge_quiet_filetypes
@@ -244,7 +252,15 @@ endfunction
 function! badge#indexing() abort
   let l:out = ''
   if exists('*gutentags#statusline')
-    let l:out .= gutentags#statusline('[', ']')
+    let l:tags = gutentags#statusline('[', ']')
+    if ! empty(l:tags)
+      if exists('*reltime')
+        let s:wait = split(reltimestr(reltime()), '\.')[1] / 100000
+      else
+        let s:wait = get(s:, 'wait', 9) == 9 ? 0 : s:wait + 1
+      endif
+      let l:out .= get(g:badge_loading, s:wait, '') . ' ' . l:tags
+    endif
   endif
   if exists('*coc#status')
     let l:out .= coc#status()
