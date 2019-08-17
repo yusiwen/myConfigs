@@ -713,59 +713,6 @@ if has('nvim') && dein#tap('deoplete.nvim')
   endfunction "}}}
 endif
 " }}}
-" neocomplete.vim {{{
-if !has('nvim') && dein#tap('neocomplete.vim')
-  let g:neocomplete#fallback_mappings = [ "\<C-x>\<C-o>", "\<C-x>\<C-n>" ]
-
-  " Movement within 'ins-completion-menu'
-  imap <expr><C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-  imap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-  imap <expr><C-f> pumvisible() ? "\<PageDown>" : "\<Right>"
-  imap <expr><C-b> pumvisible() ? "\<PageUp>" : "\<Left>"
-  imap <expr><C-d> pumvisible() ? "\<PageDown>" : "\<Right>"
-  imap <expr><C-u> pumvisible() ? "\<PageUp>" : "\<Left>"
-
-  " <C-n>: neocomplete.
-  imap <expr><C-n>  pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>\<Down>"
-  " <C-p>: keyword completion.
-  imap <expr><C-p>  pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
-
-  " Special plugin key-mappings
-  "inoremap <expr><C-l>  neocomplete#mappings#complete_common_string()
-  inoremap <expr><C-l>  neocomplete#mappings#refresh()
-  inoremap <expr><C-g>   neocomplete#undo_completion()
-
-  " Start file completion TODO Not working all the time
-  imap <silent><expr><C-x><C-f> neocomplete#start_manual_complete('file')
-
-  " <CR>: If popup menu visible, expand snippet or close popup with selection,
-  "       Otherwise, check if within empty pair and use delimitMate.
-  imap <silent><expr><CR> pumvisible() ? (neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<C-y>")
-    \ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
-
-  " <Tab> completion:
-  " 1. If popup menu is visible, select and insert next item
-  " 2. Otherwise, if within a snippet, jump to next input
-  " 3. Otherwise, if preceding chars are whitespace, insert tab char
-  " 4. Otherwise, start manual autocomplete
-  imap <silent><expr><Tab> pumvisible() ? "\<C-n>"
-    \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-    \ : (<SID>is_whitespace() ? "\<Tab>"
-    \ : neocomplete#start_manual_complete()))
-
-  smap <silent><expr><Tab> pumvisible() ? "\<C-n>"
-    \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-    \ : (<SID>is_whitespace() ? "\<Tab>"
-    \ : neocomplete#start_manual_complete()))
-
-  inoremap <expr><S-Tab>  pumvisible() ? "\<C-p>" : "\<C-h>"
-
-  function! s:is_whitespace() "{{{
-    let l:col = col('.') - 1
-    return ! l:col || getline('.')[l:col - 1] =~? '\s'
-  endfunction "}}}
-endif
-" }}}
 " }}}
 
 " vim: set foldmethod=marker ts=2 sw=2 tw=80 expandtab :

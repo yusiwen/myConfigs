@@ -17,7 +17,8 @@ let g:neomake_yaml_enabled_makers = ['yamllint']
 let g:neomake_ansible_enabled_makers = ['yamllint']
 " }}}
 " vim-multiple_cursors {{{
-" make NeoComplete compatible with vim-multiple-cursors
+" make deoplete compatible with vim-multiple-cursors
+" see https://github.com/Shougo/deoplete.nvim/issues/265#issuecomment-212978003
 function! Multiple_cursors_before()
   if (has('nvim'))
     let b:deoplete_disable_auto_complete = 1

@@ -61,7 +61,6 @@
   ln -sf ~/git/myConfigs/vim/vimrc.filetype ~/.vim/vimrc.filetype
   ln -sf ~/git/myConfigs/vim/vimrc.goyo ~/.vim/vimrc.goyo
   ln -sf ~/git/myConfigs/vim/vimrc.mappings ~/.vim/vimrc.mappings
-  ln -sf ~/git/myConfigs/vim/vimrc.neocomplete ~/.vim/vimrc.neocomplete
   ln -sf ~/git/myConfigs/vim/vimrc.neovim ~/.vim/vimrc.neovim
   ln -sf ~/git/myConfigs/vim/vimrc.defx ~/.vim/vimrc.defx
   ln -sf ~/git/myConfigs/vim/vimrc.misc ~/.vim/vimrc.misc
@@ -271,7 +270,7 @@ Key   | Mode | Action
 `gf` | Normal | Search in selected directory for files
 `gr` | Normal | Grep in selected directory
 
-### Plugin: Deoplete / Emmet / Neocomplete
+### Plugin: Deoplete / Emmet
 
 Key   | Mode | Action
 ----- |:----:| ------------------
