@@ -48,3 +48,10 @@ Host vm-pd-database
   User yusiwen
   Port 1042
 
+Host vps01
+  HostName 45.32.224.66
+  User root
+
+Host aliyun01
+  HostName 47.101.52.153
+  User root
