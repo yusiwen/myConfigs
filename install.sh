@@ -523,65 +523,65 @@ function install_zsh() { # {{{
 function install_vim() { # {{{
   CONFIG_VIM="$HOME"/myConfigs/vim
   VIM_HOME="$HOME"/.vim
-  VIM_PACKAGE=vim
 
   if [ ! -d "$CONFIG_VIM" ]; then
     fetch_myConfigs
   fi
 
+  if [ ! -d "$VIM_HOME" ]; then
+    mkdir -p "$VIM_HOME"
+  fi
+
+  # NeoVim {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      VIM_PPA=/etc/apt/sources.list.d/jonathonf-ubuntu-vim-$CODENAME.list
-      if [ ! -e "$VIM_PPA" ]; then
-        echo -e "${COLOR}No latest vim ppa found, adding ${COLOR1}ppa:jonathonf/vim${COLOR}...${NC}"
-        sudo add-apt-repository -y ppa:jonathonf/vim
-        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$VIM_PPA"
+      NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$CODENAME.list
+      if [ ! -e "$NVIM_PPA" ]; then
+        echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/unstable${COLOR}...${NC}"
+        sudo add-apt-repository -y ppa:neovim-ppa/unstable
+        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$NVIM_PPA"
         sudo apt update
       else
-        echo -e "${COLOR1}ppa:jonathonf/vim${COLOR} was found${NC}"
+        echo -e "${COLOR1}ppa:neovim-ppa/unstable${COLOR} was found${NC}"
       fi
 
-      echo -e "${COLOR}Ubuntu is found, checking ${COLOR1}$VIM_PACKAGE${COLOR1}...${NC}"
-      # Check if VIM_PACKAGE is installed or not
       set +e
-      PACKAGE=$(dpkg -l | grep $VIM_PACKAGE | cut -d ' ' -f 3 | grep -c ^$VIM_PACKAGE$)
+      PACKAGE=$(dpkg -l | grep neovim | cut -d ' ' -f 3 | grep -c ^neovim$)
       set -e
       if [ "$PACKAGE" -eq 0 ]; then
-        echo -e "${COLOR1}$VIM_PACKAGE${COLOR} is not found.${NC}"
+        echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
         # Install VIM_PACKAGE
-        echo -e "${COLOR}Install ${COLOR1}$VIM_PACKAGE${COLOR}...${NC}"
-        sudo apt install -y $VIM_PACKAGE
+        echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
+        sudo apt install -y neovim
       else
-        echo -e "${COLOR1}$VIM_PACKAGE${COLOR} is found, trying to find latest upgrades...${NC}"
-        sudo apt update && sudo apt upgrade -y
+        echo -e "${COLOR1}NeoVim${COLOR} is found, trying to find latest upgrades...${NC}"
+        sudo apt update && sudo apt upgrade
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
       sudo apt install -y silversearcher-ag cscope astyle lua5.3 ruby-full perl
     elif [ "$DISTRO" = 'CentOS' ]; then
-      echo -e "${COLOR}There is no available source of vim80 for CentOS, please install vim 8.0 manually${NC}"
+      set +e
+      PACKAGE=$(yum list installed | grep -c ^epel-release.noarch)
+      set -e
+      if [ "$PACKAGE" = 0 ]; then
+        echo -e "${COLOR}No latest NeoVim source found, adding ${COLOR1}epel-release-latest-7${COLOR}...${NC}"
+        sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+      else
+        echo -e "${COLOR1}epel-release-latest-7${COLOR} was found${NC}"
+      fi
+
+      echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
+      sudo yum install -y neovim python2-neovim python36-neovim
     fi
   elif [ "$OS" = 'Darwin' ]; then
-    echo -e "${COLOR}Darwin is found, checking vim...${NC}"
-    set +e
-    PACKAGE=$(brew list | grep vim)
-    set -e
-    if [ -z "$PACKAGE" ]; then
-      echo -e "${COLOR1}vim${COLOR} is not found. Installing...${NC}"
-      brew install vim vim --with-python3
-    else
-      echo -e "${COLOR1}vim${COLOR} is found.${NC}"
-    fi
-
+    echo -e "${COLOR}Install development branch of Neovim...${NC}"
+    brew install --HEAD neovim
     echo -e "${COLOR}Install supplementary tools...${NC}"
     brew install the_silver_searcher cscope astyle
   else
-    echo -e "${COLOR}Unknown OS, please make sure vim is installed.${NC}"
+    echo -e "${COLOR}Unknown OS, please make sure neovim is installed.${NC}"
     return
-  fi
-
-  if [ ! -d "$VIM_HOME" ]; then
-    mkdir "$VIM_HOME"
   fi
 
   ln -sfnv "$CONFIG_VIM"/vimrc "$VIM_HOME"/vimrc
@@ -612,52 +612,6 @@ function install_vim() { # {{{
   # link snippets to $VIM_HOME
   if [ ! -L "$VIM_HOME"/snippets ]; then
     ln -sfnv "$CONFIG_VIM"/snippets "$VIM_HOME"/snippets
-  fi
-
-  # NeoVim {{{
-  if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ]; then
-      NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$CODENAME.list
-      if [ ! -e "$NVIM_PPA" ]; then
-        echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/unstable${COLOR}...${NC}"
-        sudo add-apt-repository -y ppa:neovim-ppa/unstable
-        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$NVIM_PPA"
-        sudo apt update
-      else
-        echo -e "${COLOR1}ppa:neovim-ppa/unstable${COLOR} was found${NC}"
-      fi
-
-      set +e
-      PACKAGE=$(dpkg -l | grep neovim | cut -d ' ' -f 3 | grep -c ^neovim$)
-      set -e
-      if [ "$PACKAGE" -eq 0 ]; then
-        echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
-        # Install VIM_PACKAGE
-        echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
-        sudo apt install -y neovim
-      else
-        echo -e "${COLOR1}NeoVim${COLOR} is found, trying to find latest upgrades...${NC}"
-        sudo apt update && sudo apt upgrade
-      fi
-    elif [ "$DISTRO" = 'CentOS' ]; then
-      set +e
-      PACKAGE=$(yum list installed | grep -c ^epel-release.noarch)
-      set -e
-      if [ "$PACKAGE" = 0 ]; then
-        echo -e "${COLOR}No latest NeoVim source found, adding ${COLOR1}epel-release-latest-7${COLOR}...${NC}"
-        sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-      else
-        echo -e "${COLOR1}epel-release-latest-7${COLOR} was found${NC}"
-      fi
-
-      echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
-      sudo yum install -y neovim python2-neovim python36-neovim
-    fi
-  elif [ "$OS" = 'Darwin' ]; then
-    brew install --HEAD neovim
-  else
-    echo -e "${COLOR}Unknown OS, please make sure neovim is installed.${NC}"
-    return
   fi
 
   ln -sfnv "$CONFIG_VIM"/init.vim "$VIM_HOME"/init.vim
