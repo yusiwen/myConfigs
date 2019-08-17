@@ -82,11 +82,9 @@ else
 fi
 
 # Vim
-if [ "$(uname)" = 'Darwin' ]; then
-  alias vi='/usr/local/bin/vi'
-  alias vim='/usr/local/bin/vim'
-fi
-alias v='vim'
+alias vi='nvim'
+alias vim='nvim'
+alias v='nvim'
 alias nv='nvim'
 
 # Maven
