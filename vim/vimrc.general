@@ -74,6 +74,14 @@ if exists('+inccommand')
   set inccommand=nosplit
 endif
 
+if executable('rg')
+  set grepformat=%f:%l:%m
+  let &grepprg = 'rg --vimgrep' . (&smartcase ? ' --smart-case' : '')
+elseif executable('ag')
+  set grepformat=%f:%l:%m
+  let &grepprg = 'ag --vimgrep' . (&smartcase ? ' --smart-case' : '')
+endif
+
 " What to save for views:
 set viewoptions-=options
 set viewoptions+=slash,unix

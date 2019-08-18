@@ -528,8 +528,10 @@ endif
 " }}}
 " sideways.vim {{{
 if dein#tap('sideways.vim')
-  nnoremap <silent> m" :SidewaysJumpLeft<CR>
-  nnoremap <silent> m' :SidewaysJumpRight<CR>
+  nnoremap <silent> >, :SidewaysLeft<CR>
+  nnoremap <silent> <, :SidewaysRight<CR>
+  nnoremap <silent> [, :SidewaysJumpLeft<CR>
+  nnoremap <silent> ], :SidewaysJumpRight<CR>
   omap <silent> a, <Plug>SidewaysArgumentTextobjA
   xmap <silent> a, <Plug>SidewaysArgumentTextobjA
   omap <silent> i, <Plug>SidewaysArgumentTextobjI
@@ -681,7 +683,7 @@ if has('nvim') && dein#tap('deoplete.nvim')
   " inoremap <expr><C-g> deoplete#undo_completion()
 
   " Redraw candidates
-  inoremap <expr><C-g> deoplete#refresh()
+  inoremap <expr><C-g> deoplete#manual_complete()
   inoremap <expr><C-e> deoplete#cancel_popup()
   inoremap <silent><expr><C-l> deoplete#complete_common_string()
 

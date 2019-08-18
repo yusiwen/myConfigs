@@ -130,17 +130,17 @@
 
 - repo: mzlogin/vim-markdown-toc
   on_cmd: [GenTocGFM, GenTocRedcarpet, GenTocGitLab, UpdateToc]
-  hook_source: let g:vmt_auto_update_on_save = 0
+  hook_add: let g:vmt_auto_update_on_save = 0
 
 - repo: liuchengxu/vista.vim
   on_cmd: Vista
-  hook_source: |
+  hook_add: |
     let g:vista#renderer#enable_icon = 1
     let g:vista_echo_cursor_strategy = 'scroll'
 
 - repo: beloglazov/vim-online-thesaurus  # FIXME
   on_cmd: [OnlineThesaurusCurrentWord, Thesaurus]
-  hook_source: let g:online_thesaurus_map_keys = 0
+  hook_add: let g:online_thesaurus_map_keys = 0
 # }}}
 # Interface {{{
 - {repo: haya14busa/vim-asterisk, on_map: {nv: <Plug>}}
@@ -165,7 +165,7 @@
 # shows a git diff in the gutter
 - repo: airblade/vim-gitgutter
   on_path: .*
-  hook_source: |
+  hook_add: |
     let g:gitgutter_map_keys = 0
     let g:gitgutter_realtime = 1
     let g:gitgutter_eager = 1
@@ -430,8 +430,8 @@
 
 - repo: raghur/fruzzy
   on_source: denite.nvim
-  hook_source: let g:fruzzy#sortonempty = 0
   hook_post_update: call fruzzy#install()
+  hook_source: let g:fruzzy#sortonempty = 0
 # }}}
 # Language & DevTools {{{
 - {repo: hail2u/vim-css3-syntax, on_ft: css}
@@ -441,7 +441,6 @@
 - {repo: othree/csscomplete.vim, on_ft: css}
 - {repo: iloginow/vim-stylus, on_ft: stylus } # or wavded/vim-stylus ?
 - {repo: mustache/vim-mustache-handlebars, on_ft: html}
-- {repo: pearofducks/ansible-vim, on_ft: [yaml.ansible, ansible_hosts]}
 
 - repo: othree/html5.vim
   on_ft: html
@@ -458,15 +457,21 @@
 # improved Javascript indentation and syntax
 - repo: pangloss/vim-javascript
   on_ft: [javascript, jsx, javascript.jsx]
-  hook_source: |
+  hook_add: |
     let g:javascript_plugin_jsdoc = 1
     let g:javascript_plugin_flow = 1
-    highlight! link jsFutureKeys PreProc
+
+- repo: MaxMEllon/vim-jsx-pretty
+  on_ft: [javascript, jsx]
+  depends: vim-javascript
+  hook_add: let g:vim_jsx_pretty_colorful_config = 1
+
+- {repo: heavenshell/vim-jsdoc, on_ft: [javascript, jsx, javascript.jsx]}
+- {repo: jparise/vim-graphql, on_ft: [javascript, jsx]}
+- {repo: posva/vim-vue, on_ft: vue}
+
 # CoffeeScript support
 - {repo: kchmck/vim-coffee-script, on_ft: [coffee]}
-- {repo: othree/jspc.vim, on_ft: [javascript, jsx, javascript.jsx]}
-- {repo: MaxMEllon/vim-jsx-pretty, on_ft: [javascript, jsx, javascript.jsx]}
-- {repo: heavenshell/vim-jsdoc, on_ft: [javascript, jsx, javascript.jsx]}
 
 - repo: plasticboy/vim-markdown
   on_ft: markdown
@@ -493,19 +498,32 @@
 - repo: rhysd/vim-gfm-syntax
   depends: vim-markdown
   on_ft: markdown
-  hook_source: |
+  hook_add: |
     let g:gfm_syntax_enable_always = 0
     let g:gfm_syntax_highlight_emoji = 0
     let g:gfm_syntax_enable_filetypes = ['markdown']
 
 - repo: fatih/vim-go
-  on_ft: go
-  hook_source: |
-    let g:go_def_mapping_enabled = 0
-    let g:go_loaded_gosnippets = 1
-    let g:go_snippet_engine = 'neosnippet'
+  on_ft: [go, gomod]
+  hook_add: |
+    let g:go_highlight_array_whitespace_error = 0
+    let g:go_highlight_chan_whitespace_error = 0
+    let g:go_highlight_space_tab_error = 0
+    let g:go_highlight_trailing_whitespace_error = 0
     let g:go_highlight_extra_types = 1
+    let g:go_highlight_build_constraints = 1
+    let g:go_highlight_extra_types = 1
+    let g:go_highlight_fields = 1
+    let g:go_highlight_format_strings = 1
+    let g:go_highlight_functions = 1
+    let g:go_highlight_function_calls = 1
+    let g:go_highlight_function_parameters = 1
+    let g:go_highlight_types = 1
+    let g:go_highlight_generate_tags = 1
     let g:go_highlight_operators = 1
+    let g:go_highlight_string_spellcheck = 0
+    let g:go_highlight_variable_declarations = 0
+    let g:go_highlight_variable_assignments = 0
 
 - {repo: vim-python/python-syntax, on_ft: python}
 - {repo: Vimjas/vim-python-pep8-indent, on_ft: python}
@@ -535,7 +553,20 @@
 - repo: hashivim/vim-terraform
   on_ft: terraform
   on_cmd: [ Terraform, TerraformFmt ]
-  hook_source: let g:terraform_fmt_on_save = 1
+  hook_add: let g:terraform_fmt_on_save = 1
+
+- repo: pearofducks/ansible-vim
+  on_ft: [ansible, ansible_hosts, jinja2]
+  hook_add: |
+    let g:ansible_extra_keywords_highlight = 1
+    let g:ansible_template_syntaxes = {
+      \   '*.json.j2': 'json',
+      \   '*.(ba)?sh.j2': 'sh',
+      \   '*.ya?ml.j2': 'yaml',
+      \   '*.xml.j2': 'xml',
+      \   '*.conf.j2': 'conf',
+      \   '*.ini.j2': 'ini'
+      \ }
 # }}}
 # Operators {{{
 - {repo: kana/vim-operator-user, lazy: 1}
@@ -553,7 +584,7 @@
   on_map: {nx: <Plug>}
 # }}}
 # Text objects {{{
-- {repo: kana/vim-textobj-user, on_func: textobj#user#}
+- repo: kana/vim-textobj-user
 - {repo: terryma/vim-expand-region, on_map: {x: <Plug>}}
 - {repo: AndrewRadev/sideways.vim, on_map: {ox: <Plug>Sideways}}
 - {repo: AndrewRadev/splitjoin.vim, on_map: {n: <Plug>Splitjoin}}
