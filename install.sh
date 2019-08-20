@@ -92,7 +92,7 @@ function init_env() { # {{{
 } # }}}
 
 # Universal Ctags
-function install_universal_ctags() {
+function install_universal_ctags() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
       set +e
@@ -102,11 +102,11 @@ function install_universal_ctags() {
         echo -e "${COLOR}Finding exuberant-ctags, it's very old, uninstalling it..${NC}"
         sudo apt purge exuberant-ctags
       fi
+      sudo apt install autoconf pkg-config
     elif [ "$DISTRO" = 'CentOS' ]; then
-      sudo yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man
+      sudo yum install -y pkgconfig autoconf automake python36-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
     fi
 
-    sudo apt install autoconf pkg-config
     if [ ! -d ~/git/universal-ctags ]; then
       mkdir -p ~/git
       if ! type git >/dev/null 2>&1; then
@@ -124,7 +124,7 @@ function install_universal_ctags() {
   elif [ "$OS" = 'Darwin' ]; then
     brew install --HEAD universal-ctags/universal-ctags/universal-ctags
   fi
-}
+} # }}}
 
 # GFW
 function install_gfw() { # {{{
