@@ -129,49 +129,55 @@ function install_universal_ctags() { # {{{
 # GFW
 function install_gfw() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if ! type tsocks >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing tsocks...${NC}"
-      sudo apt install -y tsocks
+    if [ "$DISTRO" = 'Ubuntu' ]; then
+      if ! type tsocks >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing tsocks...${NC}"
+        sudo apt install -y tsocks
+      fi
+
+      if ! type pip >/dev/null 2>&1; then
+        install_python
+      fi
+
+      # Install the latest shadowsocks version to support chahca20-ietf-poly1305 algorithm
+      echo -e "${COLOR}Checking shadowsocks command line tools...${NC}"
+      sudo apt install -y libsodium-dev
+      if ! type sslocal >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing shadowsocks command line tools...${NC}"
+        sudo -H pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
+        pip install --user gfwlist2privoxy
+        wget -O /tmp/gfwlist.txt https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
+        "$HOME"/.local/bin/gfwlist2privoxy -i /tmp/gfwlist.txt -p 127.0.0.1:1098 -t socks5
+        sudo mv gfwlist.action /etc/privoxy/
+      fi
+
+      echo -e "${COLOR}Please create config file at ${COLOR1}'/etc/shadowsocks.json'${COLOR} and run '${COLOR1}sslocal${COLOR}'...${NC}"
+      echo -e "${COLOR}And use '${COLOR1}supervisor${COLOR}' to start it at bootup${NC}"
+
+      if ! type privoxy >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing privoxy proxy...${NC}"
+        sudo apt install -y privoxy
+      else
+        echo -e "${COLOR1}privoxy${COLOR} was found.${NC}"
+      fi
+
+      if [ -d "$HOME"/myConfigs ]; then
+        ln -sfnv "$HOME"/myConfigs/gfw/tsocks.conf "$HOME"/.tsocks.conf
+        sudo cp "$HOME"/myConfigs/gfw/privoxy.conf /etc/privoxy/config
+        sudo systemctl restart privoxy
+        sudo systemctl enable privoxy
+
+        sudo mkdir -p /etc/shadowsocks
+        sudo cp "$HOME"/myConfigs/gfw/sslocal.config.json /etc/shadowsocks/config.json
+        sudo cp "$HOME"/myConfigs/gfw/sslocal.service /etc/systemd/system/sslocal.service
+        sudo systemctl restart sslocal
+        sudo systemctl enable sslocal
+      else
+        echo -e "${COLOR1}myConfigs${COLOR} was not found, please install git and fetch it from repo, then run 'install.sh gfw' again to link some configuration files.${NC}"
+      fi
+
+      echo -e "${COLOR}GFW initialized.${NC}"
     fi
-
-    if ! type pip >/dev/null 2>&1; then
-      install_python
-    fi
-
-    # Install the latest shadowsocks version to support chahca20-ietf-poly1305 algorithm
-    echo -e "${COLOR}Checking shadowsocks command line tools...${NC}"
-    sudo apt install -y libsodium-dev
-    if ! type sslocal >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing shadowsocks command line tools...${NC}"
-      sudo -H pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
-    fi
-
-    if ! type supervisorctl >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing supervisor...${NC}"
-      sudo apt install -y supervisor
-    fi
-
-    echo -e "${COLOR}Please create config file at ${COLOR1}'/etc/shadowsocks.json'${COLOR} and run '${COLOR1}sslocal${COLOR}'...${NC}"
-    echo -e "${COLOR}And use '${COLOR1}supervisor${COLOR}' to start it at bootup${NC}"
-
-    if ! type polipo >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing polipo proxy...${NC}"
-      sudo apt install -y polipo
-    else
-      echo -e "${COLOR1}polipo${COLOR} was found.${NC}"
-    fi
-
-    if [ -d "$HOME"/myConfigs ]; then
-      ln -sfnv "$HOME"/myConfigs/gfw/tsocks.conf "$HOME"/.tsocks.conf
-      sudo cp "$HOME"/myConfigs/gfw/polipo.conf /etc/polipo/config
-      sudo systemctl restart polipo
-
-      sudo cp "$HOME"/myConfigs/gfw/supervisor-shadowsocks.conf /etc/supervisor/conf.d/shadowsocks.conf
-    else
-      echo -e "${COLOR1}myConfigs${COLOR} was not found, please install git and fetch it from repo, then run 'install.sh gfw' again to link some configuration files.${NC}"
-    fi
-
-    echo -e "${COLOR}GFW initialized.${NC}"
   fi
 } # }}}
 
