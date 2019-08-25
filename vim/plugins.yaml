@@ -346,11 +346,6 @@
   on_ft: [ markdown, gitcommit ]
   on_event: InsertEnter
 
-- repo: wellle/tmux-complete.vim
-  if: has('nvim') && empty($VIM_MINIMAL) && !has('win16') && !has('win32') && !has('win64')
-  on_event: InsertEnter
-  hook_add: let g:tmuxcomplete#trigger = ''
-
 - repo: ternjs/tern_for_vim
   build: npm install
   if: executable('npm') && empty($VIM_MINIMAL)
