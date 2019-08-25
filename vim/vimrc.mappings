@@ -140,14 +140,18 @@ vnoremap mj :m'>+<CR>gv=gv
 noremap  mk :m-2<CR>
 noremap  mj :m+<CR>
 
-" Last session management shortcuts
-nmap <Leader>se :<C-u>SessionSave last<CR>
-nmap <Leader>os :<C-u>execute 'source '.g:session_directory.'/last.vim'<CR>
-
 " Context-aware action-menu, neovim only (see plugin/actionmenu.vim)
 if has('nvim-0.4.0')
   nmap <silent> <LocalLeader>c :<C-u>ActionMenu<CR>
 endif
+
+" Whitespace jump (see plugin/whitespace.vim)
+nnoremap ]w :<C-u>WhitespaceNext<CR>
+nnoremap [w :<C-u>WhitespacePrev<CR>
+
+" Session management shortcuts (see plugin/sessions.vim)
+nmap <silent> <Leader>se :<C-u>SessionSave<CR>
+nmap <silent> <Leader>os :<C-u>SessionLoad<CR>
 
 if has('mac')
   " Open the macOS dictionary on current word
