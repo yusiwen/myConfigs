@@ -192,7 +192,7 @@
     let g:SignatureMarkerTextHLDynamic = 1
     let g:SignatureIncludeMarks = 'abcdefgABCDEFG'
     let g:SignatureIncludeMarkers = repeat('⚐', 10)
-    autocmd user_events User GitGutter call signature#sign#Refresh()
+    autocmd MyAutoCmd User GitGutter call signature#sign#Refresh()
 
 - repo: nathanaelkane/vim-indent-guides
   on_cmd: [IndentGuidesEnable, IndentGuidesDisable, IndentGuidesToggle]
