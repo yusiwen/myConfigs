@@ -8,10 +8,11 @@
 " - SessionSave [name]: Create and activate new session for project
 " - SessionLoad [name]: Create and activate new session for project
 "
+" If [name] is empty, the current working-directory is used.
+"
 " Options:
 " - g:session_directory defaults to VARPATH/session (see g:etc#cache_path)
 "
-" If [name] is empty, the current working-directory is used.
 
 if exists('g:loaded_sessionsplugin')
   finish
