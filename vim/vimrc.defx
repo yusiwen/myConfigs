@@ -33,10 +33,10 @@ call defx#custom#column('git', {
 " defx-icons plugin
 let g:defx_icons_column_length = 2
 let g:defx_icons_mark_icon = '✓'
+let g:defx_icons_parent_icon = ''
 
 " Events
 " ---
-
 augroup user_plugin_defx
   autocmd!
 
@@ -58,7 +58,6 @@ augroup END
 
 " Internal functions
 " ---
-
 function! s:defx_close_tab(tabnr)
   " When a tab is closed, find and delete any associated defx buffers
   for l:nr in range(1, bufnr('$'))
@@ -172,7 +171,6 @@ endfunction
 
 " TOOLS
 " ---
-
 function! s:git_diff(context) abort
   execute 'GdiffThis'
 endfunction
@@ -231,3 +229,5 @@ function! s:find_file_explorer() abort
   endif
   return s:file_explorer
 endfunction
+
+" vim: set ts=2 sw=2 tw=80 expandtab :
