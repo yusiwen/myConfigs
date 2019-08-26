@@ -28,10 +28,9 @@ highlight! link deniteSource_QuickfixPosition qfLineNr
 " Plugin: vim-operator-flashy {{{
 highlight! link Flashy DiffText
 " }}}
-" Plugin: vim-bookmarks {{{
-let g:bookmark_sign = '⚐'
-highlight! BookmarkSign            ctermfg=12 guifg=#90b0d1
-highlight! BookmarkAnnotationSign  ctermfg=11 guifg=#ff9800
+" Plugin: vim-signature {{{
+highlight! SignatureMarkText    ctermfg=11 guifg=#756207 ctermbg=234 guibg=#1c1c1c
+highlight! SignatureMarkerText  ctermfg=12 guifg=#4EA9D7 ctermbg=234 guibg=#1c1c1c
 " }}}
 " Plugin: vim-choosewin {{{
 let g:choosewin_label = 'SDFJKLZXCV'
