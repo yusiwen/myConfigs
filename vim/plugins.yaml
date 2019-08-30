@@ -51,7 +51,7 @@
   on_source: defx.nvim
   on_func: defx_icons#get
 
-- {repo: tyru/caw.vim on_map: {nx: <Plug>}}
+- {repo: tyru/caw.vim, on_map: {nx: <Plug>}}
 
 # git wrapper
 - {repo: jreybert/vimagit, on_cmd: Magit, on_func: magit#show_magit}
