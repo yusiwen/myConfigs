@@ -31,7 +31,10 @@
   ],
   "vim.handleKeys": {
     "<C-k>": false,
-    "<C-a>": false
+    "<C-a>": false,
+    "<C-v>": true,
+    "<C-d>": true,
+    "<C-s>": false,
   },
 
   "rust.mode": "legacy",
