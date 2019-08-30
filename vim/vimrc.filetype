@@ -1,98 +1,30 @@
 " File Types
 "-------------------------------------------------
 
-" Ruby {{{
-" Support functions {{{
-function! s:setf(filetype) abort
-  if &filetype !~# '\<'.a:filetype.'\>'
-    let &filetype = a:filetype
-  endif
-endfunction
+augroup user_plugin_filetype " {{{
+  autocmd!
 
-func! s:StarSetf(ft)
-  if expand('<amatch>') !~ g:ft_ignore_pat
-    exe 'setf ' . a:ft
-  endif
-endfunc
-" }}}
-
-" HTML with Ruby - eRuby
-au BufNewFile,BufRead *.erb,*.rhtml call s:setf('eruby')
-" Interactive Ruby shell
-au BufNewFile,BufRead .irbrc,irbrc call s:setf('ruby')
-" Ruby
-au BufNewFile,BufRead *.rb,*.rbw,*.gemspec call s:setf('ruby')
-" Rackup
-au BufNewFile,BufRead *.ru call s:setf('ruby')
-" Bundler
-au BufNewFile,BufRead Gemfile call s:setf('ruby')
-" Ruby on Rails
-au BufNewFile,BufRead *.builder,*.rxml,*.rjs,*.ruby call s:setf('ruby')
-" Rakefile
-au BufNewFile,BufRead [rR]akefile,*.rake call s:setf('ruby')
-au BufNewFile,BufRead [rR]akefile* call s:StarSetf('ruby')
-" Rantfile
-au BufNewFile,BufRead [rR]antfile,*.rant call s:setf('ruby')
-" Appraisal
-au BufNewFile,BufRead Appraisals call s:setf('ruby')
-" Autotest
-au BufNewFile,BufRead .autotest call s:setf('ruby')
-" Buildr Buildfile
-au BufNewFile,BufRead [Bb]uildfile call s:setf('ruby')
-" Capistrano
-au BufNewFile,BufRead Capfile,*.cap call s:setf('ruby')
-" Chef
-au BufNewFile,BufRead Cheffile call s:setf('ruby')
-au BufNewFile,BufRead Berksfile call s:setf('ruby')
-" CocoaPods
-au BufNewFile,BufRead Podfile,*.podspec call s:setf('ruby')
-" Guard
-au BufNewFile,BufRead Guardfile,.Guardfile call s:setf('ruby')
-" Jbuilder
-au BufNewFile,BufRead *.jbuilder call s:setf('ruby')
-" Kitchen Sink
-au BufNewFile,BufRead KitchenSink call s:setf('ruby')
-" Opal
-au BufNewFile,BufRead *.opal call s:setf('ruby')
-" Pry config
-au BufNewFile,BufRead .pryrc call s:setf('ruby')
-" Puppet librarian
-au BufNewFile,BufRead Puppetfile call s:setf('ruby')
-" Rabl
-au BufNewFile,BufRead *.rabl call s:setf('ruby')
-" Routefile
-au BufNewFile,BufRead [rR]outefile call s:setf('ruby')
-" SimpleCov
-au BufNewFile,BufRead .simplecov call s:setf('ruby')
-" Thor
-au BufNewFile,BufRead [tT]horfile,*.thor call s:setf('ruby')
-" Vagrant
-au BufNewFile,BufRead [vV]agrantfile call s:setf('ruby')
-" }}}
-
-augroup MyAutoCmd " {{{
+  " Reload vim config automatically
+  autocmd BufWritePost $VIMPATH/{*.yaml,vimrc,vimrc.*,*.vim} nested
+    \ source $MYVIMRC | redraw
 
   " Highlight current line only on focused window
-  autocmd WinEnter,InsertLeave * set cursorline
-  autocmd WinLeave,InsertEnter * set nocursorline
-
-  " Vim detects *.pc as filetype 'proc' but has no syntax highlighting for Pro*C. Override it so that it highlights as C.
-  "   See http://vim.wikia.com/wiki/Forcing_Syntax_Coloring_for_files_with_odd_extensions
-  autocmd BufRead,BufNewFile *.pc set filetype=c
+  autocmd WinEnter,InsertLeave * if &ft !~# 'denite' | set cursorline | endif
+  autocmd WinLeave,InsertEnter * if &ft !~# 'denite' | set nocursorline | endif
 
   " Automatically set read-only for files being edited elsewhere
   autocmd SwapExists * nested let v:swapchoice = 'o'
 
-" Equalize window dimensions when resizing vim window
+  " Equalize window dimensions when resizing vim window
   autocmd VimResized * tabdo wincmd =
 
   " Force write shada on leaving nvim
   autocmd VimLeave * if has('nvim') | wshada! | else | wviminfo! | endif
 
   " Check if file changed when its window is focus, more eager than 'autoread'
-  autocmd WinEnter,FocusGained * checktime
+  autocmd FocusGained * checktime
 
-  autocmd Syntax * if 5000 < line('$') | syntax sync minlines=200 | endif
+  autocmd Syntax * if line('$') > 5000 | syntax sync minlines=200 | endif
 
   " Update filetype on save if empty
   autocmd BufWritePost * nested
@@ -110,43 +42,44 @@ augroup MyAutoCmd " {{{
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
   autocmd BufReadPost *
-    \ if &ft !~ '^git\c' && ! &diff && line("'\"") > 0 && line("'\"") <= line("$")
+    \ if &ft !~# 'commit' && ! &diff &&
+    \      line("'\"") >= 1 && line("'\"") <= line("$")
     \|   execute 'normal! g`"zvzz'
     \| endif
-
-  " Disable paste and/or update diff when leaving insert mode
-  autocmd InsertLeave *
-    \ if &paste | setlocal nopaste mouse=a | echo 'nopaste' | endif |
-  \ if &l:diff | diffupdate | endif
-
-  autocmd TabLeave * let g:lasttab = tabpagenr()
 
   autocmd FileType crontab setlocal nobackup nowritebackup
 
   autocmd FileType yaml.docker-compose setlocal expandtab
 
-  " Turn off expandtab for editing makefiles
-  autocmd FileType make setlocal noexpandtab
-
-  autocmd FileType gitcommit setlocal spell textwidth=72
+  autocmd FileType gitcommit setlocal spell
 
   autocmd FileType gitcommit,qfreplace setlocal nofoldenable
 
   " https://webpack.github.io/docs/webpack-dev-server.html#working-with-editors-ides-supporting-safe-write
-  autocmd FileType html,css,javascript,jsx,javascript.jsx setlocal backupcopy=yes
+  autocmd FileType css,javascript,jsx,javascript.jsx setlocal backupcopy=yes
+
+  autocmd FileType php
+    \ setlocal matchpairs-=<:> iskeyword+=\\ path+=/usr/local/share/pear
+"		\ | setlocal formatoptions=qroct " Correct indent after opening a phpdocblock
+
+  autocmd FileType python
+    \ setlocal foldmethod=indent expandtab smarttab nosmartindent
+    \ | setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=80
 
   autocmd FileType zsh setlocal foldenable foldmethod=marker
 
   autocmd FileType html setlocal path+=./;/
 
-  autocmd FileType markdown setlocal spell spelllang=en_us,cjk expandtab autoindent formatoptions=tcroqn2 comments=n:>
+  autocmd FileType markdown
+    \ setlocal expandtab spell conceallevel=0
+    \ | setlocal autoindent formatoptions=tcroqn2 comments=n:>
 
   autocmd FileType apache setlocal path+=./;/
 
   autocmd FileType cam setlocal nonumber synmaxcol=10000
 
-  autocmd FileType go highlight default link goErr WarningMsg |
-    \ match goErr /\<err\>/
+  " autocmd FileType go highlight default link goErr WarningMsg |
+  " 	\ match goErr /\<err\>/
 
 augroup END " }}}
 
@@ -184,19 +117,8 @@ let g:SimpleJsIndenter_BriefMode = 1
 let g:SimpleJsIndenter_CaseIndentLevel = -1
 
 " }}}
-" Markdown {{{
-let g:markdown_fenced_languages = [
-  \  'css',
-  \  'javascript',
-  \  'js=javascript',
-  \  'json=javascript',
-  \  'python',
-  \  'py=python',
-  \  'sh',
-  \  'sass',
-  \  'xml',
-  \  'vim'
-  \]
+" Ruby {{{
+let g:ruby_no_expensive = 1
 
 " }}}
 " Folding {{{
@@ -209,33 +131,6 @@ let g:php_folding = 2
 let g:php_phpdoc_folding = 1
 let g:perl_fold = 1
 " }}}
-" }}}
-
-" File-type detection {{{
-augroup filetypedetect
-
-  autocmd BufNewFile,BufRead */inventory/*.{yml,yaml}    setfiletype yaml.ansible
-  autocmd BufNewFile,BufRead */inventories/*.{yml,yaml}  setfiletype yaml.ansible
-  autocmd BufNewFile,BufRead */playbooks/*.{yml,yaml}    setfiletype yaml.ansible
-
-  autocmd BufNewFile,BufRead *.hcl                setfiletype terraform
-  autocmd BufNewFile,BufRead yarn.lock            setfiletype yaml
-  autocmd BufNewFile,BufRead */.kube/config       setfiletype yaml
-  autocmd BufNewFile,BufRead *.postman_collection setfiletype json
-  autocmd BufNewFile,BufRead .tern-{project,port} setfiletype json
-  autocmd BufNewFile,BufRead *.js.map             setfiletype json
-  autocmd BufNewFile,BufRead .jsbeautifyrc        setfiletype json
-  autocmd BufNewFile,BufRead .eslintrc            setfiletype json
-  autocmd BufNewFile,BufRead .jscsrc              setfiletype json
-  autocmd BufNewFile,BufRead .babelrc             setfiletype json
-  autocmd BufNewFile,BufRead .watchmanconfig      setfiletype json
-  autocmd BufNewFile,BufRead .buckconfig          setfiletype toml
-  autocmd BufNewFile,BufRead .flowconfig          setfiletype ini
-  autocmd BufNewFile,BufRead Jenkinsfile          setfiletype groovy
-  autocmd BufNewFile,BufRead Tmuxfile,tmux/config setfiletype tmux
-  autocmd BufNewFile,BufRead Brewfile             setfiletype ruby
-
-augroup END
 " }}}
 
 " vim: set foldmethod=marker ts=2 sw=2 tw=80 expandtab :
