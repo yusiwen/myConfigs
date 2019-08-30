@@ -7,6 +7,7 @@ call denite#custom#option('_', {
   \ 'prompt': '>>',
   \ 'vertical_preview': 1,
   \ 'statusline': 1,
+  \ 'smartcase': 1,
   \ 'start_filter': 1,
   \ 'auto-resume': 1,
   \ 'direction': 'dynamicbottom',
