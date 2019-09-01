@@ -121,4 +121,5 @@
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
   "git.ignoreLegacyWarning": true,
+  "window.menuBarVisibility": "toggle",
 }
