@@ -354,8 +354,9 @@ endif
 " }}}
 " vim-niceblock {{{
 if dein#tap('vim-niceblock')
-  xmap I  <Plug>(niceblock-I)
-  xmap A  <Plug>(niceblock-A)
+  silent! xmap I  <Plug>(niceblock-I)
+  silent! xmap gI <Plug>(niceblock-gI)
+  silent! xmap A  <Plug>(niceblock-A)
 endif
 " }}}
 " accelerated-jk {{{
@@ -537,8 +538,8 @@ if dein#tap('undotree')
 endif
 " }}}
 
-if dein#tap('vim-online-thesaurus')
-  nnoremap <silent> <Leader>K :<C-u>OnlineThesaurusCurrentWord<CR>
+if dein#tap('thesaurus_query.vim')
+  nnoremap <silent> <Leader>K :<C-u>ThesaurusQueryReplaceCurrentWord<CR>
 endif
 
 " vim-asterisk {{{
