@@ -80,7 +80,7 @@ function init_env() { # {{{
       sudo apt update
       sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat apt-transport-https
     elif [ "$DISTRO" = 'CentOS' ]; then
-      sudo yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man lsof
+      sudo yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
@@ -568,17 +568,29 @@ function install_vim() { # {{{
       sudo apt install -y silversearcher-ag cscope astyle lua5.3 ruby-full perl
     elif [ "$DISTRO" = 'CentOS' ]; then
       set +e
-      PACKAGE=$(yum list installed | grep -c ^epel-release.noarch)
+      PACKAGE=$(yum list installed | grep -c ^wget.x86_64)
       set -e
       if [ "$PACKAGE" = 0 ]; then
-        echo -e "${COLOR}No latest NeoVim source found, adding ${COLOR1}epel-release-latest-7${COLOR}...${NC}"
-        sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-      else
-        echo -e "${COLOR1}epel-release-latest-7${COLOR} was found${NC}"
+        echo -e "${COLOR}No ${COLOR1}wget${COLOR} found, install it...${NC}"
+        sudo yum install -y wget
       fi
 
-      echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
-      sudo yum install -y neovim python2-neovim python36-neovim
+      set +e
+      PACKAGE=$(yum list installed | grep -c ^fuse-sshfs.x86_64)
+      set -e
+      if [ "$PACKAGE" = 0 ]; then
+        echo -e "${COLOR}No ${COLOR1}fuse-sshfs${COLOR} found, install it...${NC}"
+        sudo yum install -y fuse-sshfs
+      fi
+
+      if [ -e "$HOME"/bin/nvim.appimage ]; then
+        mv "$HOME"/bin/nvim.appimage "$HOME"/bin/nvim.appimage.$(date +"%s")
+      fi
+
+      echo -e "${COLOR}Get latest ${COLOR1}NeoVim${COLOR} build from GitHub repo...${NC}"
+      wget "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage" -P "$HOME"/bin
+      chmod +x "$HOME"/nvim.appimage
+      ln -sfnv "$HOME"/nvim.appimage "$HOME"/bin/nvim
     fi
   elif [ "$OS" = 'Darwin' ]; then
     echo -e "${COLOR}Install development branch of Neovim...${NC}"
