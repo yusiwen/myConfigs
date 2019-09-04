@@ -337,12 +337,12 @@
     source $VIMPATH/vimrc.deoplete
     call deoplete#enable()
 
-- repo: zchee/deoplete-go
+- repo: deoplete-plugins/deoplete-go
   if: has('nvim') && empty($VIM_MINIMAL)
   on_ft: go
   on_event: InsertEnter
 
-- repo: zchee/deoplete-jedi
+- repo: deoplete-plugins/deoplete-jedi
   if: has('nvim') && empty($VIM_MINIMAL)
   on_ft: python
   on_event: InsertEnter
