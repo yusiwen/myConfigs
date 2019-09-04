@@ -303,7 +303,7 @@ workspace $ws!!<1..10> output \
 
 # switch to workspace
 # move focused container to workspace
-bindsym $mod!!<1!,+Shift>+!!<2!1..9,0> \
+bindsym $mod!!<1!,+Control>+!!<2!1..9,0> \
   !!<1!,move container to >\
     workspace $ws!!<2!1..10>
 
