@@ -251,20 +251,11 @@
 
 # Asynchronous linting and make framework for Neovim/Vim
 - repo: neomake/neomake
-  on_cmd: [Neomake, NeomakeInfo, NeomakeToggle, NeomakeDisable, NeomakeEnable]
-  hook_add: |
-    let g:lint_filetypes = [
-      \  'yaml.ansible', 'python', 'php', 'ruby', 'vim', 'go', 'sh',
-      \  'javascript', 'jsx', 'javascript.jsx', 'json', 'css',
-      \  'markdown', 'html', 'yaml'
-      \ ]
-    autocmd MyAutoCmd BufWritePost *
-      \ if index(g:lint_filetypes, &filetype) > -1 && empty(&buftype)
-      \|   Neomake
-      \| elseif &filetype =~ 'html'
-      \|   Neomake tidy
-      \| endif
-    autocmd VimEnter * NeomakeDisable
+  on_path: .*
+  on_cmd: [Neomake, NeomakeInfo, NeomakeToggle, NeomakeFile, NeomakeEnable]
+  hook_source: |
+    source $VIMPATH/vimrc.neomake
+    call neomake#configure#automake('nrw')
 
 - repo: itchyny/calendar.vim
   if: empty($VIM_MINIMAL)

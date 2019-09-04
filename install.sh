@@ -607,13 +607,14 @@ function install_vim() { # {{{
   ln -sfnv "$CONFIG_VIM"/ftplugin "$VIM_HOME"/ftplugin
   ln -sfnv "$CONFIG_VIM"/plugin "$VIM_HOME"/plugin
   ln -sfnv "$CONFIG_VIM"/plugins.yaml "$VIM_HOME"/plugins.yaml
-  ln -sfnv "$CONFIG_VIM"/vimrc.general "$VIM_HOME"/vimrc.general
+  ln -sfnv "$CONFIG_VIM"/vimrc.defx "$VIM_HOME"/vimrc.defx
+  ln -sfnv "$CONFIG_VIM"/vimrc.denite "$VIM_HOME"/vimrc.denite
+  ln -sfnv "$CONFIG_VIM"/vimrc.deoplete "$VIM_HOME"/vimrc.deoplete
   ln -sfnv "$CONFIG_VIM"/vimrc.filetype "$VIM_HOME"/vimrc.filetype
+  ln -sfnv "$CONFIG_VIM"/vimrc.general "$VIM_HOME"/vimrc.general
   ln -sfnv "$CONFIG_VIM"/vimrc.mappings "$VIM_HOME"/vimrc.mappings
   ln -sfnv "$CONFIG_VIM"/vimrc.misc "$VIM_HOME"/vimrc.misc
-  ln -sfnv "$CONFIG_VIM"/vimrc.deoplete "$VIM_HOME"/vimrc.deoplete
-  ln -sfnv "$CONFIG_VIM"/vimrc.denite "$VIM_HOME"/vimrc.denite
-  ln -sfnv "$CONFIG_VIM"/vimrc.defx "$VIM_HOME"/vimrc.defx
+  ln -sfnv "$CONFIG_VIM"/vimrc.neomake "$VIM_HOME"/vimrc.neomake
   ln -sfnv "$CONFIG_VIM"/vimrc.goyo "$VIM_HOME"/vimrc.goyo
   ln -sfnv "$CONFIG_VIM"/vimrc.theme "$VIM_HOME"/vimrc.theme
   ln -sfnv "$CONFIG_VIM"/ctags "$HOME"/.ctags
