@@ -315,13 +315,13 @@ assign [class="^Google-chrome$" instance="^google-chrome$"] $ws2
 assign [class="^Firefox$"] $ws2
 assign [class="^Geary$|^Thunderbird$"] $ws3
 assign [class="^URxvt$" instance="$MUA" title="$MUA"] $ws3
-assign [class="^WizNote$|^Evince$"] $ws4
-assign [class="^libprs500$" instance="^calibre-gui$"] $ws4
+assign [class="^WizNote$|^Evince$"] $ws6
+assign [class="^libprs500$" instance="^calibre-gui$"] $ws7
 assign [class="^Vmplayer$|^VirtualBox Manager$|^Vmware$"] $ws5
-assign [class="^Eclipse$" instance="^Eclipse$"] $ws6
-assign [class="^Code$"] $ws6
-assign [class="^jetbrains-idea-|^Atom$"] $ws6
-assign [class="Wps|Et|Wpp|^libreoffice"] $ws7
+assign [class="^Eclipse$" instance="^Eclipse$"] $ws4
+assign [class="^Code$"] $ws4
+assign [class="^jetbrains-idea-|^Atom$"] $ws4
+assign [class="Wps|Et|Wpp|^libreoffice"] $ws6
 assign [class="^URxvt$" instance="$IRC" title="$IRC"] $ws8
 assign [class="^Meld$" instance="^meld$"] $ws6
 # }}}
