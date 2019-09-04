@@ -162,7 +162,7 @@
 - repo: RRethy/vim-hexokinase
   on_ft: [css, scss, sass, stylus, vim]
   hook_add: |
-    let g:Hexokinase_ftAutoload = ['css', 'scss', 'sass', 'stylus', 'vim']
+    let g:Hexokinase_ftAutoload = ['css', 'scss', 'sass', 'stylus']
 
 # Underlines the word under the cursor
 - repo: itchyny/vim-cursorword
