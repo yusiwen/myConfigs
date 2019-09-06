@@ -3,7 +3,7 @@
   "editor.tabSize": 2,
   "editor.wordWrap": "on",
   "editor.fontFamily": "'Sarasa Mono SC', 'Fira Code', Consolas, 'Courier New', monospace",
-  "editor.fontSize": 12,
+  "editor.fontSize": 13,
   "editor.fontLigatures": true,
   "editor.renderWhitespace": "boundary",
   "editor.cursorStyle": "underline",
@@ -34,7 +34,7 @@
     "<C-a>": false,
     "<C-v>": true,
     "<C-d>": true,
-    "<C-s>": false,
+    "<C-s>": false
   },
 
   "rust.mode": "legacy",
