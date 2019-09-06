@@ -122,4 +122,7 @@
   },
   "git.ignoreLegacyWarning": true,
   "window.menuBarVisibility": "toggle",
+  "oracleDeveloperTools.networkConfiguration.configFilesLocation": "/home/yusiwen/Oracle/network/admin",
+  "oracleDeveloperTools.networkConfiguration.walletFileLocation": "/home/yusiwen/Oracle/network/admin",
+  "workbench.startupEditor": "welcomePage",
 }
