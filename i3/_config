@@ -294,11 +294,11 @@ bindsym $mod+Tab exec rofi -show window
 # {{{ Workspace settings
 # define workspaces
 set $ws!!<1..10> \
-  !!<1:Main,2:Web,3:Mail,4:Book,5:VMs,6:Dev,7:Office,8:Chat,9,10>
+  !!<1:Main,2:Web,3:Mail,4:Dev,5:VMs,6:Office,7:Book,8:Chat,9,10>
 
 # assign workspaces to specific screen
 workspace $ws!!<1..10> output \
-  !!<$left_screen,$right_screen,$right_screen,$right_screen,$left_screen,$left_screen,$right_screen,$left_screen,$left_screen,$left_screen>
+  !!<$left_screen,$right_screen,$right_screen,$right_screen,$left_screen,$left_screen,$right_screen,$right_screen,$left_screen,$left_screen>
 
 # switch to workspace
 # move focused container to workspace
