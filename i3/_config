@@ -26,11 +26,10 @@ set $IRC weechat
 # }}}
 
 # {{{ Screens
-!?<HOSTNAME=home-ubuntu
-# When using nouveau driver, the second screen is 'DVI-D-1'
-#   after switched to nvidia-346 driver, it's 'DVI-D-0'
+!?<HOSTNAME=deskmini-server
+# User 'xrandr --query | grep connected' to list available monitors
 set !!<$left_screen,$right_screen> \
-  !!<DVI-I-1,DVI-D-0>
+  !!<HDMI-A-0,DisplayPort-2>
 >
 # }}}
 
