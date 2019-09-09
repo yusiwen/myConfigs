@@ -710,7 +710,7 @@ function install_i3wm() { # {{{
       # Install i3-gaps if not exist
       if ! type i3 >/dev/null 2>&1; then
         echo -e "${COLOR}Install ${COLOR1}i3${COLOR}...${NC}"
-        sudo apt install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings i3 ubuntu-drivers-common mesa-utils mesa-utils-extra compton xorg xserver-xorg hsetroot pcmanfm scrot simplescreenrecorder feh bleachbit xautolock fcitx fcitx-googlepinyin fcitx-sunpinyin fcitx-data fcitx-frontend-all fcitx-config-gtk fcitx-config-gtk2 fcitx-ui-classic
+        sudo apt install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings i3 ubuntu-drivers-common mesa-utils mesa-utils-extra compton xorg xserver-xorg hsetroot pcmanfm scrot simplescreenrecorder feh bleachbit xautolock fcitx fcitx-googlepinyin fcitx-sunpinyin fcitx-data fcitx-frontend-all fcitx-config-gtk fcitx-config-gtk2 fcitx-ui-classic flameshot
       fi
 
       # i3-gaps
