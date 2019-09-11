@@ -337,7 +337,7 @@ for_window [class="!!<\
   ^Gimp$,^Gpick$,^feh$,^Fcitx-config-gtk3$,^Telegram$,\
   ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,^KeeWeb$,\
   ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,\
-  ^Pidgin$,^File-roller$,^Gvim$,^shadowsocks-qt5$,\
+  ^Pidgin$,^File-roller$,^Gvim$,^shadowsocks-qt5$,^Genymotion$,\
   ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$,\
   ^Nm-connection-editor$,^Pcmanfm$,^fman$,^SimpleScreenRecorder$,^Bleachbit$\
   >"] floating enable
