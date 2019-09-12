@@ -14,6 +14,7 @@
 set -e
 set -o pipefail
 
+# Global variables {{{
 COLOR='\033[0;32m'
 COLOR1='\033[1;32m'
 NC='\033[0m'
@@ -38,6 +39,7 @@ else
   DISTRO=$OS
 fi
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
+# }}}
 
 function vercomp() { # {{{
   if [[ $1 == "$2" ]]; then
