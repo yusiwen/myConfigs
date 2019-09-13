@@ -82,10 +82,12 @@ else
 fi
 
 # Vim
-alias vi='nvim'
-alias vim='nvim'
-alias v='nvim'
-alias nv='nvim'
+if type nvim >/dev/null 2>&1; then
+  alias vi='nvim'
+  alias vim='nvim'
+  alias v='nvim'
+  alias nv='nvim'
+fi
 
 # Maven
 alias mvn-no-javadoc='mvn -Dmaven.javadoc.skip=true'
