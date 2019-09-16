@@ -15,7 +15,7 @@ if [ "$DISTRO" = 'Ubuntu' ]; then
   if ! type 7z >/dev/null 2>&1; then
     sudo apt install p7zip-full
   fi
-  PACKAGE=$(dpkg -l | grep fonts-wqy-microhei | cut -d ' ' -f 3 | grep ^fonts-wqy-microhei$ | wc -l)
+  PACKAGE=$(dpkg -l | grep fonts-wqy-microhei | cut -d ' ' -f 3 | grep -c ^fonts-wqy-microhei$)
   if [ "$PACKAGE" -eq 0 ]; then
     echo "Installing WenQuanYi Micro Hei Mono fonts..."
     sudo apt install -y fonts-wqy-microhei
