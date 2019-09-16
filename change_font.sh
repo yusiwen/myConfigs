@@ -34,8 +34,8 @@ echo "[3] Iosevka Slab"
 echo "[4] Fira Code"
 echo "[5] Sarasa Mono"
 echo "[0] Default(Ubuntu Mono + WenQuanYi Mirco Hei Mono)"
-echo -n "Choose font[0]: "
-read number
+printf "Choose font[0]: "
+read -r number
 
 if [ -z "$number" ]; then
   number='0'
