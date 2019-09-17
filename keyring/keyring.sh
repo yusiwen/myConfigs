@@ -14,7 +14,7 @@
 #
 
 if [ -n "$GNOME_KEYRING_PID" ]; then
-  eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)
+  eval "$(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)"
 
   for k in GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO; do
     eval v=\$$k
