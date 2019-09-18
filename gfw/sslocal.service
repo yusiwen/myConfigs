@@ -5,7 +5,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/sslocal -c /etc/shadowsocks/config.json --pid-file /var/run/sslocal.pid --log-file /var/log/sslocal.log
+ExecStart=/usr/bin/ss-local -c /etc/shadowsocks-libev/config.json
 
 [Install]
 WantedBy=multi-user.target

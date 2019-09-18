@@ -137,28 +137,33 @@ function install_gfw() { # {{{
         sudo apt install -y tsocks
       fi
 
-      if ! type pip >/dev/null 2>&1; then
-        install_python
-      fi
-
       # Install the latest shadowsocks version to support chahca20-ietf-poly1305 algorithm
       echo -e "${COLOR}Checking shadowsocks command line tools...${NC}"
-      sudo apt install -y libsodium-dev
-      if ! type sslocal >/dev/null 2>&1; then
-        echo -e "${COLOR}Installing shadowsocks command line tools...${NC}"
-        sudo -H pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
-        pip install --user gfwlist2privoxy
+      if ! type ss-local >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing shadowsocks-libev...${NC}"
+        sudo apt install -y shadowsocks-libev
+        # Stop and disable shadowsocks-libev server service, we only need ss-local client
+        sudo systemctl stop shadowsocks-libev
+        sudo systemctl disable shadowsocks-libev
+      fi
+
+      if ! type v2ray-plugin >/dev/null 2>&1; then
+        echo -e "${COLOR}Download v2ray-plugin from https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.1.0/v2ray-plugin-linux-amd64-v1.1.0.tar.gz, and put it in /usr/local/bin${NC}"
+      fi
+
+      echo -e "${COLOR}Please copy sample config file to ${COLOR1}'/etc/shadowsocks-libev/config.json'${COLOR} and edit server and password with real ones...${NC}"
+
+      if ! type privoxy >/dev/null 2>&1; then
+        if ! type pip >/dev/null 2>&1; then
+          install_python
+        fi
+
+        echo -e "${COLOR}Installing privoxy proxy...${NC}"
+        sudo apt install -y privoxy
+        pip install --user gfwlist2privox
         wget -O /tmp/gfwlist.txt https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
         "$HOME"/.local/bin/gfwlist2privoxy -i /tmp/gfwlist.txt -p 127.0.0.1:1098 -t socks5
         sudo mv gfwlist.action /etc/privoxy/
-      fi
-
-      echo -e "${COLOR}Please create config file at ${COLOR1}'/etc/shadowsocks.json'${COLOR} and run '${COLOR1}sslocal${COLOR}'...${NC}"
-      echo -e "${COLOR}And use '${COLOR1}supervisor${COLOR}' to start it at bootup${NC}"
-
-      if ! type privoxy >/dev/null 2>&1; then
-        echo -e "${COLOR}Installing privoxy proxy...${NC}"
-        sudo apt install -y privoxy
       else
         echo -e "${COLOR1}privoxy${COLOR} was found.${NC}"
       fi
@@ -169,8 +174,7 @@ function install_gfw() { # {{{
         sudo systemctl restart privoxy
         sudo systemctl enable privoxy
 
-        sudo mkdir -p /etc/shadowsocks
-        sudo cp "$HOME"/myConfigs/gfw/sslocal.config.json /etc/shadowsocks/config.json
+        sudo cp "$HOME"/myConfigs/gfw/ss-local.config.json /etc/shadowsocks-libev/config.json
         sudo cp "$HOME"/myConfigs/gfw/sslocal.service /etc/systemd/system/sslocal.service
         sudo systemctl restart sslocal
         sudo systemctl enable sslocal

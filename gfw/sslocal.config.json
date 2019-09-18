@@ -1,9 +1,0 @@
-{
-  "server":"FILE_WITH_REAL_SERVER",
-  "server_port":28399,
-  "password":"FILE_WITH_REAL_PWD",
-  "method":"chacha20-ietf-poly1305",
-  "timeout":300,
-  "local_address": "127.0.0.1",
-  "local_port":1098
-}
