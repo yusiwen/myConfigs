@@ -148,7 +148,16 @@ function install_gfw() { # {{{
       fi
 
       if ! type v2ray-plugin >/dev/null 2>&1; then
-        echo -e "${COLOR}Download v2ray-plugin from https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.1.0/v2ray-plugin-linux-amd64-v1.1.0.tar.gz, and put it in /usr/local/bin${NC}"
+        # Download latest v2ray-plugin binary, reference from cbeuw/shadowsocks-gq-release.sh(https://gist.github.com/cbeuw/2c641917e94a6962693f138e287f1e10)
+        url=$(wget -O - -o /dev/null https://api.github.com/repos/shadowsocks/v2ray-plugin/releases/latest | grep "/v2ray-plugin-linux-amd64-" | grep -P 'https(.*)[^"]' -o)
+        echo -e "${COLOR}Download v2ray-plugin from $url ...${NC}"
+        wget -O /tmp/v2ray-plugin.tar.gz "$url"
+        echo -e "${COLOR}Extract and install v2ray-plugin to '/usr/local/bin'...${NC}"
+        tar xvzf /tmp/v2ray-plugin.tar.gz -C /tmp
+        sudo mv /tmp/v2ray-plugin_linux_amd64 /usr/local/bin/v2ray-plugin
+        sudo chown root:root /usr/local/bin/v2ray-plugin
+        sudo chmod +x /usr/local/bin/v2ray-plugin
+        rm /tmp/v2ray-plugin.tar.gz
       fi
 
       echo -e "${COLOR}Please copy sample config file to ${COLOR1}'/etc/shadowsocks-libev/config.json'${COLOR} and edit server and password with real ones...${NC}"
