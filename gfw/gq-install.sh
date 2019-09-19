@@ -98,7 +98,7 @@ install_goquiet(){
       hint="${archs[$i-1]}"
       echo -e "${green}${i}${plain}) ${hint}"
     done
-    read -p "What's your architecture? (Default: ${archs[0]}):" pick
+    read -r "What's your architecture? (Default: ${archs[0]}):" pick
     [ -z "$pick" ] && pick=1
     expr ${pick} + 1 &>/dev/null
     if [ $? -ne 0 ]; then
@@ -117,8 +117,8 @@ install_goquiet(){
   done
 
   url=$(wget -O - -o /dev/null https://api.github.com/repos/cbeuw/GoQuiet/releases/latest | grep "/gq-server-linux-$gqarch-" | grep -P 'https(.*)[^"]' -o)
-  echo $url
-  wget -O gq-server $url
+  echo "$url"
+  wget -O gq-server "$url"
   chmod +x gq-server
   sudo mv gq-server /usr/local/bin
 }
@@ -140,7 +140,7 @@ install_prepare_goquiet(){
   while true
   do
     echo -e "Do you want install GoQuiet for shadowsocks-libev? [y/n]"
-    read -p "(default: y):" goquiet
+    read -r "(default: y):" goquiet
     [ -z "$goquiet" ] && goquiet=y
     case "${goquiet}" in
       y|Y|n|N)
@@ -157,10 +157,10 @@ install_prepare_goquiet(){
 
   if [ "${goquiet}" == "y" ] || [ "${goquiet}" == "Y" ]; then
     echo -e "Please enter a redirection IP for GoQuiet (leave blank to set it to 204.79.197.200:443 of bing.com):"
-    read -p "" gqwebaddr
+    read -r "" gqwebaddr
     [ -z "$gqwebaddr" ] && gqwebaddr="204.79.197.200:443"
     echo -e "Please enter a key for GoQuiet (leave blank to use shadowsocks' password):"
-    read -p "" gqkey
+    read -r "" gqkey
     [ -z "$gqkey" ] && gqkey="${shadowsockspwd}"
   fi
 }
@@ -177,7 +177,7 @@ config_shadowsocks(){
   fi
 
   if [ ! -d "$(dirname ${shadowsocks_libev_config})" ]; then
-    mkdir -p $(dirname ${shadowsocks_libev_config})
+    mkdir -p "$(dirname ${shadowsocks_libev_config})"
   fi
 
   if [ "${goquiet}" == "y" ] || [ "${goquiet}" == "Y" ]; then
@@ -217,7 +217,7 @@ fi
 
 install(){
   echo "Please enter password for shadowsocks-libev:"
-  read -p "(Default password: github.com):" shadowsockspwd
+  read -r "(Default password: github.com):" shadowsockspwd
   [ -z "${shadowsockspwd}" ] && shadowsockspwd="github.com"
   echo
   echo "password = ${shadowsockspwd}"
@@ -227,7 +227,7 @@ install(){
   do
     dport=443
     echo -e "Please enter a port for shadowsocks-libev [1-65535]"
-    read -p "(Default port: ${dport}):" shadowsocksport
+    read -r "(Default port: ${dport}):" shadowsocksport
     [ -z "${shadowsocksport}" ] && shadowsocksport=${dport}
     expr ${shadowsocksport} + 1 &>/dev/null
     if [ $? -eq 0 ]; then
@@ -249,7 +249,7 @@ install(){
       hint="${common_ciphers[$i-1]}"
       echo -e "${green}${i}${plain}) ${hint}"
     done
-    read -p "Which cipher you'd select(Default: ${common_ciphers[0]}):" pick
+    read -r "Which cipher you'd select(Default: ${common_ciphers[0]}):" pick
     [ -z "$pick" ] && pick=1
     expr ${pick} + 1 &>/dev/null
     if [ $? -ne 0 ]; then
@@ -275,7 +275,7 @@ install(){
 
 uninstall(){
   printf "Are you sure uninstall ${red}shadowsocks-libev${plain}? [y/n]\n"
-  read -p "(default: n):" answer
+  read -r "(default: n):" answer
   [ -z ${answer} ] && answer="n"
   if [ "${answer}" == "y" ] || [ "${answer}" == "Y" ]; then
     if check_sys packageManager yum; then
@@ -293,13 +293,13 @@ uninstall(){
 
 # Initialization step
 action=$1
-[ -z $1 ] && action=install
+[ -z "$1" ] && action=install
 case "${action}" in
   install|uninstall)
     ${action}
     ;;
   *)
     echo "Arguments error! [${action}]"
-    echo "Usage: $(basename $0) [install|uninstall]"
+    echo "Usage: $(basename "$0") [install|uninstall]"
     ;;
 esac
