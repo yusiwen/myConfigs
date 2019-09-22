@@ -2,7 +2,7 @@
 " Credits: https://github.com/dahu/vim-help
 
 if exists('b:did_ftplugin')
-  finish
+	finish
 endif
 let b:did_ftplugin = 1
 
@@ -17,11 +17,7 @@ setlocal iskeyword+=:
 setlocal iskeyword+=#
 setlocal iskeyword+=-
 
-if winwidth('%') > 200
-  wincmd L
-else
-  wincmd J
-endif
+wincmd K
 
 " Jump to links with enter
 nmap <buffer> <CR> <C-]>
@@ -48,5 +44,4 @@ nmap <buffer> t /\*\S\+\*<CR>l
 nmap <buffer> T h?\*\S\+\*<CR>l
 
 let &cpoptions = s:save_cpo
-
-" vim: set ts=2 sw=2 tw=80 expandtab :
+" vim: set ts=2 sw=2 tw=80 noet :

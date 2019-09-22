@@ -113,30 +113,30 @@ autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 " &modified         whether or not file was modified
 "
 " %-5.x - syntax to add 5 chars of padding to some element x
-let s:stl  = " %7*%{&paste ? 'P' : ''}%*"         " Paste symbol
-let s:stl .= '%4* %{FileMode()} %*'               " Modified symbol
-let s:stl .= '%3* %{BufferNumber()} %*'           " Buffer number and edit flag
-let s:stl .= '%8* %{EditMode()} %*'               " Edit mode
-let s:stl .= ' %1*%{badge#filename()}%*'          " Filename
-let s:stl .= ' %<'                                " Truncate here
-let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
-let s:stl .= '%3*%( %{badge#gitstatus()} %)%*'    " Git status
-let s:stl .= '%4*%(%{badge#syntax()} %)%*'        " syntax check
-let s:stl .= "%5*%(%{badge#trails('WS:%s')} %)%*" " Whitespace
-let s:stl .= '%3*%{badge#indexing()}%*'           " Indexing tags indicator
-let s:stl .= '%='                                 " Align to right
+let s:stl  = " %7*%{&paste ? 'P' : ''}%*"                " Paste symbol
+let s:stl .= '%4* %{FileMode()} %*'                      " Modified symbol
+let s:stl .= '%3* %{BufferNumber()} %*'                  " Buffer number and edit flag
+let s:stl .= '%8* %{EditMode()} %*'                      " Edit mode
+let s:stl .= ' %1*%{badge#filename()}%*'                 " Filename
+let s:stl .= ' %<'                                       " Truncate here
+let s:stl .= '%( %{badge#branch()} %)'                  " Git branch name
+let s:stl .= '%3*%( %{badge#gitstatus()} %)%*'           " Git status
+let s:stl .= '%4*%(%{badge#syntax()} %)%*'               " syntax check
+let s:stl .= "%5*%(%{badge#trails('WS:%s')} %)%*"        " Whitespace
+let s:stl .= '%3*%{badge#indexing()}%*'                  " Indexing tags indicator
+let s:stl .= '%='                                        " Align to right
 let s:stl .= '%3*%(%{NearestMethodOrFunction()}%)%*  '   " Current tag
-let s:stl .= '%{badge#format()} %*'               " File format
-let s:stl .= '%( %{&fenc} %)'                     " File encoding
-let s:stl .= '%*%( %{&ft} %)'                     " File type
-let s:stl .= '%2* %l/%2c%4p%% '                   " Line and column
+let s:stl .= '%{badge#format()} %*'                      " File format
+let s:stl .= '%( %{&fenc} %)'                            " File encoding
+let s:stl .= '%*%( %{&ft} %)'                            " File type
+let s:stl .= '%2* %l/%2c%4p%% '                          " Line and column
 
 " Non-active Statusline {{{
-let s:stl_nc  = "  %{badge#mode('R', 'Z')}%n"     " Readonly & buffer
-let s:stl_nc .= "%5*%{badge#modified('+')}%*"     " Write symbol
-let s:stl_nc .= ' %{badge#filename()}'            " Relative supername
-let s:stl_nc .= '%='                              " Align to right
-let s:stl_nc .= '%{&ft} '                         " File type
+let s:stl_nc  = "  %{badge#mode('R', 'Z')}%n"            " Readonly & buffer
+let s:stl_nc .= "%5*%{badge#modified('+')}%*"            " Write symbol
+let s:stl_nc .= ' %{badge#filename()}'                   " Relative supername
+let s:stl_nc .= '%='                                     " Align to right
+let s:stl_nc .= '%{&ft} '                                " File type
 " }}}
 
 let s:disable_statusline =
@@ -175,5 +175,4 @@ augroup user_statusline
   autocmd User CocDiagnosticChange call s:refresh()
   autocmd User GutentagsUpdating call s:refresh()
 augroup END
-" }}}
 " }}}

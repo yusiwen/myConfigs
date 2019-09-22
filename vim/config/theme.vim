@@ -1,8 +1,8 @@
-" THEME
-" ================================
+" Theme
+" ---
 
 scriptencoding utf-8
-execute 'source ' . expand('$VIMPATH/vimrc.colortheme')
+execute 'source ' . expand('$VIM_PATH/themes/vimrc.theme.sourcerer')
 
 " Plugin: Defx icons and highlights {{{
 " ---
