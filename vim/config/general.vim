@@ -176,7 +176,7 @@ endif
 " }}}
 " Behavior {{{
 " --------
-set nowrap                      " No wrap by default
+set wrap                        " Wrap by default
 set linebreak                   " Break long lines at 'breakat'
 set breakat=\ \	;:,!?           " Long lines break chars
 set nostartofline               " Cursor in same column for few commands
@@ -235,10 +235,11 @@ if has('folding')
 endif
 
 " UI Symbols
-" icons:  ▏│ ¦ ╎ ┆ ⋮ ⦙ ┊ 
 set showbreak=↪
-set listchars=tab:\▏\ ,extends:⟫,precedes:⟪,nbsp:␣,trail:·
-"set fillchars=vert:▉,fold:─
+" set listchars=tab:\▏\ ,extends:⟫,precedes:⟪,nbsp:␣,trail:·
+" tab: U+25BA, extends: U+00BB, precedes:U+00AB, trail:U+2017, eol:U+00AC
+set listchars=tab:►\ ,extends:»,precedes:«,trail:␣,eol:¬
+set fillchars=vert:|,fold:─
 
 if has('patch-7.4.314')
   " Do not display completion messages
