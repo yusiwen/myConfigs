@@ -241,7 +241,6 @@ endfunction "}}}
 
 " }}}
 " Windows and buffers {{{
-
 nnoremap <silent> [Window]v  :<C-u>split<CR>
 nnoremap <silent> [Window]g  :<C-u>vsplit<CR>
 nnoremap <silent> [Window]t  :tabnew<CR>
