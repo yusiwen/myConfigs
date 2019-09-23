@@ -17,17 +17,17 @@ set synmaxcol=1000           " Don't syntax highlight long lines
 set formatoptions+=1         " Don't break lines after a one-letter word
 set formatoptions-=t         " Don't auto-wrap text
 if has('patch-7.3.541')
-	set formatoptions+=j       " Remove comment leader when joining lines
+  set formatoptions+=j       " Remove comment leader when joining lines
 endif
 
 if has('vim_starting')
-	set encoding=utf-8
-	scriptencoding utf-8
+  set encoding=utf-8
+  scriptencoding utf-8
 endif
 
 " Enables 24-bit RGB color in the TUI
 if has('termguicolors')
-	set termguicolors
+  set termguicolors
 endif
 
 " What to save for views:
@@ -44,37 +44,37 @@ set sessionoptions-=buffers
 set sessionoptions+=tabpages
 
 if has('mac')
-	let g:clipboard = {
-		\   'name': 'macOS-clipboard',
-		\   'copy': {
-		\      '+': 'pbcopy',
-		\      '*': 'pbcopy',
-		\    },
-		\   'paste': {
-		\      '+': 'pbpaste',
-		\      '*': 'pbpaste',
-		\   },
-		\   'cache_enabled': 0,
-		\ }
+  let g:clipboard = {
+    \   'name': 'macOS-clipboard',
+    \   'copy': {
+    \      '+': 'pbcopy',
+    \      '*': 'pbcopy',
+    \    },
+    \   'paste': {
+    \      '+': 'pbpaste',
+    \      '*': 'pbpaste',
+    \   },
+    \   'cache_enabled': 0,
+    \ }
 endif
 
 if has('clipboard')
-	set clipboard& clipboard+=unnamedplus
+  set clipboard& clipboard+=unnamedplus
 endif
 
 " }}}
 " Wildmenu {{{
 " --------
 if has('wildmenu')
-	set nowildmenu
-	set wildmode=list:longest,full
-	set wildoptions=tagfile
-	set wildignorecase
-	set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
-	set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
-	set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
-	set wildignore+=application/vendor/**,**/vendor/ckeditor/**,media/vendor/**
-	set wildignore+=__pycache__,*.egg-info,.pytest_cache
+  set nowildmenu
+  set wildmode=list:longest,full
+  set wildoptions=tagfile
+  set wildignorecase
+  set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
+  set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
+  set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
+  set wildignore+=application/vendor/**,**/vendor/ckeditor/**,media/vendor/**
+  set wildignore+=__pycache__,*.egg-info,.pytest_cache
 endif
 
 " }}}
@@ -90,39 +90,39 @@ set nospell spellfile=$VIM_PATH/spell/en.utf-8.add
 " History saving
 set history=1000
 if has('nvim')
-	set shada='300,<50,@100,s10,h
+  set shada='300,<50,@100,s10,h
 else
-	set viminfo='300,<10,@50,h,n$DATA_PATH/viminfo
+  set viminfo='300,<10,@50,h,n$DATA_PATH/viminfo
 endif
 
 " If sudo, disable vim swap/backup/undo/shada/viminfo writing
 if $SUDO_USER !=# '' && $USER !=# $SUDO_USER
-		\ && $HOME !=# expand('~'.$USER)
-		\ && $HOME ==# expand('~'.$SUDO_USER)
+    \ && $HOME !=# expand('~'.$USER)
+    \ && $HOME ==# expand('~'.$SUDO_USER)
 
-	set noswapfile
-	set nobackup
-	set nowritebackup
-	set noundofile
-	if has('nvim')
-		set shada="NONE"
-	else
-		set viminfo="NONE"
-	endif
+  set noswapfile
+  set nobackup
+  set nowritebackup
+  set noundofile
+  if has('nvim')
+    set shada="NONE"
+  else
+    set viminfo="NONE"
+  endif
 endif
 
 " Secure sensitive information, disable backup files in temp directories
 if exists('&backupskip')
-	set backupskip+=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*
-	set backupskip+=.vault.vim
+  set backupskip+=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*
+  set backupskip+=.vault.vim
 endif
 
 " Disable swap/undo/viminfo/shada files in temp directories or shm
 augroup user_secure
-	autocmd!
-	silent! autocmd BufNewFile,BufReadPre
-		\ /tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim
-		\ setlocal noswapfile noundofile nobackup nowritebackup viminfo= shada=
+  autocmd!
+  silent! autocmd BufNewFile,BufReadPre
+    \ /tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim
+    \ setlocal noswapfile noundofile nobackup nowritebackup viminfo= shada=
 augroup END
 
 " }}}
@@ -162,15 +162,15 @@ set showfulltag     " Show tag and tidy search in completion
 "set complete=.      " No wins, buffs, tags, include scanning
 
 if exists('+inccommand')
-	set inccommand=nosplit
+  set inccommand=nosplit
 endif
 
 if executable('rg')
-	set grepformat=%f:%l:%m
-	let &grepprg = 'rg --vimgrep' . (&smartcase ? ' --smart-case' : '')
+  set grepformat=%f:%l:%m
+  let &grepprg = 'rg --vimgrep' . (&smartcase ? ' --smart-case' : '')
 elseif executable('ag')
-	set grepformat=%f:%l:%m
-	let &grepprg = 'ag --vimgrep' . (&smartcase ? ' --smart-case' : '')
+  set grepformat=%f:%l:%m
+  let &grepprg = 'ag --vimgrep' . (&smartcase ? ' --smart-case' : '')
 endif
 
 " }}}
@@ -190,13 +190,13 @@ set completeopt=menuone         " Always show menu, even for one item
 set completeopt+=noselect       " Do not select a match in the menu
 
 if has('patch-7.4.775')
-	" Do not insert any text for a match until the user selects from menu
-	set completeopt+=noinsert
+  " Do not insert any text for a match until the user selects from menu
+  set completeopt+=noinsert
 endif
 
 if has('patch-8.1.0360')
-	set diffopt+=internal,algorithm:patience
-	" set diffopt=indent-heuristic,algorithm:patience
+  set diffopt+=internal,algorithm:patience
+  " set diffopt=indent-heuristic,algorithm:patience
 endif
 
 " }}}
@@ -209,6 +209,7 @@ set sidescrolloff=5     " Keep at least 5 lines left/right
 set number              " Show line numbers
 set ruler               " Enable default status ruler
 set list                " Show hidden characters
+set cursorline          " Enable cursorline
 
 set showtabline=2       " Always show the tabs line
 set winwidth=30         " Minimum width for active window
@@ -225,12 +226,12 @@ set cmdwinheight=5      " Command-line lines
 set equalalways         " Resize windows on split or close
 set laststatus=2        " Always show a status line
 "set colorcolumn=80      " Highlight the 80th character limit
-set display=lastline
+set display+=lastline
 
 if has('folding')
-	set foldenable
-	set foldmethod=syntax
-	set foldlevelstart=99
+  set foldenable
+  set foldmethod=syntax
+  set foldlevelstart=99
 endif
 
 " UI Symbols
@@ -240,28 +241,28 @@ set listchars=tab:\▏\ ,extends:⟫,precedes:⟪,nbsp:␣,trail:·
 "set fillchars=vert:▉,fold:─
 
 if has('patch-7.4.314')
-	" Do not display completion messages
-	set shortmess+=c
+  " Do not display completion messages
+  set shortmess+=c
 endif
 
 if has('patch-7.4.1570')
-	" Do not display message when editing files
-	set shortmess+=F
+  " Do not display message when editing files
+  set shortmess+=F
 endif
 
 if has('conceal') && v:version >= 703
-	" For snippet_complete marker
-	set conceallevel=2 concealcursor=niv
+  " For snippet_complete marker
+  set conceallevel=2 concealcursor=niv
 endif
 
 if exists('&pumblend')
-	" pseudo-transparency for completion menu
-	set pumblend=20
+  " pseudo-transparency for completion menu
+  set pumblend=20
 endif
 
 if exists('&winblend')
-	" pseudo-transparency for floating window
-	set winblend=20
+  " pseudo-transparency for floating window
+  set winblend=20
 endif
 
 " }}}

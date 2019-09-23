@@ -2,7 +2,7 @@
 " Credits: https://github.com/dahu/vim-help
 
 if exists('b:did_ftplugin')
-	finish
+  finish
 endif
 let b:did_ftplugin = 1
 

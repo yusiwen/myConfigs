@@ -14,10 +14,10 @@ map! <Nul> <C-Space>
 
 " Disable arrow movement, resize splits instead.
 if get(g:, 'elite_mode')
-	nnoremap <Up>    :resize +2<CR>
-	nnoremap <Down>  :resize -2<CR>
-	nnoremap <Left>  :vertical resize +2<CR>
-	nnoremap <Right> :vertical resize -2<CR>
+  nnoremap <Up>    :resize +2<CR>
+  nnoremap <Down>  :resize -2<CR>
+  nnoremap <Left>  :vertical resize +2<CR>
+  nnoremap <Right> :vertical resize -2<CR>
 endif
 
 " Double leader key for toggling visual-line mode
@@ -71,11 +71,11 @@ nnoremap zh z5h
 
 " Improve scroll, credits: https://github.com/Shougo
 nnoremap <expr> zz (winline() == (winheight(0)+1) / 2) ?
-	\ 'zt' : (winline() == 1) ? 'zb' : 'zz'
+  \ 'zt' : (winline() == 1) ? 'zb' : 'zz'
 noremap <expr> <C-f> max([winheight(0) - 2, 1])
-	\ ."\<C-d>".(line('w$') >= line('$') ? "L" : "M")
+  \ ."\<C-d>".(line('w$') >= line('$') ? "L" : "M")
 noremap <expr> <C-b> max([winheight(0) - 2, 1])
-	\ ."\<C-u>".(line('w0') <= 1 ? "H" : "M")
+  \ ."\<C-u>".(line('w0') <= 1 ? "H" : "M")
 noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
 noremap <expr> <C-y> (line("w0") <= 1         ? "k" : "3\<C-y>")
 
@@ -137,8 +137,8 @@ nnoremap gQ @q
 
 " Show vim syntax highlight groups for character under cursor
 nmap <silent> gh :echo 'hi<'.synIDattr(synID(line('.'), col('.'), 1), 'name')
-	\.'> trans<'.synIDattr(synID(line('.'), col('.'), 0), 'name').'> lo<'
-	\.synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>'<CR>
+  \.'> trans<'.synIDattr(synID(line('.'), col('.'), 0), 'name').'> lo<'
+  \.synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>'<CR>
 
 " Toggle editor visuals
 nmap <silent> <Leader>ts :setlocal spell!<cr>
@@ -171,10 +171,10 @@ xnoremap sg :s//gc<Left><Left><Left>
 
 " Returns visually selected text
 function! s:get_selection(cmdtype) "{{{
-	let temp = @s
-	normal! gv"sy
-	let @/ = substitute(escape(@s, '\'.a:cmdtype), '\n', '\\n', 'g')
-	let @s = temp
+  let temp = @s
+  normal! gv"sy
+  let @/ = substitute(escape(@s, '\'.a:cmdtype), '\n', '\\n', 'g')
+  let @s = temp
 endfunction "}}}
 
 " Location/quickfix list movement
@@ -203,7 +203,7 @@ noremap  <Leader>j :m+<CR>
 
 " Context-aware action-menu, neovim only (see plugin/actionmenu.vim)
 if has('nvim')
-	nmap <silent> <LocalLeader>c :<C-u>ActionMenu<CR>
+  nmap <silent> <LocalLeader>c :<C-u>ActionMenu<CR>
 endif
 
 " Whitespace jump (see plugin/whitespace.vim)
@@ -215,15 +215,15 @@ nmap <silent> <Leader>se :<C-u>SessionSave<CR>
 nmap <silent> <Leader>os :<C-u>SessionLoad<CR>
 
 if has('mac')
-	" Open the macOS dictionary on current word
-	nmap <Leader>? :!open dict://<cword><CR><CR>
+  " Open the macOS dictionary on current word
+  nmap <Leader>? :!open dict://<cword><CR><CR>
 
-	" Use Marked for real-time Markdown preview
-	"
-	if executable('/Applications/Marked 2.app/Contents/MacOS/Marked 2')
-		autocmd user_events FileType markdown
-			\ nmap <buffer><Leader>P :silent !open -a Marked\ 2.app '%:p'<CR>
-	endif
+  " Use Marked for real-time Markdown preview
+  "
+  if executable('/Applications/Marked 2.app/Contents/MacOS/Marked 2')
+    autocmd user_events FileType markdown
+      \ nmap <buffer><Leader>P :silent !open -a Marked\ 2.app '%:p'<CR>
+  endif
 endif
 
 " }}}
@@ -233,10 +233,10 @@ nnoremap <silent> <Leader>ml :call <SID>append_modeline()<CR>
 " Append modeline after last line in buffer
 " See: http://vim.wikia.com/wiki/Modeline_magic
 function! s:append_modeline() "{{{
-	let l:modeline = printf(' vim: set ts=%d sw=%d tw=%d %set :',
-				\ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
-	let l:modeline = substitute(&commentstring, '%s', l:modeline, '')
-	call append(line('$'), l:modeline)
+  let l:modeline = printf(' vim: set ts=%d sw=%d tw=%d %set :',
+        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, '%s', l:modeline, '')
+  call append(line('$'), l:modeline)
 endfunction "}}}
 
 " }}}
@@ -260,48 +260,48 @@ nmap <silent> [Window]- :<c-u>call <SID>toggle_contrast(-v:count1)<cr>
 nmap <silent> [Window]= :<c-u>call <SID>toggle_contrast(+v:count1)<cr>
 
 function! s:toggle_background()
-	if ! exists('g:colors_name')
-		echomsg 'No colorscheme set'
-		return
-	endif
-	let l:scheme = g:colors_name
+  if ! exists('g:colors_name')
+    echomsg 'No colorscheme set'
+    return
+  endif
+  let l:scheme = g:colors_name
 
-	if l:scheme =~# 'dark' || l:scheme =~# 'light'
-		" Rotate between different theme backgrounds
-		execute 'colorscheme' (l:scheme =~# 'dark'
-					\ ? substitute(l:scheme, 'dark', 'light', '')
-					\ : substitute(l:scheme, 'light', 'dark', ''))
-	else
-		execute 'set background='.(&background ==# 'dark' ? 'light' : 'dark')
-		if ! exists('g:colors_name')
-			execute 'colorscheme' l:scheme
-			echomsg 'The colorscheme `'.l:scheme
-				\ .'` doesn''t have background variants!'
-		else
-			echo 'Set colorscheme to '.&background.' mode'
-		endif
-	endif
+  if l:scheme =~# 'dark' || l:scheme =~# 'light'
+    " Rotate between different theme backgrounds
+    execute 'colorscheme' (l:scheme =~# 'dark'
+          \ ? substitute(l:scheme, 'dark', 'light', '')
+          \ : substitute(l:scheme, 'light', 'dark', ''))
+  else
+    execute 'set background='.(&background ==# 'dark' ? 'light' : 'dark')
+    if ! exists('g:colors_name')
+      execute 'colorscheme' l:scheme
+      echomsg 'The colorscheme `'.l:scheme
+        \ .'` doesn''t have background variants!'
+    else
+      echo 'Set colorscheme to '.&background.' mode'
+    endif
+  endif
 endfunction
 
 function! s:toggle_contrast(delta)
-	let l:scheme = ''
-	if g:colors_name =~# 'solarized8'
-		let l:schemes = map(['_low', '_flat', '', '_high'],
-			\ '"solarized8_".(&background).v:val')
-		let l:contrast = ((a:delta + index(l:schemes, g:colors_name)) % 4 + 4) % 4
-		let l:scheme = l:schemes[l:contrast]
-	endif
-	if l:scheme !=# ''
-		execute 'colorscheme' l:scheme
-	endif
+  let l:scheme = ''
+  if g:colors_name =~# 'solarized8'
+    let l:schemes = map(['_low', '_flat', '', '_high'],
+      \ '"solarized8_".(&background).v:val')
+    let l:contrast = ((a:delta + index(l:schemes, g:colors_name)) % 4 + 4) % 4
+    let l:scheme = l:schemes[l:contrast]
+  endif
+  if l:scheme !=# ''
+    execute 'colorscheme' l:scheme
+  endif
 endfunction
 
 function! s:window_empty_buffer()
-	let l:current = bufnr('%')
-	if ! getbufvar(l:current, '&modified')
-		enew
-		silent! execute 'bdelete '.l:current
-	endif
+  let l:current = bufnr('%')
+  if ! getbufvar(l:current, '&modified')
+    enew
+    silent! execute 'bdelete '.l:current
+  endif
 endfunction
 " }}}
 

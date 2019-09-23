@@ -9,9 +9,9 @@ let b:cursorword = 0
 
 " Only load ftplugin once
 if get(s:, 'loaded')
-	" Subsequent times, just open pum
-	call actionmenu#open_pum()
-	finish
+  " Subsequent times, just open pum
+  call actionmenu#open_pum()
+  finish
 endif
 let s:loaded = 1
 
@@ -23,45 +23,45 @@ let s:selected_item = 0
 doautocmd <nomodeline> InsertEnter
 
 function! actionmenu#open_pum()
-	call feedkeys("i\<C-x>\<C-u>")
-	silent! autocmd! deoplete *
-	silent! autocmd! neosnippet *
+  call feedkeys("i\<C-x>\<C-u>")
+  silent! autocmd! deoplete *
+  silent! autocmd! neosnippet *
 endfunction
 
 function! actionmenu#select_item()
-	if pumvisible()
-		if ! empty(v:completed_item)
-			let s:selected_item = copy(v:completed_item)
-		endif
-		" Close pum and leave insert
-		return "\<C-y>\<Esc>"
-	endif
-	" Leave insert mode
-	return "\<Esc>"
+  if pumvisible()
+    if ! empty(v:completed_item)
+      let s:selected_item = copy(v:completed_item)
+    endif
+    " Close pum and leave insert
+    return "\<C-y>\<Esc>"
+  endif
+  " Leave insert mode
+  return "\<Esc>"
 endfunction
 
 function! actionmenu#on_insert_leave()
-	call actionmenu#close()
-	let l:index = -1
-	if type(s:selected_item) == type({})
-		let l:index = s:selected_item['user_data']
-	endif
-	if l:index ==# ''
-		let l:index = -1
-	endif
-	let l:data = l:index > -1 ? g:actionmenu#items[l:index] : {}
-	let s:selected_item = 0
-	let g:actionmenu#items = []
-	let g:actionmenu#selected = [l:index, l:data]
-	call actionmenu#callback(l:index, l:data)
+  call actionmenu#close()
+  let l:index = -1
+  if type(s:selected_item) == type({})
+    let l:index = s:selected_item['user_data']
+  endif
+  if l:index ==# ''
+    let l:index = -1
+  endif
+  let l:data = l:index > -1 ? g:actionmenu#items[l:index] : {}
+  let s:selected_item = 0
+  let g:actionmenu#items = []
+  let g:actionmenu#selected = [l:index, l:data]
+  call actionmenu#callback(l:index, l:data)
 endfunction
 
 function! actionmenu#pum_parse_item(item, index) abort
-	if type(a:item) == type('')
-		return { 'word': a:item, 'user_data': a:index }
-	else
-		return { 'word': a:item['word'], 'user_data': a:index }
-	endif
+  if type(a:item) == type('')
+    return { 'word': a:item, 'user_data': a:index }
+  else
+    return { 'word': a:item['word'], 'user_data': a:index }
+  endif
 endfunction
 
 " Menu mappings
@@ -88,18 +88,18 @@ imap     <buffer> <C-d>  <PageDown>
 
 " Events
 augroup actionmenu
-	autocmd!
-	autocmd InsertLeave <buffer> call actionmenu#on_insert_leave()
+  autocmd!
+  autocmd InsertLeave <buffer> call actionmenu#on_insert_leave()
 augroup END
 
 " Pum completion function
 function! actionmenu#complete_func(findstart, base)
-	if a:findstart
-		return 1
-	else
-		return map(copy(g:actionmenu#items), {
-			\ index, item -> actionmenu#pum_parse_item(item, index) })
-	endif
+  if a:findstart
+    return 1
+  else
+    return map(copy(g:actionmenu#items), {
+      \ index, item -> actionmenu#pum_parse_item(item, index) })
+  endif
 endfunction
 
 " Set the pum completion function
