@@ -6,7 +6,6 @@
 # Startup
 # -------
 - repo: Shougo/dein.vim
-- repo: rafi/awesome-vim-colorschemes
 - repo: itchyny/vim-gitbranch
 - repo: itchyny/vim-parenmatch
 - repo: thinca/vim-localrc
