@@ -26,9 +26,9 @@ if has('vim_starting')
 endif
 
 " Enables 24-bit RGB color in the TUI
-if has('termguicolors')
-  set termguicolors
-endif
+"if has('termguicolors')
+"  set termguicolors
+"endif
 
 " What to save for views:
 set viewoptions-=options
