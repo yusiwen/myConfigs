@@ -50,24 +50,32 @@ rofi.disable-history: true
 ! }}}
 
 ! URxvt  ------------------------------------------------------------{{{
-URxvt.meta8: true
-URxvt.iso14755: false
-
 ! Fonts
 #include ".Xresources.font"
 
-URxvt.intensityStyles: false
+URxvt.skipBuiltinGlyphs: 1
 
+URxvt.meta8: true
+URxvt.iso14755: false
+URxvt.intensityStyles: false
 URxvt.preeditType: OverTheSpot
+URxvt.cursorBlink: true
+URxvt.saveLines: 1000
 
 URxvt.scrollBar: false
 URxvt.scrollTtyOutput: false
 URxvt.scrollWithBuffer: true
 URxvt.scrollTtyKeypress: true
 
+URxvt.lineSpace: 0
+URxvt.internalBorder: 0
+URxvt.borderLess: 1
+
 URxvt.perl-ext-common:  default,matcher,clipboard,tabbed
 URxvt.url-launcher:     /usr/bin/google-chrome
 URxvt.matcher.button:   1
+
+URxvt.clipboard.autocopy: true
 
 !URxvt.keysym.Shift-Control-V: perl:clipboard:paste
 URxvt.keysym.Shift-Control-V:     eval:paste_clipboard
@@ -81,14 +89,8 @@ URxvt.keysym.Control-Up:          \033[1;5A
 URxvt.keysym.Shift-Control-Up:    \033[1;6A
 URxvt.keysym.Control-Down:        \033[1;5B
 URxvt.keysym.Shift-Control-Down:  \033[1;6B
-
 URxvt.keysym.C-Delete:  perl:matcher:last
 URxvt.keysym.M-Delete:  perl:matcher:list
-
-URxvt.clipboard.autocopy: true
-
-URxvt.cursorBlink: true
-URxvt.saveLines: 1000
 
 URxvt.tabbed.tabbar-fg: 3
 URxvt.tabbed.tabbar-bg: 0
