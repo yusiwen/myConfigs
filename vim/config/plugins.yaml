@@ -11,10 +11,15 @@
 - repo: thinca/vim-localrc
 - repo: romainl/vim-cool
 - repo: sgur/vim-editorconfig
+- repo: lilydjwg/colorizer
+  hook_source: |
+    let g:colorizer_nomap = 1
+    let g:colorizer_startup = 0
 
 - repo: christoomey/vim-tmux-navigator
   if: "! (has('win32') || has('win64'))"
 
+- repo: tpope/vim-surround
 - repo: tpope/vim-sleuth
   hook_add: let g:sleuth_neighbor_limit = 5
 
