@@ -49,7 +49,7 @@ Host vm-pd-database
   Port 1042
 
 Host vps01
-  HostName 45.32.224.66
+  HostName 45.32.80.48
   User root
 
 Host vps02
