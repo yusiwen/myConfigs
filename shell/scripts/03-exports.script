@@ -210,6 +210,12 @@ if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
   export PATH
 fi
 
+# CMake
+if [ -d "/opt/cmake" ] && [[ ":$PATH:" != *":/opt/cmake:"* ]]; then
+  PATH="/opt/cmake/bin${PATH:+:"$PATH"}"
+  export PATH
+fi
+
 # Homebrew's sbin path
 if [ -d "/usr/local/sbin" ] && [[ ":$PATH:" != *":/usr/local/sbin:"* ]]; then
   PATH="/usr/local/sbin:${PATH:+:"$PATH"}"
