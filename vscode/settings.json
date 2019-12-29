@@ -125,4 +125,5 @@
   "oracleDeveloperTools.networkConfiguration.configFilesLocation": "/home/yusiwen/Oracle/network/admin",
   "oracleDeveloperTools.networkConfiguration.walletFileLocation": "/home/yusiwen/Oracle/network/admin",
   "workbench.startupEditor": "welcomePage",
+  "C_Cpp.updateChannel": "Insiders",
 }
