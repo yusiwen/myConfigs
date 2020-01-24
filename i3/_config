@@ -339,7 +339,8 @@ for_window [class="!!<\
   ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,^org.remmina.Remmina$,\
   ^Pidgin$,^File-roller$,^Gvim$,^shadowsocks-qt5$,^Genymotion$,\
   ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$,\
-  ^Nm-connection-editor$,^Pcmanfm$,^fman$,^SimpleScreenRecorder$,^Bleachbit$\
+  ^Nm-connection-editor$,^Pcmanfm$,^fman$,^SimpleScreenRecorder$,^Bleachbit$,\
+  ^GParted$,^Gnome-disks$,^Clementine$\
   >"] floating enable
 # }}}
 
@@ -365,7 +366,7 @@ exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 !?<HOSTNAME=deskmini-server
 exec --no-startup-id !!<\
 # ~/Shadowsocks-Qt5-3.0.1-x86_64.AppImage,\
-  albert,flameshot
+  albert,flameshot,blueman-applet
 >
 >
 !?<HOSTNAME=vm-pd-ubuntu-min
