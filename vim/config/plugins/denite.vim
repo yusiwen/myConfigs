@@ -127,4 +127,4 @@ function! s:denite_filter_settings() abort
   nnoremap <silent><buffer>       jj     <C-w>p
 endfunction
 
-" vim: set ts=2 sw=2 tw=80 et :
+" vim: set ts=2 sw=2 tw=80 expandtab :

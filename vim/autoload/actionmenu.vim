@@ -43,7 +43,7 @@ function! actionmenu#open(items, callback, ...) abort
     let s:buffer = nvim_create_buf(0, 1)
     call nvim_buf_set_option(s:buffer, 'syntax', 'OFF')
   endif
-	call nvim_buf_set_option(s:buffer, 'modifiable', v:true)
+  call nvim_buf_set_option(s:buffer, 'modifiable', v:true)
   call nvim_buf_set_lines(s:buffer, 0, -1, v:true, [ l:icon['character'] ])
 
   " Open the window
@@ -92,4 +92,4 @@ function! actionmenu#close() abort
   endif
 endfunction
 
-" vim: set ts=2 sw=2 tw=80 noet :
+" vim: set ts=2 sw=2 tw=80 expandtab :
