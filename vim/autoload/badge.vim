@@ -236,10 +236,10 @@ function! badge#syntax() abort
       let b:badge_cache_syntax = SyntasticStatuslineFlag()
     endif
     if l:errors > 0
-      let b:badge_cache_syntax .= printf(' %d ', l:errors)
+      let b:badge_cache_syntax .= printf('E:%d ', l:errors)
     endif
     if l:warnings > 0
-      let b:badge_cache_syntax .= printf(' %d ', l:warnings)
+      let b:badge_cache_syntax .= printf('W:%d ', l:warnings)
     endif
     let b:badge_cache_syntax = substitute(b:badge_cache_syntax, '\s*$', '', '')
   endif
