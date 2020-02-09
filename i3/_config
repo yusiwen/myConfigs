@@ -354,7 +354,7 @@ exec --no-startup-id !!<\
 #  compton -b,\
 #  dunst,\
   urxvtd -q -o -f,\
-  xautolock -time 5 -locker 'i3lock -c 1d1d1d && sleep 30 && xset dpms force off',\
+  xautolock -time 30 -locker 'i3lock -c 1d1d1d && sleep 3 && xset dpms force off',\
   hsetroot -solid "#528b8b",\
   i3-msg Workspace 1:Main,i3-sensible-terminal,\
   fcitx -d,\
