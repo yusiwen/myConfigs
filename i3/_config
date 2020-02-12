@@ -17,7 +17,7 @@ set $mod Mod1
 >
 
 set $TERM urxvtc
-set $BROWSER google-chrome
+set $BROWSER x-www-browser
 set $FM pcmanfm
 set $FM_CMD mc
 set $PLAYER ncmpcpp
