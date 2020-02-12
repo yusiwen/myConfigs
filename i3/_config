@@ -326,6 +326,9 @@ assign [class="^URxvt$" instance="$IRC" title="$IRC"] $ws8
 assign [class="^Meld$" instance="^meld$"] $ws6
 # }}}
 
+# Padding in window's title
+for_window [class=".*"] title_format "  %title"
+
 # {{{ Floating settings
 for_window [window_role="pop-up|bubble"] floating enable
 for_window [class="^Eclipse$" instance="^Eclipse$" title="^Workspace Launcher "] floating enable
