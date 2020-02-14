@@ -11,6 +11,7 @@ if [ ! -d "$TARGET_PATH" ]; then
   mkdir -p "$TARGET_PATH"
   mkdir -p "$TARGET_PATH"/vps01
   mkdir -p "$TARGET_PATH"/vps02
+  mkdir -p "$TARGET_PATH"/vps03
   mkdir -p "$TARGET_PATH"/aliyun01
 fi
 
@@ -33,6 +34,10 @@ rsync -azPv root@vps02:/etc/letsencrypt "$TARGET_PATH"/vps02/etc
 # Backup Nginx setting files from vps02
 echo '(vps02)Backup Nginx settings...'
 rsync -azPv root@vps02:/etc/nginx "$TARGET_PATH"/vps02/etc
+
+# Backup shadowsocks-libev setting files from vps03
+echo '(vps03)Backup shadowsocks-libev settings...'
+rsync -azPv root@vps03:/etc/shadowsocks-libev "$TARGET_PATH"/vps03/etc
 
 # Backup MySql database backup files from aliyun01
 echo '(aliyun01)Backup mysql databases...'
