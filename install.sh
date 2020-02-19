@@ -80,7 +80,7 @@ function init_env() { # {{{
         sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
       fi
       sudo apt update
-      sudo apt install -y curl lua5.3 perl silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat apt-transport-https
+      sudo apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat apt-transport-https
     elif [ "$DISTRO" = 'CentOS' ]; then
       sudo yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget
     fi
