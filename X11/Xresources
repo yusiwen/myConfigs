@@ -68,7 +68,7 @@ URxvt.scrollWithBuffer: true
 URxvt.scrollTtyKeypress: true
 
 URxvt.lineSpace: 0
-URxvt.internalBorder: 0
+URxvt.internalBorder: 5
 URxvt.borderLess: 1
 
 URxvt.perl-ext-common:  default,matcher,clipboard,tabbed
