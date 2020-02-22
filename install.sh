@@ -177,6 +177,13 @@ function install_gfw() { # {{{
         echo -e "${COLOR1}privoxy${COLOR} was found.${NC}"
       fi
 
+      if ! type trojan >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing trojan...${NC}"
+        sudo add-apt-repository ppa:greaterfire/trojan
+        sudo apt-get update
+        sudo apt-get install trojan
+      fi
+
       if [ -d "$HOME"/myConfigs ]; then
         ln -sfnv "$HOME"/myConfigs/gfw/tsocks.conf "$HOME"/.tsocks.conf
         sudo cp "$HOME"/myConfigs/gfw/privoxy.conf /etc/privoxy/config
