@@ -1,0 +1,5 @@
+#!/bin/sh
+
+http_proxy=http://192.168.2.54:8118
+/opt/calibre/calibre
+

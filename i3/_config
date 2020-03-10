@@ -317,7 +317,7 @@ assign [class="^Firefox$"] $ws2
 assign [class="^Geary$|^Thunderbird$"] $ws3
 assign [class="^URxvt$" instance="$MUA" title="$MUA"] $ws3
 assign [class="^WizNote$|^Evince$"] $ws6
-assign [class="^libprs500$" instance="^calibre-gui$"] $ws7
+assign [class="^calibre$" instance="^calibre-gui$"] $ws7
 assign [class="^Vmplayer$|^VirtualBox Manager$|^Vmware$"] $ws5
 assign [class="^Eclipse$" instance="^Eclipse$"] $ws4
 assign [class="^Code$"] $ws4
