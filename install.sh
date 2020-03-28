@@ -444,7 +444,7 @@ function install_python() { # {{{
     if ! type virtualenv >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
       pip install --user virtualenv
-      pip3 install --user virutalenv
+      pip3 install --user virtualenv
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
