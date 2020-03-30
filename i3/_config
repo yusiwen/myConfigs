@@ -341,7 +341,7 @@ for_window [class="^Steam$" instance="^Steam$"] floating enable
 for_window [class="^realvnc-vncserverui-service$" instance="^VNC\sServer\s-\sOptions$"] floating enable
 for_window [class="!!<\
   ^Gimp$,^Gpick$,^feh$,^Fcitx-config-gtk3$,^Telegram$,\
-  ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,^KeeWeb$,\
+  ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,^KeeWeb$,^Peazip$,\
   ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,^org.remmina.Remmina$,\
   ^Pidgin$,^File-roller$,^Gvim$,^shadowsocks-qt5$,^Genymotion$,\
   ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$,\
