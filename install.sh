@@ -104,7 +104,7 @@ function install_universal_ctags() { # {{{
         echo -e "${COLOR}Finding exuberant-ctags, it's very old, uninstalling it..${NC}"
         sudo apt purge exuberant-ctags
       fi
-      sudo apt install autoconf pkg-config
+      sudo apt install -y autoconf pkg-config
     elif [ "$DISTRO" = 'CentOS' ]; then
       sudo yum install -y pkgconfig autoconf automake python36-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
     fi
