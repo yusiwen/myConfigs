@@ -10,7 +10,6 @@ fi
 if [ ! -d "$TARGET_PATH" ]; then
   mkdir -p "$TARGET_PATH"
   mkdir -p "$TARGET_PATH"/vps01
-  mkdir -p "$TARGET_PATH"/vps02
   mkdir -p "$TARGET_PATH"/vps03
   mkdir -p "$TARGET_PATH"/aliyun01
 fi
@@ -26,14 +25,6 @@ rsync -azPv root@vps01:/etc/letsencrypt "$TARGET_PATH"/vps01/etc
 # Backup Nginx setting files from vps01
 echo '(vps01)Backup Nginx settings...'
 rsync -azPv root@vps01:/etc/nginx "$TARGET_PATH"/vps01/etc
-
-# Backup let's encrypt certificates from vps02
-echo "(vps02)Backup let's encrypt certificates..."
-rsync -azPv root@vps02:/etc/letsencrypt "$TARGET_PATH"/vps02/etc
-
-# Backup Nginx setting files from vps02
-echo '(vps02)Backup Nginx settings...'
-rsync -azPv root@vps02:/etc/nginx "$TARGET_PATH"/vps02/etc
 
 # Backup shadowsocks-libev setting files from vps03
 echo '(vps03)Backup shadowsocks-libev settings...'
