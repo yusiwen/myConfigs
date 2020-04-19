@@ -1,0 +1,4 @@
+"proxy": {
+  "enable": true,
+  "address": "socks://localhost:2080"
+}
