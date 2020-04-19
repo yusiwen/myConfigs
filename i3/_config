@@ -346,7 +346,7 @@ for_window [class="!!<\
   ^Pidgin$,^File-roller$,^Gvim$,^shadowsocks-qt5$,^Genymotion$,\
   ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$,\
   ^Nm-connection-editor$,^Pcmanfm$,^fman$,^SimpleScreenRecorder$,^Bleachbit$,\
-  ^GParted$,^Gnome-disks$,^Clementine$,^Amule$,^Filezilla$\
+  ^GParted$,^Gnome-disks$,^Clementine$,^Amule$,^Filezilla$,^Lepton$\
   >"] floating enable
 # }}}
 
