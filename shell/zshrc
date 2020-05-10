@@ -55,9 +55,9 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 if [ "$(uname)" = 'Darwin' ]; then
-  plugins=(brew virtualenv git svn mercurial mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z)
+  plugins=(brew virtualenv git git-flow svn mercurial mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z)
 else
-  plugins=(virtualenv git svn mercurial mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z)
+  plugins=(virtualenv git git-flow svn mercurial mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z kubectl minikube)
 fi
 
 # ZSH uses the KEYTIMEOUT parameter to determine how long to wait (in hundredths of a second)
