@@ -188,7 +188,6 @@
 - {repo: kristijanhusak/defx-git, on_source: defx.nvim}
 - {repo: kristijanhusak/defx-icons, on_source: defx.nvim}
 
-
 - {repo: tyru/caw.vim, on_map: {nx: <Plug>}}
 - {repo: liuchengxu/vim-which-key, on_cmd: WhichKey}
 - {repo: guns/xterm-color-table.vim, on_cmd: XtermColorTable}
