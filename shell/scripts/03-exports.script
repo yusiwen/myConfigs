@@ -107,7 +107,7 @@ if [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
   fi
 fi
 
-if [ -z "$M2_HOME" ]; then
+if [ -z "$M2_HOME" ] || [ ! -d "$M2_HOME" ]; then
   MVN_INSTALLATION_PATH="$HOME/maven"
   if [ -d "$MVN_INSTALLATION_PATH" ]; then
     MVN_NAME=$(/bin/ls -dr "$MVN_INSTALLATION_PATH"/*-maven-*/ 2>/dev/null | head -1)
