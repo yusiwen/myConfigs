@@ -71,7 +71,7 @@
   "terminal.integrated.fontFamily": "Sarasa Term SC",
   "terminal.integrated.fontSize": 12,
 
-  "extensions.ignoreRecommendations": false,
+  "extensions.ignoreRecommendations": true,
   "workbench.iconTheme": "material-icon-theme",
   "vsicons.projectDetection.autoReload": true,
 
@@ -128,4 +128,5 @@
   "C_Cpp.updateChannel": "Insiders",
   "http.proxySupport": "off",
   "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -javaagent:\"/home/yusiwen/.vscode/extensions/gabrielbb.vscode-lombok-1.0.1/server/lombok.jar\"",
+  "java.semanticHighlighting.enabled": true,
 }
