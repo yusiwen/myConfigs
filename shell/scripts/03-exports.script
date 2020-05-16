@@ -30,7 +30,7 @@ mkdir -p "$XDG_DATA_HOME"
 #}}}
 
 #{{{ Oracle instant client
-if [ -z "$ORACLE_HOME" ]; then
+if [ -z "$ORACLE_HOME" ] || [ ! -d "$ORACLE_HOME" ]; then
   CLIENT_INSTALLATION_PATH="/opt/oracle"
   if [ -d "$CLIENT_INSTALLATION_PATH" ]; then
     ORACLE_HOME=$(/bin/ls -dr $CLIENT_INSTALLATION_PATH/instantclient*/ 2>/dev/null | head -1)
