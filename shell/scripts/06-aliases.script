@@ -95,3 +95,6 @@ alias mvn-no-test='mvn -Dmaven.test.skip=true'
 
 # youtube-dl
 alias ytd='youtube-dl --proxy socks5://127.0.0.1:1088 -r 500K'
+
+# K8s
+alias kc='kubectl'
