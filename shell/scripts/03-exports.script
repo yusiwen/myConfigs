@@ -154,6 +154,8 @@ fi
 if [ -d "/usr/local/go" ]; then
   export GOROOT=/usr/local/go
   export GOPATH=$HOME/gopackage
+  export GO111MODULE=on
+  export GOPROXY=https://goproxy.io,direct
   PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
   export PATH
 fi
