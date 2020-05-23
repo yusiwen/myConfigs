@@ -228,6 +228,14 @@ function install_git() { # {{{
       else
         echo -e "${COLOR1}git${COLOR} was found.${NC}"
       fi
+
+      if ! type tig >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
+        sudo apt install tig
+        echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
+      else
+        echo -e "${COLOR1}tig${COLOR} was found.${NC}"
+      fi
     elif [ "$DISTRO" = 'CentOS' ]; then
       PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
       if [ "$PACKAGE" = 0 ]; then
