@@ -70,7 +70,7 @@ function vercomp() { # {{{
 function init_env() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      if [ "$MIRRORS" -eq 0 ]; then
+      if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 0 ]; then
         echo -e "${COLOR}Setting Ubuntu apt source to aliyun...${NC}"
         sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
         sudo sed -i "s/^deb http:\/\/.*archive\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
