@@ -270,6 +270,10 @@ function install_git() { # {{{
   git config --global merge.conflictstyle diff3
   git config --global mergetool.prompt false
 
+  if type diff-so-fancy >/dev/null 2>&1; then
+    git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+  fi
+
   if [ -e "$HOME"/.ssh/id_rsa.pub ]; then
     echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
     cat "$HOME"/.ssh/id_rsa.pub
@@ -517,6 +521,10 @@ function install_node() { # {{{
   # Install cli tools for git commit conventions
   echo -e "${COLOR1}Installing conventional-changelog-cli, Commitizen, cz-customizable, standard-version...${NC}"
   npm install -g conventional-changelog-cli commitizen cz-customizable standard-version diff-so-fancy
+
+  if type git >/dev/null 2>&1; then
+    git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+  fi
 } # }}}
 
 function install_zsh() { # {{{
