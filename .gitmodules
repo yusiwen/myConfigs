@@ -7,3 +7,6 @@
 [submodule "i3/i3bang"]
 	path = i3/i3bang
 	url = https://github.com/yusiwen/i3bang.git
+[submodule "logitech/k380-function-keys-conf"]
+	path = logitech/k380-function-keys-conf
+	url = https://github.com/jergusg/k380-function-keys-conf.git
