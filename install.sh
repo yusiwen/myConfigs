@@ -80,9 +80,9 @@ function init_env() { # {{{
         sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
       fi
       sudo apt update
-      sudo apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat apt-transport-https jq
+      sudo apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat apt-transport-https jq tmux
     elif [ "$DISTRO" = 'CentOS' ]; then
-      sudo yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget
+      sudo yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
