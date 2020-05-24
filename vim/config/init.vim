@@ -13,7 +13,14 @@ augroup END
 " Initializes options
 let s:package_manager = get(g:, 'etc_package_manager', 'dein')
 if empty(s:package_manager) || s:package_manager ==# 'none'
-  finish
+	finish
+endif
+
+" Enables 24-bit RGB color in the terminal
+if has('termguicolors')
+	if empty($COLORTERM) || $COLORTERM =~# 'truecolor\|24bit'
+		set termguicolors
+	endif
 endif
 
 " Disable vim distribution plugins

@@ -11,7 +11,8 @@ set signcolumn=yes           " Always show signs column
 set hidden                   " hide buffers when abandoned instead of unload
 set fileformats=unix,dos,mac " Use Unix as the standard file type
 set magic                    " For regular expressions turn magic on
-set path=.,**                " Directories to search when using gf
+set path+=**                 " Directories to search when using gf and friends
+set isfname-==               " Remove =, detects filename in var=/foo/bar
 set virtualedit=block        " Position cursor anywhere in visual block
 set synmaxcol=1000           " Don't syntax highlight long lines
 set formatoptions+=1         " Don't break lines after a one-letter word
@@ -25,37 +26,23 @@ if has('vim_starting')
   scriptencoding utf-8
 endif
 
-" Enables 24-bit RGB color in the TUI
-"if has('termguicolors')
-"  set termguicolors
-"endif
+" What to save for views and sessions:
+set viewoptions=folds,cursor,curdir,slash,unix
+set sessionoptions=curdir,help,tabpages,winsize
 
-" What to save for views:
-set viewoptions-=options
-set viewoptions+=slash,unix
-
-" What to save in sessions:
-set sessionoptions-=blank
-set sessionoptions-=options
-set sessionoptions-=globals
-set sessionoptions-=folds
-set sessionoptions-=help
-set sessionoptions-=buffers
-set sessionoptions+=tabpages
-
-if has('mac')
-  let g:clipboard = {
-    \   'name': 'macOS-clipboard',
-    \   'copy': {
-    \      '+': 'pbcopy',
-    \      '*': 'pbcopy',
-    \    },
-    \   'paste': {
-    \      '+': 'pbpaste',
-    \      '*': 'pbpaste',
-    \   },
-    \   'cache_enabled': 0,
-    \ }
+if has('mac') && has('vim_starting')
+	let g:clipboard = {
+		\   'name': 'macOS-clipboard',
+		\   'copy': {
+		\      '+': 'pbcopy',
+		\      '*': 'pbcopy',
+		\    },
+		\   'paste': {
+		\      '+': 'pbpaste',
+		\      '*': 'pbpaste',
+		\   },
+		\   'cache_enabled': 0,
+		\ }
 endif
 
 if has('clipboard')
@@ -66,15 +53,24 @@ endif
 " Wildmenu {{{
 " --------
 if has('wildmenu')
-  set nowildmenu
-  set wildmode=list:longest,full
-  set wildoptions=tagfile
-  set wildignorecase
-  set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
-  set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
-  set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
-  set wildignore+=application/vendor/**,**/vendor/ckeditor/**,media/vendor/**
-  set wildignore+=__pycache__,*.egg-info,.pytest_cache
+	if ! has('nvim')
+		set wildmode=list:longest
+	endif
+
+	" if has('nvim')
+	" 	set wildoptions=pum
+	" else
+	" 	set nowildmenu
+	" 	set wildmode=list:longest,full
+	" 	set wildoptions=tagfile
+	" endif
+	set wildignorecase
+	set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
+	set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
+	set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
+	set wildignore+=application/vendor/**,**/vendor/ckeditor/**,media/vendor/**
+	set wildignore+=__pycache__,*.egg-info,.pytest_cache,.mypy_cache/**
+	set wildcharm=<C-z>  " substitue for 'wildchar' (<Tab>) in macros
 endif
 
 " }}}
@@ -85,15 +81,25 @@ set directory=$DATA_PATH/swap//,$DATA_PATH,~/tmp,/var/tmp,/tmp
 set undodir=$DATA_PATH/undo//,$DATA_PATH,~/tmp,/var/tmp,/tmp
 set backupdir=$DATA_PATH/backup/,$DATA_PATH,~/tmp,/var/tmp,/tmp
 set viewdir=$DATA_PATH/view/
-set nospell spellfile=$VIM_PATH/spell/en.utf-8.add
+set spellfile=$VIM_PATH/spell/en.utf-8.add
 
 " History saving
-set history=1000
-if has('nvim')
-  set shada='300,<50,@100,s10,h
+set history=2000
+
+if has('nvim') && ! has('win32') && ! has('win64')
+	set shada=!,'300,<50,@100,s10,h
 else
-  set viminfo='300,<10,@50,h,n$DATA_PATH/viminfo
+	set viminfo='300,<10,@50,h,n$DATA_PATH/viminfo
 endif
+
+augroup user_persistent_undo
+	autocmd!
+	au BufWritePre /tmp/*          setlocal noundofile
+	au BufWritePre COMMIT_EDITMSG  setlocal noundofile
+	au BufWritePre MERGE_MSG       setlocal noundofile
+	au BufWritePre *.tmp           setlocal noundofile
+	au BufWritePre *.bak           setlocal noundofile
+augroup END
 
 " If sudo, disable vim swap/backup/undo/shada/viminfo writing
 if $SUDO_USER !=# '' && $USER !=# $SUDO_USER
@@ -256,14 +262,18 @@ if has('conceal') && v:version >= 703
   set conceallevel=2 concealcursor=niv
 endif
 
-"if exists('&pumblend')
-"  " pseudo-transparency for completion menu
-"  set pumblend=10
-"endif
+if exists('+previewpopup')
+	set previewpopup=height:10,width:60
+endif
 
-if exists('&winblend')
-  " pseudo-transparency for floating window
-  set winblend=10
+" Pseudo-transparency for completion menu and floating windows
+if &termguicolors
+	if exists('&pumblend')
+		set pumblend=10
+	endif
+	if exists('&winblend')
+		set winblend=10
+	endif
 endif
 
 " }}}

@@ -7,25 +7,25 @@ let b:defx_git_loaded = 1
 " Use <Tab> for trigger completion and navigate to the next complete item
 let g:coc_snippet_next = '<tab>'
 inoremap <silent><expr> <Tab>
-  \ pumvisible() ? "\<C-n>" :
-  \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-  \ <SID>check_back_space() ? "\<Tab>" :
-  \ coc#refresh()
+	\ pumvisible() ? "\<C-n>" :
+	\ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+	\ <SID>check_back_space() ? "\<Tab>" :
+	\ coc#refresh()
 
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() :
-  \ delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" :
-  \"\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+	\ delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" :
+	\"\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return ! col || getline('.')[col - 1] =~? '\s'
+	let col = col('.') - 1
+	return ! col || getline('.')[col - 1] =~? '\s'
 endfunction
 
 augroup user_plugin_coc
-  autocmd!
-  autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
+	autocmd!
+	autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
 augroup END
 
 " use <c-space>for trigger completion
@@ -61,11 +61,9 @@ nmap gC <Plug>(coc-git-commit)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-  if (index(['vim', 'help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    let l:found = CocAction('doHover')
-  endif
+	if (index(['vim', 'help'], &filetype) >= 0)
+		execute 'h '.expand('<cword>')
+	else
+		let l:found = CocAction('doHover')
+	endif
 endfunction
-
-" vim: set ts=2 sw=2 tw=80 expandtab :
