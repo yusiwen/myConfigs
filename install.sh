@@ -579,28 +579,28 @@ function install_vim() { # {{{
 
   # NeoVim {{{
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ]; then
-      NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$CODENAME.list
-      if [ ! -e "$NVIM_PPA" ]; then
-        echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/unstable${COLOR}...${NC}"
-        sudo add-apt-repository -y ppa:neovim-ppa/unstable
-        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$NVIM_PPA"
-        sudo apt update
-      else
-        echo -e "${COLOR1}ppa:neovim-ppa/unstable${COLOR} was found${NC}"
-      fi
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
 
-      set +e
-      PACKAGE=$(dpkg -l | grep neovim | cut -d ' ' -f 3 | grep -c ^neovim$)
-      set -e
-      if [ "$PACKAGE" -eq 0 ]; then
+      if ! type nvim >/dev/null 2>&1; then
         echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
         # Install VIM_PACKAGE
         echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
+
+	if [ "$DISTRO" = 'Ubuntu' ]; then
+          NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$CODENAME.list
+          if [ ! -e "$NVIM_PPA" ]; then
+            echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/unstable${COLOR}...${NC}"
+            sudo add-apt-repository -y ppa:neovim-ppa/unstable
+            sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$NVIM_PPA"
+            sudo apt update
+          else
+            echo -e "${COLOR1}ppa:neovim-ppa/unstable${COLOR} was found${NC}"
+          fi
+	fi
+
         sudo apt install -y neovim
       else
-        echo -e "${COLOR1}NeoVim${COLOR} is found, trying to find latest upgrades...${NC}"
-        sudo apt update && sudo apt upgrade
+	      echo -e "${COLOR1}NeoVim${COLOR} is found at '$(which nvim)'${NC}"
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
