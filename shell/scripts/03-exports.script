@@ -170,6 +170,18 @@ fi
 export WORKON_HOME=$HOME/venv
 #}}}
 
+#{{{ Montiors
+MONITOR=
+if [ "$HOSTNAME" = 'deskmini-server' ]; then
+  MONITOR='HDMI-A-0'
+elif [ "$HOSTNAME" = 'matebook-deepin' ]; then
+  MONITOR='eDP'
+else
+  MONITOR="$(xrandr -q | grep ' connected ' | head -n 1 | cut -d ' ' -f 1)"
+fi
+export MONITOR
+#}}}
+
 #{{{ Misc
 export TERM=xterm-256color
 # TERMINAL used in i3-sensible-terminal
