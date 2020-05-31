@@ -128,7 +128,7 @@ fi
 #}}}
 
 #{{{ Node.js
-if [ -z "$NPM_PACKAGES" ] || [[ ! :$PATH: == *:"$NPM_PACKAGES":* ]]; then
+if [ -z "$NPM_PACKAGES" ] || [[ ":$PATH:" != *:"$NPM_PACKAGES":* ]]; then
   export NPM_PACKAGES="$HOME/.npm-packages"
   export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
   export PATH="$NPM_PACKAGES/bin:$PATH"
@@ -168,6 +168,18 @@ if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
   export PATH
 fi
 export WORKON_HOME=$HOME/venv
+#}}}
+
+#{{{ Montiors
+MONITOR=
+if [ "$HOSTNAME" = 'deskmini-server' ]; then
+  MONITOR='HDMI-A-0'
+elif [ "$HOSTNAME" = 'matebook-deepin' ]; then
+  MONITOR='eDP'
+else
+  MONITOR="$(xrandr -q | grep ' connected ' | head -n 1 | cut -d ' ' -f 1)"
+fi
+export MONITOR
 #}}}
 
 #{{{ Misc
