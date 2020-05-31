@@ -403,7 +403,7 @@ function install_python() { # {{{
       set -e
     fi
 
-    if [ "$DISTRO" = 'Ubuntu' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
       if [ $IS_PYTHON_NEED_INSTALL -eq 1 ]; then
         echo -e "${COLOR}Python3 is out-dated, update to version 3.6...${NC}"
         PYTHON3_PPA=/etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-$CODENAME.list
