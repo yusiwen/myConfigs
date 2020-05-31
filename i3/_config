@@ -363,16 +363,13 @@ exec_always --no-startup-id compton -b
 exec --no-startup-id !!<\
   xrdb -merge ~/.Xresources,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
-#  compton -b,\
-#  dunst,\
   urxvtd -q -o -f,\
   xautolock -time 30 -locker 'i3lock -c 1d1d1d && sleep 3 && xset dpms force off',\
   hsetroot -solid "#528b8b",\
   i3-msg Workspace 1:Main,i3-sensible-terminal,\
   fcitx -d,\
-  pasystray
-# nm-applet
-# orage
+  pasystray,\
+  /home/yusiwen/.local/bin/clashy
 >
 exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 !?<HOSTNAME=deskmini-server
