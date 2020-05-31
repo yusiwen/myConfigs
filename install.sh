@@ -298,7 +298,7 @@ function install_git() { # {{{
 
 function install_ruby() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
       if ! type ruby >/dev/null 2>&1; then
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
         sudo apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
