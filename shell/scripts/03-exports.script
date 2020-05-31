@@ -128,7 +128,7 @@ fi
 #}}}
 
 #{{{ Node.js
-if [ -z "$NPM_PACKAGES" ]; then
+if [ -z "$NPM_PACKAGES" ] || [[ ! :$PATH: == *:"$NPM_PACKAGES":* ]]; then
   export NPM_PACKAGES="$HOME/.npm-packages"
   export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
   export PATH="$NPM_PACKAGES/bin:$PATH"
