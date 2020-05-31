@@ -713,15 +713,20 @@ function install_rxvt() { # {{{
 
 function install_i3wm() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
       # Install i3-gaps if not exist
       if ! type i3 >/dev/null 2>&1; then
         echo -e "${COLOR}Install ${COLOR1}i3${COLOR}...${NC}"
-        sudo apt install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings i3 ubuntu-drivers-common mesa-utils mesa-utils-extra compton xorg xserver-xorg hsetroot pcmanfm scrot simplescreenrecorder feh bleachbit xautolock fcitx fcitx-googlepinyin fcitx-sunpinyin fcitx-data fcitx-frontend-all fcitx-config-gtk fcitx-config-gtk2 fcitx-ui-classic flameshot policykit-desktop-privileges policykit-1-gnome meld
+        if [ "$DISTRO" = 'Ubuntu' ]; then
+          sudo apt install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings i3 ubuntu-drivers-common mesa-utils mesa-utils-extra compton xorg xserver-xorg hsetroot pcmanfm scrot simplescreenrecorder feh bleachbit xautolock fcitx fcitx-googlepinyin fcitx-sunpinyin fcitx-data fcitx-frontend-all fcitx-config-gtk fcitx-config-gtk2 fcitx-ui-classic flameshot policykit-desktop-privileges policykit-1-gnome meld
+        else
+          sudo apt install -y i3 mesa-utils mesa-utils-extra compton hsetroot scrot bleachbit xautolock flameshot policykit-1-gnome meld
+        fi
+
       fi
 
       # i3-gaps
-      sudo apt install libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm0 libxcb-xrm-dev libxcb-shape0-dev automake
+      sudo apt install -y libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm0 libxcb-xrm-dev libxcb-shape0-dev automake
       if [ ! -d ~/git/i3-gaps ]; then
         mkdir -p ~/git
         if ! type git >/dev/null 2>&1; then
@@ -740,7 +745,7 @@ function install_i3wm() { # {{{
       fi
 
       # Polybar
-      sudo apt install cmake cmake-data pkg-config libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-randr0-dev libxcb-composite0-dev python-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-xrm-dev libxcb-cursor-dev libjsoncpp-dev libjsoncpp1
+      sudo apt install -y cmake cmake-data pkg-config libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-randr0-dev libxcb-composite0-dev python-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-xrm-dev libxcb-cursor-dev libjsoncpp-dev libjsoncpp1
       if [ ! -d ~/git/polybar ]; then
         mkdir -p ~/git
         pushd ~/git
@@ -766,19 +771,21 @@ function install_i3wm() { # {{{
       fi
 
       # albert
-      sudo apt install qtbase5-dev qtdeclarative5-dev libqt5svg5-dev libqt5x11extras5-dev libqt5charts5-dev libmuparser-dev
-      if [ ! -d ~/git/albert ]; then
-        mkdir -p ~/git
-        pushd ~/git
-        git clone --recursive https://github.com/albertlauncher/albert.git
-        cd albert
-        mkdir -p build
-        cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
-        make -j4
-        sudo make install
-        jgmenu init --theme=greeneye
-        popd && popd && popd
+      if [ "$DISTRO" = 'Ubuntu' ]; then
+        sudo apt install -y qtbase5-dev qtdeclarative5-dev libqt5svg5-dev libqt5x11extras5-dev libqt5charts5-dev libmuparser-dev
+        if [ ! -d ~/git/albert ]; then
+          mkdir -p ~/git
+          pushd ~/git
+          git clone --recursive https://github.com/albertlauncher/albert.git
+          cd albert
+          mkdir -p build
+          cd build
+          cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+          make -j4
+          sudo make install
+          jgmenu init --theme=greeneye
+          popd && popd && popd
+        fi
       fi
 
       CONFIG_HOME="$HOME"/myConfigs/i3
@@ -826,12 +833,14 @@ function install_i3wm() { # {{{
       if ! type rofi >/dev/null 2>&1; then
         # Install 'rofi'
         echo -e "${COLOR}Installing ${COLOR1}rofi${COLOR}...${NC}"
-        ROFI_PPA=/etc/apt/sources.list.d/jasonpleau-ubuntu-rofi-$CODENAME.list
-        sudo add-apt-repository -y ppa:jasonpleau/rofi
-        # Replace official launchpad address with reverse proxy from USTC
-        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$ROFI_PPA"
-        sudo apt-get update
-        sudo apt-get install -y rofi
+        if [ "$DISTRO" = 'Ubuntu' ]; then
+          ROFI_PPA=/etc/apt/sources.list.d/jasonpleau-ubuntu-rofi-$CODENAME.list
+          sudo add-apt-repository -y ppa:jasonpleau/rofi
+          # Replace official launchpad address with reverse proxy from USTC
+          sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$ROFI_PPA"
+          sudo apt update
+        fi
+        sudo apt install -y rofi
       fi
     fi
   else
