@@ -206,22 +206,23 @@ function install_gfw() { # {{{
 # Git
 function install_git() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
       # install git if not exist
-      GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
-      if [ ! -e "$GIT_PPA" ]; then
-        echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
-        sudo apt-add-repository -y ppa:git-core/ppa
-        # Replace official launchpad address with reverse proxy from USTC
-        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$GIT_PPA"
-        echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
-        sudo apt update
-        sudo apt upgrade -y
-      else
-        echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
-      fi
-
       if ! type git >/dev/null 2>&1; then
+	if [ "$DISTRO" = 'Ubuntu' ]; then
+          GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
+          if [ ! -e "$GIT_PPA" ]; then
+            echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
+            sudo apt-add-repository -y ppa:git-core/ppa
+            # Replace official launchpad address with reverse proxy from USTC
+            sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$GIT_PPA"
+            echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
+            sudo apt update
+            sudo apt upgrade -y
+          else
+            echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
+          fi
+	fi
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
         sudo apt install -y git
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
