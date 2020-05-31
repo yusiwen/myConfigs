@@ -31,6 +31,11 @@ set $IRC weechat
 set !!<$left_screen,$right_screen> \
   !!<HDMI-A-0,DisplayPort-2>
 >
+!?<HOSTNAME=matebook-deepin
+# User 'xrandr --query | grep connected' to list available monitors
+set !!<$left_screen,$right_screen> \
+  !!<eDP,DisplayPort-0>
+>
 # }}}
 
 # {{{ Font settings
@@ -371,10 +376,10 @@ exec --no-startup-id !!<\
 >
 exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 !?<HOSTNAME=deskmini-server
-exec --no-startup-id !!<\
-# ~/Shadowsocks-Qt5-3.0.1-x86_64.AppImage,\
-  albert,flameshot,blueman-applet
->
+exec --no-startup-id ~/Shadowsocks-Qt5-3.0.1-x86_64.AppImage
+exec --no-startup-id albert
+exec --no-startup-id flameshot
+exec --no-startup-id blueman-applet
 >
 !?<HOSTNAME=vm-pd-ubuntu-min
 exec --no-startup-id /usr/bin/prlcc
