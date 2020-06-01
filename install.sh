@@ -563,6 +563,14 @@ function install_zsh() { # {{{
   ln -sfnv "$CONFIG_SHELL"/profile "$HOME"/.profile
   ln -sfnv "$CONFIG_SHELL"/zshrc "$HOME"/.zshrc
   ln -sfnv "$CONFIG_SHELL"/oh-my-zsh "$HOME"/.oh-my-zsh
+
+  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
+    echo -e "${COLOR}Installing ${COLOR1}zsh-autosuggestions${COLOR}...${NC}"
+    git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    echo -e "${COLOR}Installing ${COLOR1}zsh-autosuggestions${COLOR}...OK${NC}"
+  else
+    echo -e "${COLOR}Found ${COLOR1}zsh-autosuggestions${COLOR}.${NC}"
+  fi
 } # }}}
 
 function install_vim() { # {{{
