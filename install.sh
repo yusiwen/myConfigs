@@ -66,6 +66,21 @@ function vercomp() { # {{{
   return 0
 } # }}}
 
+function check_link() { # {{{
+  if [ -z "$1" ] || [ -z "$2" ]; then
+     return
+  fi
+
+  local target=("$1") linkname=("$2")
+  echo -e "${COLOR}Checking link ${COLOR1}'${linkname}'${COLOR} to ${COLOR1}'${target}'${COLOR}...${NC}"
+  if [ ! -e "${linkname}" ]; then
+    ln -snv ${target} ${linkname}
+  else
+    echo ''
+  fi
+
+} # }}}
+
 # Initialize apt and install prerequisite packages
 function init_env() { # {{{
   if [ "$OS" = 'Linux' ]; then
@@ -557,6 +572,7 @@ function install_zsh() { # {{{
     fi
   fi
 
+  check_link "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
   ln -sfnv "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
   ln -sfnv "$CONFIG_SHELL"/bash_aliases "$HOME"/.bash_aliases
   ln -sfnv "$CONFIG_SHELL"/bash_profile "$HOME"/.bash_profile
