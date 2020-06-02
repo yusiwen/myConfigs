@@ -41,31 +41,6 @@ fi
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
 # }}}
 
-function vercomp() { # {{{
-  if [[ $1 == "$2" ]]; then
-    return 0
-  fi
-  local IFS=.
-  local i ver1=("$1") ver2=("$2")
-  # fill empty fields in ver1 with zeros
-  for ((i = ${#ver1[@]}; i < ${#ver2[@]}; i++)); do
-    ver1[i]=0
-  done
-  for ((i = 0; i < ${#ver1[@]}; i++)); do
-    if [[ -z ${ver2[i]} ]]; then
-      # fill empty fields in ver2 with zeros
-      ver2[i]=0
-    fi
-    if ((10#${ver1[i]} > 10#${ver2[i]})); then
-      return 1
-    fi
-    if ((10#${ver1[i]} < 10#${ver2[i]})); then
-      return 2
-    fi
-  done
-  return 0
-} # }}}
-
 function check_link() { # {{{
   if [ -z "$1" ] || [ -z "$2" ]; then
      return
@@ -409,13 +384,12 @@ function install_python() { # {{{
     else
       PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
       echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
+      PYTHON_VERSION_COMPARE=$(python3 -c "from packaging import version; print(version.parse('"$PYTHON_VERSION"') > version.parse('3.6'))")
 
-      set +e
-      vercomp "$PYTHON_VERSION" 3.6
-      if [ $? -eq 2 ]; then
+      if [ "$PYTHON_VERSION_COMPARE" != 'True' ]; then
+        echo -e "${COLOR}Python3 version: $PYTHON_VERSION is too old, need latest package${NC}"
         IS_PYTHON_NEED_INSTALL=1
       fi
-      set -e
     fi
 
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
