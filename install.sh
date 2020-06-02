@@ -51,7 +51,18 @@ function check_link() { # {{{
   if [ ! -e "${linkname}" ]; then
     ln -snv ${target} ${linkname}
   else
-    echo ''
+    if [ -L "${linkname}" ]; then
+      if [ $(readlink -f ${linkname}) = $(readlink -f ${target}) ]; then
+        echo -e "${COLOR}Link ${COLOR1}'${linkname}'${COLOR} to ${COLOR1}'${target}'${COLOR} already exists${NC}"
+        return
+      else
+        ln -sfnv ${target} ${linkname}
+        return
+      fi
+    else
+      mv ${linkname} ${linkname}.backup
+      ln -snv ${target} ${linkname}
+    fi
   fi
 
 } # }}}
@@ -431,7 +442,7 @@ function install_python() { # {{{
 
     mkdir -p "$HOME"/.pip
     if [ -d "$HOME"/myConfigs ]; then
-      ln -sfnv "$HOME"/myConfigs/python/pip.conf "$HOME"/.pip/pip.conf
+      check_link "$HOME"/myConfigs/python/pip.conf "$HOME"/.pip/pip.conf
     else
       # Using aliyun as mirror
       {
@@ -547,19 +558,18 @@ function install_zsh() { # {{{
   fi
 
   check_link "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
-  ln -sfnv "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
-  ln -sfnv "$CONFIG_SHELL"/bash_aliases "$HOME"/.bash_aliases
-  ln -sfnv "$CONFIG_SHELL"/bash_profile "$HOME"/.bash_profile
-  ln -sfnv "$CONFIG_SHELL"/profile "$HOME"/.profile
-  ln -sfnv "$CONFIG_SHELL"/zshrc "$HOME"/.zshrc
-  ln -sfnv "$CONFIG_SHELL"/oh-my-zsh "$HOME"/.oh-my-zsh
+  check_link "$CONFIG_SHELL"/bash_aliases "$HOME"/.bash_aliases
+  check_link "$CONFIG_SHELL"/bash_profile "$HOME"/.bash_profile
+  check_link "$CONFIG_SHELL"/profile "$HOME"/.profile
+  check_link "$CONFIG_SHELL"/zshrc "$HOME"/.zshrc
+  check_link "$CONFIG_SHELL"/oh-my-zsh "$HOME"/.oh-my-zsh
 
   if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
     echo -e "${COLOR}Installing ${COLOR1}zsh-autosuggestions${COLOR}...${NC}"
     git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
     echo -e "${COLOR}Installing ${COLOR1}zsh-autosuggestions${COLOR}...OK${NC}"
   else
-    echo -e "${COLOR}Found ${COLOR1}zsh-autosuggestions${COLOR}.${NC}"
+    echo -e "${COLOR}Found ${COLOR1}zsh-autosuggestions${COLOR}...skip${NC}"
   fi
 } # }}}
 
