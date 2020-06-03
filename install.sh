@@ -41,31 +41,6 @@ fi
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
 # }}}
 
-function vercomp() { # {{{
-  if [[ $1 == "$2" ]]; then
-    return 0
-  fi
-  local IFS=.
-  local i ver1=("$1") ver2=("$2")
-  # fill empty fields in ver1 with zeros
-  for ((i = ${#ver1[@]}; i < ${#ver2[@]}; i++)); do
-    ver1[i]=0
-  done
-  for ((i = 0; i < ${#ver1[@]}; i++)); do
-    if [[ -z ${ver2[i]} ]]; then
-      # fill empty fields in ver2 with zeros
-      ver2[i]=0
-    fi
-    if ((10#${ver1[i]} > 10#${ver2[i]})); then
-      return 1
-    fi
-    if ((10#${ver1[i]} < 10#${ver2[i]})); then
-      return 2
-    fi
-  done
-  return 0
-} # }}}
-
 function check_link() { # {{{
   if [ -z "$1" ] || [ -z "$2" ]; then
      return
@@ -76,7 +51,18 @@ function check_link() { # {{{
   if [ ! -e "${linkname}" ]; then
     ln -snv ${target} ${linkname}
   else
-    echo ''
+    if [ -L "${linkname}" ]; then
+      if [ $(readlink -f ${linkname}) = $(readlink -f ${target}) ]; then
+        echo -e "${COLOR}Link ${COLOR1}'${linkname}'${COLOR} to ${COLOR1}'${target}'${COLOR} already exists${NC}"
+        return
+      else
+        ln -sfnv ${target} ${linkname}
+        return
+      fi
+    else
+      mv ${linkname} ${linkname}.backup
+      ln -snv ${target} ${linkname}
+    fi
   fi
 
 } # }}}
@@ -409,13 +395,12 @@ function install_python() { # {{{
     else
       PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
       echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
+      PYTHON_VERSION_COMPARE=$(python3 -c "from packaging import version; print(version.parse('"$PYTHON_VERSION"') > version.parse('3.6'))")
 
-      set +e
-      vercomp "$PYTHON_VERSION" 3.6
-      if [ $? -eq 2 ]; then
+      if [ "$PYTHON_VERSION_COMPARE" != 'True' ]; then
+        echo -e "${COLOR}Python3 version: $PYTHON_VERSION is too old, need latest package${NC}"
         IS_PYTHON_NEED_INSTALL=1
       fi
-      set -e
     fi
 
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
@@ -457,7 +442,7 @@ function install_python() { # {{{
 
     mkdir -p "$HOME"/.pip
     if [ -d "$HOME"/myConfigs ]; then
-      ln -sfnv "$HOME"/myConfigs/python/pip.conf "$HOME"/.pip/pip.conf
+      check_link "$HOME"/myConfigs/python/pip.conf "$HOME"/.pip/pip.conf
     else
       # Using aliyun as mirror
       {
@@ -573,19 +558,18 @@ function install_zsh() { # {{{
   fi
 
   check_link "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
-  ln -sfnv "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
-  ln -sfnv "$CONFIG_SHELL"/bash_aliases "$HOME"/.bash_aliases
-  ln -sfnv "$CONFIG_SHELL"/bash_profile "$HOME"/.bash_profile
-  ln -sfnv "$CONFIG_SHELL"/profile "$HOME"/.profile
-  ln -sfnv "$CONFIG_SHELL"/zshrc "$HOME"/.zshrc
-  ln -sfnv "$CONFIG_SHELL"/oh-my-zsh "$HOME"/.oh-my-zsh
+  check_link "$CONFIG_SHELL"/bash_aliases "$HOME"/.bash_aliases
+  check_link "$CONFIG_SHELL"/bash_profile "$HOME"/.bash_profile
+  check_link "$CONFIG_SHELL"/profile "$HOME"/.profile
+  check_link "$CONFIG_SHELL"/zshrc "$HOME"/.zshrc
+  check_link "$CONFIG_SHELL"/oh-my-zsh "$HOME"/.oh-my-zsh
 
   if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
     echo -e "${COLOR}Installing ${COLOR1}zsh-autosuggestions${COLOR}...${NC}"
     git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
     echo -e "${COLOR}Installing ${COLOR1}zsh-autosuggestions${COLOR}...OK${NC}"
   else
-    echo -e "${COLOR}Found ${COLOR1}zsh-autosuggestions${COLOR}.${NC}"
+    echo -e "${COLOR}Found ${COLOR1}zsh-autosuggestions${COLOR}...skip${NC}"
   fi
 } # }}}
 
