@@ -352,7 +352,7 @@ for_window [class="!!<\
   ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$,\
   ^Nm-connection-editor$,^Pcmanfm$,^fman$,^SimpleScreenRecorder$,^Bleachbit$,\
   ^GParted$,^Gnome-disks$,^Clementine$,^Amule$,^Filezilla$,^Lepton$,\
-  ^Clashy$,^Joplin$\
+  ^Clashy$,^Joplin$,^Blueman-manager$\
   >"] floating enable
 # }}}
 
