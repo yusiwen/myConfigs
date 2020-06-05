@@ -542,6 +542,9 @@ function install_zsh() { # {{{
     fetch_myConfigs
   fi
 
+  # Make sure submodules are fetched or updated
+  git --git-dir="$HOME/myConfigs/.git" submodule update --init
+
   if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
     echo -e "${COLOR}Current SHELL is not ${COLOR1}Zsh${NC}"
     if [ ! -e /usr/bin/zsh ]; then
