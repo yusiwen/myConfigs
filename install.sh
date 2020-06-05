@@ -571,6 +571,14 @@ function install_zsh() { # {{{
   else
     echo -e "${COLOR}Found ${COLOR1}zsh-autosuggestions${COLOR}...skip${NC}"
   fi
+
+  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
+    echo -e "${COLOR}Installing ${COLOR1}zsh-syntax-highlighting${COLOR}...${NC}"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    echo -e "${COLOR}Installing ${COLOR1}zsh-syntax-highlighting${COLOR}...OK${NC}"
+  else
+    echo -e "${COLOR}Found ${COLOR1}zsh-syntax-highlighting${COLOR}...skip${NC}"
+  fi
 } # }}}
 
 function install_vim() { # {{{
