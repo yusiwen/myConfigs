@@ -344,6 +344,7 @@ for_window [class="^URxvt$" instance="^mc$" title="^mc$"] floating enable
 for_window [class="^Thunar$" instance="^thunar$"] floating enable
 for_window [class="^Steam$" instance="^Steam$"] floating enable
 for_window [class="^realvnc-vncserverui-service$" instance="^VNC\sServer\s-\sOptions$"] floating enable
+for_window [class="^Wine$" instance="^wechat.exe$"] floating enable
 for_window [class="!!<\
   ^Gimp$,^Gpick$,^feh$,^Fcitx-config-gtk3$,^Telegram$,\
   ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,^KeeWeb$,^Peazip$,\
