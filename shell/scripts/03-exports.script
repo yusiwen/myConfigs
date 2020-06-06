@@ -171,15 +171,17 @@ export WORKON_HOME=$HOME/venv
 #}}}
 
 #{{{ Montiors
-MONITOR=
-if [ "$HOSTNAME" = 'deskmini-server' ]; then
-  MONITOR='HDMI-A-0'
-elif [ "$HOSTNAME" = 'matebook-deepin' ]; then
-  MONITOR='eDP'
-else
-  MONITOR="$(xrandr -q | grep ' connected ' | head -n 1 | cut -d ' ' -f 1)"
+if [ ! -z "$DISPLAY" ]; then
+  MONITOR=
+  if [ "$HOSTNAME" = 'deskmini-server' ]; then
+    MONITOR='HDMI-A-0'
+  elif [ "$HOSTNAME" = 'matebook-deepin' ]; then
+    MONITOR='eDP'
+  else
+    MONITOR="$(xrandr -q | grep ' connected ' | head -n 1 | cut -d ' ' -f 1)"
+  fi
+  export MONITOR
 fi
-export MONITOR
 #}}}
 
 #{{{ Misc

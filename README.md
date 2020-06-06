@@ -17,13 +17,16 @@ yusiwen@gmail.com
 Contents
 --------
 
+1. `brave/` Brave Browser configurations.
+1. `calibre/` Calibre configurations.
+1. `deluge/` Deluge downloader configurations.
 1. `docker/` Docker configurations.
-1. `eclipse/` Eclipse configurations under linux.
-1. `figlet/` figlet fonts for ascii art.
+1. `eclipse/` Eclipse configurations under Linux.
 1. `gfw/` configurations for shadowsocks and polipo proxy.
 1. `git/` Git configurations and scripts.
 1. `i3/` i3-wm configurations.
 1. `keyring/` keyring confiurations for i3 and mutt.
+1. `logitech` Logitech device configurations on Linux.
 1. `mac/` configurations for MacOS.
 1. `mail/` settings for all mail clients.
 1. `maven/` configurations for maven.
@@ -35,13 +38,17 @@ Contents
 1. `oracle/` Oracle Instant Client configurations.
 1. `python/` Python settings.
 1. `razer/` Razer DeathAdder mouse polling rate configurations.
+1. `samba/` Samba configurations.
 1. `shell/` shell environments scripts.
 1. `system/` system & network configurations for VMs.
+1. `tmux/` tmux configurations.
 1. `vim/` VIM configurations.
+1. `vps/` My VPS configurations.
+1. `vscode/` Visual Studio Code configurations.
 1. `X11/` X11 scripts.
 1. `change_font.sh` script for changing font.
 1. `change_theme.sh` script for changing themes of Xresources, vim, etc.
-1. `install_tools.sh` script for installing tools under Ubuntu.
+1. `install.sh` script for installation.
 
 Softwares
 ---------

@@ -83,7 +83,7 @@ function init_env() { # {{{
       sudo apt update
       sudo apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat apt-transport-https jq tmux
     elif [ "$DISTRO" = 'CentOS' ]; then
-      sudo yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
+      sudo yum --enablerepo=epel -y install fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
@@ -542,6 +542,9 @@ function install_zsh() { # {{{
     fetch_myConfigs
   fi
 
+  # Make sure submodules are fetched or updated
+  git --git-dir="$HOME/myConfigs/.git" submodule update --init
+
   if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
     echo -e "${COLOR}Current SHELL is not ${COLOR1}Zsh${NC}"
     if [ ! -e /usr/bin/zsh ]; then
@@ -570,6 +573,14 @@ function install_zsh() { # {{{
     echo -e "${COLOR}Installing ${COLOR1}zsh-autosuggestions${COLOR}...OK${NC}"
   else
     echo -e "${COLOR}Found ${COLOR1}zsh-autosuggestions${COLOR}...skip${NC}"
+  fi
+
+  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
+    echo -e "${COLOR}Installing ${COLOR1}zsh-syntax-highlighting${COLOR}...${NC}"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    echo -e "${COLOR}Installing ${COLOR1}zsh-syntax-highlighting${COLOR}...OK${NC}"
+  else
+    echo -e "${COLOR}Found ${COLOR1}zsh-syntax-highlighting${COLOR}...skip${NC}"
   fi
 } # }}}
 
