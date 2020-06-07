@@ -15,8 +15,9 @@ set -e
 set -o pipefail
 
 # Global variables {{{
-COLOR='\033[0;32m'
-COLOR1='\033[1;32m'
+COLOR='\033[1;37m' # Highlighted white
+COLOR1='\033[1;32m' # Highligted green
+COLOR2='\033[1;33m' # Highligted yellow
 NC='\033[0m'
 
 OS=$(uname)
@@ -389,45 +390,38 @@ function fetch_myConfigs() { # {{{
   fi
 } # }}}
 
+function check_python3_version() {
+  local PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
+  echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
+
+  if [ -z "$(pip3 list | grep packaging)" ]; then
+    pip3 install --user packaging
+  fi
+
+  local PYTHON_VERSION_COMPARE=$(python3 -c "from packaging import version; print(version.parse('"$PYTHON_VERSION"') > version.parse('3.6'))")
+
+  if [ "$PYTHON_VERSION_COMPARE" != 'True' ]; then
+    echo -e "${COLOR2}WARN${COLOR}Python3 version: ${COLOR1}$PYTHON_VERSION${COLOR} is too old, need latest package${NC}"
+  fi
+}
+
 function install_python() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    IS_PYTHON_NEED_INSTALL=0
 
     if ! type python3 &>/dev/null; then
-      IS_PYTHON_NEED_INSTALL=1
-    else
-      PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
-      echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
-      PYTHON_VERSION_COMPARE=$(python3 -c "from packaging import version; print(version.parse('"$PYTHON_VERSION"') > version.parse('3.6'))")
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+        sudo apt-get install -y python3
 
-      if [ "$PYTHON_VERSION_COMPARE" != 'True' ]; then
-        echo -e "${COLOR}Python3 version: $PYTHON_VERSION is too old, need latest package${NC}"
-        IS_PYTHON_NEED_INSTALL=1
-      fi
-    fi
+        if ! type pip >/dev/null 2>&1; then
+          echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
+          sudo apt install -y python-pip
+        fi
 
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
-      if [ $IS_PYTHON_NEED_INSTALL -eq 1 ]; then
-        echo -e "${COLOR}Python3 is out-dated, update to version 3.6...${NC}"
-        PYTHON3_PPA=/etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-$CODENAME.list
-        sudo add-apt-repository -y ppa:deadsnakes/ppa
-        # Replace official launchpad address with reverse proxy from USTC
-        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$PYTHON3_PPA"
-        sudo apt-get update
-        sudo apt-get install -y python3.6
-      fi
-
-      if ! type pip >/dev/null 2>&1; then
-        echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
-        sudo apt install -y python-pip
-      fi
-
-      if ! type pip3 >/dev/null 2>&1; then
-        echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
-        sudo apt install -y python3-pip
-      fi
-    elif [ "$DISTRO" = 'CentOS' ]; then
-      if [ $IS_PYTHON_NEED_INSTALL -eq 1 ]; then
+        if ! type pip3 >/dev/null 2>&1; then
+          echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
+          sudo apt install -y python3-pip
+        fi
+      elif [ "$DISTRO" = 'CentOS' ]; then
         PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
         if [ "$PACKAGE" = 0 ]; then
           sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
@@ -437,11 +431,13 @@ function install_python() { # {{{
         sudo yum install -y python36u python36u-pip python2-pip
         sudo ln -snv /usr/bin/python3.6 /usr/bin/python3
         sudo ln -snv /usr/bin/pip3.6 /usr/bin/pip3
+      else
+        echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
+        return
       fi
-    else
-      echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
-      return
     fi
+
+    check_python3_version
 
     mkdir -p "$HOME"/.pip
     if [ -d "$HOME"/myConfigs ]; then
