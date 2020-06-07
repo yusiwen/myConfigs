@@ -3,15 +3,16 @@
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
 # set by alacritty itself.
-#env:
+# env:
   # TERM variable
   #
   # This value is used to set the `$TERM` environment variable for
   # each instance of Alacritty. If it is not present, alacritty will
   # check the local terminfo database and use `alacritty` if it is
   # available, otherwise `xterm-256color` is used.
-  #TERM: xterm-256color
+  # TERM: xterm-256color
 
+---
 window:
   # Window dimensions (changes require restart)
   #
@@ -25,7 +26,7 @@ window:
   #
   # Specified in number of pixels.
   # If the position is not set, the window manager will handle the placement.
-  #position:
+  # position:
   #  x: 0
   #  y: 0
 
@@ -63,10 +64,10 @@ window:
   startup_mode: Windowed
 
   # Window title
-  #title: Alacritty
+  # title: Alacritty
 
   # Window class (Linux only):
-  #class: Alacritty
+  # class: Alacritty
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.
@@ -87,11 +88,9 @@ font:
     #   - (macOS) Menlo
     #   - (Linux) monospace
     #   - (Windows) Consolas
-    #family: monospace
+    family: Sarasa Term SC
 
     # The `style` can be specified to pick a specific face.
-    #style: Regular
-    family: Sarasa Term SC
     style: Regular
 
 
@@ -101,11 +100,9 @@ font:
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    #family: monospace
+    family: Sarasa Term SC
 
     # The `style` can be specified to pick a specific face.
-    #style: Bold
-    family: Sarasa Term SC
     style: Bold
 
   # Italic font face
@@ -264,7 +261,7 @@ visual_bell:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.9
+background_opacity: 0.95
 
 # Mouse bindings
 #
@@ -282,7 +279,7 @@ background_opacity: 0.9
 # All available `mods` and `action` values are documented in the key binding
 # section.
 mouse_bindings:
-  - { mouse: Middle, action: PasteSelection }
+  - {mouse: Middle, action: PasteSelection}
 
 mouse:
   # Click settings
@@ -290,8 +287,8 @@ mouse:
   # The `double_click` and `triple_click` settings control the time
   # alacritty should wait for accepting multiple clicks as one double
   # or triple click.
-  double_click: { threshold: 300 }
-  triple_click: { threshold: 300 }
+  double_click: {threshold: 300}
+  triple_click: {threshold: 300}
 
   # If this is `true`, the cursor is temporarily hidden when typing.
   hide_when_typing: false
