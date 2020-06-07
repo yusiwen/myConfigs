@@ -121,7 +121,7 @@ let s:stl .= ' %1*%{badge#filename()}%*'                 " Filename
 let s:stl .= ' %<'                                       " Truncate here
 let s:stl .= '%( %{badge#branch()} %)'                  " Git branch name
 let s:stl .= '%3*%( %{badge#gitstatus()} %)%*'           " Git status
-let s:stl .= '%4*%( %{badge#syntax()} %)%*'               " syntax check
+let s:stl .= '%4*%( %{badge#syntax()} %)%*'              " syntax check
 let s:stl .= "%5*%(%{badge#trails('WS:%s')} %)%*"        " Whitespace
 let s:stl .= '%3*%{badge#indexing()}%*'                  " Indexing tags indicator
 let s:stl .= '%='                                        " Align to right
