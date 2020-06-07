@@ -185,7 +185,13 @@ fi
 #}}}
 
 #{{{ Misc
-export TERM=xterm-256color
+# set TERM to 'screen-256color' in tmux
+if [ -z "$TMUX" ]; then
+  TERM=xterm-256color
+else
+  TERM=screen-256color
+fi
+export TERM
 # TERMINAL used in i3-sensible-terminal
 if type alacritty >/dev/null 2>&1; then
   TERMINAL=alacritty
