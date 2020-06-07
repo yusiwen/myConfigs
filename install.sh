@@ -390,7 +390,7 @@ function fetch_myConfigs() { # {{{
   fi
 } # }}}
 
-function check_python3_version() {
+function check_python3_version() { # {{{
   local PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
   echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
 
@@ -403,7 +403,7 @@ function check_python3_version() {
   if [ "$PYTHON_VERSION_COMPARE" != 'True' ]; then
     echo -e "${COLOR2}WARN${COLOR}Python3 version: ${COLOR1}$PYTHON_VERSION${COLOR} is too old, need latest package${NC}"
   fi
-}
+} # }}}
 
 function install_python() { # {{{
   if [ "$OS" = 'Linux' ]; then
