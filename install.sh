@@ -27,9 +27,12 @@ echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
 if [ -e /etc/os-release ]; then
   ID=$(grep "^ID=" /etc/os-release | cut -d'=' -f2)
   ID_LIKE=$(awk -F= '/^ID_LIKE/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
-  if [ "$ID" = "ubuntu" ] || [ "$ID_LIKE" = "ubuntu" ]; then
-    DISTRO="Ubuntu"
+  if [ "$ID" = 'ubuntu' ] || [ "$ID_LIKE" = 'ubuntu' ]; then
+    DISTRO='Ubuntu'
     CODENAME=$(grep "^UBUNTU_CODENAME" /etc/os-release | cut -d'=' -f2)
+  elif [ "ID" = 'Deepin' ]; then
+    DISTRO='Deepin'
+    CODENAME='buster'
   else
     DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
   fi
@@ -486,9 +489,9 @@ function install_node() { # {{{
 
   if ! type node >/dev/null 2>&1; then
     if [ "$OS" = 'Linux' ]; then
-      if [ "$DISTRO" = 'Ubuntu' ]; then
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
         NODE_PPA=/etc/apt/sources.list.d/nodesource.list
-        echo -e "${COLOR}Installing Node.js v10...${NC}"
+        echo -e "${COLOR}Installing Node.js v12...${NC}"
 
         if ! type curl >/dev/null 2>&1; then
           init_env
@@ -496,8 +499,8 @@ function install_node() { # {{{
 
         curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 
-        echo "deb https://mirrors.ustc.edu.cn/nodesource/deb/node_10.x $CODENAME main" | sudo tee $NODE_PPA
-        echo "deb-src https://mirrors.ustc.edu.cn/nodesource/deb/node_10.x $CODENAME main" | sudo tee --append $NODE_PPA
+        echo "deb https://mirrors.cloud.tencent.com/nodesource/deb_12.x $CODENAME main" | sudo tee $NODE_PPA
+        echo "deb-src https://mirrors.cloud.tencent.com/nodesource/deb_12.x $CODENAME main" | sudo tee --append $NODE_PPA
         sudo apt update -y
 
         echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
