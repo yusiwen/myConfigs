@@ -1,11 +1,18 @@
-mounts
-======
+# mounts
 
 Mount point and HHD drive configurations.
 
-using `sudo blkid` to show UUIDs of all attached devices.
+## prerequisites
 
-1. fstab
+`cifs-utils` for samba network filesystems
+
+```shell
+sudo apt install cifs-utils
+```
+
+## fstab
+
+using `sudo blkid` to show UUIDs of all attached devices.
 
 `fstab` file for diskmini-server
 
@@ -19,7 +26,7 @@ sudo cp fstab /etc/fstab
 # use 'sudo mount -a' to do a test before rebooting
 ```
 
-3. 60-schedulers.rules
+## 60-schedulers.rules
 
 `udev` rule file for block device schedulers.
 
