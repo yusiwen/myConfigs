@@ -408,19 +408,21 @@ function check_python3_version() {
 function install_python() { # {{{
   if [ "$OS" = 'Linux' ]; then
 
+    # Check python2
+    if ! type python2 &>/dev/null; then
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+        sudo apt-get install -y python2
+      elif [ "$DISTRO" = 'CentOS' ]; then
+        echo 'TODO: python2 on CentOS'
+      else
+        echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
+        return
+      fi
+    fi
+
     if ! type python3 &>/dev/null; then
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
         sudo apt-get install -y python3
-
-        if ! type pip >/dev/null 2>&1; then
-          echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
-          sudo apt install -y python-pip
-        fi
-
-        if ! type pip3 >/dev/null 2>&1; then
-          echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
-          sudo apt install -y python3-pip
-        fi
       elif [ "$DISTRO" = 'CentOS' ]; then
         PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
         if [ "$PACKAGE" = 0 ]; then
@@ -434,6 +436,21 @@ function install_python() { # {{{
       else
         echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
         return
+      fi
+    fi
+
+    if ! type pip >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+        curl https://bootstrap.pypa.io/get-pip.py --output /tmp/get-pip.py
+        sudo python2 /tmp/get-pip.py
+      fi
+    fi
+
+    if ! type pip3 >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+        sudo apt install -y python3-pip
       fi
     fi
 
