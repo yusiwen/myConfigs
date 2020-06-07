@@ -748,6 +748,11 @@ function install_rxvt() { # {{{
 
 function install_i3wm() { # {{{
   if [ "$OS" = 'Linux' ]; then
+    if [ -n "$(dpkg -l | grep 'regolith-desktop')" ]; then
+      echo -e "${COLOR1}Regolith${COLOR} is already installed on your system, use it instead of manually installing i3-wm${NC}"
+      return
+    fi
+
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
       # Install i3-gaps if not exist
       if ! type i3 >/dev/null 2>&1; then
