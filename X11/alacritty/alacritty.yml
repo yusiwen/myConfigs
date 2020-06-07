@@ -352,10 +352,12 @@ live_config_reload: true
 #   - (macOS) /bin/bash --login
 #   - (Linux) user login shell
 #   - (Windows) powershell
-#shell:
-#  program: /bin/bash
-#  args:
-#    - --login
+shell:
+  program: /usr/bin/zsh
+  args:
+    - --login
+    - -c
+    - "tmux"
 
 # Startup directory
 #
