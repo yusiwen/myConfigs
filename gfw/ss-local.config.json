@@ -5,7 +5,7 @@
   "method":"chacha20-ietf-poly1305",
   "timeout":60,
   "local_address": "127.0.0.1",
-  "local_port":1098,
+  "local_port":1088,
   "plugin":"v2ray-plugin",
   "plugin_opts":"tls;host=REAL_HOST"
 }
