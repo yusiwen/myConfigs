@@ -10,3 +10,6 @@
 [submodule "logitech/k380-function-keys-conf"]
 	path = logitech/k380-function-keys-conf
 	url = https://github.com/jergusg/k380-function-keys-conf.git
+[submodule "kernel"]
+	path = kernel
+	url = https://github.com/pimlie/ubuntu-mainline-kernel.sh.git
