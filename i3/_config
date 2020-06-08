@@ -374,7 +374,7 @@ exec --no-startup-id !!<\
 >
 exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 !?<HOSTNAME=deskmini-server
-exec --no-startup-id ~/Shadowsocks-Qt5-3.0.1-x86_64.AppImage
+#exec --no-startup-id ~/Shadowsocks-Qt5-3.0.1-x86_64.AppImage
 exec --no-startup-id albert
 exec --no-startup-id flameshot
 exec --no-startup-id blueman-applet
