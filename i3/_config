@@ -11,6 +11,7 @@
 # {{{ Global variables
 # Default $mod is Mod4(Win-key)
 set $mod Mod4
+set $alt Mod1
 
 !?<HOSTNAME=vm-pd-ubuntu-min
 set $mod Mod1
@@ -291,9 +292,10 @@ bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWork
 # bind key for an emergence terminal in floating mode
 bindsym $mod+Shift+Return exec $TERM -name emergence_terminal && i3-msg '[instance="^emergence_terminal$"] floating enable'
 # rofi
-bindsym $mod+d exec rofi -show drun
-bindsym $mod+Shift+d exec rofi -show run
-bindsym $mod+Tab exec rofi -show window
+#bindsym $mod+d exec rofi -show drun
+bindsym $alt+space exec rofi -show drun
+bindsym $alt+Shift+space exec rofi -show run
+bindsym $alt+Tab exec rofi -show window
 
 # }}}
 
@@ -375,7 +377,7 @@ exec --no-startup-id !!<\
 exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 !?<HOSTNAME=deskmini-server
 #exec --no-startup-id ~/Shadowsocks-Qt5-3.0.1-x86_64.AppImage
-exec --no-startup-id albert
+#exec --no-startup-id albert
 exec --no-startup-id flameshot
 exec --no-startup-id blueman-applet
 >
