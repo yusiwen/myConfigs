@@ -491,7 +491,7 @@
     autocmd User asyncomplete_setup call asyncomplete#register_source(
       \ asyncomplete#sources#file#get_source_options({
       \ 'name': 'file',
-      \ 'priority': 10,
+      \ 'priority': 1,
       \ 'whitelist': ['*'],
       \ 'blacklist': ['denite-filter', 'clap_input'],
       \ 'completor': function('asyncomplete#sources#file#completor')
