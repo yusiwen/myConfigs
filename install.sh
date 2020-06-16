@@ -204,6 +204,17 @@ function install_gfw() { # {{{
       fi
 
       echo -e "${COLOR}GFW initialized.${NC}"
+    elif [ "$DISTRO" = 'CentOS' ]; then
+      sudo curl -L "https://copr.fedorainfracloud.org/coprs/librehat/shadowsocks/repo/epel-7/librehat-shadowsocks-epel-7.repo" --output /etc/yum.repos.d/libredhat-shadowsocks-epel-7.repo
+      if [ -z $(yum list installed | grep epel-release.noarch) ]; then
+        sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+      fi
+
+      sudo yum install -y shadowsocks-libev
+
+      echo -e "${COLOR}Please copy sample config file to ${COLOR1}'/etc/shadowsocks-libev/config.json'${COLOR} and edit server and password with real ones...${NC}"
+      echo -e "${COLOR}And copy ${COLOR1}v2ray-plugin${COLOR} to '/usr/bin'${NC}"
+      echo -e "${COLOR}Then start service with 'sudo systemctl enable --now shadowsocks-libev-local.service'${NC}"
     fi
   fi
 } # }}}
