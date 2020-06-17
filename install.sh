@@ -572,18 +572,30 @@ function install_zsh() { # {{{
   # Make sure submodules are fetched or updated
   git --git-dir="$HOME/myConfigs/.git" submodule update --init
 
-  if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
-    echo -e "${COLOR}Current SHELL is not ${COLOR1}Zsh${NC}"
-    if [ ! -e /usr/bin/zsh ]; then
-      echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
-      if [ "$DISTRO" = 'Ubuntu' ]; then
-        sudo apt install -y zsh
-      elif [ "$DISTRO" = 'CentOS' ]; then
-        sudo yum install -y zsh
-        echo '/usr/bin/zsh' | sudo tee -a /etc/shells
+  if [ "$OS" = 'Linux' ]; then
+    if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
+      echo -e "${COLOR}Current SHELL is not ${COLOR1}Zsh${NC}"
+      if [ ! -e /usr/bin/zsh ]; then
+        echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
+        if [ "$DISTRO" = 'Ubuntu' ]; then
+          sudo apt install -y zsh
+        elif [ "$DISTRO" = 'CentOS' ]; then
+          sudo yum install -y zsh
+          echo '/usr/bin/zsh' | sudo tee -a /etc/shells
+        fi
+        echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
+        chsh -s /usr/bin/zsh
       fi
-      echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
-      chsh -s /usr/bin/zsh
+    fi
+  elif [ "$OS" = 'Darwin' ]; then
+    if [ ! "$SHELL" = "/usr/local/bin/zsh" ]; then
+      echo -e "${COLOR}Current SHELL is not latest ${COLOR1}Zsh${NC}"
+      if [ ! -e /usr/local/bin/zsh ]; then
+        echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
+        brew install zsh
+        echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
+        chsh -s /usr/local/bin/zsh
+      fi
     fi
   fi
 
