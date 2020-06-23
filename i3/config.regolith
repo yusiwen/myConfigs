@@ -332,6 +332,7 @@ for_window [class="Gnome-control-center"] floating enable
 for_window [class="^Org.gnome.Nautilus$"] floating enable
 for_window [class="^marktext$"] floating enable
 for_window [class="^Lepton$"] floating enable
+for_window [class="^Clashy$"] floating enable
 
 ###############################################################################
 # Window Resize and Gaps
