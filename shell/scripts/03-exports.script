@@ -1,17 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 
 #{{{ Distribution Information
 # Determine OS platform
-export OS=$(uname)
+OS=$(uname)
+export OS
 # If Linux, try to determine specific distribution
 if [ "$OS" = 'Linux' ]; then
   # If available, use LSB to identify distribution
-  if [ -f /etc/lsb-release -o -d /etc/lsb-release.d ]; then
-    export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
+  if [ -f /etc/lsb-release ] || [ -d /etc/lsb-release.d ]; then
+    DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
   # Otherwise, use release info file
   else
-    export DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+    DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
   fi
+  export DISTRO
 fi
 # For everything else (or if above failed), just use generic identifier
 [ "$DISTRO" = '' ] && export DISTRO=$OS
@@ -28,11 +30,11 @@ mkdir -p "$XDG_DATA_HOME"
 #}}}
 
 #{{{ Oracle instant client
-if [ -z "$ORACLE_HOME" ]; then
+if [ -z "$ORACLE_HOME" ] || [ ! -d "$ORACLE_HOME" ]; then
   CLIENT_INSTALLATION_PATH="/opt/oracle"
   if [ -d "$CLIENT_INSTALLATION_PATH" ]; then
     ORACLE_HOME=$(/bin/ls -dr $CLIENT_INSTALLATION_PATH/instantclient*/ 2>/dev/null | head -1)
-    if [ ! -z "$ORACLE_HOME" ]; then
+    if [ -n "$ORACLE_HOME" ]; then
       # truncate trailing '/'
       ORACLE_HOME=$(printf '%s' "${ORACLE_HOME%/}")
       export ORACLE_HOME
@@ -63,9 +65,10 @@ fi
 MYSQL_CONNECTOR_INST_PATH="/opt/mysql"
 if [ -d "$MYSQL_CONNECTOR_INST_PATH" ]; then
   MYSQL_CONNECTOR=$(/bin/ls -dr $MYSQL_CONNECTOR_INST_PATH/mysql-connector*/ 2>/dev/null | head -1)
-  if [ ! -z "$MYSQL_CONNECTOR" ]; then
+  if [ -n "$MYSQL_CONNECTOR" ]; then
     # truncate trailing '/'
-    export MYSQL_CONNECTOR=$(printf '%s' "${MYSQL_CONNECTOR%/}")
+    MYSQL_CONNECTOR=$(printf '%s' "${MYSQL_CONNECTOR%/}")
+    export MYSQL_CONNECTOR
     export PATH=$PATH:$MYSQL_CONNECTOR/bin
     # NOTE: On Ubuntu, 'LD_LIBRARY_PATH' can't be set in .profile,
     #   it can only be set in '/etc/ld.so.conf.d/XXX.conf' and run 'ldconfig'
@@ -79,7 +82,7 @@ fi
 #}}}
 
 #{{{ Java
-if [ -z "$JAVA_HOME" ]; then
+if [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
   if [ "$OS" = 'Darwin' ]; then
     # MacOS
     JAVA_HOME=$(/usr/libexec/java_home)
@@ -97,20 +100,20 @@ if [ -z "$JAVA_HOME" ]; then
     fi
   fi
 
-  if [ ! -z "$JAVA_HOME" ]; then
+  if [ -n "$JAVA_HOME" ]; then
     export JAVA_HOME
     export JDK_HOME=$JAVA_HOME
     export PATH=$JAVA_HOME/bin:$PATH
   fi
 fi
 
-if [ -z "$M2_HOME" ]; then
+if [ -z "$M2_HOME" ] || [ ! -d "$M2_HOME" ]; then
   MVN_INSTALLATION_PATH="$HOME/maven"
   if [ -d "$MVN_INSTALLATION_PATH" ]; then
     MVN_NAME=$(/bin/ls -dr "$MVN_INSTALLATION_PATH"/*-maven-*/ 2>/dev/null | head -1)
     # set M2_HOME (truncated trailing '/')
     M2_HOME=$(printf '%s' "${MVN_NAME%/}")
-    if [ ! -z "$M2_HOME" ]; then
+    if [ -n "$M2_HOME" ]; then
       export M2_HOME
       export M2=$M2_HOME/bin
       export MAVEN_OPTS="-Xms64m -Xmx256m"
@@ -125,7 +128,7 @@ fi
 #}}}
 
 #{{{ Node.js
-if [ -z "$NPM_PACKAGES" ]; then
+if [ -z "$NPM_PACKAGES" ] || [[ ":$PATH:" != *:"$NPM_PACKAGES":* ]]; then
   export NPM_PACKAGES="$HOME/.npm-packages"
   export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
   export PATH="$NPM_PACKAGES/bin:$PATH"
@@ -138,8 +141,9 @@ fi
 #}}}
 
 #{{{ Ruby
-if which ruby &>/dev/null && which gem &>/dev/null; then
-  export GEM_HOME=$(ruby -e 'puts Gem.user_dir')
+if command -v ruby &>/dev/null && command -v gem &>/dev/null; then
+  GEM_HOME=$(ruby -e 'puts Gem.user_dir')
+  export GEM_HOME
   export GEM_PATH=$GEM_HOME
   PATH="$GEM_HOME/bin:$PATH"
   export PATH
@@ -150,6 +154,8 @@ fi
 if [ -d "/usr/local/go" ]; then
   export GOROOT=/usr/local/go
   export GOPATH=$HOME/gopackage
+  export GO111MODULE=on
+  export GOPROXY=https://goproxy.io,direct
   PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
   export PATH
 fi
@@ -164,11 +170,37 @@ fi
 export WORKON_HOME=$HOME/venv
 #}}}
 
+#{{{ Montiors
+if [ ! -z "$DISPLAY" ]; then
+  MONITOR=
+  if [ "$HOSTNAME" = 'deskmini-server' ]; then
+    MONITOR='HDMI-A-0'
+  elif [ "$HOSTNAME" = 'matebook-deepin' ]; then
+    MONITOR='eDP'
+  else
+    MONITOR="$(xrandr -q | grep ' connected ' | head -n 1 | cut -d ' ' -f 1)"
+  fi
+  export MONITOR
+fi
+#}}}
+
 #{{{ Misc
-export TERM=xterm-256color
+# set TERM to 'screen-256color' in tmux
+if [ -z "$TMUX" ]; then
+  TERM=xterm-256color
+else
+  TERM=screen-256color
+fi
+export TERM
 # TERMINAL used in i3-sensible-terminal
-if [ -z "$TERMINAL" ]; then
+if type alacritty >/dev/null 2>&1; then
+  TERMINAL=alacritty
+  export TERMINAL
+elif type urxvtc >/dev/null 2>&1; then
   TERMINAL=urxvtc
+  export TERMINAL
+else
+  TERMINAL=
   export TERMINAL
 fi
 
@@ -196,30 +228,39 @@ fi
 
 # Add $HOME/bin to $PATH if exists && not added
 if [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
-  PATH="${PATH:+"$PATH:"}$HOME/bin"
+  PATH="$HOME/bin${PATH:+:"$PATH"}"
   export PATH
 fi
 
 # Add $HOME/bin to $PATH if exists && not added
 if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-  PATH="${PATH:+"$PATH:"}$HOME/.local/bin"
+  PATH="$HOME/.local/bin${PATH:+:"$PATH"}"
+  export PATH
+fi
+
+# CMake
+if [ -d "/opt/cmake" ] && [[ ":$PATH:" != *":/opt/cmake:"* ]]; then
+  PATH="/opt/cmake/bin${PATH:+:"$PATH"}"
   export PATH
 fi
 
 # Homebrew's sbin path
 if [ -d "/usr/local/sbin" ] && [[ ":$PATH:" != *":/usr/local/sbin:"* ]]; then
-  PATH="/usr/local/sbin:$PATH"
+  PATH="/usr/local/sbin:${PATH:+:"$PATH"}"
   export PATH
 fi
 
 # Use mirror for Homebrew-bottles
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+if [ "$OS" = 'Darwin' ]; then
+  export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+fi
 #}}}
 
 # Source any extended scrips stored in $HOME/.exports/ folder
-if [ -d $HOME/.exports ]; then
-  for script in $HOME/.exports/*; do
-    if [ -e $script ]; then
+if [ -d "$HOME"/.exports ]; then
+  for script in "$HOME"/.exports/*; do
+    if [ -e "$script" ]; then
+      # shellcheck source=/dev/null
       source "$script"
     fi
   done

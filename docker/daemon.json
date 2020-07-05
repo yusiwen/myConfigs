@@ -1,14 +1,14 @@
 {
-  "registry-mirrors" : [
-    "http://ovfftd6p.mirror.aliyuncs.com",
-    "http://registry.docker-cn.com",
-    "http://docker.mirrors.ustc.edu.cn",
-    "http://hub-mirror.c.163.com"
-  ],
-  "insecure-registries" : [
-    "registry.docker-cn.com",
-    "docker.mirrors.ustc.edu.cn"
-  ],
-  "debug" : true,
-  "experimental" : true
+	"registry-mirrors" : [
+		"https://hub-mirror.c.163.com",
+		"http://ovfftd6p.mirror.aliyuncs.com",
+		"http://registry.docker-cn.com",
+		"http://docker.mirrors.ustc.edu.cn"
+	],
+	"insecure-registries" : [
+		"registry.docker-cn.com",
+		"docker.mirrors.ustc.edu.cn"
+	],
+	"debug" : true,
+	"experimental" : true
 }

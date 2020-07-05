@@ -82,12 +82,12 @@ else
 fi
 
 # Vim
-if [ "$(uname)" = 'Darwin' ]; then
-  alias vi='/usr/local/bin/vi'
-  alias vim='/usr/local/bin/vim'
+if type nvim >/dev/null 2>&1; then
+  alias vi='nvim'
+  alias vim='nvim'
+  alias v='nvim'
+  alias nv='nvim'
 fi
-alias v='vim'
-alias nv='nvim'
 
 # Maven
 alias mvn-no-javadoc='mvn -Dmaven.javadoc.skip=true'
@@ -95,3 +95,7 @@ alias mvn-no-test='mvn -Dmaven.test.skip=true'
 
 # youtube-dl
 alias ytd='youtube-dl --proxy socks5://127.0.0.1:1088 -r 500K'
+
+# K8s
+alias ka='kubeadm'
+alias kc='kubectl'

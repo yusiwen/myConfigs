@@ -135,3 +135,6 @@ hi iCursor              cterm=NONE      ctermfg=16   ctermbg=210
 hi lCursor              cterm=NONE      ctermfg=234  ctermbg=145
 hi nCursor              cterm=NONE      ctermfg=145  ctermbg=NONE
 hi vCursor              cterm=NONE      ctermfg=16   ctermbg=201
+
+hi ParenMatch term=underline cterm=underline gui=underline
+

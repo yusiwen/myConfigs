@@ -11,13 +11,14 @@
 # {{{ Global variables
 # Default $mod is Mod4(Win-key)
 set $mod Mod4
+set $alt Mod1
 
 !?<HOSTNAME=vm-pd-ubuntu-min
 set $mod Mod1
 >
 
 set $TERM urxvtc
-set $BROWSER google-chrome
+set $BROWSER x-www-browser
 set $FM pcmanfm
 set $FM_CMD mc
 set $PLAYER ncmpcpp
@@ -26,11 +27,15 @@ set $IRC weechat
 # }}}
 
 # {{{ Screens
-!?<HOSTNAME=home-ubuntu
-# When using nouveau driver, the second screen is 'DVI-D-1'
-#   after switched to nvidia-346 driver, it's 'DVI-D-0'
+!?<HOSTNAME=deskmini-server
+# User 'xrandr --query | grep connected' to list available monitors
 set !!<$left_screen,$right_screen> \
-  !!<DVI-I-1,DVI-D-0>
+  !!<HDMI-A-0,DisplayPort-2>
+>
+!?<HOSTNAME=matebook-deepin
+# User 'xrandr --query | grep connected' to list available monitors
+set !!<$left_screen,$right_screen> \
+  !!<eDP,DisplayPort-0>
 >
 # }}}
 
@@ -56,8 +61,9 @@ font pango:Input Mono Compressed 9
 # links in your browser window).
 focus_follows_mouse no
 
-new_window pixel 1
-hide_edge_borders none
+new_window pixel 2
+#hide_edge_borders none
+hide_edge_borders smart
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -286,24 +292,25 @@ bindsym $mod+Shift+i exec VBoxManage startvm winxp-DailyWork
 # bind key for an emergence terminal in floating mode
 bindsym $mod+Shift+Return exec $TERM -name emergence_terminal && i3-msg '[instance="^emergence_terminal$"] floating enable'
 # rofi
-bindsym $mod+d exec rofi -show drun
-bindsym $mod+Shift+d exec rofi -show run
-bindsym $mod+Tab exec rofi -show window
+#bindsym $mod+d exec rofi -show drun
+bindsym $alt+space exec rofi -show drun
+bindsym $alt+Shift+space exec rofi -show run
+bindsym $alt+Tab exec rofi -show window
 
 # }}}
 
 # {{{ Workspace settings
 # define workspaces
 set $ws!!<1..10> \
-  !!<1:Main,2:Web,3:Mail,4:Book,5:VMs,6:Dev,7:Office,8:Chat,9,10>
+  !!<1:Main,2:Web,3:Mail,4:Dev,5:VMs,6:Office,7:Book,8:Chat,9,10>
 
 # assign workspaces to specific screen
 workspace $ws!!<1..10> output \
-  !!<$left_screen,$right_screen,$right_screen,$right_screen,$left_screen,$left_screen,$right_screen,$left_screen,$left_screen,$left_screen>
+  !!<$left_screen,$right_screen,$right_screen,$right_screen,$left_screen,$left_screen,$right_screen,$right_screen,$left_screen,$left_screen>
 
 # switch to workspace
 # move focused container to workspace
-bindsym $mod!!<1!,+Shift>+!!<2!1..9,0> \
+bindsym $mod!!<1!,+Control>+!!<2!1..9,0> \
   !!<1!,move container to >\
     workspace $ws!!<2!1..10>
 
@@ -312,19 +319,24 @@ bindsym $mod+!!<b,n> workspace !!<prev,next>
 
 # Assign applications to workspace
 assign [class="^Google-chrome$" instance="^google-chrome$"] $ws2
+assign [class="^Opera$" instance="^Opera$"] $ws2
+assign [class="^Brave-browser$" instance="^brave-browser$"] $ws2
 assign [class="^Firefox$"] $ws2
 assign [class="^Geary$|^Thunderbird$"] $ws3
 assign [class="^URxvt$" instance="$MUA" title="$MUA"] $ws3
-assign [class="^WizNote$|^Evince$"] $ws4
-assign [class="^libprs500$" instance="^calibre-gui$"] $ws4
+assign [class="^WizNote$|^Evince$"] $ws6
+assign [class="^calibre$" instance="^calibre-gui$"] $ws7
 assign [class="^Vmplayer$|^VirtualBox Manager$|^Vmware$"] $ws5
-assign [class="^Eclipse$" instance="^Eclipse$"] $ws6
-assign [class="^Code$"] $ws6
-assign [class="^jetbrains-idea-|^Atom$"] $ws6
-assign [class="Wps|Et|Wpp|^libreoffice"] $ws7
+assign [class="^Eclipse$" instance="^Eclipse$"] $ws4
+assign [class="^Code$"] $ws4
+assign [class="^jetbrains-idea-|^Atom$"] $ws4
+assign [class="Wps|Et|Wpp|^libreoffice"] $ws6
 assign [class="^URxvt$" instance="$IRC" title="$IRC"] $ws8
 assign [class="^Meld$" instance="^meld$"] $ws6
 # }}}
+
+# Padding in window's title
+for_window [class=".*"] title_format "  %title"
 
 # {{{ Floating settings
 for_window [window_role="pop-up|bubble"] floating enable
@@ -334,13 +346,16 @@ for_window [class="^URxvt$" instance="^mc$" title="^mc$"] floating enable
 for_window [class="^Thunar$" instance="^thunar$"] floating enable
 for_window [class="^Steam$" instance="^Steam$"] floating enable
 for_window [class="^realvnc-vncserverui-service$" instance="^VNC\sServer\s-\sOptions$"] floating enable
+for_window [class="^Wine$" instance="^wechat.exe$"] floating enable
 for_window [class="!!<\
   ^Gimp$,^Gpick$,^feh$,^Fcitx-config-gtk3$,^Telegram$,\
-  ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,\
-  ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,\
-  ^Pidgin$,^File-roller$,^Gvim$,^shadowsocks-qt5$,\
+  ^Y-PPA-Manager$,^Goldendict$,^Font-manager$,^KeeWeb$,^Peazip$,\
+  ^Grub-customizer$,^Catfish$,^Orage$,^fontforge$,^org.remmina.Remmina$,\
+  ^Pidgin$,^File-roller$,^Gvim$,^shadowsocks-qt5$,^Genymotion$,\
   ^Nvidia-settings$,^Seahorse$,^keepassx$,^Xfce4-appfinder$,\
-  ^Nm-connection-editor$,^Pcmanfm$,^SimpleScreenRecorder$,^Bleachbit$\
+  ^Nm-connection-editor$,^Pcmanfm$,^fman$,^SimpleScreenRecorder$,^Bleachbit$,\
+  ^GParted$,^Gnome-disks$,^Clementine$,^Amule$,^Filezilla$,^Lepton$,\
+  ^Clashy$,^Joplin$,^Blueman-manager$\
   >"] floating enable
 # }}}
 
@@ -351,23 +366,20 @@ exec_always --no-startup-id compton -b
 exec --no-startup-id !!<\
   xrdb -merge ~/.Xresources,\
   /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1,\
-#  compton -b,\
-#  dunst,\
-#  thunar --daemon,\
   urxvtd -q -o -f,\
-  xautolock -time 15 -locker 'i3lock -c 1d1d1d',\
+  xautolock -time 30 -locker 'i3lock -c 1d1d1d && sleep 3 && xset dpms force off',\
   hsetroot -solid "#528b8b",\
   i3-msg Workspace 1:Main,i3-sensible-terminal,\
-  fcitx -d
-# nm-applet
-# orage
+  fcitx -d,\
+  pasystray,\
+  /home/yusiwen/.local/bin/clashy
 >
 exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 !?<HOSTNAME=deskmini-server
-exec --no-startup-id !!<\
-  ~/Shadowsocks-Qt5-3.0.1-x86_64.AppImage,\
-  albert
->
+#exec --no-startup-id ~/Shadowsocks-Qt5-3.0.1-x86_64.AppImage
+#exec --no-startup-id albert
+exec --no-startup-id flameshot
+exec --no-startup-id blueman-applet
 >
 !?<HOSTNAME=vm-pd-ubuntu-min
 exec --no-startup-id /usr/bin/prlcc
@@ -379,8 +391,8 @@ exec --no-startup-id /usr/bin/vmware-user-suid-wrapper
 
 # {{{ i3-gaps
 # Set inner/outer gaps
-gaps inner 8
-gaps outer -4
+gaps inner 6
+gaps outer -2
 
 # Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
 # gaps inner|outer current|all set|plus|minus <px>
@@ -395,7 +407,7 @@ smart_gaps on
 smart_borders on
 
 # Press $mod+Shift+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
-set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps Gaps: (o)uter, (i)nner
 set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
 set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
 bindsym $mod+Shift+g mode "$mode_gaps"

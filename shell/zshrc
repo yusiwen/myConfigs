@@ -1,5 +1,16 @@
 #!/bin/sh
 
+# ███████╗███████╗██╗  ██╗██████╗  ██████╗
+# ╚══███╔╝██╔════╝██║  ██║██╔══██╗██╔════╝
+#   ███╔╝ ███████╗███████║██████╔╝██║
+#  ███╔╝  ╚════██║██╔══██║██╔══██╗██║
+# ███████╗███████║██║  ██║██║  ██║╚██████╗
+# ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝
+#
+# Zsh rc file
+# http://git.io/vtVXR
+# yusiwen@gmail.com
+
 # Path to your oh-my-zsh configuration.
 export ZSH=$HOME/.oh-my-zsh
 export ZSH_CUSTOM="$ZSH/custom"
@@ -44,10 +55,13 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 if [ "$(uname)" = 'Darwin' ]; then
-  plugins=(brew virtualenv git svn mercurial mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z)
+  plugins=(brew virtualenv git git-flow svn mercurial mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z docker zsh-autosuggestions zsh-syntax-highlighting)
 else
-  plugins=(virtualenv git svn mercurial mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z)
+  plugins=(virtualenv git git-flow svn mercurial mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z docker kubectl minikube zsh-autosuggestions zsh-syntax-highlighting)
 fi
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=241"
+ZSH_AUTOSUGGEST_USE_ASYNC="true"
 
 # ZSH uses the KEYTIMEOUT parameter to determine how long to wait (in hundredths of a second)
 # for additional characters in sequence. Default is 0.4 seconds.
@@ -57,9 +71,8 @@ KEYTIMEOUT=1
 
 source "$ZSH/oh-my-zsh.sh"
 
-source "$HOME/myConfigs/shell/zsh-git-prompt.sh"
-
 # Customize to your needs...
+source "$HOME/myConfigs/shell/git-prompt.zsh"
 
 # Load all of my custom scripts
 for script in $HOME/myConfigs/shell/scripts/*.script; do

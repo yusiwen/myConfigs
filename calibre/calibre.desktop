@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Name=Calibre
+# Only KDE 4 seems to use GenericName, so we reuse the KDE strings.
+# From Ubuntu's language-pack-kde-XX-base packages, version 9.04-20090413.
+GenericName=Calibre e-Book Management
+# Gnome and KDE 3 uses Comment.
+Comment=E-Book Management
+Exec=/home/yusiwen/.local/bin/calibre
+StartupNotify=true
+Terminal=false
+Icon=
+Type=Application
+Categories=Office;Graphics;Viewer;
+MimeType=application/x-mobipocket-ebook;application/epub+zip;x-content/ebook-reader;
+

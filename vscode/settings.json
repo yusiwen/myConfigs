@@ -3,7 +3,7 @@
   "editor.tabSize": 2,
   "editor.wordWrap": "on",
   "editor.fontFamily": "'Sarasa Mono SC', 'Fira Code', Consolas, 'Courier New', monospace",
-  "editor.fontSize": 12,
+  "editor.fontSize": 13,
   "editor.fontLigatures": true,
   "editor.renderWhitespace": "boundary",
   "editor.cursorStyle": "underline",
@@ -30,7 +30,10 @@
   ],
   "vim.handleKeys": {
     "<C-k>": false,
-    "<C-a>": false
+    "<C-a>": false,
+    "<C-v>": true,
+    "<C-d>": true,
+    "<C-s>": false
   },
 
   "rust.mode": "legacy",
@@ -66,9 +69,8 @@
   "terminal.integrated.fontFamily": "Sarasa Term SC",
   "terminal.integrated.fontSize": 12,
 
-  "extensions.ignoreRecommendations": false,
-  "workbench.iconTheme": "vscode-icons",
-  "vsicons.projectDetection.autoReload": true,
+  "extensions.ignoreRecommendations": true,
+  "workbench.iconTheme": "material-icon-theme",
 
   "files.associations": {},
   "[java]": {
@@ -116,7 +118,13 @@
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
   "git.ignoreLegacyWarning": true,
-  "python.jediEnabled": false,
+  "window.menuBarVisibility": "toggle",
   "oracleDeveloperTools.networkConfiguration.configFilesLocation": "/home/yusiwen/Oracle/network/admin",
   "oracleDeveloperTools.networkConfiguration.walletFileLocation": "/home/yusiwen/Oracle/network/admin",
+  "workbench.startupEditor": "welcomePage",
+  "C_Cpp.updateChannel": "Insiders",
+  "http.proxySupport": "off",
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -javaagent:\"/home/yusiwen/.vscode/extensions/gabrielbb.vscode-lombok-1.0.1/server/lombok.jar\"",
+  "java.semanticHighlighting.enabled": true,
+  "java.home": "/opt/java/jdk-11.0.7",
 }

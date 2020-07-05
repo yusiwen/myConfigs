@@ -1,35 +1,49 @@
-
 " Session Management
 " ---
+"
+" Behaviors:
+" - Save active session when quitting vim completely
+"
+" Commands:
+" - SessionSave [name]: Create and activate new session
+" - SessionLoad [name]: Clear buffers and load selected session
+"
+" If [name] is empty, the current working-directory is used.
+"
+" Options:
+" - g:session_directory defaults to DATA_PATH/session (see config/vimrc)
 
-let g:session_directory = $VARPATH.'/session'
-if ! isdirectory(g:session_directory)
-  call mkdir(g:session_directory, 'p')
+if exists('g:loaded_sessionsplugin')
+  finish
 endif
+let g:loaded_sessionsplugin = 1
+
+" Options
+let g:session_directory = get(g:, 'session_directory', $DATA_PATH . '/session')
 
 " Save and persist session
-command! -nargs=? -complete=customlist,<SID>session_complete SessionSave
+command! -nargs=? -complete=customlist,<SID>session_list SessionSave
   \ call s:session_save(<q-args>)
 
 " Load and persist session
-command! -nargs=? -complete=customlist,<SID>session_complete SessionLoad
+command! -nargs=? -complete=customlist,<SID>session_list SessionLoad
   \ call s:session_load(<q-args>)
 
 " Save session on quit if one is loaded
-augroup sessionsave
+augroup plugin_sessions
   autocmd!
   " If session is loaded, write session file on quit
   autocmd VimLeavePre *
     \ if ! empty(v:this_session) && ! exists('g:SessionLoad')
-    \ |   execute 'mksession! '.fnameescape(v:this_session)
+    \ |   execute 'mksession! ' . fnameescape(v:this_session)
     \ | endif
 augroup END
 
-function! s:session_save(name) abort
+function! s:session_save(name)
   if ! isdirectory(g:session_directory)
     call mkdir(g:session_directory, 'p')
   endif
-  let file_name = empty(a:name) ? badge#project() : a:name
+  let file_name = empty(a:name) ? s:project_name() : a:name
   let file_path = g:session_directory.'/'.file_name.'.vim'
   execute 'mksession! '.fnameescape(file_path)
   let v:this_session = file_path
@@ -39,22 +53,38 @@ function! s:session_save(name) abort
   echohl None
 endfunction
 
-function! s:session_load(name) abort
-  let file_path = g:session_directory.'/'.a:name.'.vim'
+function! s:session_load(name)
+  let file_name = empty(a:name) ? s:project_name() : a:name
+  let file_path = g:session_directory.'/'.file_name.'.vim'
 
   if ! empty(v:this_session) && ! exists('g:SessionLoad')
     \ |   execute 'mksession! '.fnameescape(v:this_session)
     \ | endif
 
-  noautocmd silent! %bwipeout!
-  execute 'silent! source '.file_path
+  if filereadable(file_path)
+    noautocmd silent! %bwipeout!
+    execute 'silent! source '.file_path
+    echomsg 'Loaded "'.file_path.'" session'
+  else
+    echohl ErrorMsg
+    echomsg 'The session "'.file_path.'" doesn''t exist'
+    echohl None
+  endif
 endfunction
 
-function! s:session_complete(A, C, P)
+function! s:session_list(A, C, P)
   return map(
     \ split(glob(g:session_directory.'/*.vim'), '\n'),
     \ "fnamemodify(v:val, ':t:r')"
     \ )
 endfunction
 
-" vim: set ts=2 sw=2 tw=80 expandtab :
+function! s:project_name()
+  let l:cwd = resolve(getcwd())
+  let l:cwd = substitute(l:cwd, '^'.$HOME.'/', '', '')
+  let l:cwd = fnamemodify(l:cwd, ':p:gs?/?_?')
+  let l:cwd = substitute(l:cwd, '^\.', '', '')
+  return l:cwd
+endfunction
+
+" vim: set ts=2 sw=2 tw=80 noet :

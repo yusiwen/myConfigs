@@ -6,7 +6,7 @@ I3_THEME_FILE="$HOME/.i3/config.colors"
 VIM_THEME_DIR="$HOME/myConfigs/vim/themes"
 VIM_THEME_FILE="$HOME/.vim/vimrc.colortheme"
 
-X11_THEME_DIR="$HOME/myConfigs/X11/themes/color-schemes/"
+X11_THEME_DIR="$HOME/myConfigs/X11/themes/color-schemes"
 X11_THEME_FILE="$HOME/.Xresources.theme"
 BASE16_THEME_SHELL="$HOME/.base16rc"
 
@@ -17,37 +17,37 @@ GREP="grep -q"
 
 change_theme()
 {
-  if [ $(uname) = 'Linux' ]; then
-    if [ ! -e $HOME/.Xresources.font ]; then
-      $HOME/myConfigs/change_font.sh
+  if [ "$(uname)" = 'Linux' ]; then
+    if [ ! -e "$HOME"/.Xresources.font ]; then
+      "$HOME"/myConfigs/change_font.sh
     fi
 
     echo "Setting theme to '$1'..."
 
-    if [ -e $VIM_THEME_DIR/vimrc.theme.$1 ]; then
-      ln -sfnv $VIM_THEME_DIR/vimrc.theme.$1 $VIM_THEME_FILE
+    if [ -e "$VIM_THEME_DIR"/vimrc.theme."$1" ]; then
+      ln -sfnv "$VIM_THEME_DIR"/vimrc.theme."$1" "$VIM_THEME_FILE"
     fi
 
-    if [ -e $I3_THEME_DIR/_config.$1 ]; then
-      ln -sfnv $I3_THEME_DIR/_config.$1 $I3_THEME_FILE
+    if [ -e "$I3_THEME_DIR"/_config."$1" ]; then
+      ln -sfnv "$I3_THEME_DIR"/_config."$1" "$I3_THEME_FILE"
       i3bang
     fi
 
     BASE16=
     if echo "$1" | $GREP "^base16"; then
-      ln -sfnv $X11_THEME_DIR/$1.dark.256.xresources $X11_THEME_FILE
-      ln -sfnv $X11_THEME_DIR/$1.dark.sh $BASE16_THEME_SHELL
+      ln -sfnv "$X11_THEME_DIR"/"$1".dark.256.xresources "$X11_THEME_FILE"
+      ln -sfnv "$X11_THEME_DIR"/"$1".dark.sh "$BASE16_THEME_SHELL"
       BASE16=".dark.256"
     else
-      ln -sfnv $X11_THEME_DIR/$1.xresources $X11_THEME_FILE
-      rm -f $BASE16_THEME_SHELL
+      ln -sfnv "$X11_THEME_DIR"/"$1".xresources "$X11_THEME_FILE"
+      rm -f "$BASE16_THEME_SHELL"
     fi
 
-    if [ $DISTRO = 'Ubuntu' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ]; then
       # Check if mutt is installed or not
       PACKAGE=$(dpkg -l | grep mutt)
-      if [ ! -z "$PACKAGE" ]; then
-        ln -sfnv $MUTT_THEME_DIR/$1$BASE16.muttrc $MUTT_THEME_FILE
+      if [ -n "$PACKAGE" ]; then
+        ln -sfnv "$MUTT_THEME_DIR"/"$1"$BASE16.muttrc "$MUTT_THEME_FILE"
       fi
     fi
 
@@ -71,10 +71,10 @@ echo "[0] Base16-Twilight"
 echo "[a] Dracula"
 echo "[b] Manjaro-i3"
 echo "[c] Solarized-Dark"
-echo -n "Choose theme[3]: "
-read number
+printf "Choose theme[3]: "
+read -r number
 
-if [ -z $number ]; then
+if [ -z "$number" ]; then
   number='3'
 fi
 

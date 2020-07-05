@@ -6,7 +6,7 @@ xcode command-line tools
 
 ## Installation
 
-```shell
+```sh
 # skhd
 brew install koekeishiya/formulae/skhd
 cp /usr/local/opt/skhd/share/skhd/examples/skhdrc ~/.skhdrc

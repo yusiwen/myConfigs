@@ -5,3 +5,9 @@
 
 # Ignore all ctags files
 tags
+target
+.project
+.classpath
+.factorypath
+.settings
+.idea

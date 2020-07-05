@@ -1,0 +1,12 @@
+[Unit]
+Description=Aria2c download manager
+After=network-online.target
+
+[Service]
+Type=simple
+User=deluge
+Group=deluge
+ExecStart=/usr/bin/aria2c --console-log-level=warn --enable-rpc --rpc-listen-all --rpc-secret=test1234 --dir=/mnt/disk1/downloads --max-connection-per-server=10
+
+[Install]
+WantedBy=multi-user.target

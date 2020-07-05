@@ -1,7 +1,7 @@
 ! ~/.Xresources.font
 
-URxvt.font: xft:Sarasa Term SC:Regular:size=11
-URxvt.boldFont: xft:Sarasa Term SC:Bold:size=11
-URxvt.italicFont: xft:Sarasa Term SC:Italic:size=11
-URxvt.boldItalicFont: xft:Sarasa Term SC:Bold Italic:size=11
+URxvt.font: xft:Sarasa Term SC:Regular:size=12
+URxvt.boldFont: xft:Sarasa Term SC:Bold:size=12
+URxvt.italicFont: xft:Sarasa Term SC:Italic:size=12
+URxvt.boldItalicFont: xft:Sarasa Term SC:Bold Italic:size=12
 URxvt.letterSpace: -1

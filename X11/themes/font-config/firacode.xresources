@@ -1,7 +1,7 @@
 ! ~/.Xresources.font
 
-URxvt.font: xft:Fira Code:Regular:size=9,xft:WenQuanYi Mirco Hei Mono:Regular:size=9
-URxvt.boldFont: xft:Fira Code:Bold:size=9,xft:WenQuanYi Mirco Hei Mono:Regular:size=9
-URxvt.italicFont: xft:Fira Code:Italic:size=9,xft:WenQuanYi Mirco Hei Mono:Regular:size=9
-URxvt.boldItalicFont: xft:Fira Code:Bold Italic:size=9,xft:WenQuanYi Mirco Hei Mono:Regular:size=9
+URxvt.font: xft:Fira Code:Regular:size=12,xft:WenQuanYi Micro Hei Mono:Regular:size=12
+URxvt.boldFont: xft:Fira Code:Bold:size=12,xft:WenQuanYi Micro Hei Mono:Regular:size=12
+URxvt.italicFont: xft:Fira Code:Italic:size=12,xft:WenQuanYi Micro Hei Mono:Regular:size=12
+URxvt.boldItalicFont: xft:Fira Code:Bold Italic:size=12,xft:WenQuanYi Micro Hei Mono:Regular:size=12
 URxvt.letterSpace: -2

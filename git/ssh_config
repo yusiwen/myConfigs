@@ -1,10 +1,10 @@
 Host github.com
   User git
-  ProxyCommand nc -x 127.0.0.1:1088 %h %p
+  ProxyCommand nc -x 127.0.0.1:7891 %h %p
 
 Host bitbucket.org
   User git
-  ProxyCommand nc -x 127.0.0.1:1088 %h %p
+  ProxyCommand nc -x 127.0.0.1:7891 %h %p
 
 # CentOS parallels desktop vm on macbook
 Host vm-pd-centos
@@ -48,3 +48,26 @@ Host vm-pd-database
   User yusiwen
   Port 1042
 
+Host vps01
+  HostName 45.32.80.48
+  User root
+
+Host vps02
+  HostName 136.244.68.204
+  User root
+
+Host vps03
+  HostName 45.32.72.90
+  User root
+
+Host aliyun01
+  HostName 47.101.52.153
+  User root
+
+Host kubeedge-dev-master
+  HostName 192.168.1.65
+  User root
+
+Host kubeedge-dev-node1
+  HostName 192.168.1.66
+  User root

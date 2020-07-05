@@ -2,31 +2,60 @@
 
 ## Applications
 
-- [Leanote](https://note.yusiwen.cc)
-- [Gitea](https://gitea.yusiwen.cc)
-- [Lobsters](https://links.yusiwen.cc)
-- [Jingo](https://note.yusiwen.cc)
-- [Wiki.js](https://note.yusiwen.cc)
+- [Artifactory](https://maven.yusiwen.cn)
+- [Gitea](https://gitea.yusiwen.cn)
+- [Jenkins](https://jenkins.yusiwen.cn)
+- [Wiki.js](https://note.yusiwen.cn)
 
 ## Conifurations
 
-### Supervisor
+### SSH Keys
 
-Install `supervisor` using `apt-get`: `sudo apt-get install supervisor`.
+Add SSH keys to `vps01` and `aliyun01` as root manually or using `ssh-copy-id`
 
-Copy `supervisord/*.conf` to `/etc/supervisor/conf.d/`.
+### Jenkins
 
-Create log dir in `/var/log`:
+Install backup plugin, see detail at [Periodic Backup](https://plugins.jenkins.io/periodicbackup)
 
-```shell
-mkdir -p /var/log/leanote
-mkdir -p /var/log/gitea
-mkdir -p /var/log/lobsters
-mkdir -p /var/log/jingo
-mkdir -p /var/log/wikijs
+### Gitea
+
+Add crontab of user `git`
+
+```sh
+sudo mkdir -p /var/lib/gitea
+sudo chown -R git:gitservice /var/lib/gitea
+crontab -e
 ```
 
-Restart `supervisor` using `systemctl`: `sudo systemctl restart supervisor`.
+Add line as following
+
+```text
+0 2 * * MON (cd /var/lib/gitea && /usr/local/bin/gitea/gitea dump)
+```
+
+### MySQL
+
+Add new file `.my.cnf` in root's home
+
+```text
+[client]
+user=root
+password="PASSWORD"
+```
+
+Make this file read-only
+
+```sh
+chmod 400 .my.cnf
+```
+
+In `backup_mysql.sh`, edit the line `export DATABASES='mysql YOUR_DATABASE_NAME'`, add databases which need to be backed up
+
+Add line as following in root's crontab
+
+```text
+30   3   *   *   *   /bin/bash /var/lib/mysql/backup/backup_mysql.sh
+```
 
 ## FAQ
 
