@@ -10,7 +10,6 @@
   "editor.minimap.enabled": false,
   "editor.suggestSelection": "first",
 
-  "search.usePCRE2": true,
   "search.useIgnoreFiles": true,
   "search.useReplacePreview": true,
 
@@ -49,10 +48,9 @@
   ],
 
   "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
-  "vetur.format.js.InsertSpaceBeforeFunctionParenthesis": true,
   "cmake.configureOnOpen": true,
 
-  "git.path": "G:\\apps\\cmder-v1.3.11\\vendor\\git-for-windows\\bin\\git.exe",
+  "git.path": "G:\\apps\\cmder-v1.3.14\\vendor\\git-for-windows\\bin\\git.exe",
   "git.enableSmartCommit": true,
   "git.autofetch": true,
   "gitlens.keymap": "alternate",
@@ -73,7 +71,6 @@
 
   "extensions.ignoreRecommendations": true,
   "workbench.iconTheme": "material-icon-theme",
-  "vsicons.projectDetection.autoReload": true,
 
   "files.associations": {},
   "[java]": {
