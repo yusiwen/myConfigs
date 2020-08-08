@@ -64,3 +64,5 @@ fi
 
 # zsh-autosuggestions
 bindkey "^e" autosuggest-accept
+bindkey "^[[5~" history-beginning-search-backward
+bindkey "^[[6~" history-beginning-search-forward
