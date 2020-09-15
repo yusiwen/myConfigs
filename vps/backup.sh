@@ -12,6 +12,7 @@ if [ ! -d "$TARGET_PATH" ]; then
   mkdir -p "$TARGET_PATH"/vps01
   mkdir -p "$TARGET_PATH"/vps03
   mkdir -p "$TARGET_PATH"/aliyun01
+  mkdir -p "$TARGET_PATH"/aliyun02
 fi
 
 # Backup MySql database backup files from vps01
@@ -46,10 +47,15 @@ rsync -azPv root@aliyun01:/etc/nginx "$TARGET_PATH"/aliyun01/etc
 echo '(aliyun01)Backup Artifactory files...'
 rsync -azPv root@aliyun01:/data/artifactory-backup "$TARGET_PATH"/aliyun01/artifactory
 
-# Backup Jenkins backup files from vps01
+# Backup Jenkins backup files from aliyun01
 echo '(aliyun01)Backup Jenkins files...'
 rsync -azPv root@aliyun01:/var/lib/jenkins/backup "$TARGET_PATH"/aliyun01/jenkins
 
-# Backup Gitea backup files from vps01
+# Backup Gitea backup files from aliyun01
 echo '(aliyun01)Backup Gitea...'
 rsync -azPv root@aliyun01:/data/gitea-backup "$TARGET_PATH"/aliyun01/gitea
+
+# Backup let's encrypt certificates from aliyun02
+echo "(aliyun02)Backup let's encrypt certificates..."
+rsync -azPv root@aliyun02:/etc/letsencrypt "$TARGET_PATH"/aliyun02/etc
+
