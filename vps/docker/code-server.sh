@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PASSWD=$(cat ./.code-server.pwd)
+
 docker run -d -p 127.0.0.1:3030:8080 \
   --name code-3.5.0 \
   --restart unless-stopped \
@@ -7,6 +9,6 @@ docker run -d -p 127.0.0.1:3030:8080 \
   -v "/var/lib/coder-project:/home/coder/project" \
   -v "/opt/jdk1.8.0_192:/home/coder/jdk1.8.0_192" \
   -v "/opt/apache-maven-3.6.1:/home/coder/apache-maven-3.6.1" \
-  -e "PASSWORD=8dda20e3505737a8c261f6b0" \
+  -e "PASSWORD=$PASSWD" \
   codercom/code-server:3.5.0
 
