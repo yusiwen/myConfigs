@@ -1,13 +1,14 @@
 #!/bin/bash
 
-docker run -d --name sonar \
-    --restart unless-stopped \
-    -p 9000:9000 \
-    -e SONAR_JDBC_URL=jdbc:postgresql://172.19.190.81:5432/sonardb \
-    -e SONAR_JDBC_USERNAME=sonar \
-    -e SONAR_JDBC_PASSWORD=7dXNa9YJNEo1MuEEBETc \
-    -v sonarqube_data:/opt/sonarqube/data \
-    -v sonarqube_extensions:/opt/sonarqube/extensions \
-    -v sonarqube_logs:/opt/sonarqube/logs \
-    sonarqube:community
+docker run -d --name sonarqube \
+  --restart unless-stopped \
+  -p 127.0.0.1:9000:9000 \
+  --network postgres \
+  -e SONAR_JDBC_URL=jdbc:postgresql://postgres:5432/sonardb \
+  -e SONAR_JDBC_USERNAME=sonar \
+  -e SONAR_JDBC_PASSWORD=rtp2Az3boWjGbBFT4hq8 \
+  -v /var/lib/sonarqube/data:/opt/sonarqube/data \
+  -v /var/lib/sonarqube/extensions:/opt/sonarqube/extensions \
+  -v /var/lib/sonarqube/logs:/opt/sonarqube/logs \
+  sonarqube:community
 
