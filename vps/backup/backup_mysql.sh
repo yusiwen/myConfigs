@@ -65,7 +65,7 @@ export MYSQL_DOT_MY_CNF='/root/.my.cnf'
 
 # Databases we should backup.
 # Multiple databases MUST be seperated by SPACE.
-export DATABASES='mysql YOUR_DATABASE_NAME'
+export DATABASES='mysql artdb gitea'
 
 # Database character set for ALL databases.
 # Note: Currently, it doesn't support to specify character set for each databases.
@@ -81,8 +81,8 @@ export CMD_DATE='/bin/date'
 export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'
 export COMPRESS_SUFFIX='bz2'
-export CMD_MYSQL="mysql --defaults-file=${MYSQL_DOT_MY_CNF} -u${MYSQL_ROOT_USER}"
-export CMD_MYSQLDUMP="mysqldump --defaults-file=${MYSQL_DOT_MY_CNF} -u${MYSQL_ROOT_USER} --events --ignore-table=mysql.event --default-character-set=${DB_CHARACTER_SET} --skip-comments"
+export CMD_MYSQL="mysql --defaults-file=${MYSQL_DOT_MY_CNF} -h 127.0.0.1 -P 3307 -u${MYSQL_ROOT_USER}"
+export CMD_MYSQLDUMP="mysqldump --defaults-file=${MYSQL_DOT_MY_CNF} --host 127.0.0.1 --port 3307 -u${MYSQL_ROOT_USER} --events --ignore-table=mysql.event --default-character-set=${DB_CHARACTER_SET} --skip-comments"
 
 # Date.
 export YEAR="$(${CMD_DATE} +%Y)"
