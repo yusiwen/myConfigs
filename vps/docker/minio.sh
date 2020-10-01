@@ -1,7 +1,7 @@
 #!/bin/sh
 
-ACCESSKEY=$(head -1 /root/.minio.pwd)
-SECRETKEY=$(tail -1 /root/.minio.pwd)
+ACCESSKEY=$(awk -F "=" '/MINIO_AK/ {print $2}' /root/.my.pwd.cnf)
+SECRETKEY=$(awk -F "=" '/MINIO_SK/ {print $2}' /root/.my.pwd.cnf)
 
 docker run -d -p 127.0.0.1:9000:9000 \
   --name minio \

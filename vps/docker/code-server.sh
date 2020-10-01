@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PASSWD=$(cat ./.code-server.pwd)
+PASSWD=$(awk -F "=" '/CODESERVER/ {print $2}' /root/.my.pwd.cnf)
 
 docker run -d -p 127.0.0.1:3030:8080 \
   --name code-3.5.0 \
