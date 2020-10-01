@@ -7,4 +7,7 @@ docker run -d --name confluence \
   -v /var/lib/confluence:/var/atlassian/application-data/confluence \
   -e JVM_MAXIMUM_MEMORY=2048m \
   -e ATL_PROXY_NAME=confluence.yusiwen.cn \
+  -e ATL_PROXY_PORT=443 \
+  -e ATL_TOMCAT_SCHEME=https \
+  -e ATL_TOMCAT_SECURE=true \
   atlassian/confluence-server:latest
