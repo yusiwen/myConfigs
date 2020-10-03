@@ -59,3 +59,7 @@ rsync -azPv root@aliyun01:/data/gitea-backup "$TARGET_PATH"/aliyun01/gitea
 echo "(aliyun02)Backup let's encrypt certificates..."
 rsync -azPv root@aliyun02:/etc/letsencrypt "$TARGET_PATH"/aliyun02/etc
 
+# Backup Nginx setting files from aliyun02
+echo '(aliyun02)Backup Nginx settings...'
+rsync -azPv root@aliyun02:/etc/nginx "$TARGET_PATH"/aliyun02/etc
+
