@@ -7,6 +7,6 @@ docker run -d \
   -p 7891:7891 \
   -p 7892:7892 \
   -p 9092:9090 \
-  -v ~/tmp/clash/config.yaml:/root/.config/clash/config.yaml \
+  -v /etc/clash/config.yaml:/root/.config/clash/config.yaml \
   harbor.yusiwen.cn/library/clash-client:latest
 
