@@ -371,8 +371,7 @@ exec --no-startup-id !!<\
   hsetroot -solid "#528b8b",\
   i3-msg Workspace 1:Main,i3-sensible-terminal,\
   fcitx -d,\
-  pasystray,\
-  /home/yusiwen/.local/bin/clashy
+  pasystray
 >
 exec_always --no-startup-id $HOME/myConfigs/i3/polybar_launcher.sh
 !?<HOSTNAME=deskmini-server
