@@ -13,3 +13,6 @@
 [submodule "kernel"]
 	path = kernel
 	url = https://github.com/pimlie/ubuntu-mainline-kernel.sh.git
+[submodule "system/ps_mem"]
+	path = system/ps_mem
+	url = https://github.com/pixelb/ps_mem.git
