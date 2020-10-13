@@ -25,6 +25,10 @@ git config --global alias.lnc 'log --pretty=format:"%h\\ %s\\ [%cn]"'
 git config --global alias.lds 'log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short'
 # List commits showing changed files is invoked
 git config --global alias.ld 'log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative'
+# Report
+git config --global alias.report 'log --format='%Cgreen%ci%Creset %s%Creset' --no-merges'
+# Report CSV format
+git config --global alias.report-csv 'log --format='\"%ci\",\"%s\"' --no-merges'
 # }}}
 
 # {{{ Diff
