@@ -19,6 +19,14 @@ fi
 [ "$DISTRO" = '' ] && export DISTRO=$OS
 #}}}
 
+# .local/bin {{{
+# re-check if '$HOME/.local/bin' exists and is in $PATH
+if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  PATH="$HOME/.local/bin:$PATH"
+  export PATH
+fi
+# }}}
+
 #{{{ NeoVim
 export XDG_CONFIG_HOME=$HOME/.config
 mkdir -p "$XDG_CONFIG_HOME"
@@ -162,11 +170,6 @@ fi
 #}}}
 
 #{{{ Python
-# Add $HOME/.local/bin to $PATH if exists && not added
-if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-  PATH="$HOME/.local/bin:$PATH"
-  export PATH
-fi
 export WORKON_HOME=$HOME/venv
 #}}}
 
