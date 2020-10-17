@@ -1024,7 +1024,7 @@ function install_all() { # {{{
 } # }}}
 
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|mysql|samba|ctags]${NC}"
 } # }}}
 
 case $1 in
