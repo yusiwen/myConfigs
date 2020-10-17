@@ -21,6 +21,7 @@ COLOR2='\033[1;33m' # Highligted yellow
 NC='\033[0m'
 
 OS=$(uname)
+OS_ARCH=$(uname -a)
 CODENAME=
 OS_NAME=
 OS_VERSION=
@@ -921,7 +922,11 @@ function install_docker() { # {{{
         sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
         echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
         curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
-        sudo add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+        if [ "$OS_ARCH" = 'aarch64'] then; # for Raspberry Pi
+          sudo add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+        else
+          sudo add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+        fi
         echo -e "${COLOR}Installing docker-ce...${NC}"
         sudo apt-get -y update
         sudo apt-get -y install docker-ce
