@@ -225,7 +225,7 @@ function install_git() { # {{{
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
       # install git if not exist
       if ! type git >/dev/null 2>&1; then
-	if [ "$DISTRO" = 'Ubuntu' ]; then
+	      if [ "$DISTRO" = 'Ubuntu' ]; then
           GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
           if [ ! -e "$GIT_PPA" ]; then
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
@@ -238,7 +238,7 @@ function install_git() { # {{{
           else
             echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
           fi
-	fi
+	      fi
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
         sudo apt install -y git
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
