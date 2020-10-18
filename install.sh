@@ -86,7 +86,7 @@ function init_env() { # {{{
         sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
       fi
       sudo apt update
-      sudo apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core iotop iftop sysstat apt-transport-https jq tmux
+      sudo apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core iotop net-tools iftop sysstat apt-transport-https jq tmux
     elif [ "$DISTRO" = 'CentOS' ]; then
       sudo yum --enablerepo=epel -y install fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
     fi
