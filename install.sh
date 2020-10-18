@@ -21,7 +21,7 @@ COLOR2='\033[1;33m' # Highligted yellow
 NC='\033[0m'
 
 OS=$(uname)
-OS_ARCH=$(uname -a)
+OS_ARCH=$(uname -m)
 CODENAME=
 OS_NAME=
 OS_VERSION=
