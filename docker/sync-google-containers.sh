@@ -13,6 +13,12 @@ NC='\033[0m'
 OS_ARCH=$(uname -m)
 
 function sync() {
+  if [ -z "$1" ]; then
+    echo 'Error: Image must not be null, otherwise it is nothing to sync after all'
+    usage
+    exit 1
+  fi
+
   if ! echo -n "$1" | grep -q ':'; then
     echo 'Error: must give version as well, such as k8s.gcr.io/kube-apiserver:v1.19.3'
     usage
@@ -43,13 +49,13 @@ function sync() {
   echo "NEW_TAG=$NEW_TAG"
   
   echo -e "${COLOR}Pull image: ${COLOR1}$1${COLOR} ...${NC}"
-  docker pull $1
+#  docker pull $1
   
   echo -e "${COLOR}Tag image: ${COLOR1}$NEW_TAG${COLOR} ...${NC}"
-  docker tag  $1 $NEW_TAG
+#  docker tag  $1 $NEW_TAG
   
   echo -e "${COLOR}Push image: ${COLOR1}$NEW_TAG${COLOR} ...${NC}"
-  docker push $NEW_TAG
+#  docker push $NEW_TAG
 }
 
 function sync_from_file() {
@@ -63,9 +69,9 @@ function sync_from_file() {
 function usage() {
   echo 'Usage:'
   echo '1. Sync single image:'
-  echo '  sync-google-containers.sh IMAGE:VERSION'
+  echo '  sync-google-containers.sh load IMAGE:VERSION'
   echo '2. Sync images from file:'
-  echo '  sync-google-containers.sh -f FILENAME'
+  echo '  sync-google-containers.sh load -f FILENAME'
   echo '3. Show this info:'
   echo '  sync-google-containers.sh -h'
 }
@@ -73,18 +79,38 @@ function usage() {
 load_from_file=false
 filename=
 
-while getopts 'f:h' OPT; do
+while getopts ':h' OPT; do
   case $OPT in
-    f) echo "$OPTARG";filename=$OPTARG;load_from_file=true;;
     h) usage; exit 0;;
-    ?) usage; exit 0;;
+    ?) echo "Error: invalid option" 1>&2; exit 0;;
   esac
 done
 
-shift $(($OPTIND - 1))
-if [ "$load_from_file" = true ]; then
-  sync_from_file "$filename"
-else
-  sync "$1"
-fi
+subcommand=$1; shift
+case "$subcommand" in
+  load)
+    while getopts ':f:' OPT; do
+      case $OPT in
+        f) load_from_file=true; filename=$OPTARG;;
+        ?) echo "Error: invalid option" 1>&2; exit 0;;
+      esac
+    done
+
+    shift $(($OPTIND - 1))
+    
+    if [ "$load_from_file" = true ]; then
+      sync_from_file "$filename"
+    else
+      sync "$1"
+    fi
+    ;;
+  
+  manifest)
+    create_manifest=true;
+    echo 'coming soon!'
+    ;;
+  
+  ?) echo 'Error: unsupported subcommand' 1>&2; exit 1;;
+esac
+
 
