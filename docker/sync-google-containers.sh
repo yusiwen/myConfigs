@@ -10,11 +10,15 @@ COLOR1='\033[1;32m' # Highligted green
 COLOR2='\033[1;33m' # Highligted yellow
 NC='\033[0m'
 
-OS=$(uname)
 OS_ARCH=$(uname -m)
-echo -e "${COLOR}Operate System: ${COLOR1}$OS-$OS_ARCH${COLOR} found...${NC}"
 
 function sync() {
+  if ! echo -n "$1" | grep -q ':'; then
+    echo 'Error: must give version as well, such as k8s.gcr.io/kube-apiserver:v1.19.3'
+    usage
+    exit 1
+  fi
+
   SITE_NAME=$(echo -n "$1" | cut -d '/' -f1)
   PACKAGE_NAME="$(echo -n ${1#*/} | cut -d ':' -f1)"
   VERSION_NAME=$(echo -n "$1" | cut -d ':' -f2)
@@ -49,27 +53,38 @@ function sync() {
 }
 
 function sync_from_file() {
+  echo "filename: $1"
   input="$1"
   while IFS= read -r line; do
     sync "$line"
   done < "$input"
 }
 
-if [ -z "$1" ]; then
-  echo 'sync.sh REPO:VERSION'
-  exit 1
-elif [ "$1" = '-f' ]; then
-  if [ -z "$2" ]; then
-    echo 'sync.sh -f FILENAME'
-    exit 1
-  fi
+function usage() {
+  echo 'Usage:'
+  echo '1. Sync single image:'
+  echo '  sync-google-containers.sh IMAGE:VERSION'
+  echo '2. Sync images from file:'
+  echo '  sync-google-containers.sh -f FILENAME'
+  echo '3. Show this info:'
+  echo '  sync-google-containers.sh -h'
+}
 
-  sync_from_file $2
+load_from_file=false
+filename=
+
+while getopts 'f:h' OPT; do
+  case $OPT in
+    f) echo "$OPTARG";filename=$OPTARG;load_from_file=true;;
+    h) usage; exit 0;;
+    ?) usage; exit 0;;
+  esac
+done
+
+shift $(($OPTIND - 1))
+if [ "$load_from_file" = true ]; then
+  sync_from_file "$filename"
 else
-  if ! echo -n "$1" | grep -q ':'; then
-    echo 'sync.sh REPO:VERSION'
-    exit 1
-  else
-    sync $1
-  fi
+  sync "$1"
 fi
+
