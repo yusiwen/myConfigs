@@ -88,7 +88,14 @@ function init_env() { # {{{
       sudo apt update
       sudo apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core iotop net-tools iftop sysstat apt-transport-https jq tmux
     elif [ "$DISTRO" = 'CentOS' ]; then
-      sudo yum --enablerepo=epel -y install fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
+      if [ "$OS_VERSION" = '"7"' ]; then
+        sudo yum --enablerepo=epel -y install fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
+      else
+	sudo yum config-manager --set-enabled PowerTools
+        sudo yum install -y epel-release
+        sudo yum update -y
+        sudo yum install -y fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
+      fi
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
@@ -112,7 +119,11 @@ function install_universal_ctags() { # {{{
       fi
       sudo apt install -y autoconf pkg-config
     elif [ "$DISTRO" = 'CentOS' ]; then
-      sudo yum install -y pkgconfig autoconf automake python36-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
+      if [ "$OS_VERSION" = '"7"' ]; then
+        sudo yum install -y pkgconfig autoconf automake python36-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
+      else
+        sudo yum install -y pkgconfig autoconf automake python3-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
+      fi
     fi
 
     if [ ! -d ~/git/universal-ctags ]; then
@@ -255,12 +266,16 @@ function install_git() { # {{{
         echo -e "${COLOR1}tig${COLOR} was found.${NC}"
       fi
     elif [ "$DISTRO" = 'CentOS' ]; then
-      PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
-      if [ "$PACKAGE" = 0 ]; then
-        sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
-      fi
+      if [ "$OS_VERSION" = '"7"' ]; then
+        PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
+        if [ "$PACKAGE" = 0 ]; then
+          sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+        fi
 
-      sudo yum -y install git2u-all
+        sudo yum -y install git2u-all
+      else
+	sudo yum -y install git
+      fi
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
       return
@@ -436,23 +451,27 @@ function install_python() { # {{{
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
         sudo apt-get install -y python3
       elif [ "$DISTRO" = 'CentOS' ]; then
-        PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
-        if [ "$PACKAGE" = 0 ]; then
-          sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
-        fi
+	if [ "$OS_VERSION" = '"7"' ]; then
+          PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
+          if [ "$PACKAGE" = 0 ]; then
+            sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+          fi
 
-        sudo yum update -y
-        sudo yum install -y python36u python36u-pip python2-pip
-        sudo ln -snv /usr/bin/python3.6 /usr/bin/python3
-        sudo ln -snv /usr/bin/pip3.6 /usr/bin/pip3
+          sudo yum update -y
+          sudo yum install -y python36u python36u-pip python2-pip
+          sudo ln -snv /usr/bin/python3.6 /usr/bin/python3
+          sudo ln -snv /usr/bin/pip3.6 /usr/bin/pip3
+	else
+          sudo yum install python2 python3
+        fi
       else
         echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
         return
       fi
     fi
 
-    if ! type pip >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing ${COLOR1}pip${COLOR}...${NC}"
+    if ! type pip2 >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}pip2${COLOR}...${NC}"
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
         curl https://bootstrap.pypa.io/get-pip.py --output /tmp/get-pip.py
         sudo python2 /tmp/get-pip.py
@@ -463,6 +482,7 @@ function install_python() { # {{{
       echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
         sudo apt install -y python3-pip
+	sudo alternatives --set python /usr/bin/python3
       fi
     fi
 
@@ -484,7 +504,7 @@ function install_python() { # {{{
 
     if ! type virtualenv >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
-      pip install --user virtualenv
+      pip2 install --user virtualenv
       pip3 install --user virtualenv
     fi
   elif [ "$OS" = 'Darwin' ]; then
@@ -531,9 +551,9 @@ function install_node() { # {{{
         echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
         sudo apt install -y nodejs
       elif [ "$DISTRO" = 'CentOS' ]; then
-        PACKAGE=$(yum list installed | grep -c ^nodesource-release.noarch)
-        if [ "$PACKAGE" = 0 ]; then
-          curl -sL https://rpm.nodesource.com/setup_8.x | sudo bash -
+        if [ "$(yum list installed | grep -c ^nodesource-release.noarch)" = '0' ]; then
+	  echo 'yyy'
+          curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
         fi
 
         sudo yum -y install nodejs
@@ -659,36 +679,33 @@ function install_vim() { # {{{
 
         sudo apt install -y neovim
       else
-	      echo -e "${COLOR1}NeoVim${COLOR} is found at '$(which nvim)'${NC}"
+        echo -e "${COLOR1}NeoVim${COLOR} is found at '$(which nvim)'${NC}"
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
       sudo apt install -y silversearcher-ag cscope astyle lua5.3 ruby-full perl
     elif [ "$DISTRO" = 'CentOS' ]; then
-      set +e
-      PACKAGE=$(yum list installed | grep -c ^wget.x86_64)
-      set -e
-      if [ "$PACKAGE" = 0 ]; then
-        echo -e "${COLOR}No ${COLOR1}wget${COLOR} found, install it...${NC}"
-        sudo yum install -y wget
-      fi
+      if ! type nvim >/dev/null 2>&1; then
+        set +e
+        PACKAGE=$(yum list installed | grep -c ^wget.x86_64)
+        set -e
+        if [ "$PACKAGE" = 0 ]; then
+          echo -e "${COLOR}No ${COLOR1}wget${COLOR} found, install it...${NC}"
+          sudo yum install -y wget
+        fi
 
-      set +e
-      PACKAGE=$(yum list installed | grep -c ^fuse-sshfs.x86_64)
-      set -e
-      if [ "$PACKAGE" = 0 ]; then
-        echo -e "${COLOR}No ${COLOR1}fuse-sshfs${COLOR} found, install it...${NC}"
-        sudo yum install -y fuse-sshfs
-      fi
+        set +e
+        PACKAGE=$(yum list installed | grep -c ^fuse-sshfs.x86_64)
+        set -e
+        if [ "$PACKAGE" = 0 ]; then
+          echo -e "${COLOR}No ${COLOR1}fuse-sshfs${COLOR} found, install it...${NC}"
+          sudo yum install -y fuse-sshfs
+        fi
 
-      if [ -e "$HOME"/bin/nvim.appimage ]; then
-        mv "$HOME"/bin/nvim.appimage "$HOME"/bin/nvim.appimage.$(date +"%s")
+        echo -e "${COLOR}Get latest ${COLOR1}NeoVim${COLOR} AppImage from GitHub repo...${NC}"
+        wget "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage" -P "$HOME"/.local/bin
+        ln -sfnv "$HOME"/.local/bin/nvim.appimage "$HOME"/.local/bin/nvim
       fi
-
-      echo -e "${COLOR}Get latest ${COLOR1}NeoVim${COLOR} build from GitHub repo...${NC}"
-      wget "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage" -P "$HOME"/bin
-      chmod +x "$HOME"/nvim.appimage
-      ln -sfnv "$HOME"/nvim.appimage "$HOME"/bin/nvim
     fi
   elif [ "$OS" = 'Darwin' ]; then
     echo -e "${COLOR}Install development branch of Neovim...${NC}"
@@ -715,7 +732,7 @@ function install_vim() { # {{{
 
   # Install python neovim, PyYALM package site widely
   echo -e "${COLOR}Installing python package: PyYAML, pynvim...${NC}"
-  pip install --user --upgrade pynvim PyYAML
+  pip2 install --user --upgrade pynvim PyYAML
   pip3 install --user --upgrade pynvim PyYAML
 
   if [ ! -d "$VARPATH"/venv/neovim2 ]; then
@@ -741,7 +758,7 @@ function install_vim() { # {{{
   #}}}
 
   npm install -g jshint jsxhint jsonlint stylelint sass-lint raml-cop markdownlint-cli write-good
-  pip install --user --upgrade pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
+  pip2 install --user --upgrade pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
   pip3 install --user --upgrade pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
 } #}}}
 
