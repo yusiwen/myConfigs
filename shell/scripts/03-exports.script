@@ -21,6 +21,9 @@ fi
 
 # .local/bin {{{
 # re-check if '$HOME/.local/bin' exists and is in $PATH
+if [ ! -d "$HOME/.local/bin" ]; then
+  mkdir -p "$HOME"/.local/bin
+fi
 if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
   PATH="$HOME/.local/bin:$PATH"
   export PATH
