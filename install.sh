@@ -952,7 +952,7 @@ function install_docker() { # {{{
       fi
 
       if [ ! -e /etc/docker/daemon.json ]; then
-        sudo cp "$HOME"/myConfig/docker/daemon.json /etc/docker/daemon.json
+        sudo cp "$HOME"/myConfigs/docker/daemon.json /etc/docker/daemon.json
       fi
     fi
   else
