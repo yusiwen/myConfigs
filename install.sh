@@ -947,6 +947,9 @@ function install_docker() { # {{{
         echo -e "${COLOR}Installing docker-ce...${NC}"
         sudo apt-get -y update
         sudo apt-get -y install docker-ce
+
+        echo -e "${COLOR}Add user ${COLOR1}${USER}${COLOR} to group 'docker'...${NC}"
+        sudo usermod -aG docker $USER
       else
         echo -e "${COLOR1}$(docker -v)${COLOR} is found...${NC}"
       fi
