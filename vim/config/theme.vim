@@ -2,7 +2,7 @@
 " ---
 
 scriptencoding utf-8
-execute 'source ' . expand('$VIM_PATH/themes/vimrc.theme.sourcerer')
+execute 'source ' . expand('$VIM_PATH/themes/vimrc.theme.solarized.light')
 
 " Plugin: Defx icons and highlights {{{
 " ---
