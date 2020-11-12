@@ -117,7 +117,7 @@ let s:stl  = " %7*%{&paste ? 'P' : ''}%*"                " Paste symbol
 let s:stl .= '%4* %{FileMode()} %*'                      " Modified symbol
 let s:stl .= '%3* %{BufferNumber()} %*'                  " Buffer number and edit flag
 let s:stl .= '%8* %{EditMode()} %*'                      " Edit mode
-let s:stl .= ' %1*%{badge#filename()}%*'                 " Filename
+let s:stl .= ' %{badge#filename()}'                      " Filename
 let s:stl .= ' %<'                                       " Truncate here
 let s:stl .= '%( %{badge#branch()} %)'                  " Git branch name
 let s:stl .= '%3*%( %{badge#gitstatus()} %)%*'           " Git status
@@ -129,7 +129,7 @@ let s:stl .= '%3*%(%{NearestMethodOrFunction()}%)%*  '   " Current tag
 let s:stl .= '%{badge#format()} %*'                      " File format
 let s:stl .= '%( %{&fenc} %)'                            " File encoding
 let s:stl .= '%*%( %{&ft} %)'                            " File type
-let s:stl .= '%2* %l/%2c%4p%% '                          " Line and column
+let s:stl .= ' %l/%2c%4p%% '                          " Line and column
 
 " Non-active Statusline {{{
 let s:stl_nc  = "  %{badge#mode('R', 'Z')}%n"            " Readonly & buffer
