@@ -26,7 +26,7 @@ git config --global alias.lds 'log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ 
 # List commits showing changed files is invoked
 git config --global alias.ld 'log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative'
 # Report
-git config --global alias.report 'log --format='%Cgreen%ci%Creset %s%Creset' --no-merges'
+git config --global alias.report 'log --format="%Cgreen%ci%Creset %s%Creset" --no-merges'
 # Report CSV format
 git config --global alias.report-csv 'log --format='\"%ci\",\"%s\"' --no-merges'
 # }}}
@@ -56,6 +56,7 @@ git config --global alias.gra '!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --sho
 # {{{ Tag
 # Show the last tag
 git config --global alias.lt 'describe --tags --abbrev=0'
+git config --global alias.lts 'tag -l --sort=-creatordate --format="%(creatordate:short):  %(refname:short)"'
 # }}}
 
 # {{{ Merge
