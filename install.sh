@@ -1028,6 +1028,12 @@ function install_samba() { # {{{
   fi
 } # }}}
 
+function install_rust() { # {{{
+  if [ "$OS" = 'Linux' ]; then
+    curl https://sh.rustup.rs -sSf | sh
+  fi
+} # }}}
+
 function install_all() { # {{{
   init_env
   install_python
@@ -1053,7 +1059,7 @@ function install_all() { # {{{
 } # }}}
 
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|mysql|samba|ctags]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|mysql|samba|ctags|rust]${NC}"
 } # }}}
 
 case $1 in
@@ -1074,6 +1080,7 @@ docker) install_docker ;;
 mysql) install_mysql ;;
 samba) install_samba ;;
 ctags) install_universal_ctags ;;
+rust) install_rust ;;
 *) print_info ;;
 esac
 
