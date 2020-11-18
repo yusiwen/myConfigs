@@ -103,7 +103,7 @@ if [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
     JDK_INSTALLATION_PATH='/opt/java'
     if [ -d "$JDK_INSTALLATION_PATH" ]; then
       # select the newest version of JDK to be JAVA_HOME
-      JAVA_NAME=$(/bin/ls -dr $JDK_INSTALLATION_PATH/j*/ 2>/dev/null| head -1)
+      JAVA_NAME=$(/bin/ls -dr $JDK_INSTALLATION_PATH/jdk*/ 2>/dev/null| head -1)
       # set JAVA_HOME (truncated trailing '/')
       JAVA_HOME=$(printf '%s' "${JAVA_NAME%/}")
     else
@@ -169,6 +169,12 @@ if [ -d "/usr/local/go" ]; then
   export GOPROXY=https://goproxy.io,direct
   PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
   export PATH
+fi
+#}}}
+
+#{{{ Rust
+if [ -e "$HOME/.cargo/env"]; then
+  source "$HOME/.cargo/env"
 fi
 #}}}
 
