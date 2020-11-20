@@ -8,4 +8,4 @@ docker run -d --name upsource-server-instance \
   -p 127.0.0.1:8880:8080 \
   --ulimit memlock=-1:-1 \
   --restart unless-stopped \
-  jetbrains/upsource:2020.1.1815
+  jetbrains/upsource_cracked:2020.1.1815
