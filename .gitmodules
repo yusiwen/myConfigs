@@ -16,3 +16,6 @@
 [submodule "system/ps_mem"]
 	path = system/ps_mem
 	url = https://github.com/pixelb/ps_mem.git
+[submodule "shell/dircolors-solarized"]
+	path = shell/dircolors-solarized
+	url = https://github.com/seebi/dircolors-solarized.git
