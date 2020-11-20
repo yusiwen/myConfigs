@@ -14,7 +14,7 @@
 - repo: Shougo/context_filetype.vim
 - repo: jaawerth/nrun.vim
 - repo: justinmk/vim-gtfo
-- repo: lifepillar/vim-solarized8
+- repo: overcache/NeoSolarized
 - { repo: wellle/visual-split.vim, merged: 0 }
 - { repo: wellle/targets.vim, merged: 0 }
 
