@@ -2,7 +2,7 @@
 " Credits: https://github.com/dahu/vim-help
 
 if exists('b:did_ftplugin')
-	finish
+  finish
 endif
 let b:did_ftplugin = 1
 
@@ -19,9 +19,9 @@ setlocal iskeyword+=#
 setlocal iskeyword+=-
 
 if winnr('$') > 2 + (bufname('defx') ==# '' ? 0 : 1)
-	wincmd K
+  wincmd K
 else
-	wincmd L
+  wincmd L
 endif
 
 " Exit help window with 'q'

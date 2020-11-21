@@ -31,18 +31,18 @@ set viewoptions=folds,cursor,curdir,slash,unix
 set sessionoptions=curdir,help,tabpages,winsize
 
 if has('mac') && has('vim_starting')
-	let g:clipboard = {
-		\   'name': 'macOS-clipboard',
-		\   'copy': {
-		\      '+': 'pbcopy',
-		\      '*': 'pbcopy',
-		\    },
-		\   'paste': {
-		\      '+': 'pbpaste',
-		\      '*': 'pbpaste',
-		\   },
-		\   'cache_enabled': 0,
-		\ }
+  let g:clipboard = {
+    \   'name': 'macOS-clipboard',
+    \   'copy': {
+    \      '+': 'pbcopy',
+    \      '*': 'pbcopy',
+    \    },
+    \   'paste': {
+    \      '+': 'pbpaste',
+    \      '*': 'pbpaste',
+    \   },
+    \   'cache_enabled': 0,
+    \ }
 endif
 
 if has('clipboard')
@@ -53,24 +53,24 @@ endif
 " Wildmenu {{{
 " --------
 if has('wildmenu')
-	if ! has('nvim')
-		set wildmode=list:longest
-	endif
+  if ! has('nvim')
+    set wildmode=list:longest
+  endif
 
-	" if has('nvim')
-	" 	set wildoptions=pum
-	" else
-	" 	set nowildmenu
-	" 	set wildmode=list:longest,full
-	" 	set wildoptions=tagfile
-	" endif
-	set wildignorecase
-	set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
-	set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
-	set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
-	set wildignore+=application/vendor/**,**/vendor/ckeditor/**,media/vendor/**
-	set wildignore+=__pycache__,*.egg-info,.pytest_cache,.mypy_cache/**
-	set wildcharm=<C-z>  " substitue for 'wildchar' (<Tab>) in macros
+  " if has('nvim')
+  " 	set wildoptions=pum
+  " else
+  " 	set nowildmenu
+  " 	set wildmode=list:longest,full
+  " 	set wildoptions=tagfile
+  " endif
+  set wildignorecase
+  set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
+  set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
+  set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
+  set wildignore+=application/vendor/**,**/vendor/ckeditor/**,media/vendor/**
+  set wildignore+=__pycache__,*.egg-info,.pytest_cache,.mypy_cache/**
+  set wildcharm=<C-z>  " substitue for 'wildchar' (<Tab>) in macros
 endif
 
 " }}}
@@ -87,18 +87,18 @@ set spellfile=$VIM_PATH/spell/en.utf-8.add
 set history=2000
 
 if has('nvim') && ! has('win32') && ! has('win64')
-	set shada=!,'300,<50,@100,s10,h
+  set shada=!,'300,<50,@100,s10,h
 else
-	set viminfo='300,<10,@50,h,n$DATA_PATH/viminfo
+  set viminfo='300,<10,@50,h,n$DATA_PATH/viminfo
 endif
 
 augroup user_persistent_undo
-	autocmd!
-	au BufWritePre /tmp/*          setlocal noundofile
-	au BufWritePre COMMIT_EDITMSG  setlocal noundofile
-	au BufWritePre MERGE_MSG       setlocal noundofile
-	au BufWritePre *.tmp           setlocal noundofile
-	au BufWritePre *.bak           setlocal noundofile
+  autocmd!
+  au BufWritePre /tmp/*          setlocal noundofile
+  au BufWritePre COMMIT_EDITMSG  setlocal noundofile
+  au BufWritePre MERGE_MSG       setlocal noundofile
+  au BufWritePre *.tmp           setlocal noundofile
+  au BufWritePre *.bak           setlocal noundofile
 augroup END
 
 " If sudo, disable vim swap/backup/undo/shada/viminfo writing
@@ -263,17 +263,17 @@ if has('conceal') && v:version >= 703
 endif
 
 if exists('+previewpopup')
-	set previewpopup=height:10,width:60
+  set previewpopup=height:10,width:60
 endif
 
 " Pseudo-transparency for completion menu and floating windows
 if &termguicolors
-	if exists('&pumblend')
-		set pumblend=10
-	endif
-	if exists('&winblend')
-		set winblend=10
-	endif
+  if exists('&pumblend')
+    set pumblend=10
+  endif
+  if exists('&winblend')
+    set winblend=10
+  endif
 endif
 
 " }}}

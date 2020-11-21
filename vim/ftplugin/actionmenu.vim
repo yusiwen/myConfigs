@@ -10,9 +10,9 @@ setlocal signcolumn=no listchars= showbreak=
 
 " Only load ftplugin once
 if get(s:, 'loaded')
-	" Subsequent times, just open pum
-	call s:open_pum()
-	finish
+  " Subsequent times, just open pum
+  call s:open_pum()
+  finish
 endif
 let s:loaded = 1
 
@@ -24,35 +24,35 @@ let s:selected_item = 0
 doautocmd <nomodeline> InsertEnter
 
 function! s:open_pum()
-	call feedkeys("i\<C-x>\<C-u>")
+  call feedkeys("i\<C-x>\<C-u>")
 endfunction
 
 function! s:select_item()
-	if pumvisible()
-		if ! empty(v:completed_item)
-			let s:selected_item = copy(v:completed_item)
-		endif
-		" Close pum and leave insert
-		return "\<C-y>\<Esc>"
-	endif
-	" Leave insert mode
-	return "\<Esc>"
+  if pumvisible()
+    if ! empty(v:completed_item)
+      let s:selected_item = copy(v:completed_item)
+    endif
+    " Close pum and leave insert
+    return "\<C-y>\<Esc>"
+  endif
+  " Leave insert mode
+  return "\<Esc>"
 endfunction
 
 function! s:on_insert_leave()
-	call actionmenu#close()
-	let l:index = -1
-	if type(s:selected_item) == type({})
-		let l:index = s:selected_item['user_data']
-	endif
-	if l:index ==# ''
-		let l:index = -1
-	endif
-	let l:data = l:index > -1 ? g:actionmenu#items[l:index] : {}
-	let s:selected_item = 0
-	let g:actionmenu#items = []
-	let g:actionmenu#selected = [l:index, l:data]
-	call actionmenu#callback(l:index, l:data)
+  call actionmenu#close()
+  let l:index = -1
+  if type(s:selected_item) == type({})
+    let l:index = s:selected_item['user_data']
+  endif
+  if l:index ==# ''
+    let l:index = -1
+  endif
+  let l:data = l:index > -1 ? g:actionmenu#items[l:index] : {}
+  let s:selected_item = 0
+  let g:actionmenu#items = []
+  let g:actionmenu#selected = [l:index, l:data]
+  call actionmenu#callback(l:index, l:data)
 endfunction
 
 " Menu mappings
@@ -81,8 +81,8 @@ imap     <nowait><buffer> <C-d>  <PageDown>
 
 " Events
 augroup actionmenu
-	autocmd!
-	autocmd InsertLeave <buffer> call <SID>on_insert_leave()
+  autocmd!
+  autocmd InsertLeave <buffer> call <SID>on_insert_leave()
 augroup END
 
 " Set the pum completion function
