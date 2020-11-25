@@ -2,7 +2,7 @@
 " ---
 
 scriptencoding utf-8
-execute 'source ' . expand('$VIM_PATH/themes/vimrc.theme.gruvbox')
+execute 'source ' . expand('$VIM_PATH/themes/vimrc.theme.nord')
 
 " Plugin: Defx icons and highlights {{{
 " ---

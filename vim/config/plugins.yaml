@@ -14,9 +14,7 @@
 - repo: Shougo/context_filetype.vim
 - repo: jaawerth/nrun.vim
 - repo: justinmk/vim-gtfo
-- repo: overcache/NeoSolarized
-- repo: morhetz/gruvbox
-  hook_add: let g:gruvbox_contrast_light = 'soft'
+- repo: arcticicestudio/nord-vim
 - { repo: wellle/visual-split.vim, merged: 0 }
 - { repo: wellle/targets.vim, merged: 0 }
 
