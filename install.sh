@@ -548,8 +548,8 @@ function install_node() { # {{{
 
         curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 
-        echo "deb https://mirrors.cloud.tencent.com/nodesource/deb_12.x $CODENAME main" | sudo tee $NODE_PPA
-        echo "deb-src https://mirrors.cloud.tencent.com/nodesource/deb_12.x $CODENAME main" | sudo tee --append $NODE_PPA
+        echo "deb https://mirrors.tuna.tsinghua.edu.cn/nodesource/deb_12.x $CODENAME main" | sudo tee $NODE_PPA
+        echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/nodesource/deb_12.x $CODENAME main" | sudo tee --append $NODE_PPA
         sudo apt update -y
 
         echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
