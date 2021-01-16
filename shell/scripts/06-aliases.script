@@ -99,3 +99,6 @@ alias ytd='youtube-dl --proxy socks5://127.0.0.1:1088 -r 500K'
 # K8s
 alias ka='kubeadm'
 alias kc='kubectl'
+
+# Docker
+alias do-arch='docker image inspect --format "{{.Architecture}}"'
