@@ -270,6 +270,9 @@ fi
 if [ "$OS" = 'Darwin' ]; then
   export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 fi
+
+GPG_TTY=$(tty)
+export GPG_TTY
 #}}}
 
 # Source any extended scrips stored in $HOME/.exports/ folder
@@ -281,4 +284,5 @@ if [ -d "$HOME"/.exports ]; then
     fi
   done
 fi
+
 # vim: foldmethod=marker :
