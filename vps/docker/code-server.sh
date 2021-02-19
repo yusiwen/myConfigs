@@ -8,5 +8,5 @@ docker run -d \
   -v "/var/lib/coder-project:/home/coder/project" \
   -v "/opt/jdk1.8.0_192:/home/coder/jdk1.8.0_192" \
   -v "/opt/apache-maven-3.6.1:/home/coder/apache-maven-3.6.1" \
-  codercom/code-server:3.8.1
+  codercom/code-server:3.9.0
 
