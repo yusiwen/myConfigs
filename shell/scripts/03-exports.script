@@ -194,7 +194,9 @@ if [ ! -z "$DISPLAY" ]; then
   elif [ "$HOSTNAME" = 'matebook-deepin' ]; then
     MONITOR='eDP'
   else
-    MONITOR="$(xrandr -q | grep ' connected ' | head -n 1 | cut -d ' ' -f 1)"
+    if command -v xrandr &>/dev/null; then
+      MONITOR="$(xrandr -q | grep ' connected ' | head -n 1 | cut -d ' ' -f 1)"
+    fi
   fi
   export MONITOR
 fi
