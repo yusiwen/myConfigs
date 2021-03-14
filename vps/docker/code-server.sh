@@ -4,9 +4,15 @@ docker run -d \
   -p 127.0.0.1:3030:8080 \
   --name code \
   --restart unless-stopped \
+  --env GOROOT=/usr/local/bin/go \
+  --env GOPROXY=https://goproxy.io,direct \
+  --env GOPATH=/var/lib/go_packages \
+  --env JAVA_HOME=/usr/local/jdk-11.0.10 \
   -v "/var/lib/coder:/home/coder" \
   -v "/var/lib/coder-project:/home/coder/project" \
-  -v "/opt/jdk1.8.0_192:/home/coder/jdk1.8.0_192" \
+  -v "/opt/jdk-11.0.10:/usr/local/jdk-11.0.10" \
+  -v "/opt/go:/usr/local/bin/go" \
+  -v "/opt/go_pkg:/var/lib/go_packages" \
   -v "/opt/apache-maven-3.6.1:/home/coder/apache-maven-3.6.1" \
-  codercom/code-server:3.9.0
+  codercom/code-server:latest
 
