@@ -187,6 +187,11 @@ export WORKON_HOME=$HOME/venv
 #}}}
 
 #{{{ Montiors
+# Set $DISPLAY on WSL, needed by VcXsrv
+if [ ! -z "$(uname -a | grep 'microsoft')" ]; then
+  export DISPLAY="`sed -n 's/nameserver //p' /etc/resolv.conf`:0"
+fi
+
 if [ ! -z "$DISPLAY" ]; then
   MONITOR=
   if [ "$HOSTNAME" = 'deskmini-server' ]; then
