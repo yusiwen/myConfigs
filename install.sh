@@ -477,8 +477,8 @@ function install_python() { # {{{
     if ! type pip2 >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}pip2${COLOR}...${NC}"
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
-        curl https://bootstrap.pypa.io/get-pip.py --output /tmp/get-pip.py
-        sudo python2 /tmp/get-pip.py
+        curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip2.py
+        sudo python2 /tmp/get-pip2.py
       fi
     fi
 
