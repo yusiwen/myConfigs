@@ -486,7 +486,7 @@ function install_python() { # {{{
       echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
         sudo apt install -y python3-pip
-	sudo alternatives --set python /usr/bin/python3
+	      sudo update-alternatives --set python /usr/bin/python3
       fi
     fi
 
