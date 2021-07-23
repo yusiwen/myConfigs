@@ -538,26 +538,20 @@ function install_node() { # {{{
 
   if ! type node >/dev/null 2>&1; then
     if [ "$OS" = 'Linux' ]; then
-      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
-        NODE_PPA=/etc/apt/sources.list.d/nodesource.list
-        echo -e "${COLOR}Installing Node.js v12...${NC}"
+      echo -e "${COLOR}Preparing installation of Node.js v14...${NC}"
 
-        if ! type curl >/dev/null 2>&1; then
-          init_env
-        fi
+      if ! type curl >/dev/null 2>&1; then
+        init_env
+      fi
 
-        curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
-
-        echo "deb https://mirrors.tuna.tsinghua.edu.cn/nodesource/deb_12.x $CODENAME main" | sudo tee $NODE_PPA
-        echo "deb-src https://mirrors.tuna.tsinghua.edu.cn/nodesource/deb_12.x $CODENAME main" | sudo tee --append $NODE_PPA
-        sudo apt update -y
-
+      if [ "$DISTRO" = 'Ubuntu' ]; then
+        curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
         echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
         sudo apt install -y nodejs
       elif [ "$DISTRO" = 'CentOS' ]; then
         if [ "$(yum list installed | grep -c ^nodesource-release.noarch)" = '0' ]; then
 	  echo 'yyy'
-          curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
+          curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
         fi
 
         sudo yum -y install nodejs
