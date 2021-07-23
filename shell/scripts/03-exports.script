@@ -152,7 +152,7 @@ fi
 #}}}
 
 #{{{ Ruby
-if ! command -v ruby &>/dev/null && ! command -v gem &>/dev/null; then
+if command -v ruby &>/dev/null && command -v gem &>/dev/null; then
   GEM_HOME=$(ruby -e 'puts Gem.user_dir')
   export GEM_HOME
   export GEM_PATH=$GEM_HOME
@@ -162,7 +162,7 @@ fi
 #}}}
 
 #{{{ GoLang
-if ! command -v go &>/dev/null; then
+if command -v go &>/dev/null; then
   if [ "$OS" = 'Darwin' ]; then
     export GOROOT=$(brew --prefix golang)/libexec
   else
