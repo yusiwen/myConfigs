@@ -955,6 +955,11 @@ function install_docker() { # {{{
       if [ ! -e /etc/docker/daemon.json ]; then
         sudo cp "$HOME"/myConfigs/docker/daemon.json /etc/docker/daemon.json
       fi
+
+      if [ ! -e /etc/systemd/system/docker.service.d ]; then
+        sudo mkdir -p /etc/systemd/system/docker.service.d
+        sudo cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
+      fi
     fi
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
