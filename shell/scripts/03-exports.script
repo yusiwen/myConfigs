@@ -162,7 +162,7 @@ fi
 #}}}
 
 #{{{ GoLang
-if command -v go &>/dev/null; then
+if [ -e /usr/local/go/bin/go ]; then
   if [ "$OS" = 'Darwin' ]; then
     export GOROOT=$(brew --prefix golang)/libexec
   else
