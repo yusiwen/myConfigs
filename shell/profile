@@ -21,5 +21,6 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
+source $HOME/myConfigs/shell/scripts/02-functions.script
 source $HOME/myConfigs/shell/scripts/03-exports.script
 
