@@ -63,6 +63,6 @@ if [[ "$RPS1" == "" && "$RPROMPT" == "" ]]; then
 fi
 
 # zsh-autosuggestions
-bindkey "^e" autosuggest-accept
+bindkey "^y" autosuggest-accept
 bindkey "^[[5~" history-beginning-search-backward
 bindkey "^[[6~" history-beginning-search-forward
