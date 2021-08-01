@@ -136,6 +136,13 @@ if [ -z "$M2_HOME" ] || [ ! -d "$M2_HOME" ]; then
     fi
   fi
 fi
+
+if [ -z "$CONFLUENT_HOME" ] || [ ! -d "$CONFLUENT_HOME" ]; then
+  if [ -d /opt/confluent ]; then
+    export CONFLUENT_HOME=/opt/confluent
+    export PATH=$PATH:$CONFLUENT_HOME/bin
+  fi
+fi
 #}}}
 
 #{{{ Node.js
