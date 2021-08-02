@@ -141,6 +141,9 @@ if [ -z "$CONFLUENT_HOME" ] || [ ! -d "$CONFLUENT_HOME" ]; then
   if [ -d /opt/confluent ]; then
     export CONFLUENT_HOME=/opt/confluent
     export PATH=$PATH:$CONFLUENT_HOME/bin
+  elif [ -d "$HOME/confluent" ]; then
+    export CONFLUENT_HOME=$HOME/confluent
+    export PATH=$PATH:$CONFLUENT_HOME/bin
   fi
 fi
 #}}}
