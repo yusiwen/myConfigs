@@ -944,7 +944,7 @@ function install_docker() { # {{{
         fi
         echo -e "${COLOR}Installing docker-ce...${NC}"
         sudo apt-get -y update
-        sudo apt-get -y install docker-ce docker-compose
+        sudo apt-get -y install docker-ce
 
         echo -e "${COLOR}Add user ${COLOR1}${USER}${COLOR} to group 'docker'...${NC}"
         sudo usermod -aG docker $USER
@@ -961,6 +961,8 @@ function install_docker() { # {{{
         sudo cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
       fi
     fi
+
+    echo -e "${COLOR}Please install ${COLOR1}docker-compose${COLOR} by ${COLOR1}'pip3 install docker-compose'${NC}"
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
   fi
