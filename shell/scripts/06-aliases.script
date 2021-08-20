@@ -102,3 +102,4 @@ alias kc='kubectl'
 
 # Docker
 alias do-arch='docker image inspect --format "{{.Architecture}}"'
+alias dcp='docker-compose'
