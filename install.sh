@@ -715,10 +715,10 @@ function install_vim() { # {{{
     return
   fi
 
-  ln -sfnv "$CONFIG_VIM" "$VIM_HOME"
-  mkdir -p "$HOME"/.config
-  ln -sfnv "$CONFIG_VIM" "$HOME"/.config/nvim
-
+  if [ ! -d $HOME/.SpaveVim ]; then
+    curl -sLf https://spacevim.org/install.sh | bash
+  fi
+  
   # Initialize Python 2 & 3 environment for NeoVim
   VARPATH="$HOME"/.cache/vim
   mkdir -p "$VARPATH"/venv
