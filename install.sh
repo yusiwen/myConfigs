@@ -716,7 +716,7 @@ function install_vim() { # {{{
   fi
 
   if [ ! -d $HOME/.SpaveVim ]; then
-    curl -sLf https://spacevim.org/install.sh | bash -s --no-fonts
+    curl -sLf https://spacevim.org/install.sh | bash -s -- --no-fonts
     ln -snvf "$CONFIG_VIM"/SpaceVim/init.toml "$HOME"/.SpaceVim.d/init.toml
   fi
   
