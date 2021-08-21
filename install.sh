@@ -663,7 +663,7 @@ function install_vim() { # {{{
         # Install VIM_PACKAGE
         echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
 
-	if [ "$DISTRO" = 'Ubuntu' ]; then
+	      if [ "$DISTRO" = 'Ubuntu' ]; then
           NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$CODENAME.list
           if [ ! -e "$NVIM_PPA" ]; then
             echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/unstable${COLOR}...${NC}"
@@ -673,7 +673,7 @@ function install_vim() { # {{{
           else
             echo -e "${COLOR1}ppa:neovim-ppa/unstable${COLOR} was found${NC}"
           fi
-	fi
+	      fi
 
         sudo apt install -y neovim
       else
@@ -717,6 +717,7 @@ function install_vim() { # {{{
 
   if [ ! -d $HOME/.SpaveVim ]; then
     curl -sLf https://spacevim.org/install.sh | bash -s --no-fonts
+    ln -snvf "$CONFIG_VIM"/SpaceVim/init.toml "$HOME"/.SpaceVim.d/init.toml
   fi
   
   # Initialize Python 2 & 3 environment for NeoVim
