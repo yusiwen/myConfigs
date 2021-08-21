@@ -716,7 +716,7 @@ function install_vim() { # {{{
   fi
 
   if [ ! -d $HOME/.SpaveVim ]; then
-    curl -sLf https://spacevim.org/install.sh | bash
+    curl -sLf https://spacevim.org/install.sh | bash -s --no-fonts
   fi
   
   # Initialize Python 2 & 3 environment for NeoVim
