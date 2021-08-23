@@ -14,8 +14,8 @@
     # colorscheme = "gruvbox"
     colorscheme = "nord"
     # colorscheme = "NeoSolarized"
-    # colorscheme_bg = "dark"
-    colorscheme_bg = "light"
+    colorscheme_bg = "dark"
+    # colorscheme_bg = "light"
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
     enable_guicolors = false
