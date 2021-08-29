@@ -24,3 +24,4 @@ fi
 source $HOME/myConfigs/shell/scripts/02-functions.script
 source $HOME/myConfigs/shell/scripts/03-exports.script
 
+_byobu_sourced=1 . /usr/bin/byobu-launch 2>/dev/null || true

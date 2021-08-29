@@ -1,2 +1,3 @@
 # Load .profile, containing login, non-bash related initializations.
 source ~/.profile
+_byobu_sourced=1 . /usr/bin/byobu-launch 2>/dev/null || true
