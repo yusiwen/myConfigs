@@ -12,7 +12,8 @@
     # if you want to use more colorscheme, please load the colorscheme
     # layer
     # colorscheme = "gruvbox"
-    colorscheme = "nord"
+    # colorscheme = "nord"
+    colorscheme = "dracula"
     # colorscheme = "NeoSolarized"
     colorscheme_bg = "dark"
     # colorscheme_bg = "light"
@@ -58,6 +59,11 @@ default_height = 30
 
 [[custom_plugins]]
   repo = "overcache/NeoSolarized"
+  merged = false
+
+[[custom_plugins]]
+  repo = "dracula/vim"
+  name = "dracula"
   merged = false
 
 [[custom_plugins]]
