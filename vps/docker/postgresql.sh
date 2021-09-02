@@ -13,4 +13,4 @@ docker run -d \
   -p 127.0.0.1:5432:5432 \
   -e POSTGRES_PASSWORD=$ROOTPWD \
   -v /var/lib/postgresql/data:/var/lib/postgresql/data \
-  postgres:latest
+  postgres:12.8

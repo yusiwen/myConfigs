@@ -10,4 +10,4 @@ docker run -d --name confluence \
   -e ATL_PROXY_PORT=443 \
   -e ATL_TOMCAT_SCHEME=https \
   -e ATL_TOMCAT_SECURE=true \
-  atlassian/confluence-server:latest
+  atlassian/confluence-server:7.13
