@@ -1036,6 +1036,12 @@ function install_rust() { # {{{
   fi
 } # }}}
 
+function install_sdkman() { # {{{
+  # https://sdkman.io/install
+  curl -s "https://get.sdkman.io" | bash
+  source "$HOME/.sdkman/bin/sdkman-init.sh"
+} # }}}
+
 function install_all() { # {{{
   init_env
   install_python
@@ -1083,6 +1089,7 @@ mysql) install_mysql ;;
 samba) install_samba ;;
 ctags) install_universal_ctags ;;
 rust) install_rust ;;
+sdkman) install_sdkman;;
 *) print_info ;;
 esac
 
