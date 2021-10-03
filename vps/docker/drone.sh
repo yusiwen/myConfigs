@@ -32,4 +32,4 @@ docker run -d \
   -e DRONE_SERVER_PROTO=${DRONE_SERVER_PROTO} \
   -e DRONE_USER_CREATE=username:yusiwen,admin:true \
   -e DRONE_USER_FILTER=yusiwen \
-  drone/drone:1
+  drone/drone:2
