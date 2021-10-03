@@ -12,5 +12,5 @@ docker run -d --name sonarqube \
   -v /var/lib/sonarqube/data:/opt/sonarqube/data \
   -v /var/lib/sonarqube/extensions:/opt/sonarqube/extensions \
   -v /var/lib/sonarqube/logs:/opt/sonarqube/logs \
-  sonarqube:community
+  sonarqube:lts-community
 
