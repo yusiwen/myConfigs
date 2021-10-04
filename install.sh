@@ -15,7 +15,7 @@ set -e
 set -o pipefail
 
 # Global variables {{{
-COLOR='\033[1;37m' # Highlighted white
+COLOR='\033[1;34m' # Highlighted white
 COLOR1='\033[1;32m' # Highligted green
 COLOR2='\033[1;33m' # Highligted yellow
 NC='\033[0m'
@@ -25,6 +25,7 @@ OS_ARCH=$(uname -m)
 CODENAME=
 OS_NAME=
 OS_VERSION=
+MIRRORS=1
 echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
 if [ -e /etc/os-release ]; then
   ID=$(grep "^ID=" /etc/os-release | cut -d'=' -f2)
@@ -44,6 +45,9 @@ else
   DISTRO=$OS
 fi
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
+if [ "$(hostname)" = 'aliyun03' ]; then
+  MIRRORS=0
+fi
 # }}}
 
 function check_link() { # {{{
@@ -76,7 +80,7 @@ function check_link() { # {{{
 function init_env() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 0 ]; then
+      if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
         echo -e "${COLOR}Setting Ubuntu apt source to aliyun...${NC}"
         sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
         if [ "$OS_ARCH" = 'aarch64' ]; then
@@ -84,16 +88,20 @@ function init_env() { # {{{
         else
           sudo sed -i "s/^deb http:\/\/.*archive\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
         fi
+
+        if ls /etc/apt/sources.list.d/*.list 1>/dev/null 2>&1; then
+          sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
+        fi
       fi
 
-      if ls /etc/apt/sources.list.d/*.list 1>/dev/null 2>&1; then
-        sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
-      fi
       sudo apt update
-      sudo apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core iotop net-tools iftop sysstat apt-transport-https jq tmux htop atop bat
+      sudo apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core \
+                          iotop net-tools iftop sysstat apt-transport-https jq \
+                          tmux byobu htop atop bat software-properties-common
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
-        sudo yum --enablerepo=epel -y install fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
+        sudo yum --enablerepo=epel -y install fuse-sshfs net-tools telnet ftp lftp libaio \
+                                              libaio-devel bc man lsof wget tmux byobu
       else
 	sudo yum config-manager --set-enabled PowerTools
         sudo yum install -y epel-release
@@ -246,8 +254,12 @@ function install_git() { # {{{
           if [ ! -e "$GIT_PPA" ]; then
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
             sudo apt-add-repository -y ppa:git-core/ppa
-            # Replace official launchpad address with reverse proxy from USTC
-            sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$GIT_PPA"
+
+            if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+              # Replace official launchpad address with reverse proxy from USTC
+              sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$GIT_PPA"
+            fi
+
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
             sudo apt update
             sudo apt upgrade -y
@@ -455,7 +467,7 @@ function install_python() { # {{{
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
         sudo apt-get install -y python3
       elif [ "$DISTRO" = 'CentOS' ]; then
-	if [ "$OS_VERSION" = '"7"' ]; then
+	      if [ "$OS_VERSION" = '"7"' ]; then
           PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
           if [ "$PACKAGE" = 0 ]; then
             sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
@@ -465,7 +477,7 @@ function install_python() { # {{{
           sudo yum install -y python36u python36u-pip python2-pip
           sudo ln -snv /usr/bin/python3.6 /usr/bin/python3
           sudo ln -snv /usr/bin/pip3.6 /usr/bin/pip3
-	else
+	      else
           sudo yum install python2 python3
         fi
       else
@@ -492,18 +504,20 @@ function install_python() { # {{{
 
     check_python3_version
 
-    mkdir -p "$HOME"/.pip
-    if [ -d "$HOME"/myConfigs ]; then
-      check_link "$HOME"/myConfigs/python/pip.conf "$HOME"/.pip/pip.conf
-    else
-      # Using aliyun as mirror
-      {
-        echo '[global]'
-        echo 'index-url = https://mirrors.aliyun.com/pypi/simple/'
-        echo ''
-        echo '[install]'
-        echo 'trusted-host=mirrors.aliyun.com'
-      } >>"$HOME"/.pip/pip.conf
+    if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+      mkdir -p "$HOME"/.pip
+      if [ -d "$HOME"/myConfigs ]; then
+        check_link "$HOME"/myConfigs/python/pip.conf "$HOME"/.pip/pip.conf
+      else
+        # Using aliyun as mirror
+        {
+          echo '[global]'
+          echo 'index-url = https://mirrors.aliyun.com/pypi/simple/'
+          echo ''
+          echo '[install]'
+          echo 'trusted-host=mirrors.aliyun.com'
+        } >>"$HOME"/.pip/pip.conf
+      fi
     fi
 
     if ! type virtualenv >/dev/null 2>&1; then
@@ -568,7 +582,11 @@ function install_node() { # {{{
 
   mkdir -p "$HOME"/.npm-packages
   if [ ! -e "$HOME"/.npmrc ]; then
-    cp "$HOME"/myConfigs/node.js/npmrc "$HOME"/.npmrc
+    if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+      cp "$HOME"/myConfigs/node.js/npmrc "$HOME"/.npmrc
+    else
+      cp "$HOME"/myConfigs/node.js/npmrc_no_mirrors "$HOME"/.npmrc
+    fi
   fi
 
   echo -e "${COLOR1}Installing yarn, eslint...${NC}"
@@ -668,7 +686,10 @@ function install_vim() { # {{{
           if [ ! -e "$NVIM_PPA" ]; then
             echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/unstable${COLOR}...${NC}"
             sudo add-apt-repository -y ppa:neovim-ppa/unstable
-            sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$NVIM_PPA"
+
+            if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+              sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$NVIM_PPA"
+            fi
             sudo apt update
           else
             echo -e "${COLOR1}ppa:neovim-ppa/unstable${COLOR} was found${NC}"
@@ -717,6 +738,7 @@ function install_vim() { # {{{
 
   if [ ! -d $HOME/.SpaveVim ]; then
     curl -sLf https://spacevim.org/install.sh | bash -s -- --no-fonts
+    mkdir -p "$HOME"/.SpaceVim.d
     ln -snvf "$CONFIG_VIM"/SpaceVim/init.toml "$HOME"/.SpaceVim.d/init.toml
   fi
   
