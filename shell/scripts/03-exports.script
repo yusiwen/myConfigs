@@ -304,7 +304,7 @@ if [ -d "$HOME"/.exports ]; then
 fi
 
 # Export host IP within WSL
-if [ $(is_running_in_wsl) ]; then
+if [ $(is_running_in_wsl) = '1' ]; then
   export WSL_HOST_IP=$(cat /etc/resolv.conf | grep nameserver | awk '{ print $2 }')
   # Set https proxy for git
   git config --global http.https://github.com.proxy socks5://$WSL_HOST_IP:7890
