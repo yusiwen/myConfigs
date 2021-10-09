@@ -1,10 +1,10 @@
 #!/bin/bash
 
 DRONE_GITEA_CLIENT_ID="$(awk -F "=" '/DRONE_GITEA_CLIENT_ID/ {print $2}' /root/.my.pwd.cnf)"
-DRONE_GITEA_CLIENT_SECRET="$(awk -F "=" '/DRONE_GITEA_CLIENT_SECRET/ {print $2}' /root/.my.pwd.cnf)"=
+DRONE_GITEA_CLIENT_SECRET="$(awk -F "=" '/DRONE_GITEA_CLIENT_SECRET/ {print $2}' /root/.my.pwd.cnf)"
 DRONE_GITEA_SERVER="https://git.yusiwen.cn"
-DRONE_RPC_SECRET=(awk -F "=" '/DRONE_RPC_SECRET/ {print $2}' /root/.my.pwd.cnf)
-DRONE_SERVER_HOST="drone.yusiwen.cn"
+DRONE_RPC_SECRET=$(awk -F "=" '/DRONE_RPC_SECRET/ {print $2}' /root/.my.pwd.cnf)
+DRONE_SERVER_HOST="ci.yusiwen.cn"
 DRONE_SERVER_PROTO="https"
 
 docker run -d \
@@ -31,7 +31,6 @@ docker run -d \
   -e DRONE_SERVER_PROTO=${DRONE_SERVER_PROTO} \
   -e DRONE_USER_CREATE=username:yusiwen,admin:true \
   -e DRONE_USER_FILTER=yusiwen \
-  -e DRONE_LOGS_DEBUG=true \
   -e DRONE_LOGS_TEXT=true \
   -e DRONE_LOGS_PRETTY=true \
   drone/drone:latest
