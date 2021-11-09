@@ -246,7 +246,7 @@ function install_gfw() { # {{{
 # Git
 function install_git() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       # install git if not exist
       if ! type git >/dev/null 2>&1; then
 	      if [ "$DISTRO" = 'Ubuntu' ]; then
@@ -614,7 +614,7 @@ function install_zsh() { # {{{
       echo -e "${COLOR}Current SHELL is not ${COLOR1}Zsh${NC}"
       if [ ! -e /usr/bin/zsh ]; then
         echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
-        if [ "$DISTRO" = 'Ubuntu' ]; then
+        if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
           sudo apt install -y zsh
         elif [ "$DISTRO" = 'CentOS' ]; then
           sudo yum install -y zsh
