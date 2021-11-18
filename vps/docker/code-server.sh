@@ -1,7 +1,7 @@
 #!/bin/bash
 
 docker run -d \
-  -p 127.0.0.1:3030:8080 \
+  --network host \
   --name code \
   --restart unless-stopped \
   --env GOROOT=/usr/local/bin/go \
@@ -15,5 +15,5 @@ docker run -d \
   -v "/opt/go:/usr/local/bin/go" \
   -v "/opt/go_pkg:/var/lib/go_packages" \
   -v "/opt/apache-maven-3.6.3:/usr/local/apache-maven-3.6.3" \
-  codercom/code-server:latest
+  codercom/code-server:latest --bind-addr 0.0.0.0:3030
 
