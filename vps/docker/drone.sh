@@ -6,6 +6,7 @@ DRONE_GITEA_SERVER="https://git.yusiwen.cn"
 DRONE_RPC_SECRET=$(awk -F "=" '/DRONE_RPC_SECRET/ {print $2}' $HOME/.my.pwd.cnf)
 DRONE_SERVER_HOST="ci.yusiwen.cn"
 DRONE_SERVER_PROTO="https"
+DRONE_RUNNER_LABELS=
 
 START_RUNNER=
 START_SERVER=
@@ -20,6 +21,7 @@ function start_drone_runner() {
     -e DRONE_RPC_SECRET=${DRONE_RPC_SECRET} \
     -e DRONE_RUNNER_CAPACITY=2 \
     -e DRONE_RUNNER_NAME=${HOSTNAME} \
+    -e DRONE_RUNNER_LABELS=${DRONE_RUNNER_LABELS} \
     drone/drone-runner-docker:latest
 }
 
@@ -43,10 +45,10 @@ function start_drone_server() {
 }
 
 function usage() {
-  echo "drone.sh [-s] [-r] [-C CLIENT_ID] [-S CLIENT_SECRET] [-H GITEA_SERVER] [-R RPC_SECRET]"
+  echo "drone.sh [-s] [-r <LABELS>] [-C CLIENT_ID] [-S CLIENT_SECRET] [-H GITEA_SERVER] [-R RPC_SECRET]"
 }
 
-while getopts "C:S:H:R:hsr" opt
+while getopts "C:S:H:R:hsr:" opt
 do
   case $opt in
     C)
@@ -70,6 +72,7 @@ do
       ;;
     r)
       START_RUNNER=1
+      DRONE_RUNNER_LABELS=$OPTARG
       ;;
     *)
       usage
@@ -87,6 +90,7 @@ echo "DRONE_GITEA_CLIENT_ID=$DRONE_GITEA_CLIENT_ID"
 echo "DRONE_GITEA_CLIENT_SECRET=$DRONE_GITEA_CLIENT_SECRET"
 echo "DRONE_GITEA_SERVER=$DRONE_GITEA_SERVER"
 echo "DRONE_RPC_SECRET=$DRONE_RPC_SECRET"
+echo "DRONE_RUNNER_LABELS=$DRONE_RUNNER_LABELS"
 
 if [ "$START_SERVER" = 1 ]; then
   start_drone_server
