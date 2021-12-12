@@ -132,17 +132,10 @@ chmod 0400 ${LOGFILE}
 # Backup.
 echo "* Backing up databases: ${DATABASES}." >> ${LOGFILE}
 for db in ${DATABASES}; do
-    #backup_db ${db} >>${LOGFILE}
-
-    #if [ X"$?" == X"0" ]; then
-    #    echo "  - ${db} [DONE]" >> ${LOGFILE}
-    #else
-    #    [ X"${BACKUP_SUCCESS}" == X'YES' ] && export BACKUP_SUCCESS='NO'
-    #fi
     output_tar="${BACKUP_DIR}/${db}-${TIMESTAMP}.tar"
 
     # Check database existence
-    ${CMD_PG} -e "USE ${db}" &>/dev/null
+    ${CMD_PG} -c "\c ${db}" &>/dev/null
 
     if [ X"$?" == X'0' ]; then
         # Dump
