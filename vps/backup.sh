@@ -58,3 +58,6 @@ rsync -azPv root@aliyun02:/etc/letsencrypt "$TARGET_PATH"/aliyun02/etc
 echo '(aliyun02)Backup Nginx settings...'
 rsync -azPv root@aliyun02:/etc/nginx "$TARGET_PATH"/aliyun02/etc
 
+# Backup PostgreSQL database backup files from aliyun02
+echo '(aliyun02)Backup postgres databases...'
+rsync -azPv root@aliyun02:/var/lib/postgresql/backup "$TARGET_PATH"/aliyun02/pg
