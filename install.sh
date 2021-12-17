@@ -620,9 +620,9 @@ function install_zsh() { # {{{
           sudo yum install -y zsh
           echo '/usr/bin/zsh' | sudo tee -a /etc/shells
         fi
-        echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
-        chsh -s /usr/bin/zsh
       fi
+      echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
+      chsh -s /usr/bin/zsh
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if [ ! "$SHELL" = "/usr/local/bin/zsh" ]; then
