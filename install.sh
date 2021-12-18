@@ -26,28 +26,45 @@ CODENAME=
 OS_NAME=
 OS_VERSION=
 MIRRORS=1
-echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
-if [ -e /etc/os-release ]; then
-  ID=$(grep "^ID=" /etc/os-release | cut -d'=' -f2)
-  ID_LIKE=$(awk -F= '/^ID_LIKE/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
-  if [ "$ID" = 'ubuntu' ] || [ "$ID_LIKE" = 'ubuntu' ]; then
-    DISTRO='Ubuntu'
-    CODENAME=$(grep "^UBUNTU_CODENAME" /etc/os-release | cut -d'=' -f2)
-  elif [ "ID" = 'Deepin' ]; then
-    DISTRO='Deepin'
-    CODENAME='buster'
-  else
-    DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
-  fi
-  OS_NAME=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
-  OS_VERSION=$(grep "^VERSION_ID" /etc/os-release | cut -d'=' -f2)
+DISTRO=
+
+if [ -n "$WINDIR" ]; then
+  OS='Windows_NT'
+  tmp_str=$(cmd //C ver)
+  tmp_str="${tmp_str//[$'\t\r\n']}"
+  OS_NAME=$(echo $tmp_str | cut -d '[' -f1)
+  OS_VERSION=$(echo $tmp_str | cut -d ' ' -f4 | cut -d ']' -f1)
+  DISTRO=$(uname)
 else
-  DISTRO=$OS
+  if [ -e /etc/os-release ]; then
+    ID=$(grep "^ID=" /etc/os-release | cut -d'=' -f2)
+    ID_LIKE=$(awk -F= '/^ID_LIKE/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+    if [ "$ID" = 'ubuntu' ] || [ "$ID_LIKE" = 'ubuntu' ]; then
+      DISTRO='Ubuntu'
+      CODENAME=$(grep "^UBUNTU_CODENAME" /etc/os-release | cut -d'=' -f2)
+    elif [ "ID" = 'Deepin' ]; then
+      DISTRO='Deepin'
+      CODENAME='buster'
+    else
+      DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+    fi
+    OS_NAME=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+    OS_VERSION=$(grep "^VERSION_ID" /etc/os-release | cut -d'=' -f2)
+  else
+    DISTRO=$OS
+  fi
 fi
+echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
 if [ "$(hostname)" = 'aliyun03' ]; then
   MIRRORS=0
 fi
+# }}}
+
+function make_link() { # {{{
+  local target=("$1") linkname=("$2")
+  ln -sfnv "$target" "$linkname"
+}
 # }}}
 
 function check_link() { # {{{
@@ -58,19 +75,19 @@ function check_link() { # {{{
   local target=("$1") linkname=("$2")
   echo -e "${COLOR}Checking link ${COLOR1}'${linkname}'${COLOR} to ${COLOR1}'${target}'${COLOR}...${NC}"
   if [ ! -e "${linkname}" ]; then
-    ln -snv ${target} ${linkname}
+    make_link ${target} ${linkname}
   else
     if [ -L "${linkname}" ]; then
       if [ $(readlink -f ${linkname}) = $(readlink -f ${target}) ]; then
         echo -e "${COLOR}Link ${COLOR1}'${linkname}'${COLOR} to ${COLOR1}'${target}'${COLOR} already exists${NC}"
         return
       else
-        ln -sfnv ${target} ${linkname}
+        make_link ${target} ${linkname}
         return
       fi
     else
       mv ${linkname} ${linkname}.backup
-      ln -snv ${target} ${linkname}
+      make_link ${target} ${linkname}
     fi
   fi
 
