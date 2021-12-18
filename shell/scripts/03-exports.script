@@ -315,4 +315,9 @@ if [ $(is_running_in_wsl) = '1' ]; then
   git config --global http.https://github.com.proxy socks5://$WSL_HOST_IP:7890
 fi
 
+# Support symbolic link in git bash on windows
+if [ "$OS" = 'Windows_NT' ]; then
+  export MSYS=winsymlinks:nativestrict
+fi
+
 # vim: foldmethod=marker :
