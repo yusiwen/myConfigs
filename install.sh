@@ -748,6 +748,11 @@ function install_vim() { # {{{
     brew install --HEAD neovim
     echo -e "${COLOR}Install supplementary tools...${NC}"
     brew install the_silver_searcher cscope astyle
+  elif [ "$OS" = 'Windows_NT' ]; then
+    if ! type nvim >/dev/null 2>&1; then
+      echo -e "${COLOR}Please make sure neovim is installed.${NC}"
+      return
+    fi
   else
     echo -e "${COLOR}Unknown OS, please make sure neovim is installed.${NC}"
     return
@@ -758,46 +763,6 @@ function install_vim() { # {{{
     mkdir -p "$HOME"/.SpaceVim.d
     ln -snvf "$CONFIG_VIM"/SpaceVim/init.toml "$HOME"/.SpaceVim.d/init.toml
   fi
-  
-  # Initialize Python 2 & 3 environment for NeoVim
-  VARPATH="$HOME"/.cache/vim
-  mkdir -p "$VARPATH"/venv
-
-  if ! type virtualenv >/dev/null 2>&1; then
-    echo -e "${COLOR}Python environment is not initialized. Initializing now...${NC}"
-    install_python
-  fi
-
-  # Install python neovim, PyYALM package site widely
-  echo -e "${COLOR}Installing python package: PyYAML, pynvim...${NC}"
-  # pip2 install --user --upgrade pynvim PyYAML
-  pip3 install --user --upgrade pynvim PyYAML
-
-  if [ ! -d "$VARPATH"/venv/neovim2 ]; then
-    virtualenv --system-site-packages -p /usr/bin/python2 "$VARPATH"/venv/neovim2
-  fi
-  if [ ! -d "$VARPATH"/venv/neovim3 ]; then
-    virtualenv --system-site-packages -p /usr/bin/python3 "$VARPATH"/venv/neovim3
-  fi
-  echo -e "${COLOR}Initialized python environment for neovim, run ':UpdateRemotePlugin' on first startup"
-
-  # Node.js package for NeoVim
-  if ! type npm >/dev/null 2>&1; then
-    echo -e "${COLOR1}Node.js${COLOR} environment is not initialized. Initializing now...${NC}"
-    install_node
-  fi
-
-  set +e
-  NV_NODE_PCK=$(npm list --global | grep -c neovim)
-  set -e
-  if [ "$NV_NODE_PCK" -eq 0 ]; then
-    npm install -g neovim
-  fi
-  #}}}
-
-  npm install -g jshint jsxhint jsonlint stylelint sass-lint raml-cop markdownlint-cli write-good
-  pip2 install --user --upgrade pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
-  pip3 install --user --upgrade pycodestyle pyflakes flake8 vim-vint proselint yamllint yapf
 } #}}}
 
 function install_rxvt() { # {{{
