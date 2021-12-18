@@ -2,7 +2,11 @@
 
 #{{{ Distribution Information
 # Determine OS platform
-OS=$(uname)
+if [ -n "$WINDIR" ]; then
+  OS='Windows_NT'
+else
+  OS=$(uname)
+fi
 export OS
 # If Linux, try to determine specific distribution
 if [ "$OS" = 'Linux' ]; then
@@ -37,7 +41,6 @@ export XDG_CACHE_HOME=$HOME/.cache
 mkdir -p "$XDG_CACHE_HOME"
 export XDG_DATA_HOME=$HOME/.local/share
 mkdir -p "$XDG_DATA_HOME"
-
 #}}}
 
 #{{{ Oracle instant client
@@ -155,9 +158,11 @@ if [ -z "$NPM_PACKAGES" ] || [[ ":$PATH:" != *:"$NPM_PACKAGES":* ]]; then
   export PATH="$NPM_PACKAGES/bin:$PATH"
   # Unset manpath so we can inherit from /etc/manpath via the `manpath`
   # command
-  unset MANPATH  # delete if you already modified MANPATH elsewhere in your config
-  MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
-  export MANPATH
+  if [ "$OS" != 'Windows_NT' ]; then
+    unset MANPATH  # delete if you already modified MANPATH elsewhere in your config
+    MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+    export MANPATH
+  fi
 fi
 #}}}
 
