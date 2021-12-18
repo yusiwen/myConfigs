@@ -10,4 +10,4 @@ docker run -d \
   -v /data/share:/data \
   -e "MINIO_ACCESS_KEY=$ACCESSKEY" \
   -e "MINIO_SECRET_KEY=$SECRETKEY" \
-  bitnami/minio:latest
+  bitnami/minio:2021.6.17
