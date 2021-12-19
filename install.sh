@@ -689,7 +689,6 @@ function install_vim() { # {{{
     mkdir -p "$VIM_HOME"
   fi
 
-  # NeoVim {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
 
