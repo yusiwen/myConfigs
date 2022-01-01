@@ -340,9 +340,12 @@ function install_git() { # {{{
 
   echo -e "${COLOR}Setting misc...${NC}"
   git config --global core.editor vim
+  git config --global pull.rebase true
+  git config --global fetch.prune true
   git config --global merge.tool vimdiff
   git config --global merge.conflictstyle diff3
   git config --global mergetool.prompt false
+  git config --global diff.colorMoved zebra
 
   if type diff-so-fancy >/dev/null 2>&1; then
     git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
