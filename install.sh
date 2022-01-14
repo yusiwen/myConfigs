@@ -570,37 +570,24 @@ function install_node() { # {{{
     fetch_myConfigs
   fi
 
-  if ! type node >/dev/null 2>&1; then
-    if [ "$OS" = 'Linux' ]; then
-      echo -e "${COLOR}Preparing installation of Node.js v14...${NC}"
+  if ! type nvm >/dev/null 2>&1; then
+    if [ "$OS" = 'Windows_NT' ]; then
+      echo -e "${COLOR}Please download nvm-windows, and install it manually"
+    else
+      echo -e "${COLOR}Preparing installation of nvm...${NC}"
 
       if ! type curl >/dev/null 2>&1; then
         init_env
       fi
 
-      if [ "$DISTRO" = 'Ubuntu' ]; then
-        curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-        echo -e "${COLOR}Installing ${COLOR1}Node.js${COLOR}...${NC}"
-        sudo apt install -y nodejs
-      elif [ "$DISTRO" = 'CentOS' ]; then
-        if [ "$(yum list installed | grep -c ^nodesource-release.noarch)" = '0' ]; then
-	  echo 'yyy'
-          curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
-        fi
-
-        sudo yum -y install nodejs
-      fi
-    elif [ "$OS" = 'Darwin' ]; then
-      if ! type brew >/dev/null 2>&1; then
-        init_env
-      fi
-      brew install node
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+      nvm install node
+      nvm use node
     fi
   else
     echo -e "${COLOR1}Node.js($(node -v))${COLOR} was found.${NC}"
   fi
 
-  mkdir -p "$HOME"/.npm-packages
   if [ ! -e "$HOME"/.npmrc ]; then
     if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
       cp "$HOME"/myConfigs/node.js/npmrc "$HOME"/.npmrc
