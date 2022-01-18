@@ -174,7 +174,7 @@ if [ -e /usr/local/go/bin/go ]; then
   export GOPATH=$HOME/gopackage
   mkdir -p $GOPATH
   export GO111MODULE=on
-  export GOPROXY=https://goproxy.io,direct
+  export GOPROXY=https://goproxy.cn,direct
   PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
   export PATH
 fi
