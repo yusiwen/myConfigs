@@ -47,6 +47,7 @@ bindkey '^w' backward-kill-word
 
 # ctrl-r starts searching history backward
 bindkey '^r' history-incremental-search-backward
+bindkey '^R' history-incremental-pattern-search-backward
 
 # if mode indicator wasn't setup by theme, define default
 if [[ "$MODE_INDICATOR" == '' ]]; then
@@ -64,5 +65,6 @@ fi
 
 # zsh-autosuggestions
 bindkey "^y" autosuggest-accept
+# Bind the history search of zsh to [Page UP] and [Page Down]
 bindkey "^[[5~" history-beginning-search-backward
 bindkey "^[[6~" history-beginning-search-forward
