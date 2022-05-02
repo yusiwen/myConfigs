@@ -952,9 +952,11 @@ function install_docker() { # {{{
         sudo cp "$HOME"/myConfigs/docker/daemon.json /etc/docker/daemon.json
       fi
 
-      if [ ! -e /etc/systemd/system/docker.service.d ]; then
-        sudo mkdir -p /etc/systemd/system/docker.service.d
-        sudo cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
+      if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+        if [ ! -e /etc/systemd/system/docker.service.d ]; then
+          sudo mkdir -p /etc/systemd/system/docker.service.d
+          sudo cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
+        fi
       fi
     fi
 
