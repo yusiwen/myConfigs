@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export ROOTPWD=$(awk -F "=" '/POSTGRES_ROOT/ {print $2}' /root/.my.pwd.cnf)
 
