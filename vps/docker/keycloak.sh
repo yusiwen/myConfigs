@@ -15,4 +15,5 @@ docker run -d --name keycloak \
   -e KEYCLOAK_USER=admin \
   -e KEYCLOAK_PASSWORD="$ADMINPWD" \
   -e KEYCLOAK_FRONTEND_URL="https://sso.yusiwen.cn/auth" \
+  -e PROXY_ADDRESS_FORWARDING=true \
   quay.io/keycloak/keycloak:latest
