@@ -99,7 +99,7 @@ function check_link() { # {{{
 # Initialize apt and install prerequisite packages
 function init_env() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
         echo -e "${COLOR}Setting Ubuntu apt source to aliyun...${NC}"
         $SUDO cp /etc/apt/sources.list /etc/apt/sources.list.backup
@@ -142,7 +142,7 @@ function init_env() { # {{{
 # Universal Ctags
 function install_universal_ctags() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       set +e
       PACKAGE=$(dpkg -l | grep exuberant-ctags | cut -d ' ' -f 3 | grep -c ^exuberant-ctags$)
       set -e
@@ -370,7 +370,7 @@ function install_git() { # {{{
 
 function install_ruby() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! type ruby >/dev/null 2>&1; then
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
         $SUDO apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
@@ -470,7 +470,7 @@ function install_python() { # {{{
 
     # Check python2
     if ! type python2 &>/dev/null; then
-      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         $SUDO apt-get install -y python2
       elif [ "$DISTRO" = 'CentOS' ]; then
         echo 'TODO: python2 on CentOS'
@@ -481,7 +481,7 @@ function install_python() { # {{{
     fi
 
     if ! type python3 &>/dev/null; then
-      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         $SUDO apt-get install -y python3
       elif [ "$DISTRO" = 'CentOS' ]; then
         if [ "$OS_VERSION" = '"7"' ]; then
@@ -505,7 +505,7 @@ function install_python() { # {{{
 
     if ! type pip2 >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}pip2${COLOR}...${NC}"
-      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip2.py
         $SUDO python2 /tmp/get-pip2.py
       fi
@@ -513,7 +513,7 @@ function install_python() { # {{{
 
     if ! type pip3 >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
-      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         $SUDO apt install -y python3-pip
         $SUDO update-alternatives --install /usr/bin/python python /usr/bin/python3 20
       fi
@@ -679,7 +679,7 @@ function install_vim() { # {{{
   fi
 
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
 
       if ! type nvim >/dev/null 2>&1; then
         echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
@@ -785,7 +785,7 @@ function install_i3wm() { # {{{
       return
     fi
 
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       # Install i3-gaps if not exist
       if ! type i3 >/dev/null 2>&1; then
         echo -e "${COLOR}Install ${COLOR1}i3${COLOR}...${NC}"
