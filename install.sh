@@ -15,7 +15,7 @@ set -e
 set -o pipefail
 
 # Global variables {{{
-COLOR='\033[1;34m' # Highlighted white
+COLOR='\033[1;34m'  # Highlighted white
 COLOR1='\033[1;32m' # Highligted green
 COLOR2='\033[1;33m' # Highligted yellow
 NC='\033[0m'
@@ -31,7 +31,7 @@ DISTRO=
 if [ -n "$WINDIR" ]; then
   OS='Windows_NT'
   tmp_str=$(cmd //C ver)
-  tmp_str="${tmp_str//[$'\t\r\n']}"
+  tmp_str="${tmp_str//[$'\t\r\n']/}"
   OS_NAME=$(echo $tmp_str | cut -d '[' -f1)
   OS_VERSION=$(echo $tmp_str | cut -d ' ' -f4 | cut -d ']' -f1)
   DISTRO=$(uname)
@@ -73,7 +73,7 @@ function make_link() { # {{{
 
 function check_link() { # {{{
   if [ -z "$1" ] || [ -z "$2" ]; then
-     return
+    return
   fi
 
   local target=("$1") linkname=("$2")
@@ -116,14 +116,15 @@ function init_env() { # {{{
 
       $SUDO apt update
       $SUDO apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core \
-                          iotop net-tools iftop sysstat apt-transport-https jq \
-                          tmux byobu htop atop bat software-properties-common
+                           iotop net-tools iftop sysstat apt-transport-https jq \
+                           tmux byobu htop atop bat software-properties-common
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
-        $SUDO yum --enablerepo=epel -y install fuse-sshfs net-tools telnet ftp lftp libaio \
-                                              libaio-devel bc man lsof wget tmux byobu
+        $SUDO yum --enablerepo=epel -y \
+                  install fuse-sshfs net-tools telnet ftp lftp libaio \
+                  libaio-devel bc man lsof wget tmux byobu
       else
-	$SUDO yum config-manager --set-enabled PowerTools
+        $SUDO yum config-manager --set-enabled PowerTools
         $SUDO yum install -y epel-release
         $SUDO yum update -y
         $SUDO yum install -y fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
@@ -269,7 +270,7 @@ function install_git() { # {{{
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       # install git if not exist
       if ! type git >/dev/null 2>&1; then
-	      if [ "$DISTRO" = 'Ubuntu' ]; then
+        if [ "$DISTRO" = 'Ubuntu' ]; then
           GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
           if [ ! -e "$GIT_PPA" ]; then
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
@@ -286,7 +287,7 @@ function install_git() { # {{{
           else
             echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
           fi
-	      fi
+        fi
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
         $SUDO apt install -y git
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
@@ -310,7 +311,7 @@ function install_git() { # {{{
 
         $SUDO yum -y install git2u-all
       else
-	$SUDO yum -y install git
+        $SUDO yum -y install git
       fi
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
@@ -434,8 +435,7 @@ function fetch_myConfigs() { # {{{
 
     CURDIR=$(pwd)
     cd "$HOME"/git/myConfigs
-    git submodule init
-    git submodule update
+    git submodule update --init
     cd "$CURDIR"
   fi
   ln -sfnv "$HOME"/git/myConfigs "$HOME"/myConfigs
@@ -447,12 +447,6 @@ function fetch_myConfigs() { # {{{
     mkdir -p "$HOME"/bin
     ln -sfnv "$HOME"/myConfigs/git/git-migrate "$HOME"/bin/git-migrate
     ln -sfnv "$HOME"/myConfigs/git/git-new-workdir "$HOME"/bin/git-new-workdir
-  fi
-
-  if [ "$OS" = 'Linux' ]; then
-    ln -sfnv "$HOME"/myConfigs/gfw/tsocks.conf "$HOME"/.tsocks.conf
-    $SUDO cp "$HOME"/myConfigs/gfw/polipo.conf /etc/polipo/config
-    $SUDO systemctl restart polipo
   fi
 } # }}}
 
@@ -490,7 +484,7 @@ function install_python() { # {{{
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
         $SUDO apt-get install -y python3
       elif [ "$DISTRO" = 'CentOS' ]; then
-	      if [ "$OS_VERSION" = '"7"' ]; then
+        if [ "$OS_VERSION" = '"7"' ]; then
           PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
           if [ "$PACKAGE" = 0 ]; then
             $SUDO yum -y install https://centos7.iuscommunity.org/ius-release.rpm
@@ -500,7 +494,7 @@ function install_python() { # {{{
           $SUDO yum install -y python36u python36u-pip python2-pip
           $SUDO ln -snv /usr/bin/python3.6 /usr/bin/python3
           $SUDO ln -snv /usr/bin/pip3.6 /usr/bin/pip3
-	      else
+        else
           $SUDO yum install python2 python3
         fi
       else
@@ -692,7 +686,7 @@ function install_vim() { # {{{
         # Install VIM_PACKAGE
         echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
 
-	      if [ "$DISTRO" = 'Ubuntu' ]; then
+        if [ "$DISTRO" = 'Ubuntu' ]; then
           NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$CODENAME.list
           if [ ! -e "$NVIM_PPA" ]; then
             echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/unstable${COLOR}...${NC}"
@@ -705,7 +699,7 @@ function install_vim() { # {{{
           else
             echo -e "${COLOR1}ppa:neovim-ppa/unstable${COLOR} was found${NC}"
           fi
-	      fi
+        fi
 
         $SUDO apt install -y neovim
       else
@@ -1089,7 +1083,7 @@ mysql) install_mysql ;;
 samba) install_samba ;;
 ctags) install_universal_ctags ;;
 rust) install_rust ;;
-sdkman) install_sdkman;;
+sdkman) install_sdkman ;;
 *) print_info ;;
 esac
 
