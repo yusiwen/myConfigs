@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # ██╗███╗   ██╗███████╗████████╗ █████╗ ██╗     ██╗        ███████╗██╗  ██╗
 # ██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║     ██║        ██╔════╝██║  ██║
@@ -56,6 +56,13 @@ else
 fi
 echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
+
+SUDO=
+if [ "$OS" = 'Linux' ]; then
+  if [ $EUID -ne 0 ]; then
+    SUDO=sudo
+  fi
+fi
 # }}}
 
 function make_link() { # {{{
@@ -87,7 +94,6 @@ function check_link() { # {{{
       make_link ${target} ${linkname}
     fi
   fi
-
 } # }}}
 
 # Initialize apt and install prerequisite packages
@@ -96,31 +102,31 @@ function init_env() { # {{{
     if [ "$DISTRO" = 'Ubuntu' ]; then
       if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
         echo -e "${COLOR}Setting Ubuntu apt source to aliyun...${NC}"
-        sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
+        $SUDO cp /etc/apt/sources.list /etc/apt/sources.list.backup
         if [ "$OS_ARCH" = 'aarch64' ]; then
-          sudo sed -i "s/ports\.ubuntu\.com/mirrors\.ustc\.edu\.cn/g" /etc/apt/sources.list
+          $SUDO sed -i "s/ports\.ubuntu\.com/mirrors\.ustc\.edu\.cn/g" /etc/apt/sources.list
         else
-          sudo sed -i "s/^deb http:\/\/.*archive\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
+          $SUDO sed -i "s/^deb http:\/\/.*archive\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
         fi
 
         if ls /etc/apt/sources.list.d/*.list 1>/dev/null 2>&1; then
-          sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
+          $SUDO sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
         fi
       fi
 
-      sudo apt update
-      sudo apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core \
+      $SUDO apt update
+      $SUDO apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core \
                           iotop net-tools iftop sysstat apt-transport-https jq \
                           tmux byobu htop atop bat software-properties-common
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
-        sudo yum --enablerepo=epel -y install fuse-sshfs net-tools telnet ftp lftp libaio \
+        $SUDO yum --enablerepo=epel -y install fuse-sshfs net-tools telnet ftp lftp libaio \
                                               libaio-devel bc man lsof wget tmux byobu
       else
-	sudo yum config-manager --set-enabled PowerTools
-        sudo yum install -y epel-release
-        sudo yum update -y
-        sudo yum install -y fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
+	$SUDO yum config-manager --set-enabled PowerTools
+        $SUDO yum install -y epel-release
+        $SUDO yum update -y
+        $SUDO yum install -y fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
       fi
     fi
   elif [ "$OS" = 'Darwin' ]; then
@@ -141,14 +147,14 @@ function install_universal_ctags() { # {{{
       set -e
       if [ "$PACKAGE" -eq 1 ]; then
         echo -e "${COLOR}Finding exuberant-ctags, it's very old, uninstalling it..${NC}"
-        sudo apt purge exuberant-ctags
+        $SUDO apt purge exuberant-ctags
       fi
-      sudo apt install -y autoconf pkg-config
+      $SUDO apt install -y autoconf pkg-config
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
-        sudo yum install -y pkgconfig autoconf automake python36-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
+        $SUDO yum install -y pkgconfig autoconf automake python36-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
       else
-        sudo yum install -y pkgconfig autoconf automake python3-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
+        $SUDO yum install -y pkgconfig autoconf automake python3-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
       fi
     fi
 
@@ -163,7 +169,7 @@ function install_universal_ctags() { # {{{
       ./autogen.sh
       ./configure --prefix=/usr/local
       make -j4
-      sudo make install
+      $SUDO make install
       popd && popd
     fi
   elif [ "$OS" = 'Darwin' ]; then
@@ -177,17 +183,17 @@ function install_gfw() { # {{{
     if [ "$DISTRO" = 'Ubuntu' ]; then
       if ! type tsocks >/dev/null 2>&1; then
         echo -e "${COLOR}Installing tsocks...${NC}"
-        sudo apt install -y tsocks
+        $SUDO apt install -y tsocks
       fi
 
       # Install the latest shadowsocks version to support chahca20-ietf-poly1305 algorithm
       echo -e "${COLOR}Checking shadowsocks command line tools...${NC}"
       if ! type ss-local >/dev/null 2>&1; then
         echo -e "${COLOR}Installing shadowsocks-libev...${NC}"
-        sudo apt install -y shadowsocks-libev
+        $SUDO apt install -y shadowsocks-libev
         # Stop and disable shadowsocks-libev server service, we only need ss-local client
-        sudo systemctl stop shadowsocks-libev
-        sudo systemctl disable shadowsocks-libev
+        $SUDO systemctl stop shadowsocks-libev
+        $SUDO systemctl disable shadowsocks-libev
       fi
 
       if ! type v2ray-plugin >/dev/null 2>&1; then
@@ -197,9 +203,9 @@ function install_gfw() { # {{{
         wget -O /tmp/v2ray-plugin.tar.gz "$url"
         echo -e "${COLOR}Extract and install v2ray-plugin to '/usr/local/bin'...${NC}"
         tar xvzf /tmp/v2ray-plugin.tar.gz -C /tmp
-        sudo mv /tmp/v2ray-plugin_linux_amd64 /usr/local/bin/v2ray-plugin
-        sudo chown root:root /usr/local/bin/v2ray-plugin
-        sudo chmod +x /usr/local/bin/v2ray-plugin
+        $SUDO mv /tmp/v2ray-plugin_linux_amd64 /usr/local/bin/v2ray-plugin
+        $SUDO chown root:root /usr/local/bin/v2ray-plugin
+        $SUDO chmod +x /usr/local/bin/v2ray-plugin
         rm /tmp/v2ray-plugin.tar.gz
       fi
 
@@ -211,48 +217,48 @@ function install_gfw() { # {{{
         fi
 
         echo -e "${COLOR}Installing privoxy proxy...${NC}"
-        sudo apt install -y privoxy
+        $SUDO apt install -y privoxy
         pip install --user gfwlist2privox
         wget -O /tmp/gfwlist.txt https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
         "$HOME"/.local/bin/gfwlist2privoxy -i /tmp/gfwlist.txt -p 127.0.0.1:1098 -t socks5
-        sudo mv gfwlist.action /etc/privoxy/
+        $SUDO mv gfwlist.action /etc/privoxy/
       else
         echo -e "${COLOR1}privoxy${COLOR} was found.${NC}"
       fi
 
       if ! type trojan >/dev/null 2>&1; then
         echo -e "${COLOR}Installing trojan...${NC}"
-        sudo add-apt-repository ppa:greaterfire/trojan
-        sudo apt-get update
-        sudo apt-get install trojan
+        $SUDO add-apt-repository ppa:greaterfire/trojan
+        $SUDO apt-get update
+        $SUDO apt-get install trojan
       fi
 
       if [ -d "$HOME"/myConfigs ]; then
         ln -sfnv "$HOME"/myConfigs/gfw/tsocks.conf "$HOME"/.tsocks.conf
-        sudo cp "$HOME"/myConfigs/gfw/privoxy.conf /etc/privoxy/config
-        sudo systemctl restart privoxy
-        sudo systemctl enable privoxy
+        $SUDO cp "$HOME"/myConfigs/gfw/privoxy.conf /etc/privoxy/config
+        $SUDO systemctl restart privoxy
+        $SUDO systemctl enable privoxy
 
-        sudo cp "$HOME"/myConfigs/gfw/ss-local.config.json /etc/shadowsocks-libev/config.json
-        sudo cp "$HOME"/myConfigs/gfw/sslocal.service /etc/systemd/system/sslocal.service
-        sudo systemctl restart sslocal
-        sudo systemctl enable sslocal
+        $SUDO cp "$HOME"/myConfigs/gfw/ss-local.config.json /etc/shadowsocks-libev/config.json
+        $SUDO cp "$HOME"/myConfigs/gfw/sslocal.service /etc/systemd/system/sslocal.service
+        $SUDO systemctl restart sslocal
+        $SUDO systemctl enable sslocal
       else
         echo -e "${COLOR1}myConfigs${COLOR} was not found, please install git and fetch it from repo, then run 'install.sh gfw' again to link some configuration files.${NC}"
       fi
 
       echo -e "${COLOR}GFW initialized.${NC}"
     elif [ "$DISTRO" = 'CentOS' ]; then
-      sudo curl -L "https://copr.fedorainfracloud.org/coprs/librehat/shadowsocks/repo/epel-7/librehat-shadowsocks-epel-7.repo" --output /etc/yum.repos.d/libredhat-shadowsocks-epel-7.repo
+      $SUDO curl -L "https://copr.fedorainfracloud.org/coprs/librehat/shadowsocks/repo/epel-7/librehat-shadowsocks-epel-7.repo" --output /etc/yum.repos.d/libredhat-shadowsocks-epel-7.repo
       if [ -z $(yum list installed | grep epel-release.noarch) ]; then
-        sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        $SUDO yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
       fi
 
-      sudo yum install -y shadowsocks-libev
+      $SUDO yum install -y shadowsocks-libev
 
       echo -e "${COLOR}Please copy sample config file to ${COLOR1}'/etc/shadowsocks-libev/config.json'${COLOR} and edit server and password with real ones...${NC}"
       echo -e "${COLOR}And copy ${COLOR1}v2ray-plugin${COLOR} to '/usr/bin'${NC}"
-      echo -e "${COLOR}Then start service with 'sudo systemctl enable --now shadowsocks-libev-local.service'${NC}"
+      echo -e "${COLOR}Then start service with '$SUDO systemctl enable --now shadowsocks-libev-local.service'${NC}"
     fi
   fi
 } # }}}
@@ -267,22 +273,22 @@ function install_git() { # {{{
           GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
           if [ ! -e "$GIT_PPA" ]; then
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
-            sudo apt-add-repository -y ppa:git-core/ppa
+            $SUDO apt-add-repository -y ppa:git-core/ppa
 
             if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
               # Replace official launchpad address with reverse proxy from USTC
-              sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$GIT_PPA"
+              $SUDO sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$GIT_PPA"
             fi
 
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
-            sudo apt update
-            sudo apt upgrade -y
+            $SUDO apt update
+            $SUDO apt upgrade -y
           else
             echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
           fi
 	      fi
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
-        sudo apt install -y git
+        $SUDO apt install -y git
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}git${COLOR} was found.${NC}"
@@ -290,7 +296,7 @@ function install_git() { # {{{
 
       if ! type tig >/dev/null 2>&1; then
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
-        sudo apt install tig
+        $SUDO apt install tig
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}tig${COLOR} was found.${NC}"
@@ -299,12 +305,12 @@ function install_git() { # {{{
       if [ "$OS_VERSION" = '"7"' ]; then
         PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
         if [ "$PACKAGE" = 0 ]; then
-          sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+          $SUDO yum -y install https://centos7.iuscommunity.org/ius-release.rpm
         fi
 
-        sudo yum -y install git2u-all
+        $SUDO yum -y install git2u-all
       else
-	sudo yum -y install git
+	$SUDO yum -y install git
       fi
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
@@ -366,7 +372,7 @@ function install_ruby() { # {{{
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
       if ! type ruby >/dev/null 2>&1; then
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
-        sudo apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
+        $SUDO apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
@@ -375,7 +381,7 @@ function install_ruby() { # {{{
         set -e
         if [ "$PACKAGE" -eq 0 ]; then
           echo -e "${COLOR}Installing ${COLOR1}ruby-full${COLOR}...${NC}"
-          sudo apt install -y ruby-full
+          $SUDO apt install -y ruby-full
         fi
       fi
     else
@@ -445,8 +451,8 @@ function fetch_myConfigs() { # {{{
 
   if [ "$OS" = 'Linux' ]; then
     ln -sfnv "$HOME"/myConfigs/gfw/tsocks.conf "$HOME"/.tsocks.conf
-    sudo cp "$HOME"/myConfigs/gfw/polipo.conf /etc/polipo/config
-    sudo systemctl restart polipo
+    $SUDO cp "$HOME"/myConfigs/gfw/polipo.conf /etc/polipo/config
+    $SUDO systemctl restart polipo
   fi
 } # }}}
 
@@ -471,7 +477,7 @@ function install_python() { # {{{
     # Check python2
     if ! type python2 &>/dev/null; then
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
-        sudo apt-get install -y python2
+        $SUDO apt-get install -y python2
       elif [ "$DISTRO" = 'CentOS' ]; then
         echo 'TODO: python2 on CentOS'
       else
@@ -482,20 +488,20 @@ function install_python() { # {{{
 
     if ! type python3 &>/dev/null; then
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
-        sudo apt-get install -y python3
+        $SUDO apt-get install -y python3
       elif [ "$DISTRO" = 'CentOS' ]; then
 	      if [ "$OS_VERSION" = '"7"' ]; then
           PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
           if [ "$PACKAGE" = 0 ]; then
-            sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+            $SUDO yum -y install https://centos7.iuscommunity.org/ius-release.rpm
           fi
 
-          sudo yum update -y
-          sudo yum install -y python36u python36u-pip python2-pip
-          sudo ln -snv /usr/bin/python3.6 /usr/bin/python3
-          sudo ln -snv /usr/bin/pip3.6 /usr/bin/pip3
+          $SUDO yum update -y
+          $SUDO yum install -y python36u python36u-pip python2-pip
+          $SUDO ln -snv /usr/bin/python3.6 /usr/bin/python3
+          $SUDO ln -snv /usr/bin/pip3.6 /usr/bin/pip3
 	      else
-          sudo yum install python2 python3
+          $SUDO yum install python2 python3
         fi
       else
         echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
@@ -507,15 +513,15 @@ function install_python() { # {{{
       echo -e "${COLOR}Installing ${COLOR1}pip2${COLOR}...${NC}"
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
         curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip2.py
-        sudo python2 /tmp/get-pip2.py
+        $SUDO python2 /tmp/get-pip2.py
       fi
     fi
 
     if ! type pip3 >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Deepin' ]; then
-        sudo apt install -y python3-pip
-        sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 20
+        $SUDO apt install -y python3-pip
+        $SUDO update-alternatives --install /usr/bin/python python /usr/bin/python3 20
       fi
     fi
 
@@ -621,10 +627,10 @@ function install_zsh() { # {{{
       if [ ! -e /usr/bin/zsh ]; then
         echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
         if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-          sudo apt install -y zsh
+          $SUDO apt install -y zsh
         elif [ "$DISTRO" = 'CentOS' ]; then
-          sudo yum install -y zsh
-          echo '/usr/bin/zsh' | sudo tee -a /etc/shells
+          $SUDO yum install -y zsh
+          echo '/usr/bin/zsh' | $SUDO tee -a /etc/shells
         fi
       fi
       echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
@@ -690,24 +696,24 @@ function install_vim() { # {{{
           NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$CODENAME.list
           if [ ! -e "$NVIM_PPA" ]; then
             echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/unstable${COLOR}...${NC}"
-            sudo add-apt-repository -y ppa:neovim-ppa/unstable
+            $SUDO add-apt-repository -y ppa:neovim-ppa/unstable
 
             if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-              sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$NVIM_PPA"
+              $SUDO sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$NVIM_PPA"
             fi
-            sudo apt update
+            $SUDO apt update
           else
             echo -e "${COLOR1}ppa:neovim-ppa/unstable${COLOR} was found${NC}"
           fi
 	      fi
 
-        sudo apt install -y neovim
+        $SUDO apt install -y neovim
       else
         echo -e "${COLOR1}NeoVim${COLOR} is found at '$(which nvim)'${NC}"
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
-      sudo apt install -y silversearcher-ag cscope astyle lua5.3 ruby-full perl
+      $SUDO apt install -y silversearcher-ag cscope astyle lua5.3 ruby-full perl
     elif [ "$DISTRO" = 'CentOS' ]; then
       if ! type nvim >/dev/null 2>&1; then
         set +e
@@ -715,7 +721,7 @@ function install_vim() { # {{{
         set -e
         if [ "$PACKAGE" = 0 ]; then
           echo -e "${COLOR}No ${COLOR1}wget${COLOR} found, install it...${NC}"
-          sudo yum install -y wget
+          $SUDO yum install -y wget
         fi
 
         set +e
@@ -723,7 +729,7 @@ function install_vim() { # {{{
         set -e
         if [ "$PACKAGE" = 0 ]; then
           echo -e "${COLOR}No ${COLOR1}fuse-sshfs${COLOR} found, install it...${NC}"
-          sudo yum install -y fuse-sshfs
+          $SUDO yum install -y fuse-sshfs
         fi
 
         echo -e "${COLOR}Get latest ${COLOR1}NeoVim${COLOR} AppImage from GitHub repo...${NC}"
@@ -770,7 +776,7 @@ function install_rxvt() { # {{{
     if [ "$DISTRO" = 'Ubuntu' ]; then
       if ! type rxvt >/dev/null 2>&1; then
         echo -e "${COLOR}Installing ${COLOR1}rxvt-unicode-256color${COLOR}...${NC}"
-        sudo apt install -y rxvt-unicode-256color
+        $SUDO apt install -y rxvt-unicode-256color
       fi
     fi
   else
@@ -790,15 +796,15 @@ function install_i3wm() { # {{{
       if ! type i3 >/dev/null 2>&1; then
         echo -e "${COLOR}Install ${COLOR1}i3${COLOR}...${NC}"
         if [ "$DISTRO" = 'Ubuntu' ]; then
-          sudo apt install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings i3 ubuntu-drivers-common mesa-utils mesa-utils-extra compton xorg xserver-xorg hsetroot pcmanfm scrot simplescreenrecorder feh bleachbit xautolock fcitx fcitx-googlepinyin fcitx-sunpinyin fcitx-data fcitx-frontend-all fcitx-config-gtk fcitx-config-gtk2 fcitx-ui-classic flameshot policykit-desktop-privileges policykit-1-gnome meld
+          $SUDO apt install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings i3 ubuntu-drivers-common mesa-utils mesa-utils-extra compton xorg xserver-xorg hsetroot pcmanfm scrot simplescreenrecorder feh bleachbit xautolock fcitx fcitx-googlepinyin fcitx-sunpinyin fcitx-data fcitx-frontend-all fcitx-config-gtk fcitx-config-gtk2 fcitx-ui-classic flameshot policykit-desktop-privileges policykit-1-gnome meld
         else
-          sudo apt install -y i3 mesa-utils mesa-utils-extra compton hsetroot scrot bleachbit xautolock flameshot policykit-1-gnome meld
+          $SUDO apt install -y i3 mesa-utils mesa-utils-extra compton hsetroot scrot bleachbit xautolock flameshot policykit-1-gnome meld
         fi
 
       fi
 
       # i3-gaps
-      sudo apt install -y libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm0 libxcb-xrm-dev libxcb-shape0-dev automake
+      $SUDO apt install -y libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm0 libxcb-xrm-dev libxcb-shape0-dev automake
       if [ ! -d ~/git/i3-gaps ]; then
         mkdir -p ~/git
         if ! type git >/dev/null 2>&1; then
@@ -812,12 +818,12 @@ function install_i3wm() { # {{{
         mkdir -p build && cd build/
         ../configure --disable-sanitizers
         make -j4
-        sudo make install
+        $SUDO make install
         popd && popd && popd
       fi
 
       # Polybar
-      sudo apt install -y cmake cmake-data pkg-config libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-randr0-dev libxcb-composite0-dev python-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-xrm-dev libxcb-cursor-dev libjsoncpp-dev libjsoncpp1
+      $SUDO apt install -y cmake cmake-data pkg-config libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-randr0-dev libxcb-composite0-dev python-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-xrm-dev libxcb-cursor-dev libjsoncpp-dev libjsoncpp1
       if [ ! -d ~/git/polybar ]; then
         mkdir -p ~/git
         pushd ~/git
@@ -826,7 +832,7 @@ function install_i3wm() { # {{{
         mkdir -p build
         cd build
         cmake ..
-        sudo make install
+        $SUDO make install
         popd && popd && popd
       fi
 
@@ -838,13 +844,13 @@ function install_i3wm() { # {{{
         cd jgmenu
         ./scripts/install-debian-dependencies.sh
         make -j4
-        sudo make prefix=/usr/local install
+        $SUDO make prefix=/usr/local install
         popd && popd
       fi
 
       # albert
       if [ "$DISTRO" = 'Ubuntu' ]; then
-        sudo apt install -y qtbase5-dev qtdeclarative5-dev libqt5svg5-dev libqt5x11extras5-dev libqt5charts5-dev libmuparser-dev
+        $SUDO apt install -y qtbase5-dev qtdeclarative5-dev libqt5svg5-dev libqt5x11extras5-dev libqt5charts5-dev libmuparser-dev
         if [ ! -d ~/git/albert ]; then
           mkdir -p ~/git
           pushd ~/git
@@ -854,7 +860,7 @@ function install_i3wm() { # {{{
           cd build
           cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
           make -j4
-          sudo make install
+          $SUDO make install
           jgmenu init --theme=greeneye
           popd && popd && popd
         fi
@@ -897,7 +903,7 @@ function install_i3wm() { # {{{
       #if [ $CONSOLEKIT_PCK -eq 0 ]; then
       #  # Install 'consolekit'
       #  echo -e "${COLOR}Installing ${COLOR1}consolekit${COLOR}...${NC}"
-      #  sudo apt install -y consolekit
+      #  $SUDO apt install -y consolekit
       #fi
 
       # check if 'rofi' is installed or not
@@ -907,12 +913,12 @@ function install_i3wm() { # {{{
         echo -e "${COLOR}Installing ${COLOR1}rofi${COLOR}...${NC}"
         if [ "$DISTRO" = 'Ubuntu' ]; then
           ROFI_PPA=/etc/apt/sources.list.d/jasonpleau-ubuntu-rofi-$CODENAME.list
-          sudo add-apt-repository -y ppa:jasonpleau/rofi
+          $SUDO add-apt-repository -y ppa:jasonpleau/rofi
           # Replace official launchpad address with reverse proxy from USTC
-          sudo sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$ROFI_PPA"
-          sudo apt update
+          $SUDO sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$ROFI_PPA"
+          $SUDO apt update
         fi
-        sudo apt install -y rofi
+        $SUDO apt install -y rofi
       fi
     fi
   else
@@ -927,32 +933,32 @@ function install_docker() { # {{{
       if ! type docker >/dev/null 2>&1; then
         echo -e "${COLOR1}docker${COLOR} is not found, installing...${NC}"
         echo -e "${COLOR}Installing prerequisite packages...${NC}"
-        sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+        $SUDO apt-get -y install apt-transport-https ca-certificates curl software-properties-common
         echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
-        curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+        curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | $SUDO apt-key add -
         if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-          sudo add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+          $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
         else
-          sudo add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+          $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
         fi
         echo -e "${COLOR}Installing docker-ce...${NC}"
-        sudo apt-get -y update
-        sudo apt-get -y install docker-ce
+        $SUDO apt-get -y update
+        $SUDO apt-get -y install docker-ce
 
         echo -e "${COLOR}Add user ${COLOR1}${USER}${COLOR} to group 'docker'...${NC}"
-        sudo usermod -aG docker $USER
+        $SUDO usermod -aG docker $USER
       else
         echo -e "${COLOR1}$(docker -v)${COLOR} is found...${NC}"
       fi
 
       if [ ! -e /etc/docker/daemon.json ]; then
-        sudo cp "$HOME"/myConfigs/docker/daemon.json /etc/docker/daemon.json
+        $SUDO cp "$HOME"/myConfigs/docker/daemon.json /etc/docker/daemon.json
       fi
 
       if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
         if [ ! -e /etc/systemd/system/docker.service.d ]; then
-          sudo mkdir -p /etc/systemd/system/docker.service.d
-          sudo cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
+          $SUDO mkdir -p /etc/systemd/system/docker.service.d
+          $SUDO cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
         fi
       fi
     fi
@@ -966,16 +972,16 @@ function install_docker() { # {{{
 function install_llvm() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      sudo apt install -y llvm clang clang-format clang-tidy clang-tools lldb lld
+      $SUDO apt install -y llvm clang clang-format clang-tidy clang-tools lldb lld
     elif [ "$DISTRO" = 'CentOS' ]; then
       set +e
       PACKAGE=$(yum list installed | grep -c ^centos-release-scl)
       set -e
       if [ "$PACKAGE" -eq 0 ]; then
-        sudo yum install -y centos-release-scl
+        $SUDO yum install -y centos-release-scl
       fi
 
-      sudo yum install -y devtoolset-7 llvm-toolset-7 llvm-toolset-7-clang-analyzer llvm-toolset-7-clang-tools-extra llvm-toolset-7-git-clang-format
+      $SUDO yum install -y devtoolset-7 llvm-toolset-7 llvm-toolset-7-clang-analyzer llvm-toolset-7-clang-tools-extra llvm-toolset-7-git-clang-format
     fi
   else
     echo -e "${COLOR}OS not supported.${NC}"
@@ -992,14 +998,14 @@ function install_mysql() { # {{{
       set -e
       if [ "$PACKAGE" -eq 0 ]; then
         echo -e "${COLOR}Add repo ${COLOR1}mysql57-community-release${COLOR}...${NC}"
-        sudo yum install -y https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+        $SUDO yum install -y https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
         echo -e "${COLOR}Add repo ${COLOR1}mysql57-community-release${COLOR}...OK${NC}"
       fi
 
-      sudo yum install -y mysql-community-server
+      $SUDO yum install -y mysql-community-server
       echo -e "${COLOR}Open port for mysql server in firewalld...${NC}"
-      sudo firewall-cmd --zone=public --add-service=mysql --permanent
-      sudo firewall-cmd --reload
+      $SUDO firewall-cmd --zone=public --add-service=mysql --permanent
+      $SUDO firewall-cmd --reload
       echo -e "${COLOR}Open port for mysql server in firewalld...OK${NC}"
       echo -e "${COLOR}Your temporary root password will be in ${COLOR1}/var/log/mysqld.log${COLOR} when you start mysqld for the first time${NC}"
       echo -e "${COLOR}Please login with this temporary password, and change it immediately using:${NC}"
@@ -1015,11 +1021,11 @@ function install_mysql() { # {{{
 function install_samba() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      sudo apt install -y samba samba-common
-      sudo cp "$HOME"/git/myConfigs/samba/smb.conf /etc/samba/smb.conf
-      sudo smbpasswd -a yusiwen
-      sudo systemctl restart smbd
-      sudo systemctl enable smbd
+      $SUDO apt install -y samba samba-common
+      $SUDO cp "$HOME"/git/myConfigs/samba/smb.conf /etc/samba/smb.conf
+      $SUDO smbpasswd -a yusiwen
+      $SUDO systemctl restart smbd
+      $SUDO systemctl enable smbd
     fi
   fi
 } # }}}
