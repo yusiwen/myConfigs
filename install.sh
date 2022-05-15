@@ -25,7 +25,7 @@ OS_ARCH=$(uname -m)
 CODENAME=
 OS_NAME=
 OS_VERSION=
-MIRRORS=1
+MIRRORS=0
 DISTRO=
 
 if [ -n "$WINDIR" ]; then
