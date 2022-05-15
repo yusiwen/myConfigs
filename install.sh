@@ -56,9 +56,6 @@ else
 fi
 echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
-if [ "$(hostname)" = 'aliyun03' ]; then
-  MIRRORS=0
-fi
 # }}}
 
 function make_link() { # {{{
