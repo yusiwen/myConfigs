@@ -38,41 +38,41 @@ Host kubeedge-dev-node1
   User root
 
 Host pve
-    HostName 192.168.2.250
-    User root
-    Port 22
+  HostName 192.168.2.250
+  User root
+  Port 22
 
 Host deskmini-pve
-    HostName 192.168.2.251
-    User root
-    Port 22
+  HostName 192.168.2.251
+  User root
+  Port 22
 
 Host raspberry-server-01
-    HostName 192.168.2.56
-    User yusiwen
-    Port 22
+  HostName 192.168.2.56
+  User yusiwen
+  Port 22
 
 Host raspberry-server-02
-    HostName 192.168.2.57
-    User yusiwen
-    Port 22
+  HostName 192.168.2.57
+  User yusiwen
+  Port 22
 
 Host raspberry-server-03
-    HostName 192.168.2.58
-    User yusiwen
-    Port 22
+  HostName 192.168.2.58
+  User yusiwen
+  Port 22
 
 Host raspberry-server-m01
-    HostName 192.168.2.48
-    User yusiwen
-    Port 22
+  HostName 192.168.2.48
+  User yusiwen
+  Port 22
 
 Host lattepanda-server-01
-    HostName 192.168.2.47
-    User yusiwen
-    Port 22
+  HostName 192.168.2.47
+  User yusiwen
+  Port 22
 
 Host devserver-department
-	HostName devserver-department
-	Port 22022
-	User yusiwen
+  HostName devserver-department
+  Port 22022
+  User yusiwen
