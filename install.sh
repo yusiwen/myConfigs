@@ -442,7 +442,11 @@ function fetch_myConfigs() { # {{{
 
   if [ "$OS" = 'Linux' ] || [ "$OS" = 'Darwin' ]; then
     mkdir -p "$HOME"/.ssh
-    ln -sfnv "$HOME"/myConfigs/git/ssh_config "$HOME"/.ssh/config
+    if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+      ln -sfnv "$HOME"/myConfigs/git/ssh_config.mirror "$HOME"/.ssh/config
+    else
+      ln -sfnv "$HOME"/myConfigs/git/ssh_config "$HOME"/.ssh/config
+    fi
 
     mkdir -p "$HOME"/bin
     ln -sfnv "$HOME"/myConfigs/git/git-migrate "$HOME"/bin/git-migrate
