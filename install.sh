@@ -1040,6 +1040,19 @@ function install_sdkman() { # {{{
   source "$HOME/.sdkman/bin/sdkman-init.sh"
 } # }}}
 
+function init_byobu() { # {{{
+  # Enable mouse by default
+  if [ -e $HOME/.config/byobu/profile.tmux ]; then
+    cat << EOF | tee $HOME/.config/byobu/profile.tmux
+# Enable mouse support including scrolling
+set -g mouse on 
+# Versions prior to 2.1 may want this too:
+set -g mouse-utf8 on
+EOF
+  fi
+}
+# }}}
+
 function install_all() { # {{{
   init_env
   install_python
@@ -1065,7 +1078,7 @@ function install_all() { # {{{
 } # }}}
 
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|mysql|samba|ctags|rust|sdkman]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
 } # }}}
 
 case $1 in
@@ -1088,6 +1101,7 @@ samba) install_samba ;;
 ctags) install_universal_ctags ;;
 rust) install_rust ;;
 sdkman) install_sdkman ;;
+byobu) init_byobu ;;
 *) print_info ;;
 esac
 
