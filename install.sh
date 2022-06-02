@@ -1043,7 +1043,7 @@ function install_sdkman() { # {{{
 function init_byobu() { # {{{
   # Enable mouse by default
   if [ -e $HOME/.config/byobu/profile.tmux ]; then
-    cat << EOF | tee $HOME/.config/byobu/profile.tmux
+    cat << EOF | tee -a $HOME/.config/byobu/profile.tmux
 # Enable mouse support including scrolling
 set -g mouse on 
 # Versions prior to 2.1 may want this too:
