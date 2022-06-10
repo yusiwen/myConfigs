@@ -3,11 +3,6 @@ Host deskmini-server
   HostName 192.168.2.54
   User yusiwen
 
-# Raspberry Pi 4B server with Ubuntu 20.04
-Host raspberry-server-01
-  HostName 192.168.2.56
-  User yusiwen
-
 # Macbook
 Host macbook
   HostName 192.168.2.52
@@ -29,14 +24,6 @@ Host aliyun03
   HostName aliyun03
   User root
 
-Host kubeedge-dev-master
-  HostName 192.168.1.65
-  User root
-
-Host kubeedge-dev-node1
-  HostName 192.168.1.66
-  User root
-
 Host pve
   HostName 192.168.2.250
   User root
@@ -47,17 +34,42 @@ Host deskmini-pve
   User root
   Port 22
 
-Host raspberry-server-01
+Host k8s-vm-master
+  HostName 192.168.2.69
+  User yusiwen
+  Port 22
+
+Host k8s-vm-node01
+  HostName 192.168.2.67
+  User yusiwen
+  Port 22
+
+Host k8s-vm-node02
+  HostName 192.168.2.68
+  User yusiwen
+  Port 22
+
+Host k8s-vm-node03
+  HostName 192.168.2.66
+  User yusiwen
+  Port 22
+
+Host k8s-vm-node04
+  HostName 192.168.2.65
+  User yusiwen
+  Port 22
+
+Host rpi4b-node01
   HostName 192.168.2.56
   User yusiwen
   Port 22
 
-Host raspberry-server-02
+Host rpi4b-node02
   HostName 192.168.2.57
   User yusiwen
   Port 22
 
-Host raspberry-server-03
+Host rpi4b-node03
   HostName 192.168.2.58
   User yusiwen
   Port 22
