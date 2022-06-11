@@ -181,6 +181,13 @@ if [ -e /usr/local/go/bin/go ]; then
 fi
 #}}}
 
+#{{{ Ansible
+if command -v ansible &>/dev/null; then
+  ANSIBLE_INVENTORY=$HOME/git/myAnsible/etc/ansible/hosts
+  export ANSIBLE_INVENTORY
+fi
+#}}}
+
 #{{{ Rust
 if [ -e "$HOME/.cargo/env" ]; then
   source "$HOME/.cargo/env"

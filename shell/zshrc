@@ -63,9 +63,9 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 if [ "$(uname)" = 'Darwin' ]; then
-  plugins=(brew golang virtualenv git git-flow svn mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z docker docker-compose zsh-autosuggestions zsh-syntax-highlighting)
+  plugins=(brew golang virtualenv git git-flow svn mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z docker docker-compose zsh-autosuggestions zsh-syntax-highlighting ansible)
 else
-  plugins=(golang virtualenv git git-flow svn mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z docker docker-compose kubectl minikube zsh-autosuggestions zsh-syntax-highlighting)
+  plugins=(golang virtualenv git git-flow svn mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z docker docker-compose kubectl minikube zsh-autosuggestions zsh-syntax-highlighting ansible)
 fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=241"
