@@ -59,6 +59,11 @@ Host k8s-vm-node04
   User yusiwen
   Port 22
 
+Host k8s-vm-node05
+  HostName 192.168.2.64
+  User yusiwen
+  Port 22
+
 Host rpi4b-node01
   HostName 192.168.2.56
   User yusiwen
