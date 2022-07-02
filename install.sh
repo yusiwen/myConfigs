@@ -116,7 +116,7 @@ function init_env() { # {{{
 
       $SUDO apt update
       $SUDO apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core \
-                           iotop net-tools iftop sysstat apt-transport-https jq \
+                           iotop net-tools iftop nethogs nload sysstat apt-transport-https jq \
                            tmux byobu htop atop bat software-properties-common
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
