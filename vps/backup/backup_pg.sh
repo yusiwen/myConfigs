@@ -51,7 +51,7 @@
 # Modify below variables to fit your need ----
 #########################################################
 # Keep backup for how many days. Default is 90 days.
-KEEP_DAYS='90'
+KEEP_DAYS='7'
 
 # Where to store backup copies.
 export BACKUP_ROOTDIR="/var/lib/postgresql/backup"

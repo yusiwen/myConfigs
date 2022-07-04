@@ -52,7 +52,7 @@
 # Modify below variables to fit your need ----
 #########################################################
 # Keep backup for how many days. Default is 90 days.
-KEEP_DAYS='90'
+KEEP_DAYS='7'
 
 # Where to store backup copies.
 export BACKUP_ROOTDIR="/var/lib/mysql/backup"
@@ -190,7 +190,7 @@ else
     echo -e "==> Backup completed with !!!ERRORS!!!.\n" 1>&2
 fi
 
-if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
+if [ X"${REMOVE_OLD_BACKUP}" == X'YES' ] && [ -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Old backup found. Deleting: ${REMOVED_BACKUP_DIR}." >>${LOGFILE}
     rm -rf ${REMOVED_BACKUP_DIR} >> ${LOGFILE} 2>&1
 fi
