@@ -1,5 +1,0 @@
-#!/bin/sh
-
-http_proxy=socks5://127.0.0.1:7891
-/opt/calibre/calibre
-
