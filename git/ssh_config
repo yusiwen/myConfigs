@@ -34,6 +34,11 @@ Host deskmini-pve
   User root
   Port 22
 
+Host deskmini-pve2
+  HostName 192.168.2.249
+  User root
+  Port 22
+
 Host k8s-vm-master
   HostName 192.168.2.69
   User yusiwen
