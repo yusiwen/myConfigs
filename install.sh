@@ -1048,6 +1048,8 @@ function init_byobu() { # {{{
 set -g mouse on 
 # Versions prior to 2.1 may want this too:
 set -g mouse-utf8 on
+set -g focus-events on
+set -ga terminal-overrides ',xterm-256color:RGB'
 EOF
   fi
 }
