@@ -196,6 +196,14 @@ fi
 
 #{{{ Python
 export WORKON_HOME=$HOME/venv
+if command -v python2 &>/dev/null; then
+  PYTHON_HOST_PROG=$(which python2)
+  export PYTHON_HOST_PROG
+fi
+if command -v python3 &>/dev/null; then
+  PYTHON3_HOST_PROG=$(which python3)
+  export PYTHON3_HOST_PROG
+fi
 #}}}
 
 #{{{ Montiors

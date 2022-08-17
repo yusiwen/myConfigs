@@ -711,7 +711,7 @@ function install_vim() { # {{{
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
-      $SUDO apt install -y silversearcher-ag cscope astyle lua5.3 ruby-full perl
+      $SUDO apt install -y silversearcher-ag cscope astyle lua5.3 perl
     elif [ "$DISTRO" = 'CentOS' ]; then
       if ! type nvim >/dev/null 2>&1; then
         set +e
@@ -755,6 +755,25 @@ function install_vim() { # {{{
     mkdir -p "$HOME"/.SpaceVim.d
     ln -snvf "$CONFIG_VIM"/SpaceVim/init.toml "$HOME"/.SpaceVim.d/init.toml
   fi
+
+  echo -e "${COLOR}Install python3 dependencies...${NC}"
+  if ! type ruby >/dev/null 2>&1; then
+    install_python
+  fi
+  pip3 install pynvim
+
+  echo -e "${COLOR}Install ruby dependencies...${NC}"
+  if ! type ruby >/dev/null 2>&1; then
+    install_ruby
+  fi
+  gem install neovim
+
+  echo -e "${COLOR}Install node.js dependencies...${NC}"
+  if ! type node >/dev/null 2>&1; then
+    install_node
+  fi
+  npm install -g neovim
+  
 } #}}}
 
 function install_rxvt() { # {{{
