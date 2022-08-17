@@ -141,6 +141,11 @@ if [ -z "$M2_HOME" ] || [ ! -d "$M2_HOME" ]; then
       export M2_REPO=$MVN_INSTALLATION_PATH/repository
     fi
   fi
+else
+  MAVEN_OPTS="-Xms64m -Xmx256m"
+  MAVEN_ARGS="-B"
+  export MAVEN_OPTS
+  export MAVEN_ARGS
 fi
 
 if [ -z "$CONFLUENT_HOME" ] || [ ! -d "$CONFLUENT_HOME" ]; then
