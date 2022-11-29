@@ -1,0 +1,10 @@
+[Unit]
+Description=Sync upsource backups to minio
+Wants=upsource-backups-sync2minio.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mc mirror -q --overwrite --remove /data/upsource/backups k8s/backup/aliyun01/upsource
+
+[Install]
+WantedBy=multi-user.target
