@@ -1,0 +1,10 @@
+[Unit]
+Description=Trigger syncing artifactory backups to minio
+Requires=artifactory-backups-sync2minio.service
+
+[Timer]
+Unit=artifactory-backups-sync2minio.service
+OnCalendar=*-*-* 05:35:00
+
+[Install]
+WantedBy=timers.target

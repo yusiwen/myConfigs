@@ -1,0 +1,10 @@
+[Unit]
+Description=Sync gitea backups to minio
+#Wants=gitea-backups-sync2minio.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mc mirror -q --overwrite --remove /data/gitea-backup k8s/backup/aliyun01/gitea-backup
+
+[Install]
+WantedBy=multi-user.target

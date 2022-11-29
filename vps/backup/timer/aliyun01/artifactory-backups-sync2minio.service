@@ -1,0 +1,10 @@
+[Unit]
+Description=Sync artifactory backups to minio
+Wants=artifactory-backups-sync2minio.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mc mirror -q --overwrite --remove /data/artifactory-backup k8s/backup/aliyun01/artifactoy-backup
+
+[Install]
+WantedBy=multi-user.target

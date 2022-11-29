@@ -1,0 +1,10 @@
+[Unit]
+Description=Trigger syncing gitea backups to minio
+Requires=gitea-backups-sync2minio.service
+
+[Timer]
+Unit=gitea-backups-sync2minio.service
+OnCalendar=*-*-* 05:25:00
+
+[Install]
+WantedBy=timers.target
