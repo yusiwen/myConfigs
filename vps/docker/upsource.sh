@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 cd ~/myDocker/upsource/aliyun01
-docker-compose up -d
+docker-compose -p upsource "$@"
