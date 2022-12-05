@@ -29,6 +29,11 @@ Host pve
   User root
   Port 22
 
+Host openwrt
+  HostName 192.168.2.1
+  User root
+  Port 22
+
 Host deskmini-pve
   HostName 192.168.2.251
   User root
