@@ -2,6 +2,6 @@
 
 export MYSQL_ROOTPWD=$(awk -F "=" '/MYSQL_ROOTPWD/ {print $2}' /root/.my.pwd.cnf)
 
-cd ~/myDocker/mysql/aliyun01
+cd ~/myDocker/dbms/mysql/aliyun01
 docker-compose -p mysql "$@"
 
