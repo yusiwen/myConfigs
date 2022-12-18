@@ -6,5 +6,5 @@ if [ -z "$(docker network ls | grep postgres)" ]; then
   docker network create -d bridge postgres
 fi
 
-cd ~/myDocker/postgresql/aliyun02
+cd ~/myDocker/dbms/postgresql/aliyun02
 docker-compose -p postgresql "$@"
