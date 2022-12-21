@@ -132,4 +132,6 @@ for script in $HOME/myConfigs/shell/scripts/*.script; do
   source "$script"
 done
 
+alias mvd='$HOME/.sdkman/candidates/mvnd/current/bin/mvnd'
+
 cd
