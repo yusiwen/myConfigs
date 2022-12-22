@@ -4,7 +4,7 @@ Wants=mysql-backups-sync2minio.timer
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/mc mirror -q --overwrite --remove /data/mysql-backup/mysql k8s/backup/aliyun01/mysql
+ExecStart=/usr/local/bin/mc mirror -q --overwrite --remove /data/mysql-backup/mysql k8s/data/backup/aliyun01/mysql
 
 [Install]
 WantedBy=multi-user.target

@@ -4,7 +4,7 @@ Description=Sync gitea backups to minio
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/mc mirror -q --overwrite --remove /data/gitea-backup k8s/backup/aliyun01/gitea-backup
+ExecStart=/usr/local/bin/mc mirror -q --overwrite --remove /data/gitea-backup k8s/data/backup/aliyun01/gitea-backup
 
 [Install]
 WantedBy=multi-user.target
