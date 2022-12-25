@@ -63,9 +63,9 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 if [ "$(uname)" = 'Darwin' ]; then
-  plugins=(brew golang virtualenv git git-flow svn mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z docker docker-compose zsh-autosuggestions zsh-syntax-highlighting helm ansible)
+  plugins=(brew golang virtualenv git git-flow svn mvn node npm zsh-nvm yarn pip ruby rvm gem colored-man-pages colorize z docker docker-compose zsh-autosuggestions zsh-syntax-highlighting helm ansible)
 else
-  plugins=(golang virtualenv git git-flow svn mvn node npm yarn pip ruby rvm gem colored-man-pages colorize z docker docker-compose kubectl minikube zsh-autosuggestions zsh-syntax-highlighting helm ansible)
+  plugins=(golang virtualenv git git-flow svn mvn node npm zsh-nvm yarn pip ruby rvm gem colored-man-pages colorize z docker docker-compose kubectl minikube zsh-autosuggestions zsh-syntax-highlighting helm ansible)
 fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=241"
@@ -123,9 +123,9 @@ fi
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.config/nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Load all of my custom scripts
 for script in $HOME/myConfigs/shell/scripts/*.script; do

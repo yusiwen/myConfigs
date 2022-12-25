@@ -668,6 +668,14 @@ function install_zsh() { # {{{
   else
     echo -e "${COLOR}Found ${COLOR1}zsh-syntax-highlighting${COLOR}...skip${NC}"
   fi
+
+  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-nvm ]; then
+    echo -e "${COLOR}Installing ${COLOR1}zsh-nvm${COLOR}...${NC}"
+    git clone https://github.com/lukechilds/zsh-nvm $HOME/.oh-my-zsh/custom/plugins/zsh-nvm
+    echo -e "${COLOR}Installing ${COLOR1}zsh-nvm${COLOR}...OK${NC}"
+  else
+    echo -e "${COLOR}Found ${COLOR1}zsh-nvm${COLOR}...skip${NC}"
+  fi
 } # }}}
 
 function install_vim() { # {{{
