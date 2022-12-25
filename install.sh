@@ -571,24 +571,26 @@ function install_node() { # {{{
     fetch_myConfigs
   fi
 
-  NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+  if [ -z $NVM_DIR ]; then
+    NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 
-  if [ ! -s "$NVM_DIR/nvm.sh" ]; then
-    if [ "$OS" = 'Windows_NT' ]; then
-      echo -e "${COLOR}Please download nvm-windows, and install it manually"
-    else
-      echo -e "${COLOR}Preparing installation of nvm...${NC}"
+    if [ ! -s "$NVM_DIR/nvm.sh" ]; then
+      if [ "$OS" = 'Windows_NT' ]; then
+        echo -e "${COLOR}Please download nvm-windows, and install it manually"
+      else
+        echo -e "${COLOR}Preparing installation of nvm...${NC}"
 
-      if ! type curl >/dev/null 2>&1; then
-        init_env
+        if ! type curl >/dev/null 2>&1; then
+          init_env
+        fi
+
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+
+        echo -e "Please re-login and use 'nvm' to install node.js instance"
       fi
-
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-
-      echo -e "Please re-login and use 'nvm' to install node.js instance"
+    else
+      echo -e "${COLOR1}Node.js($(node -v))${COLOR} was found.${NC}"
     fi
-  else
-    echo -e "${COLOR1}Node.js($(node -v))${COLOR} was found.${NC}"
   fi
 
   if [ ! -e "$HOME"/.npmrc ]; then
