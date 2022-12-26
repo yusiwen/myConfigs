@@ -340,6 +340,11 @@ function install_git() { # {{{
     fi
   elif [ "$OS" = 'Darwin' ]; then
     brew install git
+  elif [ "$OS" = 'Windows_NT' ]; then
+    if ! type git >/dev/null 2>&1; then
+      echo -e "${COLOR}Please download git-for-windows from https://git-scm.com/ and install it manually${NC}"
+      return
+    fi
   else
     echo -e "${COLOR}OS not supported${NC}"
     return
