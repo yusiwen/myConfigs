@@ -123,9 +123,9 @@ function init_env() { # {{{
         $SUDO apt install -y bat
       else
         echo -e "${COLOR}Installing batcat from DEB pacakge...${NC}"
-        BATCAT_DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_amd64.deb"
+        BATCAT_DOWNLOAD_URL="https://share.yusiwen.cn/public/bat_0.22.1_amd64.deb"
         if [ "$OS_ARCH" = 'aarch64' ]; then
-          BATCAT_DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_arm64.deb"
+          BATCAT_DOWNLOAD_URL="https://share.yusiwen.cn/public/bat_0.22.1_arm64.deb"
         fi
         wget "${BATCAT_DOWNLOAD_URL}" -o /tmp/batcat.deb
         $SUDO dpkg --install /tmp/batcat.deb
