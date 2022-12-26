@@ -378,8 +378,9 @@ function install_git() { # {{{
   git config --global diff.colorMoved zebra
 
   if type delta >/dev/null 2>&1; then
-    git config --global core.pager delta
-    git config --global interactive.diffFilter "delta --color-only"
+    git config --global core.pager "delta --line-numbers"
+    git config --global interactive.diffFilter "delta --color-only --line-numbers"
+    git config --global delta.navigate true
     git config --global delta.features decorations
     git config --global delta.interactive.keep-plus-minus-markers false
     git config --global delta.decorations.commit-decoration-style "blue ol"
@@ -1108,7 +1109,7 @@ function install_rust() { # {{{
     echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     source "$HOME/.cargo/env"
-    cargo install exa delta 
+    cargo install exa delta
   fi
 } # }}}
 
