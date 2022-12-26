@@ -121,6 +121,14 @@ function init_env() { # {{{
       # Check if ubuntu version is newer than 20.04
       if [ ! -z $(echo | awk "(${OS_VERSION} >= 20.04) { print \"ok\"; }") ]; then
         $SUDO apt install -y bat
+      else
+        echo -e "${COLOR}Installing batcat from DEB pacakge...${NC}"
+        BATCAT_DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_amd64.deb"
+        if [ "$OS_ARCH" = 'aarch64' ]; then
+          BATCAT_DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_arm64.deb"
+        fi
+        wget -q ${BATCAT_DOWNLOAD_URL} -o /tmp/batcat.deb
+        $SUDO dpkg --install /tmp/batcat.deb
       fi
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
