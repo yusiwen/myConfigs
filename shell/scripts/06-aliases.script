@@ -6,23 +6,44 @@ alias mv='mv -iv'
 alias cp='cp -iv'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
-if [ "$(uname)" = 'Darwin' ]; then
-  alias l='ls -GF'
-  alias la='ls -G -aF'
-  alias ll='ls -G -alF'
-  alias dir='ls -G'
-else
-  alias l='vdir -h --format=across --color'
-  if [ -e /usr/local/bin/ls++ ]; then
-    alias la='ls++ -aF'
-    alias ls='ls++ -F'
+if ! type exa>/dev/null 2>&1; then
+  if [ "$(uname)" = 'Darwin' ]; then
+    alias l='ls -GF'
+    alias la='ls -G -aF'
+    alias ll='ls -G -alF'
+    alias dir='ls -G'
   else
-    alias la='ls -a --color=auto'
-    alias ls='ls --color=auto'
-    alias ll='ls -la --color=auto'
+    alias l='vdir -h --format=across --color'
+    if [ -e /usr/local/bin/ls++ ]; then
+      alias la='ls++ -aF'
+      alias ls='ls++ -F'
+    else
+      alias la='ls -a --color=auto'
+      alias ls='ls --color=auto'
+      alias ll='ls -la --color=auto'
+    fi
+    alias dir='dir -l --color'
   fi
-  alias dir='dir -l --color'
+else
+  if [ "$(uname)" = 'Darwin' ]; then
+    alias l='exa --oneline'
+    alias la='exa --oneline --all'
+    alias ll='exa --lone --all'
+    alias dir='ls -G'
+  else
+    alias l='vdir -h --format=across --color'
+    if [ -e /usr/local/bin/ls++ ]; then
+      alias la='ls++ -aF'
+      alias ls='ls++ -F'
+    else
+      alias la='exa --all --git --color=auto'
+      alias ls='exa --git --color=auto'
+      alias ll='exa --long --all --git --color=auto'
+    fi
+    alias dir='dir -l --color'
+  fi
 fi
+
 
 # On Mac, to enable italic fonts in iTerm2, TERM must be set to 'xterm-256color-italic'.
 # If ssh to a remote server, the environment may be passed on the remote and it will probable don't know this custom terminal.
