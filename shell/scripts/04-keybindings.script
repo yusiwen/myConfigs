@@ -47,6 +47,7 @@ bindkey '^w' backward-kill-word
 
 # ctrl-r starts searching history backward
 bindkey '^r' history-incremental-search-backward
+bindkey '^s' history-incremental-search-forward
 bindkey '^R' history-incremental-pattern-search-backward
 
 # if mode indicator wasn't setup by theme, define default
