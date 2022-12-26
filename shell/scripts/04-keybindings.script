@@ -45,10 +45,12 @@ bindkey "^N" down-line-or-beginning-search
 # ctrl-w removed word backwards
 bindkey '^w' backward-kill-word
 
-# ctrl-r starts searching history backward
-bindkey '^r' history-incremental-search-backward
-bindkey '^s' history-incremental-search-forward
-bindkey '^R' history-incremental-pattern-search-backward
+# ctrl-r starts searching history backward\
+# Disabled. using github.com/unixorn/fzf-zsh-plugin instead
+# ------------------------------------------------------------
+# bindkey '^r' history-incremental-search-backward
+# bindkey '^s' history-incremental-search-forward
+# bindkey '^R' history-incremental-pattern-search-backward
 
 # if mode indicator wasn't setup by theme, define default
 if [[ "$MODE_INDICATOR" == '' ]]; then
