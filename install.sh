@@ -142,12 +142,21 @@ function init_env() { # {{{
         $SUDO yum install -y fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
       fi
     fi
+    install_rust
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
       # On MacOS ruby is pre-installed already
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
+    install_rust
+  elif [ "$OS" = 'Windows_NT']; then
+    echo -e "${COLOR}Please install Chocolatey (https://chocolatey.org/install), then executes:${NC}"
+    echo -e "${COLOR}choco install bat delta${NC}"
+
+    # exa is currently not supported on Windows, see: https://github.com/ogham/exa/issues/32
+    # echo -e "${COLOR}Please install Rust (https://forge.rust-lang.org/infra/other-installation-methods.html), then executes:${NC}"
+    # echo -e "${COLOR}cargo install exa${NC}"
   fi
 } # }}}
 
@@ -344,7 +353,7 @@ function install_git() { # {{{
   git config --global user.name "Siwen Yu"
 
   echo -e "${COLOR}Setting line feed behavior...${NC}"
-  if [[ "$OS" == MINGW* ]]; then
+  if [ "$OS" = "Windows_NT" ]; then
     # On Windows, commit with LF and checkout with CRLF
     git config --global core.autocrlf true
   else
@@ -363,7 +372,19 @@ function install_git() { # {{{
   git config --global mergetool.prompt false
   git config --global diff.colorMoved zebra
 
-  if type diff-so-fancy >/dev/null 2>&1; then
+  if type delta >/dev/null 2>&1; then
+    git config --global core.pager delta
+    git config --global interactive.diffFilter "delta --color-only"
+    git config --global delta.features decorations
+    git config --global delta.interactive.keep-plus-minus-markers false
+    git config --global delta.decorations.commit-decoration-style "blue ol"
+    git config --global delta.decorations.commit-style raw
+    git config --global delta.decorations.file-style omit
+    git config --global delta.decorations.hunk-header-decoration-style "blue box"
+    git config --global delta.decorations.hunk-header-file-style red
+    git config --global delta.decorations.hunk-header-line-number-style "#067a00"
+    git config --global delta.decorations.hunk-header-style "file line-number syntax"
+  elif type diff-so-fancy >/dev/null 2>&1; then
     git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
   fi
 
@@ -1079,7 +1100,10 @@ function install_samba() { # {{{
 
 function install_rust() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    curl https://sh.rustup.rs -sSf | sh
+    echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    source "$HOME/.cargo/env"
+    cargo install exa delta 
   fi
 } # }}}
 
