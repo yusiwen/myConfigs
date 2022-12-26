@@ -679,12 +679,12 @@ function install_zsh() { # {{{
     echo -e "${COLOR}Found ${COLOR1}zsh-nvm${COLOR}...skip${NC}"
   fi
 
-  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-fzf-plugin ]; then
-    echo -e "${COLOR}Installing ${COLOR1}zsh-fzf-plugin${COLOR}...${NC}"
+  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/fzf-zsh-plugin ]; then
+    echo -e "${COLOR}Installing ${COLOR1}fzf-zsh-plugin${COLOR}...${NC}"
     git clone https://github.com/unixorn/fzf-zsh-plugin.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-zsh-plugin
-    echo -e "${COLOR}Installing ${COLOR1}zsh-fzf-plugin${COLOR}...OK${NC}"
+    echo -e "${COLOR}Installing ${COLOR1}fzf-zsh-plugin${COLOR}...OK${NC}"
   else
-    echo -e "${COLOR}Found ${COLOR1}zsh-fzf-plugin${COLOR}...skip${NC}"
+    echo -e "${COLOR}Found ${COLOR1}fzf-zsh-plugin${COLOR}...skip${NC}"
   fi
 } # }}}
 
