@@ -4,8 +4,8 @@ whichv() {
   printf '\e[?7t'
 
   TYPE="$(builtin type "$@")"
-  builtin which "$@" \
-    && echo "$TYPE"
+  builtin which "$@" &&
+    echo "$TYPE"
 
   ALIAS='alias'
   FUNCTION='function'
@@ -34,12 +34,12 @@ purgerc() {
   printf "Purge all [Y/n]? "
   read -rs choice
   case $choice in
-    Y|""|y)
-      echo "$RC" | xargs sudo dpkg --purge
-      ;;
-    *)
-      return 1
-      ;;
+  Y | "" | y)
+    echo "$RC" | xargs sudo dpkg --purge
+    ;;
+  *)
+    return 1
+    ;;
   esac
 }
 
@@ -96,9 +96,8 @@ splitbycue() {
 # Convert all FLAC files in current directory to ALAC
 #   see: https://gist.github.com/vol4ok/2587886
 flac2alac() {
-  for f in *.flac
-  do
-    ffmpeg -i "./$f" -acodec alac "./${f%.flac}.m4a";
+  for f in *.flac; do
+    ffmpeg -i "./$f" -acodec alac "./${f%.flac}.m4a"
   done
 }
 
@@ -124,7 +123,8 @@ maxs() {
     fi
 
     if ! [[ "${1}" =~ $re ]]; then
-      echo "error: Not a number: ${1}" >&2; return 1
+      echo "error: Not a number: ${1}" >&2
+      return 1
     fi
     numbers="${1}"
     type='d'
@@ -134,11 +134,13 @@ maxs() {
     elif [ "${1}" = "-d" ]; then
       type='d'
     else
-      echo "error: Wrong option: ${1}" >&2; return 1
+      echo "error: Wrong option: ${1}" >&2
+      return 1
     fi
 
     if ! [[ "${2}" =~ $re ]]; then
-      echo "error: Not a number: ${2}" >&2; return 1
+      echo "error: Not a number: ${2}" >&2
+      return 1
     fi
     numbers="${2}"
   fi
@@ -152,5 +154,37 @@ is_running_in_wsl() {
     echo "1"
   else
     echo "0"
+  fi
+}
+
+# https://polothy.github.io/post/2019-08-19-fzf-git-checkout/
+fzf-git-branch() {
+  git rev-parse HEAD >/dev/null 2>&1 || return
+
+  git branch --color=always --all --sort=-committerdate |
+    grep -v HEAD |
+    fzf --height 50% --ansi --no-multi --preview-window right:65% \
+      --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
+    sed "s/.* //"
+}
+
+fzf-git-checkout() {
+  git rev-parse HEAD >/dev/null 2>&1 || return
+
+  local branch
+
+  branch=$(fzf-git-branch)
+  if [[ "$branch" = "" ]]; then
+    echo "No branch selected."
+    return
+  fi
+
+  # If branch name starts with 'remotes/' then it is a remote branch. By
+  # using --track and a remote branch name, it is the same as:
+  # git checkout -b branchName --track origin/branchName
+  if [[ "$branch" = 'remotes/'* ]]; then
+    git checkout --track $branch
+  else
+    git checkout $branch
   fi
 }

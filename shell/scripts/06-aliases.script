@@ -88,6 +88,9 @@ alias gitlla='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Cres
 alias gitlp='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%b" -p'
 alias gitlpa='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%b" -p --all'
 
+alias gb='fzf-git-branch'
+alias gco='fzf-git-checkout'
+
 # Valgrind aliases
 alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v'
 
