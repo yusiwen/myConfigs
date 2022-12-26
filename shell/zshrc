@@ -62,10 +62,14 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
+plugins=(z zsh-autosuggestions zsh-syntax-highlighting fzf-zsh-plugin)
+plugins+=(docker docker-compose kubectl minikube helm ansible)
+plugins+=(git git-flow svn)
+plugins+=(golang pip virtualenv ruby rvm gem)
+plugins+=(node npm zsh-nvm yarn)
+plugins+=(colored-man-pages colorize)
 if [ "$(uname)" = 'Darwin' ]; then
-  plugins=(brew golang virtualenv git git-flow svn mvn node npm zsh-nvm yarn pip ruby rvm gem colored-man-pages colorize z docker docker-compose zsh-autosuggestions zsh-syntax-highlighting helm ansible)
-else
-  plugins=(golang virtualenv git git-flow svn mvn node npm zsh-nvm yarn pip ruby rvm gem colored-man-pages colorize z docker docker-compose kubectl minikube zsh-autosuggestions zsh-syntax-highlighting helm ansible)
+  plugins+=(brew)
 fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=241"

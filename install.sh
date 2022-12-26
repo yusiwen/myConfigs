@@ -678,6 +678,17 @@ function install_zsh() { # {{{
   else
     echo -e "${COLOR}Found ${COLOR1}zsh-nvm${COLOR}...skip${NC}"
   fi
+
+  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-fzf-plugin ]; then
+    if ! type fzf >/dev/null 2>&1; then
+      init_env
+    fi
+    echo -e "${COLOR}Installing ${COLOR1}zsh-fzf-plugin${COLOR}...${NC}"
+    git clone https://github.com/unixorn/fzf-zsh-plugin.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-zsh-plugin
+    echo -e "${COLOR}Installing ${COLOR1}zsh-fzf-plugin${COLOR}...OK${NC}"
+  else
+    echo -e "${COLOR}Found ${COLOR1}zsh-fzf-plugin${COLOR}...skip${NC}"
+  fi
 } # }}}
 
 function install_vim() { # {{{
