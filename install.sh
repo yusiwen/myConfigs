@@ -127,7 +127,7 @@ function init_env() { # {{{
         if [ "$OS_ARCH" = 'aarch64' ]; then
           BATCAT_DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_arm64.deb"
         fi
-        wget -q ${BATCAT_DOWNLOAD_URL} -o /tmp/batcat.deb
+        wget "${BATCAT_DOWNLOAD_URL}" -o /tmp/batcat.deb
         $SUDO dpkg --install /tmp/batcat.deb
       fi
     elif [ "$DISTRO" = 'CentOS' ]; then
