@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Set aliases for git
 # See "Must Have Git Aliases: Advanced Examples" (http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/) for details
