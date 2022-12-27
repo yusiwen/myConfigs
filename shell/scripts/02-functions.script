@@ -194,7 +194,6 @@ GIT_FZF_DEFAULT_OPTS=(
 	--bind k:preview-up
 	--bind pgdn:preview-page-down
 	--bind pgup:preview-page-up
-	--bind q:abort
 )
 
 git-fuzzy-diff() {
