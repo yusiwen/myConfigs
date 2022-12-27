@@ -1,5 +1,3 @@
-#!/bin/bash
-
 #{{{ Distribution Information
 # Determine OS platform
 if [ -n "$WINDIR" ]; then
