@@ -189,7 +189,7 @@ fzf-git-checkout() {
 
 # https://gist.github.com/junegunn/f4fca918e937e6bf5bad
 GIT_FZF_DEFAULT_OPTS=(
-  --ansi --reverse --height=100% 
+  --ansi --reverse --height=80% 
   --bind j:preview-down
 	--bind k:preview-up
 	--bind pgdn:preview-page-down
