@@ -1109,7 +1109,7 @@ function install_rust() { # {{{
     echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     source "$HOME/.cargo/env"
-    cargo install exa delta
+    cargo install exa git-delta
   fi
 } # }}}
 
