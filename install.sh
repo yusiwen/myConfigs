@@ -687,12 +687,16 @@ function install_zsh() { # {{{
     fi
   fi
 
+  # Install oh-my-zsh
+  if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    git clone https://github.com/ohmyzsh/ohmyzsh.git $HOME/.oh-my-zsh
+  fi
+
   check_link "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
   check_link "$CONFIG_SHELL"/bash_aliases "$HOME"/.bash_aliases
   check_link "$CONFIG_SHELL"/bash_profile "$HOME"/.bash_profile
   check_link "$CONFIG_SHELL"/profile "$HOME"/.profile
   check_link "$CONFIG_SHELL"/zshrc "$HOME"/.zshrc
-  check_link "$CONFIG_SHELL"/oh-my-zsh "$HOME"/.oh-my-zsh
 
   if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
     echo -e "${COLOR}Installing ${COLOR1}zsh-autosuggestions${COLOR}...${NC}"
