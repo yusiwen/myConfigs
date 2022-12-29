@@ -189,16 +189,17 @@ fzf-git-checkout() {
 
 # https://gist.github.com/junegunn/f4fca918e937e6bf5bad
 GIT_FZF_DEFAULT_OPTS=(
-  --ansi --reverse --height=80% 
-  --bind j:preview-down
-	--bind k:preview-up
+  --ansi --reverse 
+  --bind ctrl-j:preview-down
+	--bind ctrl-k:preview-up
+  --bind ctrl-f:preview-page-down
+	--bind ctrl-b:preview-page-up
 	--bind pgdn:preview-page-down
 	--bind pgup:preview-page-up
 )
 
 git-fuzzy-diff() {
   PREVIEW_PAGER="less --tabs=4 -Rc"
-  ENTER_PAGER=${PREVIEW_PAGER}
 
   # Don't just diff the selected file alone, get related files first using
   # '--name-status -R' in order to include moves and renames in the diff.
@@ -207,14 +208,9 @@ git-fuzzy-diff() {
 		$(echo $(git diff --name-status -R '$@' | grep {}) | cut -d" " -f 2-) \
 		| '$PREVIEW_PAGER
 
-  # Show additional context compared to preview
-  ENTER_COMMAND='git diff --color=always '$@' -U10000 -- \
-		$(echo $(git diff --name-status -R '$@' | grep {}) | cut -d" " -f 2-) \
-		| '$ENTER_PAGER
-
   git diff --submodule --word-diff --name-only $@ |
     fzf ${GIT_FZF_DEFAULT_OPTS[@]} --exit-0 --preview "${PREVIEW_COMMAND}" \
-      --preview-window=top:85% --bind "enter:execute:${ENTER_COMMAND}"
+      --preview-window=top:85% --bind "enter:toggle-preview"
 }
 
 git-fuzzy-log() {
@@ -233,13 +229,8 @@ git-fuzzy-log() {
 		)
 	}; f {}'
 
-  ENTER_COMMAND='(grep -o "[a-f0-9]\{7\}" | head -1 |
-		xargs -I % bash -ic "git-fuzzy-diff %^1 %") <<- "FZF-EOF"
-		{}
-		FZF-EOF'
-
   git log --graph --color=always --format="%C(auto)%h %s%d " |
     fzf ${GIT_FZF_DEFAULT_OPTS[@]} --no-sort --tiebreak=index \
       --preview "${PREVIEW_COMMAND}" --preview-window=top:15 \
-      --bind "enter:execute:${ENTER_COMMAND}"
+      --bind "enter:toggle-preview"
 }
