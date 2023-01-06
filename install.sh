@@ -370,6 +370,11 @@ function install_git() { # {{{
 
   echo -e "${COLOR}Setting misc...${NC}"
   git config --global core.editor vim
+  if [ "$OS" = 'Windows_NT' ]; then
+    if [ ! -z "$APP_HOME" ]; then
+      git config --global core.editor "$APP_HOME/GitExtensions/GitExtensions.exe fileeditor"
+    fi
+  fi
   git config --global pull.rebase true
   git config --global fetch.prune true
   git config --global merge.tool vimdiff
