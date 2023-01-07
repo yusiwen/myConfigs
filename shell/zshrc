@@ -65,7 +65,7 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(z zsh-autosuggestions zsh-syntax-highlighting fzf-zsh-plugin)
 plugins+=(docker docker-compose kubectl minikube helm ansible)
 plugins+=(git git-flow svn)
-plugins+=(golang pip virtualenv ruby rvm gem)
+plugins+=(golang pip virtualenv ruby rvm gem mvn)
 plugins+=(node npm zsh-nvm yarn)
 plugins+=(colored-man-pages colorize)
 if [ "$(uname)" = 'Darwin' ]; then
@@ -136,6 +136,5 @@ for script in $HOME/myConfigs/shell/scripts/*.script; do
   source "$script"
 done
 
-alias mvd='$HOME/.sdkman/candidates/mvnd/current/bin/mvnd'
-
+unalias mvnd
 cd
