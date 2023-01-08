@@ -738,14 +738,9 @@ function install_zsh() { # {{{
 
 function install_vim() { # {{{
   CONFIG_VIM="$HOME"/myConfigs/vim
-  VIM_HOME="$HOME"/.vim
 
   if [ ! -d "$CONFIG_VIM" ]; then
     fetch_myConfigs
-  fi
-
-  if [ ! -d "$VIM_HOME" ]; then
-    mkdir -p "$VIM_HOME"
   fi
 
   if [ "$OS" = 'Linux' ]; then
@@ -816,11 +811,11 @@ function install_vim() { # {{{
     return
   fi
 
-  if [ ! -d $HOME/.SpaveVim ]; then
-    curl -sLf https://spacevim.org/install.sh | bash -s -- --no-fonts
-    mkdir -p "$HOME"/.SpaceVim.d
-    ln -snvf "$CONFIG_VIM"/SpaceVim/init.toml "$HOME"/.SpaceVim.d/init.toml
-  fi
+  XDGSpaceDir="${XDG_CONFIG_HOME:-${HOME}/.}${XDG_CONFIG_HOME:+/}SpaceVim"
+  XDGSpaceDDir="${XDG_CONFIG_HOME:-${HOME}/.}${XDG_CONFIG_HOME:+/}SpaceVim.d"
+  curl -sLf https://spacevim.org/install.sh | bash -s -- --no-fonts
+  mkdir -p "$XDGSpaceDDir"
+  ln -snvf "$CONFIG_VIM"/SpaceVim/init.toml "$XDGSpaceDDir"/init.toml
 
   echo -e "${COLOR}Install python3 dependencies...${NC}"
   if ! type ruby >/dev/null 2>&1; then
