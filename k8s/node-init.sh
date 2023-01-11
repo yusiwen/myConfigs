@@ -57,3 +57,6 @@ sed -e "s/{{INTERFACE}}/$INTERFACE/g" \
     -e "s/{{GATEWAY}}/$GATEWAY/g" \
     -e "s/{{DNS}}/$DNS/g" \
     netplan.yaml.template | sudo tee /etc/netplan/00-installer-config.yaml
+
+sudo rm -f /etc/ssh/ssh_host_*
+sudo dpkg-reconfigure openssh-server
