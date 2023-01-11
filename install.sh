@@ -1162,6 +1162,12 @@ function install_golang() { # {{{
 }
 # }}}
 
+function install_helm() { # {{{
+  if [ "$OS" = 'Linux' ]; then
+    curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+  fi
+} # }}}
+
 function install_sdkman() { # {{{
   # https://sdkman.io/install
   curl -s "https://get.sdkman.io" | bash
@@ -1233,6 +1239,7 @@ rust) install_rust ;;
 golang)
   shift
   install_golang "$@" ;;
+helm) install_helm ;;
 sdkman) install_sdkman ;;
 byobu) init_byobu ;;
 *) print_info ;;
