@@ -828,6 +828,11 @@ function install_vim() { # {{{
   if ! type ruby >/dev/null 2>&1; then
     install_ruby
   fi
+  if [ -z "$GEM_HOME" ]; then
+    GEM_HOME=$(ruby -e 'puts Gem.user_dir')
+    export GEM_HOME
+    export GEM_PATH=$GEM_HOME
+  fi
   gem install neovim
 
   echo -e "${COLOR}Install node.js dependencies...${NC}"
