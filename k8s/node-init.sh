@@ -46,7 +46,7 @@ if [ "$VERBOSE" = 'true' ]; then
   echo "HOSTNAME=$HOSTNAME"
 fi
 
-sudo hostnamectl set-hostname "$HOSTNAME"
+sudo hostnamectl set-hostname "$HOSTNAME.local"
 sed -e "s/{{ADDRESS}}/$ADDRESS/g" \
     -e "s/{{HOSTNAME}}/$HOSTNAME/g" \
     hosts.template | sudo tee /etc/hosts
