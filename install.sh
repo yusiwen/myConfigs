@@ -22,6 +22,14 @@ NC='\033[0m'
 
 OS=$(uname)
 OS_ARCH=$(uname -m)
+ARCH=
+if [ "$OS_ARCH" = 'x86_64' ]; then
+  ARCH='amd64'
+elif [ "$OS_ARCH" = 'aarch64' ]; then
+  ARCH='arm64'
+else
+  ARCH=
+fi
 CODENAME=
 OS_NAME=
 OS_VERSION=
@@ -54,7 +62,7 @@ else
     DISTRO=$OS
   fi
 fi
-echo -e "${COLOR}Operate System: ${COLOR1}$OS${COLOR} found...${NC}"
+echo -e "${COLOR}Operating System: ${COLOR1}$OS${COLOR} found...${NC}"
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
 
 SUDO=
@@ -1123,6 +1131,37 @@ function install_rust() { # {{{
   fi
 } # }}}
 
+function install_golang() { # {{{
+  if [ "$OS" = 'Linux' ]; then
+    if [ -z "$ARCH" ]; then
+      echo -e "${COLOR2}Unknown archetecture ${COLOR1}$ARCH${NC}"
+      exit 1
+    fi
+
+    local version="$1"
+    if [ -z "$version" ]; then
+      # Get latest stable from official site
+      version=$(curl -L "https://golang.org/VERSION?m=text")
+      echo -e "${COLOR}The latest stable version is ${COLOR1}$version${COLOR}${NC}"
+    elif ! (echo "$version" | grep -Eq ^go); then
+      version="go$version"
+    fi
+    local installation_path="$HOME"/.local
+    local target_path="$installation_path/$version.linux-$ARCH"
+
+    echo -e "${COLOR}Downloading ${COLOR1}$version.linux-$ARCH.tar.gz${COLOR}${NC}"
+    wget -P "$installation_path" "https://dl.google.com/go/$version.linux-$ARCH.tar.gz"
+
+    mkdir -p "$target_path"
+    tar xvvzf "$installation_path/$version.linux-$ARCH.tar.gz" -C "$target_path" --strip-components 1
+    ln -sfnv "$target_path" "$installation_path"/go
+    rm -rf "$installation_path/$version.linux-$ARCH.tar.gz"
+
+    echo -e "${COLOR1}$version.linux-$ARCH${COLOR} is installed, re-login to take effect${NC}"
+  fi
+}
+# }}}
+
 function install_sdkman() { # {{{
   # https://sdkman.io/install
   curl -s "https://get.sdkman.io" | bash
@@ -1191,6 +1230,9 @@ mysql) install_mysql ;;
 samba) install_samba ;;
 ctags) install_universal_ctags ;;
 rust) install_rust ;;
+golang)
+  shift
+  install_golang "$@" ;;
 sdkman) install_sdkman ;;
 byobu) init_byobu ;;
 *) print_info ;;
