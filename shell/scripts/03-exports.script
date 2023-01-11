@@ -174,7 +174,7 @@ if [ -e /usr/local/go/bin/go ]; then
   else
     export GOROOT=/usr/local/go
   fi
-  export GOPATH=$HOME/gopackage
+  export GOPATH=$HOME/.gopackages
   mkdir -p $GOPATH
   export GO111MODULE=on
   export GOPRIVATE=git.yusiwen.cn
