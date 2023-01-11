@@ -168,14 +168,17 @@ fi
 #}}}
 
 #{{{ GoLang
-if [ -e /usr/local/go/bin/go ]; then
+if [ -e /usr/local/go/bin/go ] || [ -e "$HOME"/.local/go/bin/go ]; then
   if [ "$OS" = 'Darwin' ]; then
     export GOROOT=$(brew --prefix golang)/libexec
   else
     export GOROOT=/usr/local/go
+    if [ -e "$HOME"/.local/go/bin/go ]; then
+      export GOROOT="$HOME"/.local/go
+    fi
   fi
   export GOPATH=$HOME/.gopackages
-  mkdir -p $GOPATH
+  mkdir -p "$GOPATH"
   export GO111MODULE=on
   export GOPRIVATE=git.yusiwen.cn
   export GOPROXY=https://goproxy.cn,direct
