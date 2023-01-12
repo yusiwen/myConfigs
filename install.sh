@@ -1179,11 +1179,7 @@ function init_byobu() { # {{{
   if [ -e $HOME/.config/byobu/profile.tmux ]; then
     cat << EOF | tee -a $HOME/.config/byobu/profile.tmux
 # Enable mouse support including scrolling
-set -g mouse on 
-# Versions prior to 2.1 may want this too:
-set -g mouse-utf8 on
-set -g focus-events on
-set -ga terminal-overrides ',xterm-256color:RGB'
+set -g mouse on
 EOF
   fi
 }
