@@ -650,6 +650,10 @@ function install_node() { # {{{
     fi
   fi
 
+  if ! type npm &>/dev/null; then
+    nvm install stable
+  fi
+
   echo -e "${COLOR1}Installing yarn, eslint...${NC}"
   npm install -g yarn eslint npm-check npm-check-updates nrm
   # Install cli tools for git commit conventions
