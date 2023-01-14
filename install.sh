@@ -668,7 +668,7 @@ function install_zsh() { # {{{
   fi
 
   # Make sure submodules are fetched or updated
-  git --git-dir="$HOME/myConfigs/.git" submodule update --init
+  git -C "$HOME/myConfigs" submodule update --init
 
   if [ "$OS" = 'Linux' ]; then
     if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
