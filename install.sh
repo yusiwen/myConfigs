@@ -485,11 +485,7 @@ function fetch_myConfigs() { # {{{
   else
     echo -e "${COLOR}Fetch myConfigs...${NC}"
     git clone https://github.com/yusiwen/myConfigs.git "$HOME"/git/myConfigs
-
-    CURDIR=$(pwd)
-    cd "$HOME"/git/myConfigs
-    git submodule update --init
-    cd "$CURDIR"
+    git -C "$HOME"/git/myConfigs submodule update --init
   fi
   ln -sfnv "$HOME"/git/myConfigs "$HOME"/myConfigs
 
