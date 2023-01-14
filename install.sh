@@ -484,7 +484,7 @@ function fetch_myConfigs() { # {{{
     echo -e "${COLOR1}git/myConfigs${COLOR} already exists.${NC}"
   else
     echo -e "${COLOR}Fetch myConfigs...${NC}"
-    git clone git@git.yusiwen.cn:yusiwen/myConfigs.git "$HOME"/git/myConfigs
+    git clone https://github.com/yusiwen/myConfigs.git "$HOME"/git/myConfigs
 
     CURDIR=$(pwd)
     cd "$HOME"/git/myConfigs
