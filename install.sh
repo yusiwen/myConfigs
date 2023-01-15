@@ -126,7 +126,7 @@ function init_env() { # {{{
       $SUDO apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core \
                            iotop net-tools iftop nethogs nload sysstat apt-transport-https jq \
                            tmux byobu htop atop software-properties-common \
-                           build-essential
+                           build-essential ethtool
       # Check if ubuntu version is newer than 20.04
       if [ ! -z $(echo | awk "(${OS_VERSION} >= 20.04) { print \"ok\"; }") ]; then
         $SUDO apt install -y bat
@@ -1175,12 +1175,18 @@ function install_sdkman() { # {{{
 } # }}}
 
 function init_byobu() { # {{{
-  # Enable mouse by default
-  if [ -e $HOME/.config/byobu/profile.tmux ]; then
-    cat << EOF | tee -a $HOME/.config/byobu/profile.tmux
+  if [ "$OS" = 'Linux' ]; then
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    ln -snfv $HOME/git/myConfig/tmux/tmux.conf ~/.tmux.conf
+    byobu-enable
+  
+    # Enable mouse by default
+    if [ -e $HOME/.config/byobu/profile.tmux ]; then
+      cat << EOF | tee -a $HOME/.config/byobu/profile.tmux
 # Enable mouse support including scrolling
 set -g mouse on
 EOF
+    fi
   fi
 }
 # }}}
