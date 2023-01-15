@@ -1176,7 +1176,9 @@ function install_sdkman() { # {{{
 
 function init_byobu() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    if [ ! -d ~/.tmux/plugins/tpm ]; then
+      git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    fi
     ln -snfv $HOME/git/myConfigs/tmux/tmux.conf ~/.tmux.conf
     byobu-enable
   
