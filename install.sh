@@ -1027,7 +1027,7 @@ function install_docker() { # {{{
         echo -e "${COLOR}Installing prerequisite packages...${NC}"
         $SUDO apt-get -y install apt-transport-https ca-certificates curl software-properties-common
         echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
-        curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | $SUDO apt-key add -
+        curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo tee /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg
         if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
           $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
         else
