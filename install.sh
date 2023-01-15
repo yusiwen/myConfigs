@@ -1177,7 +1177,7 @@ function install_sdkman() { # {{{
 function init_byobu() { # {{{
   if [ "$OS" = 'Linux' ]; then
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    ln -snfv $HOME/git/myConfig/tmux/tmux.conf ~/.tmux.conf
+    ln -snfv $HOME/git/myConfigs/tmux/tmux.conf ~/.tmux.conf
     byobu-enable
   
     # Enable mouse by default
