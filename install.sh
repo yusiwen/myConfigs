@@ -1190,8 +1190,15 @@ set -g mouse on
 EOF
     fi
   fi
-}
-# }}}
+} # }}}
+
+function init_ansible() { # {{{
+  if ! type pip3 >/dev/null 2>&1; then
+    install_python
+  fi
+
+  pip3 install ansible
+} # }}}
 
 function install_all() { # {{{
   init_env
@@ -1246,6 +1253,7 @@ golang)
 helm) install_helm ;;
 sdkman) install_sdkman ;;
 byobu) init_byobu ;;
+ansible) init_ansible ;;
 *) print_info ;;
 esac
 
