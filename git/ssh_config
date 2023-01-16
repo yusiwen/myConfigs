@@ -44,6 +44,11 @@ Host deskmini-pve2
   User root
   Port 22
 
+Host nuc12wsk-pve
+  HostName 192.168.2.252
+  User root
+  Port 22
+
 Host vm-k8s-master
   HostName 192.168.2.69
   User yusiwen
@@ -86,6 +91,21 @@ Host vm-k8s-node07
 
 Host vm-k8s-node08
   HostName 192.168.2.61
+  User yusiwen
+  Port 22
+
+Host vm-k8s-node09
+  HostName 192.168.2.60
+  User yusiwen
+  Port 22
+
+Host vm-k8s-node10
+  HostName 192.168.2.59
+  User yusiwen
+  Port 22
+
+Host vm-k8s-node11
+  HostName 192.168.2.70
   User yusiwen
   Port 22
 
