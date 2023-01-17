@@ -56,6 +56,9 @@
 [[layers]]
   name = 'VersionControl'
 
+[[layers]]
+  name = "sudo"
+
 [[custom_plugins]]
   repo = "arcticicestudio/nord-vim"
   merged = false
