@@ -51,6 +51,7 @@ function start_drone_server() {
   echo "DRONE_RPC_SECRET=$DRONE_RPC_SECRET"
 
   if [ "$SERVER_TYPE" = 'gitea' ]; then
+    DRONE_SERVER_HOST="ci.yusiwen.cn"
     echo "Starting drone server $DRONE_VERSION for gitea..."
 
     echo "DRONE_GITHUB_CLIENT_ID=$DRONE_GITHUB_CLIENT_ID"
@@ -73,6 +74,7 @@ function start_drone_server() {
       -e DRONE_LOGS_PRETTY=true \
       drone/drone:${DRONE_VERSION}
   elif [ "$SERVER_TYPE" = 'github' ]; then
+    DRONE_SERVER_HOST="ci-github.yusiwen.cn"
     echo "Starting drone server $DRONE_VERSION for github..."
     echo "DRONE_GITEA_CLIENT_ID=$DRONE_GITEA_CLIENT_ID"
     echo "DRONE_GITEA_CLIENT_SECRET=$DRONE_GITEA_CLIENT_SECRET"
