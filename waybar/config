@@ -1,0 +1,187 @@
+{
+  "layer": "bottom",
+  "position": "bottom",
+  "height": 12,
+  "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad"],
+  "modules-center": ["custom/window"],
+  "modules-right": [
+    "custom/primary",
+    "custom/clipboard",
+    "network",
+    "idle_inhibitor",
+    "cpu",
+    "temperature",
+    "memory",
+    "disk",
+    "custom/keyboard-layout",
+    "backlight",
+    "pulseaudio",
+    "battery",
+    "custom/pacman",
+    "custom/uptime",
+    "tray",
+    "clock#date",
+    "clock#time"
+  ],
+
+  "workspaces": {
+    "all-outputs": true
+  },
+
+  "backlight": {
+    "format": " {percent}%",
+    "interval": 2,
+    "on-scroll-up": "brightnessctl set +2%",
+    "on-scroll-down": "brightnessctl set 2%-"
+  },
+
+  "battery": {
+    "interval": 10,
+    "states": {
+      "warning": 25,
+      "critical": 15
+    },
+    "format": " {icon} {capacity}%",
+    "format-discharging": "{icon} {capacity}%",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tooltip": true
+  },
+
+  "clock#time": {
+    "interval": 1,
+    "format": "{:%H:%M:%S}",
+    "tooltip": false,
+    "timezone": "Asia/Shanghai"
+  },
+
+  "clock#date": {
+    "interval": 10,
+    "format": " {:%Y/%m/%d(%a)}",
+    "tooltip-format": "{:%Y %B %e (%A)}",
+    "locale": "en_US.UTF-8",
+    "timezone": "Asia/Shanghai"
+  },
+
+  "cpu": {
+    "interval": 3,
+    "format": " {usage}% ({load})",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+
+  "memory": {
+    "interval": 3,
+    "format": " {}%",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+
+  "disk": {
+    "format": "/: {percentage_used}%",
+    "path": "/"
+  },
+
+  "network": {
+    "interval": 3,
+    "format-wifi": " {essid}",
+    "format-ethernet": " {ifname}: {ipaddr}/{cidr}",
+    "format-disconnected": "⚠  Disconnected",
+    "tooltip-format": "{ifname}: {ipaddr} (signal: {signalStrength}%)"
+  },
+
+  "pulseaudio": {
+    "scroll-step": 2,
+    "format": "{icon} {volume}%",
+    "format-muted": " Muted",
+    "format-icons": {
+      "headphones": "",
+      "handsfree": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", ""]
+    },
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click-right": "alacritty --title='Sound Mixer' --command='pulsemixer'",
+    "tooltip": true
+  },
+
+  "temperature": {
+    "critical-threshold": 75,
+    "interval": 3,
+    "format": "{icon} {temperatureC}°C",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tooltip": true
+  },
+
+  "tray": {
+    "icon-size": 21,
+    "spacing": 10
+  },
+
+  "custom/primary": {
+    "format": "󿩚{}",
+    "exec": "~/.config/waybar/scripts/clipboard.sh --primary",
+    "on-click": "~/.config/waybar/scripts/clipboard.sh --toggle; pkill -SIGRTMIN+8 waybar",
+    "restart-interval": 2,
+    "escape": true
+  },
+
+  "custom/clipboard": {
+    "format": "󿚑{}",
+    "exec": "~/.config/waybar/scripts/clipboard.sh --clipboard",
+    "on-click": "~/.config/waybar/scripts/clipboard.sh --toggle; pkill -SIGRTMIN+8 waybar",
+    "restart-interval": 2,
+    "escape": true
+  },
+
+  "custom/dunst": {
+    "exec": "~/.config/waybar/scripts/dunst.sh",
+    "on-click": "dunstctl set-paused toggle",
+    "restart-interval": 1
+  },
+
+  "custom/pacman": {
+    "format": " {} update available",
+    "exec": "checkupdates | wc -l",
+    "exec-if": "test $(checkupdates | wc -l) -ne 0",
+    "interval": 3600,
+    "on-click": "checkupdates; pkill -SIGRTMIN+8 waybar"
+  },
+
+  "custom/window": {
+    "exec": "~/.config/waybar/scripts/window_title.sh",
+    "interval": 1
+  },
+
+  "custom/uptime": {
+    "format": " {}",
+    "exec": "uptime | awk '{print $3}'|sed 's/,//'",
+    "interval": 60
+  }
+}
