@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+DRONE_VERSION=2.16.0
+RUNNER_VERSION=1.8.3
+
 SERVER_TYPE=gitea
 
 DRONE_GITEA_CLIENT_ID="$(awk -F "=" '/DRONE_GITEA_CLIENT_ID/ {print $2}' $HOME/.my.pwd.cnf)"
@@ -17,6 +20,7 @@ START_RUNNER=
 START_SERVER=
 
 function start_drone_runner() {
+  echo "Starting drone runner $RUNNER_VERSION..."
   echo "DRONE_RPC_SECRET=$DRONE_RPC_SECRET"
   echo "DRONE_RUNNER_LABELS=$DRONE_RUNNER_LABELS"
   echo "DRONE_RUNNER_CAPACITY=$DRONE_RUNNER_CAPACITY"
@@ -32,13 +36,15 @@ function start_drone_runner() {
     -e DRONE_RUNNER_NAME=${HOSTNAME} \
     -e DRONE_RUNNER_LABELS=${DRONE_RUNNER_LABELS} \
     -e DRONE_RUNNER_CAPACITY=${DRONE_RUNNER_CAPACITY} \
-    drone/drone-runner-docker:latest
+    drone/drone-runner-docker:${RUNNER_VERSION}
 }
 
 function start_drone_server() {
   echo "DRONE_RPC_SECRET=$DRONE_RPC_SECRET"
-  
+
   if [ "$SERVER_TYPE" = 'gitea' ]; then
+    echo "Starting drone server $DRONE_VERSION for gitea..."
+
     echo "DRONE_GITHUB_CLIENT_ID=$DRONE_GITHUB_CLIENT_ID"
     echo "DRONE_GITHUB_CLIENT_SECRET=$DRONE_GITHUB_CLIENT_SECRET"
 
@@ -57,8 +63,9 @@ function start_drone_server() {
       -e DRONE_USER_FILTER=yusiwen \
       -e DRONE_LOGS_TEXT=true \
       -e DRONE_LOGS_PRETTY=true \
-      drone/drone:latest
+      drone/drone:${DRONE_VERSION}
   elif [ "$SERVER_TYPE" = 'github' ]; then
+    echo "Starting drone server $DRONE_VERSION for github..."
     echo "DRONE_GITEA_CLIENT_ID=$DRONE_GITEA_CLIENT_ID"
     echo "DRONE_GITEA_CLIENT_SECRET=$DRONE_GITEA_CLIENT_SECRET"
     echo "DRONE_GITEA_SERVER=$DRONE_GITEA_SERVER"
@@ -77,7 +84,7 @@ function start_drone_server() {
       -e DRONE_USER_FILTER=yusiwen \
       -e DRONE_LOGS_TEXT=true \
       -e DRONE_LOGS_PRETTY=true \
-      drone/drone:latest
+      drone/drone:${DRONE_VERSION}
   else
     echo "Unsupported server type: $SERVER_TYPE"
     exit 1
