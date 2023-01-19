@@ -17,6 +17,10 @@ START_RUNNER=
 START_SERVER=
 
 function start_drone_runner() {
+  echo "DRONE_RPC_SECRET=$DRONE_RPC_SECRET"
+  echo "DRONE_RUNNER_LABELS=$DRONE_RUNNER_LABELS"
+  echo "DRONE_RUNNER_CAPACITY=$DRONE_RUNNER_CAPACITY"
+
   docker run -d \
     --name runner \
     --restart unless-stopped \
@@ -32,7 +36,12 @@ function start_drone_runner() {
 }
 
 function start_drone_server() {
+  echo "DRONE_RPC_SECRET=$DRONE_RPC_SECRET"
+  
   if [ "$SERVER_TYPE" = 'gitea' ]; then
+    echo "DRONE_GITHUB_CLIENT_ID=$DRONE_GITHUB_CLIENT_ID"
+    echo "DRONE_GITHUB_CLIENT_SECRET=$DRONE_GITHUB_CLIENT_SECRET"
+
     docker run -d \
       --name drone \
       --restart unless-stopped \
@@ -50,6 +59,10 @@ function start_drone_server() {
       -e DRONE_LOGS_PRETTY=true \
       drone/drone:latest
   elif [ "$SERVER_TYPE" = 'github' ]; then
+    echo "DRONE_GITEA_CLIENT_ID=$DRONE_GITEA_CLIENT_ID"
+    echo "DRONE_GITEA_CLIENT_SECRET=$DRONE_GITEA_CLIENT_SECRET"
+    echo "DRONE_GITEA_SERVER=$DRONE_GITEA_SERVER"
+
     docker run -d \
       --name drone \
       --restart unless-stopped \
@@ -109,14 +122,7 @@ if [ $OPTIND -eq 1 ]; then
   exit 0
 fi
 
-echo "DRONE_GITEA_CLIENT_ID=$DRONE_GITEA_CLIENT_ID"
-echo "DRONE_GITEA_CLIENT_SECRET=$DRONE_GITEA_CLIENT_SECRET"
-echo "DRONE_GITEA_SERVER=$DRONE_GITEA_SERVER"
-echo "DRONE_GITHUB_CLIENT_ID=$DRONE_GITHUB_CLIENT_ID"
-echo "DRONE_GITHUB_CLIENT_SECRET=$DRONE_GITHUB_CLIENT_SECRET"
-echo "DRONE_RPC_SECRET=$DRONE_RPC_SECRET"
-echo "DRONE_RUNNER_LABELS=$DRONE_RUNNER_LABELS"
-echo "DRONE_RUNNER_CAPACITY=$DRONE_RUNNER_CAPACITY"
+
 
 if [ "$START_SERVER" = 1 ]; then
   start_drone_server
