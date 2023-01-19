@@ -408,6 +408,10 @@ function install_git() { # {{{
     git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
   fi
 
+  if [ "$OS" = 'Linux' ]; then
+    git config --global credential.helper store
+  fi
+
   if [ -e "$HOME"/.ssh/id_rsa.pub ]; then
     echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
     cat "$HOME"/.ssh/id_rsa.pub
