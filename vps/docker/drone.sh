@@ -11,7 +11,7 @@ DRONE_GITEA_SERVER="https://git.yusiwen.cn"
 DRONE_GITHUB_CLIENT_ID="$(awk -F "=" '/DRONE_GITHUB_CLIENT_ID/ {print $2}' $HOME/.my.pwd.cnf)"
 DRONE_GITHUB_CLIENT_SECRET="$(awk -F "=" '/DRONE_GITHUB_CLIENT_SECRET/ {print $2}' $HOME/.my.pwd.cnf)"
 DRONE_RPC_SECRET=$(awk -F "=" '/DRONE_RPC_SECRET/ {print $2}' $HOME/.my.pwd.cnf)
-DRONE_SERVER_HOST="ci.yusiwen.cn"
+DRONE_SERVER_HOST=
 DRONE_SERVER_PROTO="https"
 DRONE_RUNNER_LABELS=
 DRONE_RUNNER_CAPACITY=10
@@ -24,9 +24,17 @@ function start_drone_runner() {
   echo "DRONE_RPC_SECRET=$DRONE_RPC_SECRET"
   echo "DRONE_RUNNER_LABELS=$DRONE_RUNNER_LABELS"
   echo "DRONE_RUNNER_CAPACITY=$DRONE_RUNNER_CAPACITY"
+  if [ "$SERVER_TYPE" = 'gitea' ]; then
+    DRONE_SERVER_HOST="ci.yusiwen.cn"
+  elif [ "$SERVER_TYPE" = 'github' ]; then
+    DRONE_SERVER_HOST="ci-github.yusiwen.cn"
+  else
+    echo "Unsupported server type: $SERVER_TYPE"
+    exit 1
+  fi
 
   docker run -d \
-    --name runner \
+    --name drone-runner-${SERVER_TYPE} \
     --restart unless-stopped \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -e DRONE_RPC_PROTO=${DRONE_SERVER_PROTO} \
@@ -93,10 +101,10 @@ function start_drone_server() {
 }
 
 function usage() {
-  echo "drone.sh [-s <SERVER_TYPE:gitea>] [-r <LABELS>] [-R RPC_SECRET]"
+  echo "drone.sh [-s <SERVER_TYPE:gitea>] [-r <SERVER_TYPE:gitea>] [-l <LABELS>] [-R RPC_SECRET]"
 }
 
-while getopts "R:hs:r:c:" opt
+while getopts "R:hs:r:c:l:" opt
 do
   case $opt in
     R)
@@ -112,10 +120,13 @@ do
       ;;
     r)
       START_RUNNER=1
-      DRONE_RUNNER_LABELS=$OPTARG
+      SERVER_TYPE=$OPTARG
       ;;
     c)
       DRONE_RUNNER_CAPACITY=$OPTARG
+      ;;
+    l)
+      DRONE_RUNNER_LABELS=$OPTARG
       ;;
     *)
       usage
