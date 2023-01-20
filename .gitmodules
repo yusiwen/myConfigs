@@ -1,6 +1,3 @@
-[submodule "LS_COLORS"]
-	path = shell/LS_COLORS
-	url = https://github.com/trapd00r/LS_COLORS.git
 [submodule "logitech/k380-function-keys-conf"]
 	path = logitech/k380-function-keys-conf
 	url = https://github.com/jergusg/k380-function-keys-conf.git

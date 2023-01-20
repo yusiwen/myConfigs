@@ -11,10 +11,6 @@ zstyle ':completion:*:warnings'         format 'No matches for: %d'
 zstyle ':completion:*'                  group-name ''
 #}}}
 
-#{{{ make use of LS_COLORS
-zstyle ':completion:*:default'          list-colors ${(s.:.)LS_COLORS}
-#}}}
-
 #{{{ cd
 zstyle ':completion:*:(cd):*'           group-order 'named-directories'
 zstyle ':completion:*:(cd):*'           ignore-parents parent pwd
