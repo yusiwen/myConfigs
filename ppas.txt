@@ -1,6 +1,0 @@
-sudo add-apt-repository ppa:git-core/ppa
-sudo add-apt-repository ppa:deluge-team/stable
-sudo add-apt-repository ppa:remmina-ppa-team/remmina-next
-sudo add-apt-repository ppa:greaterfire/trojan
-sudo add-apt-repository ppa:mc3man/mpv-tests
-
