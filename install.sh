@@ -550,7 +550,7 @@ function install_python() { # {{{
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         $SUDO apt-get install -y python2
       elif [ "$DISTRO" = 'Manjaro' ]; then
-        yay -S python2
+        echo -e "${COLOR}python2 is not officially supported by ${COLOR1}$DISTRO${COLOR}...skip${NC}"
       elif [ "$DISTRO" = 'CentOS' ]; then
         echo 'TODO: python2 on CentOS'
       else
@@ -588,7 +588,7 @@ function install_python() { # {{{
         curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip2.py
         $SUDO python2 /tmp/get-pip2.py
       elif [ "$DISTRO" = 'Manjaro' ]; then
-        yay -S python2-pip
+        echo -e "${COLOR}python2-pip is not officially supported by ${COLOR1}$DISTRO${COLOR}...skip${NC}"
       fi
     fi
 
@@ -622,8 +622,12 @@ function install_python() { # {{{
 
     if ! type virtualenv >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
-      pip2 install --user virtualenv
-      pip3 install --user virtualenv
+      if type pip2 >/dev/null 2>&1; then
+        pip2 install --user virtualenv
+      fi
+      if type pip3 >/dev/null 2>&1; then
+        pip3 install --user virtualenv
+      fi
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
