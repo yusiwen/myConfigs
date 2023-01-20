@@ -11,9 +11,6 @@
 # http://git.io/vtVXR
 # yusiwen@gmail.com
 
-set -e
-set -o pipefail
-
 # Global variables {{{
 COLOR='\033[1;34m'  # Highlighted white
 COLOR1='\033[1;32m' # Highligted green
@@ -73,6 +70,9 @@ if [ "$OS" = 'Linux' ]; then
 fi
 # }}}
 
+set -e
+set -o pipefail
+
 function make_link() { # {{{
   local target=("$1") linkname=("$2")
   ln -sfnv "$target" "$linkname"
@@ -126,7 +126,7 @@ function init_env() { # {{{
       $SUDO apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core \
                            iotop net-tools iftop nethogs nload sysstat apt-transport-https jq \
                            tmux byobu htop atop software-properties-common \
-                           build-essential ethtool
+                           build-essential ethtool cifs-utils
       # Check if ubuntu version is newer than 20.04
       if [ ! -z $(echo | awk "(${OS_VERSION} >= 20.04) { print \"ok\"; }") ]; then
         $SUDO apt install -y bat
@@ -139,6 +139,8 @@ function init_env() { # {{{
         wget "${BATCAT_DOWNLOAD_URL}" -O /tmp/batcat.deb
         $SUDO dpkg --install /tmp/batcat.deb
       fi
+    elif [ "$DISTRO" = 'Manjaro' ]; then
+      yay -S base-devel the_silver_searcher tmux byobu bat
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
         $SUDO yum --enablerepo=epel -y \
@@ -159,7 +161,7 @@ function init_env() { # {{{
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
     install_rust
-  elif [ "$OS" = 'Windows_NT']; then
+  elif [ "$OS" = 'Windows_NT' ]; then
     echo -e "${COLOR}Please install Chocolatey (https://chocolatey.org/install), then executes:${NC}"
     echo -e "${COLOR}choco install bat delta${NC}"
 
@@ -332,6 +334,15 @@ function install_git() { # {{{
       else
         echo -e "${COLOR1}tig${COLOR} was found.${NC}"
       fi
+    elif [ "$DISTRO" = 'Manjaro' ]; then
+      # Manjaro has git installed already
+      if ! type tig >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
+        yay -S tig
+        echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
+      else
+        echo -e "${COLOR1}tig${COLOR} was found.${NC}"
+      fi
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
         PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
@@ -442,6 +453,14 @@ function install_ruby() { # {{{
           $SUDO apt install -y ruby-full
         fi
       fi
+    elif [ "$DISTRO" = 'Manjaro' ]; then
+      if ! type ruby >/dev/null 2>&1; then
+        echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
+        yay -S ruby
+        echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
+      else
+        echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
+      fi
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
       return
@@ -495,15 +514,16 @@ function fetch_myConfigs() { # {{{
 
   if [ "$OS" = 'Linux' ] || [ "$OS" = 'Darwin' ]; then
     mkdir -p "$HOME"/.ssh
-    if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+    if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
       ln -sfnv "$HOME"/myConfigs/git/ssh_config.mirror "$HOME"/.ssh/config
     else
       ln -sfnv "$HOME"/myConfigs/git/ssh_config "$HOME"/.ssh/config
     fi
 
-    mkdir -p "$HOME"/bin
-    ln -sfnv "$HOME"/myConfigs/git/git-migrate "$HOME"/bin/git-migrate
-    ln -sfnv "$HOME"/myConfigs/git/git-new-workdir "$HOME"/bin/git-new-workdir
+    mkdir -p "$HOME"/.local/bin
+    ln -sfnv "$HOME"/myConfigs/git/git-migrate "$HOME"/.local/bin/git-migrate
+    ln -sfnv "$HOME"/myConfigs/git/git-new-workdir "$HOME"/.local/bin/git-new-workdir
+    ln -sfnv "$HOME"/myConfigs/git/repos.sh "$HOME"/.local/bin/repos
   fi
 } # }}}
 
@@ -529,6 +549,8 @@ function install_python() { # {{{
     if ! type python2 &>/dev/null; then
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         $SUDO apt-get install -y python2
+      elif [ "$DISTRO" = 'Manjaro' ]; then
+        yay -S python2
       elif [ "$DISTRO" = 'CentOS' ]; then
         echo 'TODO: python2 on CentOS'
       else
@@ -565,6 +587,8 @@ function install_python() { # {{{
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip2.py
         $SUDO python2 /tmp/get-pip2.py
+      elif [ "$DISTRO" = 'Manjaro' ]; then
+        yay -S python2-pip
       fi
     fi
 
@@ -573,12 +597,14 @@ function install_python() { # {{{
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         $SUDO apt install -y python3-pip
         $SUDO update-alternatives --install /usr/bin/python python /usr/bin/python3 20
+      elif [ "$DISTRO" = 'Manjaro' ]; then
+        yay -S python-pip
       fi
     fi
 
     check_python3_version
 
-    if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+    if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
       mkdir -p "$HOME"/.pip
       if [ -d "$HOME"/myConfigs ]; then
         check_link "$HOME"/myConfigs/python/pip.conf "$HOME"/.pip/pip.conf
@@ -786,6 +812,10 @@ function install_vim() { # {{{
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
       $SUDO apt install -y silversearcher-ag cscope astyle lua5.3 perl
+    elif [ "$DISTRO" = 'Manjaro' ]; then
+      if ! type nvim >/dev/null 2>&1; then
+        yay -S neovim
+      fi
     elif [ "$DISTRO" = 'CentOS' ]; then
       if ! type nvim >/dev/null 2>&1; then
         set +e
