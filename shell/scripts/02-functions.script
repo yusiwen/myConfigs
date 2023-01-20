@@ -208,7 +208,7 @@ git-fuzzy-diff() {
 		$(echo $(git diff --name-status -R '$@' | grep {}) | cut -d" " -f 2-) \
 		| '$PREVIEW_PAGER
 
-  git diff --submodule --word-diff --name-only $@ |
+  git diff --submodule --word-diff --name-only "$@" |
     fzf ${GIT_FZF_DEFAULT_OPTS[@]} --exit-0 --preview "${PREVIEW_COMMAND}" \
       --preview-window=top:85% --bind "enter:toggle-preview"
 }
