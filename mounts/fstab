@@ -1,8 +1,0 @@
-# fstab for my deskmini-server
-# 2019-07-29
-UUID=6712fe76-8c91-4e11-b45e-a9ada7dff626 / ext4 defaults 0 0
-UUID=C988-10FE /boot/efi vfat defaults 0 0
-UUID=6f276a9f-4ab9-4605-849a-1260c0899948 /mnt/disk1 ext4 defaults 0 0
-UUID=58e08922-5def-47c5-820c-11427652d88c /mnt/disk2 ext4 defaults 0 0
-//192.168.2.100/AirDisk-A /mnt/airdisk cifs username=AirDisk,password=***,vers=1.0,iocharset=utf8 0 0
-/swap.img	none	swap	sw	0	0

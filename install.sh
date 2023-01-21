@@ -158,6 +158,8 @@ function init_env() { # {{{
     fetch_myConfigs
     install_ruby
     install_python
+    install_sdkman
+    install_golang
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
@@ -333,7 +335,7 @@ function install_git() { # {{{
 
       if ! type tig >/dev/null 2>&1; then
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
-        $SUDO apt install tig
+        $SUDO apt install -y tig
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}tig${COLOR} was found.${NC}"
@@ -681,11 +683,7 @@ function install_node() { # {{{
   fi
 
   if [ ! -e "$HOME"/.npmrc ]; then
-    if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-      cp "$HOME"/myConfigs/node.js/npmrc "$HOME"/.npmrc
-    else
-      cp "$HOME"/myConfigs/node.js/npmrc_no_mirrors "$HOME"/.npmrc
-    fi
+    cp "$HOME"/myConfigs/node.js/npmrc "$HOME"/.npmrc
   fi
 
   if ! type npm &>/dev/null; then
@@ -918,148 +916,6 @@ function install_rxvt() { # {{{
   fi
 } # }}}
 
-function install_i3wm() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    if [ -n "$(dpkg -l | grep 'regolith-desktop')" ]; then
-      echo -e "${COLOR1}Regolith${COLOR} is already installed on your system, use it instead of manually installing i3-wm${NC}"
-      return
-    fi
-
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      # Install i3-gaps if not exist
-      if ! type i3 >/dev/null 2>&1; then
-        echo -e "${COLOR}Install ${COLOR1}i3${COLOR}...${NC}"
-        if [ "$DISTRO" = 'Ubuntu' ]; then
-          $SUDO apt install -y lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings i3 ubuntu-drivers-common mesa-utils mesa-utils-extra compton xorg xserver-xorg hsetroot pcmanfm scrot simplescreenrecorder feh bleachbit xautolock fcitx fcitx-googlepinyin fcitx-sunpinyin fcitx-data fcitx-frontend-all fcitx-config-gtk fcitx-config-gtk2 fcitx-ui-classic flameshot policykit-desktop-privileges policykit-1-gnome meld
-        else
-          $SUDO apt install -y i3 mesa-utils mesa-utils-extra compton hsetroot scrot bleachbit xautolock flameshot policykit-1-gnome meld
-        fi
-
-      fi
-
-      # i3-gaps
-      $SUDO apt install -y libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm0 libxcb-xrm-dev libxcb-shape0-dev automake
-      if [ ! -d ~/git/i3-gaps ]; then
-        mkdir -p ~/git
-        if ! type git >/dev/null 2>&1; then
-          install_git
-        fi
-        pushd ~/git
-        git clone https://github.com/Airblader/i3.git i3-gaps
-        cd ~/git/i3-gaps
-        autoreconf --force --install
-        rm -rf build/
-        mkdir -p build && cd build/
-        ../configure --disable-sanitizers
-        make -j4
-        $SUDO make install
-        popd && popd && popd
-      fi
-
-      # Polybar
-      $SUDO apt install -y cmake cmake-data pkg-config libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-randr0-dev libxcb-composite0-dev python-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-xrm-dev libxcb-cursor-dev libjsoncpp-dev libjsoncpp1
-      if [ ! -d ~/git/polybar ]; then
-        mkdir -p ~/git
-        pushd ~/git
-        git clone --recursive https://github.com/jaagr/polybar.git
-        cd polybar
-        mkdir -p build
-        cd build
-        cmake ..
-        $SUDO make install
-        popd && popd && popd
-      fi
-
-      # jgmenu
-      if [ ! -d ~/git/jgmenu ]; then
-        mkdir -p ~/git
-        pushd ~/git
-        git clone https://github.com/johanmalm/jgmenu.git
-        cd jgmenu
-        ./scripts/install-debian-dependencies.sh
-        make -j4
-        $SUDO make prefix=/usr/local install
-        popd && popd
-      fi
-
-      # albert
-      if [ "$DISTRO" = 'Ubuntu' ]; then
-        $SUDO apt install -y qtbase5-dev qtdeclarative5-dev libqt5svg5-dev libqt5x11extras5-dev libqt5charts5-dev libmuparser-dev
-        if [ ! -d ~/git/albert ]; then
-          mkdir -p ~/git
-          pushd ~/git
-          git clone --recursive https://github.com/albertlauncher/albert.git
-          cd albert
-          mkdir -p build
-          cd build
-          cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
-          make -j4
-          $SUDO make install
-          jgmenu init --theme=greeneye
-          popd && popd && popd
-        fi
-      fi
-
-      CONFIG_HOME="$HOME"/myConfigs/i3
-      if [ ! -d "$CONFIG_HOME" ]; then
-        fetch_myConfigs
-      fi
-
-      I3_HOME="$HOME"/.i3
-      [ ! -d "$I3_HOME" ] && mkdir -p "$I3_HOME"
-      ln -sfnv "$CONFIG_HOME"/_config "$I3_HOME"/_config
-      ln -sfnv "$CONFIG_HOME"/i3blocks/i3blocks.conf "$I3_HOME"/i3blocks.conf
-
-      mkdir -p ~/.config/polybar
-      ln -sfnv "$CONFIG_HOME"/polybar.config ~/.config/polybar/config
-      ln -sfnv "$CONFIG_HOME"/compton.conf ~/.config/compton.conf
-
-      DUNST_HOME="$HOME"/.config/dunst
-      [ ! -d "$DUNST_HOME" ] && mkdir -p "$DUNST_HOME"
-      ln -sfnv "$CONFIG_HOME"/dunst/dunstrc "$DUNST_HOME"/dunstrc
-
-      mkdir -p "$HOME"/bin
-      ln -sfnv "$CONFIG_HOME"/i3bang/i3bang.rb "$HOME"/bin/i3bang
-      # link default theme 'jellybeans' to ~/.i3/_config.colors
-      ln -sfnv "$CONFIG_HOME"/colors/_config.jellybeans "$I3_HOME"/config.colors
-
-      # check if 'ruby' is installed or not
-      if ! type ruby >/dev/null 2>&1; then
-        install_ruby
-      fi
-      "$HOME"/myConfigs/i3/i3bang/i3bang.rb
-
-      # check if 'consolekit' is installed or not
-      #echo -e "${COLOR}Checking ${COLOR1}consolekit${COLOR}...${NC}"
-      #set +e
-      #CONSOLEKIT_PCK=$(dpkg -l | grep consolekit | wc -l)
-      #set -e
-      #if [ $CONSOLEKIT_PCK -eq 0 ]; then
-      #  # Install 'consolekit'
-      #  echo -e "${COLOR}Installing ${COLOR1}consolekit${COLOR}...${NC}"
-      #  $SUDO apt install -y consolekit
-      #fi
-
-      # check if 'rofi' is installed or not
-      echo -e "${COLOR}Checking ${COLOR1}rofi${COLOR}...${NC}"
-      if ! type rofi >/dev/null 2>&1; then
-        # Install 'rofi'
-        echo -e "${COLOR}Installing ${COLOR1}rofi${COLOR}...${NC}"
-        if [ "$DISTRO" = 'Ubuntu' ]; then
-          ROFI_PPA=/etc/apt/sources.list.d/jasonpleau-ubuntu-rofi-$CODENAME.list
-          $SUDO add-apt-repository -y ppa:jasonpleau/rofi
-          # Replace official launchpad address with reverse proxy from USTC
-          $SUDO sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$ROFI_PPA"
-          $SUDO apt update
-        fi
-        $SUDO apt install -y rofi
-      fi
-    fi
-  else
-    echo -e "${COLOR}i3wm will only be installed on Linux.${NC}"
-  fi
-} # }}}
-
 function install_docker() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
@@ -1267,7 +1123,7 @@ function install_all() { # {{{
 } # }}}
 
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|i3wm|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
 } # }}}
 
 case $1 in
@@ -1282,7 +1138,6 @@ node) install_node ;;
 zsh) install_zsh ;;
 vim) install_vim ;;
 rxvt) install_rxvt ;;
-i3wm) install_i3wm ;;
 llvm) install_llvm ;;
 docker) install_docker ;;
 mysql) install_mysql ;;
