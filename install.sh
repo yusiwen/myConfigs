@@ -108,7 +108,7 @@ function check_link() { # {{{
 function init_env() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+      if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
         echo -e "${COLOR}Setting Ubuntu apt source to aliyun...${NC}"
         $SUDO cp /etc/apt/sources.list /etc/apt/sources.list.backup
         if [ "$OS_ARCH" = 'aarch64' ]; then
@@ -126,9 +126,9 @@ function init_env() { # {{{
       $SUDO apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core \
                            iotop net-tools iftop nethogs nload sysstat apt-transport-https jq \
                            tmux byobu htop atop software-properties-common \
-                           build-essential ethtool cifs-utils
+                           build-essential ethtool cifs-utils libfuse2
       # Check if ubuntu version is newer than 20.04
-      if [ ! -z $(echo | awk "(${OS_VERSION} >= 20.04) { print \"ok\"; }") ]; then
+      if [ -n "$(echo ${OS_VERSION} | awk '$1 >= 20.04 { print "ok"; }')" ]; then
         $SUDO apt install -y bat
       else
         echo -e "${COLOR}Installing batcat from DEB pacakge...${NC}"
@@ -154,6 +154,10 @@ function init_env() { # {{{
       fi
     fi
     install_rust
+    install_git
+    fetch_myConfigs
+    install_ruby
+    install_python
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
@@ -654,7 +658,7 @@ function install_node() { # {{{
     fetch_myConfigs
   fi
 
-  if [ -z $NVM_DIR ]; then
+  if [ -z "$NVM_DIR" ]; then
     NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 
     if [ ! -s "$NVM_DIR/nvm.sh" ]; then
