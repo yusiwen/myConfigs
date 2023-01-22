@@ -1086,7 +1086,8 @@ function init_byobu() { # {{{
     if [ -e $HOME/.config/byobu/profile.tmux ]; then
       cat << EOF | tee -a $HOME/.config/byobu/profile.tmux
 # Enable mouse support including scrolling
-set -g mouse on
+set -sg mouse on
+set -sg escape-time 50
 EOF
     fi
   fi
