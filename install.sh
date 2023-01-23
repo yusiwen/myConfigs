@@ -216,92 +216,6 @@ function install_universal_ctags() { # {{{
   fi
 } # }}}
 
-# GFW
-function install_gfw() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ]; then
-      if ! type tsocks >/dev/null 2>&1; then
-        echo -e "${COLOR}Installing tsocks...${NC}"
-        $SUDO apt install -y tsocks
-      fi
-
-      # Install the latest shadowsocks version to support chahca20-ietf-poly1305 algorithm
-      echo -e "${COLOR}Checking shadowsocks command line tools...${NC}"
-      if ! type ss-local >/dev/null 2>&1; then
-        echo -e "${COLOR}Installing shadowsocks-libev...${NC}"
-        $SUDO apt install -y shadowsocks-libev
-        # Stop and disable shadowsocks-libev server service, we only need ss-local client
-        $SUDO systemctl stop shadowsocks-libev
-        $SUDO systemctl disable shadowsocks-libev
-      fi
-
-      if ! type v2ray-plugin >/dev/null 2>&1; then
-        # Download latest v2ray-plugin binary, reference from cbeuw/shadowsocks-gq-release.sh(https://gist.github.com/cbeuw/2c641917e94a6962693f138e287f1e10)
-        url=$(wget -O - -o /dev/null https://api.github.com/repos/shadowsocks/v2ray-plugin/releases/latest | grep "/v2ray-plugin-linux-amd64-" | grep -P 'https(.*)[^"]' -o)
-        echo -e "${COLOR}Download v2ray-plugin from $url ...${NC}"
-        wget -O /tmp/v2ray-plugin.tar.gz "$url"
-        echo -e "${COLOR}Extract and install v2ray-plugin to '/usr/local/bin'...${NC}"
-        tar xvzf /tmp/v2ray-plugin.tar.gz -C /tmp
-        $SUDO mv /tmp/v2ray-plugin_linux_amd64 /usr/local/bin/v2ray-plugin
-        $SUDO chown root:root /usr/local/bin/v2ray-plugin
-        $SUDO chmod +x /usr/local/bin/v2ray-plugin
-        rm /tmp/v2ray-plugin.tar.gz
-      fi
-
-      echo -e "${COLOR}Please copy sample config file to ${COLOR1}'/etc/shadowsocks-libev/config.json'${COLOR} and edit server and password with real ones...${NC}"
-
-      if ! type privoxy >/dev/null 2>&1; then
-        if ! type pip >/dev/null 2>&1; then
-          install_python
-        fi
-
-        echo -e "${COLOR}Installing privoxy proxy...${NC}"
-        $SUDO apt install -y privoxy
-        pip install --user gfwlist2privox
-        wget -O /tmp/gfwlist.txt https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
-        "$HOME"/.local/bin/gfwlist2privoxy -i /tmp/gfwlist.txt -p 127.0.0.1:1098 -t socks5
-        $SUDO mv gfwlist.action /etc/privoxy/
-      else
-        echo -e "${COLOR1}privoxy${COLOR} was found.${NC}"
-      fi
-
-      if ! type trojan >/dev/null 2>&1; then
-        echo -e "${COLOR}Installing trojan...${NC}"
-        $SUDO add-apt-repository ppa:greaterfire/trojan
-        $SUDO apt-get update
-        $SUDO apt-get install trojan
-      fi
-
-      if [ -d "$HOME"/myConfigs ]; then
-        ln -sfnv "$HOME"/myConfigs/gfw/tsocks.conf "$HOME"/.tsocks.conf
-        $SUDO cp "$HOME"/myConfigs/gfw/privoxy.conf /etc/privoxy/config
-        $SUDO systemctl restart privoxy
-        $SUDO systemctl enable privoxy
-
-        $SUDO cp "$HOME"/myConfigs/gfw/ss-local.config.json /etc/shadowsocks-libev/config.json
-        $SUDO cp "$HOME"/myConfigs/gfw/sslocal.service /etc/systemd/system/sslocal.service
-        $SUDO systemctl restart sslocal
-        $SUDO systemctl enable sslocal
-      else
-        echo -e "${COLOR1}myConfigs${COLOR} was not found, please install git and fetch it from repo, then run 'install.sh gfw' again to link some configuration files.${NC}"
-      fi
-
-      echo -e "${COLOR}GFW initialized.${NC}"
-    elif [ "$DISTRO" = 'CentOS' ]; then
-      $SUDO curl -L "https://copr.fedorainfracloud.org/coprs/librehat/shadowsocks/repo/epel-7/librehat-shadowsocks-epel-7.repo" --output /etc/yum.repos.d/libredhat-shadowsocks-epel-7.repo
-      if [ -z $(yum list installed | grep epel-release.noarch) ]; then
-        $SUDO yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-      fi
-
-      $SUDO yum install -y shadowsocks-libev
-
-      echo -e "${COLOR}Please copy sample config file to ${COLOR1}'/etc/shadowsocks-libev/config.json'${COLOR} and edit server and password with real ones...${NC}"
-      echo -e "${COLOR}And copy ${COLOR1}v2ray-plugin${COLOR} to '/usr/bin'${NC}"
-      echo -e "${COLOR}Then start service with '$SUDO systemctl enable --now shadowsocks-libev-local.service'${NC}"
-    fi
-  fi
-} # }}}
-
 # Git
 function install_git() { # {{{
   if [ "$OS" = 'Linux' ]; then
@@ -980,7 +894,7 @@ function install_containerd() { # {{{
         else
           $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/$distro $(lsb_release -cs) stable"
         fi
-        echo -e "${COLOR}Installing docker-ce...${NC}"
+        echo -e "${COLOR}Installing containerd...${NC}"
         $SUDO apt-get -y update
         $SUDO apt-get -y install containerd.io
       else
@@ -991,6 +905,27 @@ function install_containerd() { # {{{
         $SUDO containerd default > /etc/containerd/config.toml
       fi
     fi
+
+    # Install CNI plugins
+    if [ ! -d /opt/cni/bin ]; then
+      local CNI_VERSION
+      CNI_VERSION="v1.2.0"
+      $SUDO mkdir -p /opt/cni/bin
+      $SUDO mkdir -p /etc/cni/net.d
+      wget "https://github.com/containernetworking/plugins/releases/download/$CNI_VERSION/cni-plugins-linux-amd64-$CNI_VERSION.tgz" -O /tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz
+      tar -zxvf "/tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz" -C /opt/cni/bin/
+    fi
+
+    # Install CNI tools
+    if ! type cnitool >/dev/null 2>&1; then
+      if ! type go >/dev/null 2>&1; then
+        install_golang
+        export GOROOT="$HOME"/.local/go
+        export GOPATH=$HOME/.gopackages
+      fi
+      go install github.com/containernetworking/cni/cnitool@latest
+    fi
+
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
   fi
@@ -1137,12 +1072,11 @@ function init_ansible() { # {{{
 } # }}}
 
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [init|gfw|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
 } # }}}
 
 case $1 in
 init) init_env ;;
-gfw) install_gfw ;;
 git) install_git ;;
 ruby) install_ruby ;;
 myConfigs) fetch_myConfigs ;;
