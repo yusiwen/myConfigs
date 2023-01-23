@@ -914,6 +914,7 @@ function install_containerd() { # {{{
       $SUDO mkdir -p /etc/cni/net.d
       wget "https://github.com/containernetworking/plugins/releases/download/$CNI_VERSION/cni-plugins-linux-amd64-$CNI_VERSION.tgz" -O /tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz
       $SUDO tar -zxvf "/tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz" -C /opt/cni/bin/
+      rm -f "/tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz"
     fi
 
     # Install CNI tools
@@ -925,6 +926,13 @@ function install_containerd() { # {{{
       fi
       go install github.com/containernetworking/cni/cnitool@latest
     fi
+
+    # Install nerdctl
+    if ! type nerdctl >/dev/null 2>&1; then
+      wget "https://github.com/containerd/nerdctl/releases/download/v1.1.0/nerdctl-1.1.0-linux-amd64.tar.gz" -O /tmp/nerdctl.tar.gz
+      $SUDO tar xvzf /tmp/nerdctl.tar.gz /usr/local/bin
+      rm /tmp/nerdctl.tar.gz
+    fi 
 
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
