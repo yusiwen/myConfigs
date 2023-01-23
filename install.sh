@@ -913,7 +913,7 @@ function install_containerd() { # {{{
       $SUDO mkdir -p /opt/cni/bin
       $SUDO mkdir -p /etc/cni/net.d
       wget "https://github.com/containernetworking/plugins/releases/download/$CNI_VERSION/cni-plugins-linux-amd64-$CNI_VERSION.tgz" -O /tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz
-      tar -zxvf "/tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz" -C /opt/cni/bin/
+      $SUDO tar -zxvf "/tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz" -C /opt/cni/bin/
     fi
 
     # Install CNI tools
