@@ -212,6 +212,12 @@ if command -v python3 &>/dev/null; then
 fi
 #}}}
 
+# {{{ Containerd CNI Plugins
+if [ -d /opt/cni/bin ]; then
+  export CNI_PATH=/opt/cni/bin
+fi
+# }}}
+
 #{{{ Montiors
 # Set $DISPLAY on WSL, needed by VcXsrv
 if [ ! -z "$(uname -a | grep 'microsoft')" ]; then
