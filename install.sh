@@ -961,6 +961,42 @@ function install_docker() { # {{{
   fi
 } # }}}
 
+function install_containerd() { # {{{
+  if [ "$OS" = 'Linux' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
+      local distro
+      distro=$(echo "$DISTRO" | tr '[:upper:]' '[:lower:]')
+      echo -e "${COLOR}$DISTRO is found, checking ${COLOR1}containerd${COLOR}...${NC}"
+      if ! type containerd >/dev/null 2>&1; then
+        echo -e "${COLOR1}containerd${COLOR} is not found, installing...${NC}"
+        echo -e "${COLOR}Installing prerequisite packages...${NC}"
+        $SUDO apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+        echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
+        curl -fsSL "http://mirrors.aliyun.com/docker-ce/linux/$distro/gpg" | gpg --dearmor > aliyun-docker-ce.gpg
+        sudo install -D -o root -m 644 aliyun-docker-ce.gpg /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg
+        rm -f aliyun-docker-ce.gpg
+        if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
+          $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/$distro $(lsb_release -cs) stable"
+        else
+          $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/$distro $(lsb_release -cs) stable"
+        fi
+        echo -e "${COLOR}Installing docker-ce...${NC}"
+        $SUDO apt-get -y update
+        $SUDO apt-get -y install containerd.io
+      else
+        echo -e "${COLOR1}$(containerd -v)${COLOR} is found...${NC}"
+      fi
+
+      if [ ! -e /etc/containerd/config.toml ]; then
+        $SUDO containerd default > /etc/containerd/config.toml
+      fi
+    fi
+  else
+    echo -e "${COLOR}Unsupported on this OS.${NC}"
+  fi
+}
+# }}}
+
 function install_llvm() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
@@ -1100,36 +1136,11 @@ function init_ansible() { # {{{
   pip3 install ansible
 } # }}}
 
-function install_all() { # {{{
-  init_env
-  install_python
-  install_gfw
-  read -r -p "Continue? [y|N]${NC}" CONFIRM
-  case $CONFIRM in
-  [Yy]*) ;;
-  *) exit ;;
-  esac
-  install_git
-  read -r -p "Continue? [y|N]${NC}" CONFIRM
-  case $CONFIRM in
-  [Yy]*) ;;
-  *) exit ;;
-  esac
-  fetch_myConfigs
-  install_ruby
-  install_node
-  install_zsh
-  install_vim
-  install_rxvt
-  install_i3wm
-} # }}}
-
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [all|init|gfw|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [init|gfw|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
 } # }}}
 
 case $1 in
-all) install_all ;;
 init) init_env ;;
 gfw) install_gfw ;;
 git) install_git ;;
@@ -1142,6 +1153,7 @@ vim) install_vim ;;
 rxvt) install_rxvt ;;
 llvm) install_llvm ;;
 docker) install_docker ;;
+containerd) install_containerd ;;
 mysql) install_mysql ;;
 samba) install_samba ;;
 ctags) install_universal_ctags ;;
