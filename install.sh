@@ -875,35 +875,12 @@ function install_docker() { # {{{
   fi
 } # }}}
 
-function install_containerd() { # {{{
+function install_containerd-rootless() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      local distro
-      distro=$(echo "$DISTRO" | tr '[:upper:]' '[:lower:]')
-      echo -e "${COLOR}$DISTRO is found, checking ${COLOR1}containerd${COLOR}...${NC}"
-      if ! type containerd >/dev/null 2>&1; then
-        echo -e "${COLOR1}containerd${COLOR} is not found, installing...${NC}"
-        echo -e "${COLOR}Installing prerequisite packages...${NC}"
-        $SUDO apt-get -y install apt-transport-https ca-certificates curl software-properties-common
-        echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
-        curl -fsSL "http://mirrors.aliyun.com/docker-ce/linux/$distro/gpg" | gpg --dearmor > aliyun-docker-ce.gpg
-        sudo install -D -o root -m 644 aliyun-docker-ce.gpg /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg
-        rm -f aliyun-docker-ce.gpg
-        if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-          $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/$distro $(lsb_release -cs) stable"
-        else
-          $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/$distro $(lsb_release -cs) stable"
-        fi
-        echo -e "${COLOR}Installing containerd...${NC}"
-        $SUDO apt-get -y update
-        $SUDO apt-get -y install containerd.io
-      else
-        echo -e "${COLOR1}$(containerd -v)${COLOR} is found...${NC}"
-      fi
-
-      if [ ! -e /etc/containerd/config.toml ]; then
-        $SUDO containerd default > /etc/containerd/config.toml
-      fi
+    if ! type containerd >/dev/null 2>&1; then
+      wget "https://github.com/containerd/containerd/releases/download/v1.6.15/cri-containerd-1.6.15-linux-amd64.tar.gz" -O /tmp/cri-containerd.tar.gz
+      $SUDO tar xvzf /tmp/cri-containerd.tar.gz -C /
+      containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
     fi
 
     # Install CNI plugins
@@ -929,11 +906,40 @@ function install_containerd() { # {{{
 
     # Install nerdctl
     if ! type nerdctl >/dev/null 2>&1; then
+      # TODO: check $ARCH
       wget "https://github.com/containerd/nerdctl/releases/download/v1.1.0/nerdctl-1.1.0-linux-amd64.tar.gz" -O /tmp/nerdctl.tar.gz
       $SUDO tar xvzf /tmp/nerdctl.tar.gz /usr/local/bin
       rm /tmp/nerdctl.tar.gz
-    fi 
+    fi
 
+    # {{{ Rootless containers
+    if ! type newuidmap >/dev/null 2>&1; then
+      # TODO: check $DISTRO
+      $SUDO apt install uidmap
+    fi
+
+    if ! type slirp4netns >/dev/null 2>&1; then
+      # TODO: check $DISTRO
+      $SUDO apt install slirp4netns
+    fi
+
+    if ! type rootlesskit >/dev/null 2>&1; then
+      # TODO: check $ARCH
+      wget "https://github.com/rootless-containers/rootlesskit/releases/download/v1.1.0/rootlesskit-x86_64.tar.gz" -O /tmp/rootlesskit.tar.gz
+      $SUDO tar xvzf /tmp/rootlesskit.tar.gz -C /usr/local/bin
+    fi
+
+    if ! type containerd-rootless.sh >/dev/null 2>&1; then
+      $SUDO wget "https://raw.githubusercontent.com/containerd/nerdctl/main/extras/rootless/containerd-rootless.sh" -O /usr/local/bin/containerd-rootless.sh
+      $SUDO chmod +x /usr/local/bin/containerd-rootless.sh
+    fi
+
+    if ! type containerd-rootless-setuptool.sh >/dev/null 2>&1; then
+      $SUDO wget "https://raw.githubusercontent.com/containerd/nerdctl/main/extras/rootless/containerd-rootless-setuptool.sh" -O /usr/local/bin/containerd-rootless-setuptool.sh
+      $SUDO chmod +x /usr/local/bin/containerd-rootless-setuptool.sh
+    fi
+    # }}}
+    /usr/local/bin/containerd-rootless-setuptool.sh install
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
   fi
@@ -1081,7 +1087,7 @@ function init_ansible() { # {{{
 } # }}}
 
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd-rootless|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
 } # }}}
 
 case $1 in
@@ -1096,7 +1102,7 @@ vim) install_vim ;;
 rxvt) install_rxvt ;;
 llvm) install_llvm ;;
 docker) install_docker ;;
-containerd) install_containerd ;;
+containerd-rootless) install_containerd-rootless ;;
 mysql) install_mysql ;;
 samba) install_samba ;;
 ctags) install_universal_ctags ;;
