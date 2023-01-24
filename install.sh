@@ -1016,10 +1016,34 @@ function install_samba() { # {{{
 
 function install_rust() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    source "$HOME/.cargo/env"
-    cargo install exa git-delta ripgrep
+    if ! type rustc >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+      source "$HOME/.cargo/env"
+    else
+      echo -e "${COLOR}${COLOR1}$(rustc --version)${COLOR} is found.${NC}"
+    fi
+
+    if ! type exa >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}exa${COLOR}...${NC}"
+      cargo install exa
+    else
+      echo -e "${COLOR}${COLOR1}exa${COLOR} is found.${NC}"
+    fi
+
+    if ! type delta >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}git-delta${COLOR}...${NC}"
+      cargo install git-delta
+    else
+      echo -e "${COLOR}${COLOR1}git-delta${COLOR} is found.${NC}"
+    fi
+
+    if ! type rg >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}ripgrep${COLOR}...${NC}"
+      cargo install ripgrep
+    else
+      echo -e "${COLOR}${COLOR1}ripgrep${COLOR} is found.${NC}"
+    fi
   fi
 } # }}}
 
