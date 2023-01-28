@@ -845,17 +845,25 @@ function install_docker() { # {{{
         echo -e "${COLOR1}docker${COLOR} is not found, installing...${NC}"
         echo -e "${COLOR}Installing prerequisite packages...${NC}"
         $SUDO apt-get -y install apt-transport-https ca-certificates curl software-properties-common
-        echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
-        curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | gpg --dearmor > aliyun-docker-ce.gpg
-        sudo install -D -o root -m 644 aliyun-docker-ce.gpg /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg
-        rm -f aliyun-docker-ce.gpg
-        if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-          $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-        else
-          $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+        
+        if [ ! -e /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg ]; then
+          echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce public key...${NC}"
+          curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | gpg --dearmor > aliyun-docker-ce.gpg
+          sudo install -D -o root -m 644 aliyun-docker-ce.gpg /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg
+          rm -f aliyun-docker-ce.gpg
         fi
+
+        if ! grep -q "aliyun.com/docker-ce" /etc/apt/sources.list.d/*.list; then
+          echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
+          if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
+            $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release   -cs) stable"
+          else
+            $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release   -cs) stable"
+          fi
+          $SUDO apt-get -y update
+        fi
+        
         echo -e "${COLOR}Installing docker-ce...${NC}"
-        $SUDO apt-get -y update
         $SUDO apt-get -y install docker-ce
 
         echo -e "${COLOR}Add user ${COLOR1}${USER}${COLOR} to group 'docker'...${NC}"
