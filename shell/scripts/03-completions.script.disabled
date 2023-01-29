@@ -1,6 +1,6 @@
 ### zstyle :completion:<function>:<completer>:<command>:<argument>:<tag> _settings_
 
-#{{{ general settings
+# {{{ general settings
 # show completion menu when number of options is at least 2
 zstyle ':completion:*'                  menu select=2
 
@@ -11,7 +11,7 @@ zstyle ':completion:*:warnings'         format 'No matches for: %d'
 zstyle ':completion:*'                  group-name ''
 #}}}
 
-#{{{ cd
+# {{{ cd
 zstyle ':completion:*:(cd):*'           group-order 'named-directories'
 zstyle ':completion:*:(cd):*'           ignore-parents parent pwd
 zstyle ':completion:*:*:(cd):*'         completer _history
@@ -21,7 +21,7 @@ zstyle ':completion:*:cd:*'             ignored-patterns '(*/)#lost+found'
 #zstyle ':completion:*:*:(cd):*'        file-sort access
 #}}}
 
-#{{{ vim
+# {{{ vim
 zstyle ':completion:*:*:(vim|rview|vimdiff|xxd):*' file-sort name
 zstyle ':completion:*:*:(vim|rview|vimdiff|xxd):*' tag-order files
 zstyle ':completion:*:*:(vim|rview|vimdiff|xxd):*:*files' \
@@ -30,7 +30,7 @@ zstyle ':completion:*:*:(vim|rview|vimdiff|xxd):*:*files' \
 #zstyle ':completion:*:vim:*:directories'           ignored-patterns \*
 #}}}
 
-#{{{ compdef
+# {{{ compdef
 fpath=(~/myConfigs/shell/completion $fpath)
 autoload -U age compinit relative
 compinit -u
