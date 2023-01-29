@@ -583,7 +583,7 @@ function install_node() { # {{{
     fetch_myConfigs
   fi
 
-  if [ "$OS" = 'WindowsNT' ]; then
+  if [ "$OS" = 'Windows_NT' ]; then
     echo -e "${COLOR}Pleasae installing ${COLOR1}nvm-windows${COLOR} manually${NC}"
   else
     if [ -z "$N_PREFIX" ]; then
