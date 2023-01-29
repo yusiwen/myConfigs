@@ -116,6 +116,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+if [ -n "$WINDIR" ]; then
+  echo "Initializing ZSH..."
+  zsh
+fi
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/yusiwen/.sdkman"
 [[ -s "/home/yusiwen/.sdkman/bin/sdkman-init.sh" ]] && source "/home/yusiwen/.sdkman/bin/sdkman-init.sh"
