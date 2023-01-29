@@ -165,6 +165,8 @@ function init_env() { # {{{
     fetch_myConfigs
     install_ruby
     install_python
+    # Install gittyleaks after python is initialized 
+    pip3 install gittyleaks
     install_sdkman
     install_golang
   elif [ "$OS" = 'Darwin' ]; then
@@ -586,7 +588,7 @@ function install_node() { # {{{
     export N_PREFIX="$HOME/.n"
     curl -sL "https://bit.ly/n-install" | bash -s -- -n -y lts
     export PATH="$PATH:$N_PREFIX/bin"
-      else
+  else
     echo -e "${COLOR}Found ${COLOR1}tj/n${COLOR} in ${COLOR1}\"$N_PREFIX\"${COLOR}...skip${NC}"
   fi
 
