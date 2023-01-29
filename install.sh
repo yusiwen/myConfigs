@@ -589,7 +589,7 @@ function install_node() { # {{{
     if [ -z "$N_PREFIX" ]; then
       echo -e "${COLOR}Installing ${COLOR1}tj/n ${COLOR}...${NC}"
       export N_PREFIX="$HOME/.n"
-      curl -sL "https://bit.ly/n-install" | bash -s -- -n -y lts
+      curl -L "https://bit.ly/n-install" | bash -s -- -n -y lts
       export PATH="$PATH:$N_PREFIX/bin"
     else
       echo -e "${COLOR}Found ${COLOR1}tj/n${COLOR} in ${COLOR1}\"$N_PREFIX\"${COLOR}...skip${NC}"
