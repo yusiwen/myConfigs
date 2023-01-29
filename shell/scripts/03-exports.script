@@ -1,4 +1,4 @@
-#{{{ Distribution Information
+# {{{ Distribution Information
 # Determine OS platform
 if [ -n "$WINDIR" ]; then
   OS='Windows_NT'
@@ -32,7 +32,7 @@ if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
 fi
 # }}}
 
-#{{{ NeoVim
+# {{{ NeoVim
 export XDG_CONFIG_HOME=$HOME/.config
 mkdir -p "$XDG_CONFIG_HOME"
 export XDG_CACHE_HOME=$HOME/.cache
@@ -41,7 +41,7 @@ export XDG_DATA_HOME=$HOME/.local/share
 mkdir -p "$XDG_DATA_HOME"
 #}}}
 
-#{{{ Oracle instant client
+# {{{ Oracle instant client
 if [ -z "$ORACLE_HOME" ] || [ ! -d "$ORACLE_HOME" ]; then
   CLIENT_INSTALLATION_PATH="/opt/oracle"
   if [ -d "$CLIENT_INSTALLATION_PATH" ]; then
@@ -73,7 +73,7 @@ if [ -z "$ORACLE_HOME" ] || [ ! -d "$ORACLE_HOME" ]; then
 fi
 #}}}
 
-#{{{ MySQL Connector
+# {{{ MySQL Connector
 MYSQL_CONNECTOR_INST_PATH="/opt/mysql"
 if [ -d "$MYSQL_CONNECTOR_INST_PATH" ]; then
   MYSQL_CONNECTOR=$(/bin/ls -dr $MYSQL_CONNECTOR_INST_PATH/mysql-connector*/ 2>/dev/null | head -1)
@@ -93,7 +93,7 @@ if [ -d "$MYSQL_CONNECTOR_INST_PATH" ]; then
 fi
 #}}}
 
-#{{{ Java
+# {{{ Java
 if [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
   if [ "$OS" = 'Darwin' ]; then
     # MacOS
@@ -157,7 +157,7 @@ if [ -z "$CONFLUENT_HOME" ] || [ ! -d "$CONFLUENT_HOME" ]; then
 fi
 #}}}
 
-#{{{ Ruby
+# {{{ Ruby
 if command -v ruby &>/dev/null && command -v gem &>/dev/null; then
   GEM_HOME=$(ruby -e 'puts Gem.user_dir')
   export GEM_HOME
@@ -167,7 +167,7 @@ if command -v ruby &>/dev/null && command -v gem &>/dev/null; then
 fi
 #}}}
 
-#{{{ GoLang
+# {{{ GoLang
 if [ -e /usr/local/go/bin/go ] || [ -e "$HOME"/.local/go/bin/go ]; then
   if [ "$OS" = 'Darwin' ]; then
     export GOROOT=$(brew --prefix golang)/libexec
@@ -187,20 +187,29 @@ if [ -e /usr/local/go/bin/go ] || [ -e "$HOME"/.local/go/bin/go ]; then
 fi
 #}}}
 
-#{{{ Ansible
+# {{{ Node.js with th/n
+if [ -d "$HOME"/.n ]; then
+  N_PREFIX="$HOME/.n"
+  export N_PREFIX
+  PATH="$PATH:$N_PREFIX/bin"
+  export PATH
+fi
+# }}}
+
+# {{{ Ansible
 if command -v ansible &>/dev/null; then
   ANSIBLE_INVENTORY=$HOME/git/myAnsible/etc/ansible/hosts
   export ANSIBLE_INVENTORY
 fi
 #}}}
 
-#{{{ Rust
+# {{{ Rust
 if [ -e "$HOME/.cargo/env" ]; then
   source "$HOME/.cargo/env"
 fi
 #}}}
 
-#{{{ Python
+# {{{ Python
 export WORKON_HOME=$HOME/venv
 if command -v python2 &>/dev/null; then
   PYTHON_HOST_PROG=$(which python2)
@@ -218,7 +227,7 @@ if [ -d /opt/cni/bin ]; then
 fi
 # }}}
 
-#{{{ Montiors
+# {{{ Montiors
 # Set $DISPLAY on WSL, needed by VcXsrv
 if [ ! -z "$(uname -a | grep 'microsoft')" ]; then
   export DISPLAY="`sed -n 's/nameserver //p' /etc/resolv.conf`:0"
@@ -239,7 +248,7 @@ if [ ! -z "$DISPLAY" ]; then
 fi
 #}}}
 
-#{{{ Misc
+# {{{ Misc
 # set TERM to 'screen-256color' in tmux
 # if [ -z "$TMUX" ]; then
 #   TERM=xterm-256color

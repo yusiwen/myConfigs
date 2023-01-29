@@ -1,5 +1,7 @@
 #!/bin/bash
 
+zmodload zsh/zprof
+
 # ███████╗███████╗██╗  ██╗██████╗  ██████╗
 # ╚══███╔╝██╔════╝██║  ██║██╔══██╗██╔════╝
 #   ███╔╝ ███████╗███████║██████╔╝██║
@@ -63,7 +65,7 @@ plugins=(z zsh-autosuggestions zsh-syntax-highlighting fzf-zsh-plugin)
 plugins+=(docker docker-compose kubectl minikube helm ansible)
 plugins+=(git git-flow svn)
 plugins+=(golang pip virtualenv ruby rvm gem mvn)
-plugins+=(node npm zsh-nvm yarn)
+plugins+=(node npm yarn)
 plugins+=(colored-man-pages colorize)
 if [ "$(uname)" = 'Darwin' ]; then
   plugins+=(brew)
