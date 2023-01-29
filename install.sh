@@ -583,13 +583,17 @@ function install_node() { # {{{
     fetch_myConfigs
   fi
 
-  if [ -z "$N_PREFIX" ]; then
-    echo -e "${COLOR}Installing ${COLOR1}tj/n ${COLOR}...${NC}"
-    export N_PREFIX="$HOME/.n"
-    curl -sL "https://bit.ly/n-install" | bash -s -- -n -y lts
-    export PATH="$PATH:$N_PREFIX/bin"
+  if [ "$OS" = 'WindowsNT' ]; then
+    echo -e "${COLOR}Pleasae installing ${COLOR1}nvm-windows${COLOR} manually${NC}"
   else
-    echo -e "${COLOR}Found ${COLOR1}tj/n${COLOR} in ${COLOR1}\"$N_PREFIX\"${COLOR}...skip${NC}"
+    if [ -z "$N_PREFIX" ]; then
+      echo -e "${COLOR}Installing ${COLOR1}tj/n ${COLOR}...${NC}"
+      export N_PREFIX="$HOME/.n"
+      curl -sL "https://bit.ly/n-install" | bash -s -- -n -y lts
+      export PATH="$PATH:$N_PREFIX/bin"
+    else
+      echo -e "${COLOR}Found ${COLOR1}tj/n${COLOR} in ${COLOR1}\"$N_PREFIX\"${COLOR}...skip${NC}"
+    fi
   fi
 
   if [ ! -e "$HOME"/.npmrc ]; then
@@ -672,14 +676,6 @@ function install_zsh() { # {{{
     echo -e "${COLOR}Installing ${COLOR1}zsh-syntax-highlighting${COLOR}...OK${NC}"
   else
     echo -e "${COLOR}Found ${COLOR1}zsh-syntax-highlighting${COLOR}...skip${NC}"
-  fi
-
-  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-nvm ]; then
-    echo -e "${COLOR}Installing ${COLOR1}zsh-nvm${COLOR}...${NC}"
-    git clone https://github.com/lukechilds/zsh-nvm $HOME/.oh-my-zsh/custom/plugins/zsh-nvm
-    echo -e "${COLOR}Installing ${COLOR1}zsh-nvm${COLOR}...OK${NC}"
-  else
-    echo -e "${COLOR}Found ${COLOR1}zsh-nvm${COLOR}...skip${NC}"
   fi
 
   if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/fzf-zsh-plugin ]; then
