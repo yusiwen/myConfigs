@@ -320,7 +320,7 @@ function install_git() { # {{{
   echo -e "${COLOR}Setting misc...${NC}"
   git config --global core.editor vim
   if [ "$OS" = 'Windows_NT' ]; then
-    if [ ! -z "$APP_HOME" ]; then
+    if [ -n "$APP_HOME" ]; then
       git config --global core.editor "$APP_HOME/GitExtensions/GitExtensions.exe fileeditor"
     fi
   fi
@@ -330,6 +330,23 @@ function install_git() { # {{{
   git config --global merge.conflictstyle diff3
   git config --global mergetool.prompt false
   git config --global diff.colorMoved zebra
+
+  # Global ignore files
+  cat << EOF | tee "$HOME"/.gitignore > /dev/null
+# Global ignore config for Git
+#   git config --global core.excludesfile $HOME/.gitignore
+#
+# Siwen Yu (yusiwen@gmail.com)
+
+# Ignore all ctags files
+target/
+.project
+.classpath
+.factorypath
+.settings/
+.idea/
+EOF
+  git config --global core.excludesfile "$HOME"/.gitignore
 
   if type delta >/dev/null 2>&1; then
     git config --global core.pager "delta --line-numbers"
