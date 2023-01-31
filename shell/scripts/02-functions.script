@@ -1,4 +1,6 @@
-whichv() {
+#!/usr/bin/env zsh
+
+whichv() { # {{{
   printf '\e[?7t'
 
   TYPE="$(builtin type "$@")"
@@ -17,12 +19,12 @@ whichv() {
   fi
 
   printf '\e[?7t'
-}
+} # }}}
 
 du1() { du -h --max-depth=1 "$@" | sort -k 1,1hr -k 2,2f; }
 
 # Purge all rc packages
-purgerc() {
+purgerc() { # {{{
   RC=$(dpkg -l | grep "^rc" | cut -d ' ' -f 3)
   if [ -z "$RC" ]; then
     echo "No 'rc' status package was found."
@@ -39,10 +41,10 @@ purgerc() {
     return 1
     ;;
   esac
-}
+} # }}}
 
 # Extract some pages from a PDF file.
-pdfpextr() {
+pdfpextr() { # {{{
   # this function uses 3 arguments:
   #   $1 is the first page of the range to extract
   #   $2 is the last page of the range to extract
@@ -58,11 +60,11 @@ pdfpextr() {
     -dLastPage="${2}" \
     -sOutputFile="${3%.pdf}_p${1}-p${2}.pdf" \
     "${3}"
-}
+} # }}}
 
 # Fix pdf embedded fonts problem
 #   see: http://stackoverflow.com/a/10282269/3387137
-pdffixfont() {
+pdffixfont() { # {{{
   # this function uses 2 arguments:
   #   $1 is the original file with embedded fonts problem
   #   $2 is the output file
@@ -74,11 +76,11 @@ pdffixfont() {
     -dPDFSETTINGS=/prepress \
     -sDEVICE=pdfwrite \
     "${1}"
-}
+} # }}}
 
 # Split media file by cue
 #   see: http://en.linuxreviews.org/HOWTO_splitt_lossless_audio_files_(ape,_flac,_wv,_wav)_using_.cue_files
-splitbycue() {
+splitbycue() { # {{{
   # this function uses 3 arguments:
   #   $1 is the cue file
   #   $2 is the media file, can be .ape/.flac/.wav
@@ -89,26 +91,26 @@ splitbycue() {
   fi
 
   cuebreakpoints "${1}" | shnsplit -o "${3}" "${2}"
-}
+} # }}}
 
 # Convert all FLAC files in current directory to ALAC
 #   see: https://gist.github.com/vol4ok/2587886
-flac2alac() {
+flac2alac() { # {{{
   for f in *.flac; do
     ffmpeg -i "./$f" -acodec alac "./${f%.flac}.m4a"
   done
-}
+} # }}}
 
 # Add folder to $PATH if it doesn't exist in it
 #   see: http://superuser.com/questions/39751/add-directory-to-path-if-its-not-already-there
-addpath() {
+addpath() { # {{{
   if [ -d "${1}" ] && [[ ":$PATH:" != *":${1}:"* ]]; then
     PATH="${PATH:+"$PATH:"}$1"
   fi
-}
+} # }}}
 
 # Find largest directories or files in current folder
-maxs() {
+maxs() { # {{{
   numbers=10
   type='d'
   re='^[0-9]+$'
@@ -144,19 +146,19 @@ maxs() {
   fi
 
   find . -type "$type" -print0 | xargs -0 du | sort -n | tail -"$numbers" | cut -f2 | xargs -I{} du -sh {}
-}
+} # }}}
 
 # Check if running in WSL
-is_running_in_wsl() {
+is_running_in_wsl() { # {{{
   if [ $(uname -r | sed -n 's/.*\( *Microsoft *\).*/\1/ip') ]; then
     echo "1"
   else
     echo "0"
   fi
-}
+} # }}}
 
 # https://polothy.github.io/post/2019-08-19-fzf-git-checkout/
-fzf-git-branch() {
+fzf-git-branch() { # {{{
   git rev-parse HEAD >/dev/null 2>&1 || return
 
   git branch --color=always --all --sort=-committerdate |
@@ -164,9 +166,9 @@ fzf-git-branch() {
     fzf --height 50% --ansi --no-multi --preview-window right:65% \
       --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
     sed "s/.* //"
-}
+} # }}}
 
-fzf-git-checkout() {
+fzf-git-checkout() { # {{{
   git rev-parse HEAD >/dev/null 2>&1 || return
 
   local branch
@@ -185,9 +187,9 @@ fzf-git-checkout() {
   else
     git checkout $branch
   fi
-}
+} # }}}
 
-# https://gist.github.com/junegunn/f4fca918e937e6bf5bad
+# https://gist.github.com/junegunn/f4fca918e937e6bf5bad {{{
 GIT_FZF_DEFAULT_OPTS=(
   --ansi --reverse 
   --bind ctrl-j:preview-down
@@ -198,7 +200,7 @@ GIT_FZF_DEFAULT_OPTS=(
 	--bind pgup:preview-page-up
 )
 
-git-fuzzy-diff() {
+git-fuzzy-diff() { # {{{
   PREVIEW_PAGER="less --tabs=4 -Rc"
 
   # Don't just diff the selected file alone, get related files first using
@@ -211,9 +213,9 @@ git-fuzzy-diff() {
   git diff --submodule --word-diff --name-only "$@" |
     fzf ${GIT_FZF_DEFAULT_OPTS[@]} --exit-0 --preview "${PREVIEW_COMMAND}" \
       --preview-window=top:85% --bind "enter:toggle-preview"
-}
+} # }}}
 
-git-fuzzy-log() {
+git-fuzzy-log() { # {{{
   PREVIEW_COMMAND='f() {
 		set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}")
 		[ $# -eq 0 ] || (
@@ -233,34 +235,44 @@ git-fuzzy-log() {
     fzf ${GIT_FZF_DEFAULT_OPTS[@]} --no-sort --tiebreak=index \
       --preview "${PREVIEW_COMMAND}" --preview-window=top:15 \
       --bind "enter:toggle-preview"
-}
+} # }}}
+# }}}
 
 # using ripgrep combined with preview
-# find-in-file - usage: fif <searchTerm>
-fif() {
+# find-in-file - usage: fif <searchTerm> {{{
+fif() { # {{{
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
   rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
-}
+} # }}}
 
 # Select a docker container to start and attach to
-function da() {
+function da() { # {{{
   local cid
   cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
 
   [ -n "$cid" ] && docker start "$cid" && docker attach "$cid"
-}
+} # }}}
 # Select a running docker container to stop
-function ds() {
+function ds() { # {{{
   local cid
   cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
 
   [ -n "$cid" ] && docker stop "$cid"
-}
+} # }}}
 # Select docker containers to remove
-function drm() {
+function drm() { # {{{
   docker ps -a | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $1 }' | xargs -r docker rm
-}
+} # }}}
 # Select a docker image or images to remove
-function drmi() {
+function drmi() { # {{{
   docker images | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $3 }' | xargs -r docker rmi
+} # }}}
+ # }}}
+
+# Github {{{
+get_latest_release() {
+  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+    grep '"tag_name":' |                                            # Get tag line
+    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
 }
+#}}}
