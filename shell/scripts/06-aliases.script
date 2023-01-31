@@ -140,6 +140,12 @@ if type batcat >/dev/null 2>&1; then
   alias bat='batcat'
 fi
 
+# Check xclip
 if type xclip >/dev/null 2>&1; then
   alias xc='xclip -selection clipboard'
+fi
+
+# Check localhost port 7890 of Clash
+if netstat -lnt | grep -q 7890 ; then
+  alias curlp='curl -x http://localhost:7890'
 fi
