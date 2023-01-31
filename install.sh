@@ -108,7 +108,8 @@ function get_latest_release_from_github() { # {{{
   # Thanks to: https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
   curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
     grep '"tag_name":' |                                            # Get tag line
-    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+    sed -E 's/.*"([^"]+)".*/\1/' |                                  # Pluck JSON value
+    sed 's/^v//g'                                                   # Remove leading 'v'
 } # }}}
 
 # Initialize apt and install prerequisite packages
@@ -892,71 +893,114 @@ function install_docker() { # {{{
   fi
 } # }}}
 
-function install_containerd-rootless() { # {{{
+function install_containerd() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if ! type containerd >/dev/null 2>&1; then
-      wget "https://github.com/containerd/containerd/releases/download/v1.6.15/cri-containerd-1.6.15-linux-amd64.tar.gz" -O /tmp/cri-containerd.tar.gz
+      local containerd_version
+      containerd_version=$(get_latest_release_from_github containerd/containerd)
+      echo -e "${COLOR}Installing containerd ${COLOR1}${containerd_version}${COLOR}...${NC}"
+      wget "https://github.com/containerd/containerd/releases/download/v${containerd_version}/cri-containerd-${containerd_version}-linux-${ARCH}.tar.gz" -O /tmp/cri-containerd.tar.gz
       $SUDO tar xvzf /tmp/cri-containerd.tar.gz -C /
       containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
     fi
 
     # Install CNI plugins
     if [ ! -d /opt/cni/bin ]; then
-      local CNI_VERSION
-      CNI_VERSION="v1.2.0"
+      local cni_version
+      cni_version=$(get_latest_release_from_github containernetworking/plugins)
       $SUDO mkdir -p /opt/cni/bin
       $SUDO mkdir -p /etc/cni/net.d
-      wget "https://github.com/containernetworking/plugins/releases/download/$CNI_VERSION/cni-plugins-linux-amd64-$CNI_VERSION.tgz" -O /tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz
-      $SUDO tar -zxvf "/tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz" -C /opt/cni/bin/
-      rm -f "/tmp/cni-plugins-linux-amd64-$CNI_VERSION.tgz"
-    fi
-
-    # Install CNI tools
-    if ! type cnitool >/dev/null 2>&1; then
-      if ! type go >/dev/null 2>&1; then
-        install_golang
-        export GOROOT="$HOME"/.local/go
-        export GOPATH=$HOME/.gopackages
+      wget "https://github.com/containernetworking/plugins/releases/download/v${cni_version}/cni-plugins-linux-${ARCH}-v${cni_version}.tgz" -O /tmp/cni-plugins.tgz
+      $SUDO tar -zxvf /tmp/cni-plugins.tgz -C /opt/cni/bin/
+      rm -f /tmp/cni-plugins.tgz
+      if [ ! -f /etc/cni/net.d/10-containerd-net.conflist ]; then
+        cat << EOF | $SUDO tee /etc/cni/net.d/10-containerd-net.conflist
+{
+  "cniVersion": "1.0.0",
+  "name": "containerd-net",
+  "plugins": [
+    {
+      "type": "bridge",
+      "bridge": "cni0",
+      "isGateway": true,
+      "ipMasq": true,
+      "promiscMode": true,
+      "ipam": {
+        "type": "host-local",
+        "ranges": [
+          [{
+            "subnet": "10.88.0.0/16"
+          }],
+          [{
+            "subnet": "2001:4860:4860::/64"
+          }]
+        ],
+        "routes": [
+          { "dst": "0.0.0.0/0" },
+          { "dst": "::/0" }
+        ]
+      }
+    },
+    {
+      "type": "portmap",
+      "capabilities": {"portMappings": true}
+    }
+  ]
+}
+EOF
       fi
-      go install github.com/containernetworking/cni/cnitool@latest
     fi
 
     # Install nerdctl
     if ! type nerdctl >/dev/null 2>&1; then
-      # TODO: check $ARCH
-      wget "https://github.com/containerd/nerdctl/releases/download/v1.1.0/nerdctl-1.1.0-linux-amd64.tar.gz" -O /tmp/nerdctl.tar.gz
-      $SUDO tar xvzf /tmp/nerdctl.tar.gz /usr/local/bin
+      local nerdctl_version
+      nerdctl_version=$(get_latest_release_from_github containerd/nerdctl)
+      wget "https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/nerdctl-${nerdctl_version}-linux-${ARCH}.tar.gz" -O /tmp/nerdctl.tar.gz
+      $SUDO tar xvzf /tmp/nerdctl.tar.gz -C /usr/local/bin
       rm /tmp/nerdctl.tar.gz
     fi
 
+
     # {{{ Rootless containers
-    if ! type newuidmap >/dev/null 2>&1; then
-      # TODO: check $DISTRO
-      $SUDO apt install uidmap
-    fi
+    read -r -p "Do you want rootless container? (yes/No) " yn
 
-    if ! type slirp4netns >/dev/null 2>&1; then
-      # TODO: check $DISTRO
-      $SUDO apt install slirp4netns
-    fi
+    case $yn in 
+    	yes|YES|Yes|y|Y ) ;;
+    	* ) return ;;
+    esac
 
-    if ! type rootlesskit >/dev/null 2>&1; then
-      # TODO: check $ARCH
-      wget "https://github.com/rootless-containers/rootlesskit/releases/download/v1.1.0/rootlesskit-x86_64.tar.gz" -O /tmp/rootlesskit.tar.gz
-      $SUDO tar xvzf /tmp/rootlesskit.tar.gz -C /usr/local/bin
+    
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
+      if ! type newuidmap >/dev/null 2>&1; then
+        $SUDO apt install uidmap
+      fi
+  
+      if ! type slirp4netns >/dev/null 2>&1; then
+        $SUDO apt install slirp4netns
+      fi
+  
+      if ! type rootlesskit >/dev/null 2>&1; then
+        local rootlesskit_version
+        rootlesskit_version=$(get_latest_release_from_github rootless-containers/rootlesskit)
+        wget "https://github.com/rootless-containers/rootlesskit/releases/download/v${rootlesskit_version}/rootlesskit-${OS_ARCH}.tar.gz" -O /tmp/rootlesskit.tar.gz
+        $SUDO tar xvzf /tmp/rootlesskit.tar.gz -C /usr/local/bin
+      fi
+      # }}}
+      /usr/local/bin/containerd-rootless-setuptool.sh install
+  
+      # Install CNI tools
+      if ! type cnitool >/dev/null 2>&1; then
+        if ! type go >/dev/null 2>&1; then
+          install_golang
+          export GOROOT="$HOME"/.local/go
+          export GOPATH=$HOME/.gopackages
+        fi
+        echo -e "${COLOR}Installing ${COLOR1}cnitool${COLOR}...${NC}"
+        go install github.com/containernetworking/cni/cnitool@latest
+      fi
+    else
+      echo -e "${COLOR}Unsupported on this ${COLOR1}${DISTRO}${COLOR}.${NC}" 
     fi
-
-    if ! type containerd-rootless.sh >/dev/null 2>&1; then
-      $SUDO wget "https://raw.githubusercontent.com/containerd/nerdctl/main/extras/rootless/containerd-rootless.sh" -O /usr/local/bin/containerd-rootless.sh
-      $SUDO chmod +x /usr/local/bin/containerd-rootless.sh
-    fi
-
-    if ! type containerd-rootless-setuptool.sh >/dev/null 2>&1; then
-      $SUDO wget "https://raw.githubusercontent.com/containerd/nerdctl/main/extras/rootless/containerd-rootless-setuptool.sh" -O /usr/local/bin/containerd-rootless-setuptool.sh
-      $SUDO chmod +x /usr/local/bin/containerd-rootless-setuptool.sh
-    fi
-    # }}}
-    /usr/local/bin/containerd-rootless-setuptool.sh install
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
   fi
@@ -1128,7 +1172,7 @@ function init_ansible() { # {{{
 } # }}}
 
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd-rootless|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
 } # }}}
 
 case $1 in
@@ -1143,7 +1187,7 @@ vim) install_vim ;;
 rxvt) install_rxvt ;;
 llvm) install_llvm ;;
 docker) install_docker ;;
-containerd-rootless) install_containerd-rootless ;;
+containerd) install_containerd ;;
 mysql) install_mysql ;;
 samba) install_samba ;;
 ctags) install_universal_ctags ;;
