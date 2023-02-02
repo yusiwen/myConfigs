@@ -43,31 +43,29 @@ mkdir -p "$XDG_DATA_HOME"
 
 # {{{ Oracle instant client
 if [ -z "$ORACLE_HOME" ] || [ ! -d "$ORACLE_HOME" ]; then
-  CLIENT_INSTALLATION_PATH="/opt/oracle"
+  CLIENT_INSTALLATION_PATH="/opt/instantclient"
   if [ -d "$CLIENT_INSTALLATION_PATH" ]; then
-    ORACLE_HOME=$(/bin/ls -dr $CLIENT_INSTALLATION_PATH/instantclient*/ 2>/dev/null | head -1)
-    if [ -n "$ORACLE_HOME" ]; then
-      # truncate trailing '/'
-      ORACLE_HOME=$(printf '%s' "${ORACLE_HOME%/}")
-      export ORACLE_HOME
-      export ORACLE_BASE=$CLIENT_INSTALLATION_PATH
-      export PATH=$PATH:$ORACLE_HOME:$ORACLE_HOME/sdk
-      export TNS_ADMIN=$ORACLE_HOME/network/admin
-      export NLS_LANG=american_america.ZHS32GB18030
-      # On linux,
-      #   for 'sqlplus', 'libaio1' must be installed;
-      #   for 'proc', 'libclntsh.so.XX.1' must be installed.
-      # NOTE: On Ubuntu, 'LD_LIBRARY_PATH' can't be set in .profile,
-      #   it can only be set in '/etc/ld.so.conf.d/XXX.conf' and run 'ldconfig'
-      if [ -z "$LD_LIBRARY_PATH" ]; then
-        export LD_LIBRARY_PATH=$ORACLE_HOME
-      else
-        export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
-      fi
+    ORACLE_HOME=$CLIENT_INSTALLATION_PATH
+    # truncate trailing '/'
+    ORACLE_HOME=$(printf '%s' "${ORACLE_HOME%/}")
+    export ORACLE_HOME
+    export ORACLE_BASE=$CLIENT_INSTALLATION_PATH
+    export PATH=$PATH:$ORACLE_HOME:$ORACLE_HOME/sdk
+    export TNS_ADMIN=$ORACLE_HOME/network/admin
+    export NLS_LANG=AMERICAN_AMERICA.UTF8
+    # On linux,
+    #   for 'sqlplus', 'libaio1' must be installed;
+    #   for 'proc', 'libclntsh.so.XX.1' must be installed.
+    # NOTE: On Ubuntu, 'LD_LIBRARY_PATH' can't be set in .profile,
+    #   it can only be set in '/etc/ld.so.conf.d/XXX.conf' and run 'ldconfig'
+    if [ -z "$LD_LIBRARY_PATH" ]; then
+      export LD_LIBRARY_PATH=$ORACLE_HOME
+    else
+      export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
+    fi
 
-      if [ "$OS" = 'Darwin' ]; then
-        export DYLD_LIBRARY_PATH=$ORACLE_HOME
-      fi
+    if [ "$OS" = 'Darwin' ]; then
+      export DYLD_LIBRARY_PATH=$ORACLE_HOME
     fi
   fi
 fi
