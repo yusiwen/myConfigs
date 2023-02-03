@@ -9,14 +9,15 @@
 #
 # Installation script for containerd offline mode
 #
-# Please download the binary packages when internet is available and put them 
+# This script presumes that internet connectivity is not available when running.
+# So please manually download the binary packages when internet is available and put them 
 # in the same directory as this script.
 # 
-# Binary packages:
+# Binary packages needed to be installed:
 # - containerd: https://github.com/containerd/containerd/releases/download/v1.6.16/cri-containerd-1.6.16-linux-amd64.tar.gz
 # - cni-plugins: https://github.com/containernetworking/plugins/releases/download/v1.2.0/cni-plugins-linux-amd64-v1.2.0.tgz
 # - nerdctl: https://github.com/containerd/nerdctl/releases/download/v1.2.0/nerdctl-1.2.0-linux-amd64.tar.gz
-# - libseccomp (CentOS7): https://rpmfind.net/linux/centos/8-stream/BaseOS/x86_64/os/Packages/libseccomp-2.5.2-1.el8.x86_64.rpm
+# - libseccomp (for CentOS/7 only): https://rpmfind.net/linux/centos/8-stream/BaseOS/x86_64/os/Packages/libseccomp-2.5.2-1.el8.x86_64.rpm
 #
 # yusiwen@gmail.com
 
@@ -84,12 +85,14 @@ set -o pipefail
 function install() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if ! type containerd >/dev/null 2>&1; then
+      $SUDO mkdir -p /etc/containerd
       $SUDO tar xvzf cri-containerd-1.6.16-linux-amd64.tar.gz -C /
       containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
     fi
 
     # Install CNI plugins
     if [ ! -d /opt/cni/bin ]; then
+      $SUDO mkdir -p /etc/cni/net.d
       $SUDO tar -zxvf cni-plugins-linux-amd64-v1.2.0.tgz -C /opt/cni/bin/
       if [ ! -f /etc/cni/net.d/10-containerd-net.conflist ]; then
         cat << EOF | $SUDO tee /etc/cni/net.d/10-containerd-net.conflist
@@ -147,3 +150,11 @@ EOF
   fi
 }
 # }}}
+
+install
+
+echo -e "${COLOR}Installation complete${NC}"
+echo -e "${COLOR}To start containerd service, execute:${NC}"
+echo -e "    sudo systemctl start containerd.service"
+echo -e "${COLOR}You need to add '${COLOR1}/usr/local/bin${COLOR}' to '${COLOR1}secure_path${COLOR}' in '${COLOR1}/etc/sudoers${COLOR}'${NC}"
+echo -e "${COLOR}You can run '${COLOR1}sudo visudo${COLOR}' to edit that readonly file${NC}"
