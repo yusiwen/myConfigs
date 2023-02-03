@@ -219,6 +219,37 @@ if command -v python3 &>/dev/null; then
 fi
 #}}}
 
+# {{{ Hadoop & Yarn & Hive & Spark
+if [ -z "$HADOOP_HOME" ] || [ ! -d "$HADOOP_HOME" ]; then 
+  if [ -d /opt/hadoop ]; then
+    HADOOP_HOME=/opt/hadoop
+    export HADOOP_HOME
+
+    export HADOOP_MAPRED_HOME=$HADOOP_HOME
+    export HADOOP_COMMON_HOME=$HADOOP_HOME
+
+    export HADOOP_HDFS_HOME=$HADOOP_HOME
+    export YARN_HOME=$HADOOP_HOME
+    export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HADOOP_COMMON_LIB_NATIVE_DIR
+    export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+    export HADOOP_INSTALL=$HADOOP_HOME
+
+    export HADOOP_LOG_DIR=$HOME/.cache/hadoop/logs
+    export YARN_LOG_DIR=$HOME/.cache/yarn/logs
+  fi
+fi
+
+if [ -z "$HIVE_HOME" ] || [ ! -d "$HIVE_HOME" ]; then
+  if [ -d /opt/hive ]; then
+    HIVE_HOME=/opt/hive
+    export HIVE_HOME
+    PATH=$PATH:$HIVE_HOME/bin
+    export PATH
+  fi
+fi
+# }}}
+
 # {{{ Containerd CNI Plugins
 if [ -d /opt/cni/bin ]; then
   export CNI_PATH=/opt/cni/bin
