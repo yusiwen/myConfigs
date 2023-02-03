@@ -968,7 +968,6 @@ EOF
     	yes|YES|Yes|y|Y ) ;;
     	* ) return ;;
     esac
-
     
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! type newuidmap >/dev/null 2>&1; then
@@ -985,7 +984,7 @@ EOF
         wget "https://github.com/rootless-containers/rootlesskit/releases/download/v${rootlesskit_version}/rootlesskit-${OS_ARCH}.tar.gz" -O /tmp/rootlesskit.tar.gz
         $SUDO tar xvzf /tmp/rootlesskit.tar.gz -C /usr/local/bin
       fi
-      # }}}
+      
       /usr/local/bin/containerd-rootless-setuptool.sh install
   
       # Install CNI tools
@@ -1001,6 +1000,7 @@ EOF
     else
       echo -e "${COLOR}Unsupported on this ${COLOR1}${DISTRO}${COLOR}.${NC}" 
     fi
+    # }}}
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
   fi
