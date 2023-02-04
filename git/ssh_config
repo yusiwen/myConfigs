@@ -39,7 +39,7 @@ Host deskmini-pve
   User root
   Port 22
 
-Host deskmini-pve2
+Host deskmini2-pve
   HostName 192.168.2.249
   User root
   Port 22
