@@ -11,13 +11,7 @@
   # set spacevim theme. by default colorscheme layer is not loaded,
   # if you want to use more colorscheme, please load the colorscheme
   # layer
-  # colorscheme = "gruvbox"
   colorscheme = "nord"
-  # colorscheme = "dracula"
-  # colorscheme = "onehalflight"
-  # colorscheme = "onehalfdark"
-  # colorscheme = "NeoSolarized"
-  # colorscheme = "solarized"
   colorscheme_bg = "dark"
   # colorscheme_bg = "light"
   # Disable guicolors in basic mode, many terminal do not support 24bit
