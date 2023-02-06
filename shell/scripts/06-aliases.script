@@ -121,6 +121,13 @@ if type nvim >/dev/null 2>&1; then
   alias nv='nvim'
 fi
 
+if type lvim >/dev/null 2>&1; then
+  alias vi='lvim'
+  alias vim='lvim'
+  alias v='lvim'
+  alias nv='lvim'
+fi
+
 # Maven
 alias mvn-no-javadoc='mvn -Dmaven.javadoc.skip=true'
 alias mvn-no-test='mvn -Dmaven.test.skip=true'
