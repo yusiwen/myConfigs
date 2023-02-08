@@ -131,11 +131,12 @@ function init_env() { # {{{
       fi
 
       $SUDO apt update
-      $SUDO apt install -y curl lua5.3 perl cpanminus silversearcher-ag p7zip-full gdebi-core \
-                           iotop net-tools iftop nethogs nload sysstat apt-transport-https jq \
-                           tmux byobu htop atop software-properties-common \
+      $SUDO apt install -y curl lua5.4 perl cpanminus silversearcher-ag p7zip-full pigz \
+                           gdebi-core software-properties-common apt-transport-https \
+                           htop atop iotop net-tools iftop nethogs nload sysstat \
+                           tmux byobu jq pass \
                            build-essential cmake \
-                           ethtool cifs-utils nfs-common libfuse2 pigz
+                           ethtool cifs-utils nfs-common libfuse2 
       # Check if ubuntu version is newer than 20.04
       if [ -n "$(echo ${OS_VERSION} | awk '$1 >= 20.04 { print "ok"; }')" ]; then
         $SUDO apt install -y bat
