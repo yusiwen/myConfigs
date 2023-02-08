@@ -1150,12 +1150,12 @@ function init_byobu() { # {{{
     if [ ! -d ~/.tmux/plugins/tpm ]; then
       git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
     fi
-    ln -snfv $HOME/git/myConfigs/tmux/tmux.conf ~/.tmux.conf
+    ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.tmux.conf
     byobu-enable
   
     # Enable mouse by default
-    if [ -e $HOME/.config/byobu/profile.tmux ]; then
-      cat << EOF | tee -a $HOME/.config/byobu/profile.tmux
+    if [ -e "$HOME"/.config/byobu/profile.tmux ]; then
+      cat << EOF | tee -a "$HOME"/.config/byobu/profile.tmux
 # Enable mouse support including scrolling
 set -sg mouse on
 set -sg escape-time 50
