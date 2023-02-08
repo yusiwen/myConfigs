@@ -1,4 +1,0 @@
-if [ "$(uname)" != 'Darwin' ]; then
-  eval "$(dircolors -b "$HOME/myConfigs/shell/dircolors-solarized/dircolors.ansi-universal")"
-fi
-
