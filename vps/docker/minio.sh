@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-export ACCESSKEY=$(awk -F "=" '/MINIO_AK/ {print $2}' /root/.my.pwd.cnf)
-export SECRETKEY=$(awk -F "=" '/MINIO_SK/ {print $2}' /root/.my.pwd.cnf)
+export ACCESSKEY=$(pass share.yusiwen.cn/access_key)
+export SECRETKEY=$(pass share.yusiwen.cn/secret_key)
 
 cd ~/myDocker/minio
 docker-compose "$@"
