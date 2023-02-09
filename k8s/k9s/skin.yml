@@ -36,7 +36,7 @@ k9s:
   # Dialog styles.
   dialog:
     fgColor: *nord4
-    bgColor: *nord0
+    bgColor: *background
     buttonFgColor: *nord4
     buttonBgColor: *nord1
     buttonFocusFgColor: *nord4
@@ -56,7 +56,7 @@ k9s:
     # CrumbView attributes for history navigation.
     crumbs:
       fgColor: *nord4
-      bgColor: *nord0
+      bgColor: *background
       activeColor: *nord1
     # Resource status and update styles
     status:
@@ -71,14 +71,14 @@ k9s:
     # Border title styles.
     title:
       fgColor: *nord4
-      bgColor: *nord0
+      bgColor: *background
       highlightColor: *nord8
       counterColor: *nord8
       filterColor: *nord13
   views:
     # Charts skins...
     charts:
-      bgColor: *nord0
+      bgColor: *background
       dialBgColor: *nord0
       chartBgColor: *nord0
       defaultDialColors:
@@ -90,19 +90,19 @@ k9s:
     # TableView attributes.
     table:
       fgColor: *nord4
-      bgColor: *nord0
+      bgColor: *background
       cursorFgColor: *nord0
       cursorBgColor: *nord0
       markColor: *nord4
       # Header row styles.
       header:
         fgColor: *nord4
-        bgColor: *nord0
+        bgColor: *background
         sorterColor: *nord8
     # Xray view attributes.
     xray:
       fgColor: *nord4
-      bgColor: *nord0
+      bgColor: *background
       cursorColor: *nord8
       cursorTextColor: *nord4
       graphicColor: *nord8
@@ -114,7 +114,7 @@ k9s:
     # Logs styles.
     logs:
       fgColor: *nord4
-      bgColor: *nord0
+      bgColor: *background
       indicator:
         fgColor: *nord4
-        bgColor: *nord10
+        bgColor: *background
