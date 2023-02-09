@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 whichv() { # {{{
   printf '\e[?7t'
@@ -157,6 +157,7 @@ is_running_in_wsl() { # {{{
   fi
 } # }}}
 
+# Git {{{
 # https://polothy.github.io/post/2019-08-19-fzf-git-checkout/
 fzf-git-branch() { # {{{
   git rev-parse HEAD >/dev/null 2>&1 || return
@@ -164,8 +165,7 @@ fzf-git-branch() { # {{{
   git branch --color=always --all --sort=-committerdate |
     grep -v HEAD |
     fzf --height 50% --ansi --no-multi --preview-window right:65% \
-      --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
-    sed "s/.* //"
+      --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {}) | sed "s/.* //"'
 } # }}}
 
 fzf-git-checkout() { # {{{
@@ -189,17 +189,7 @@ fzf-git-checkout() { # {{{
   fi
 } # }}}
 
-# https://gist.github.com/junegunn/f4fca918e937e6bf5bad {{{
-GIT_FZF_DEFAULT_OPTS=(
-  --ansi --reverse
-  --bind ctrl-j:preview-down
-  --bind ctrl-k:preview-up
-  --bind ctrl-f:preview-page-down
-  --bind ctrl-b:preview-page-up
-  --bind pgdn:preview-page-down
-  --bind pgup:preview-page-up
-)
-
+# https://gist.github.com/junegunn/f4fca918e937e6bf5bad
 git-fuzzy-diff() { # {{{
   PREVIEW_PAGER="less --tabs=4 -Rc"
 
@@ -211,7 +201,7 @@ git-fuzzy-diff() { # {{{
 		| '$PREVIEW_PAGER
 
   git diff --submodule --word-diff --name-only "$@" |
-    fzf ${GIT_FZF_DEFAULT_OPTS[@]} --exit-0 --preview "${PREVIEW_COMMAND}" \
+    fzf --exit-0 --preview "${PREVIEW_COMMAND}" \
       --preview-window=top:85% --bind "enter:toggle-preview"
 } # }}}
 
@@ -232,8 +222,8 @@ git-fuzzy-log() { # {{{
 	}; f {}'
 
   git log --graph --color=always --format="%C(auto)%h %s%d " |
-    fzf ${GIT_FZF_DEFAULT_OPTS[@]} --no-sort --tiebreak=index \
-      --preview "${PREVIEW_COMMAND}" --preview-window=top:15 \
+    fzf --no-sort --tiebreak=index \
+      --preview "${PREVIEW_COMMAND}" --preview-window=top:15,hidden \
       --bind "enter:toggle-preview"
 } # }}}
 # }}}
@@ -305,5 +295,34 @@ function _pip3() {
     pip3 "$@"
   fi
   
+}
+#}}}
+
+# Docker {{{
+docker-fuzzy-image-ls() {
+  docker image ls --format '{{.ID | printf "%-15s"}} {{.Repository | printf "%-50.50s"}}\t{{.Tag | printf "%-20.20s"}}\t{{.Size}}' |\
+    fzf --no-sort --tiebreak=index \
+        --preview 'docker image inspect {1}' --preview-window=top:15,hidden \
+        --preview-label='image details' \
+        --bind "space:toggle-preview" \
+        --bind "enter:execute(echo {1})+abort"
+}
+
+docker-fuzzy-container-ls() {
+  docker container ls -a --format '{{.ID | printf "%-15s"}} {{.Names | printf "%-20.20s"}}\t{{.Status}}' |\
+    fzf --no-sort --tiebreak=index \
+        --preview 'docker container inspect {1}' --preview-window=top:15,hidden \
+        --preview-label='container details' \
+        --bind "space:toggle-preview" \
+        --bind "enter:execute(echo {1})+abort"
+}
+
+docker-fuzzy-network-ls() {
+  docker network ls --format '{{.ID | printf "%-15s"}} {{.Name | printf "%-20.20s"}}\t{{.Driver}}\t{{.Scope}}' |\
+    fzf --no-sort --tiebreak=index \
+        --preview 'docker network inspect {1}' --preview-window=top:15,hidden \
+        --preview-label='network details' \
+        --bind "space:toggle-preview" \
+        --bind "enter:execute(echo {1})+abort"
 }
 #}}}

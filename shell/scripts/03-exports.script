@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # {{{ Distribution Information
 # Determine OS platform
 if [ -n "$WINDIR" ]; then
@@ -350,6 +352,35 @@ fi
 
 GPG_TTY=$(tty)
 export GPG_TTY
+
+# fzf
+_fzf_default_opts=(
+  --reverse
+  --ansi
+  --height 80%
+  --bind alt-j:preview-down
+  --bind alt-k:preview-up
+  --bind alt-f:preview-page-down
+  --bind alt-b:preview-page-up
+  --bind pgdn:preview-page-down
+  --bind pgup:preview-page-up
+)
+
+FZF_DEFAULT_OPTS="${_fzf_default_opts[*]}"
+export FZF_DEFAULT_OPTS
+
+# Export host IP within WSL
+if [ "$(is_running_in_wsl)" = '1' ]; then
+  WSL_HOST_IP=$(grep nameserver < /etc/resolv.conf | awk '{ print $2 }')
+  export WSL_HOST_IP
+  # Set https proxy for git
+  git config --global http.https://github.com.proxy socks5://"$WSL_HOST_IP":7890
+fi
+
+# Support symbolic link in git bash on windows
+if [ "$OS" = 'Windows_NT' ]; then
+  export MSYS=winsymlinks:nativestrict
+fi
 #}}}
 
 # Source any extended scrips stored in $HOME/.exports/ folder
@@ -360,18 +391,6 @@ if [ -d "$HOME"/.exports ]; then
       source "$script"
     fi
   done
-fi
-
-# Export host IP within WSL
-if [ $(is_running_in_wsl) = '1' ]; then
-  export WSL_HOST_IP=$(cat /etc/resolv.conf | grep nameserver | awk '{ print $2 }')
-  # Set https proxy for git
-  git config --global http.https://github.com.proxy socks5://$WSL_HOST_IP:7890
-fi
-
-# Support symbolic link in git bash on windows
-if [ "$OS" = 'Windows_NT' ]; then
-  export MSYS=winsymlinks:nativestrict
 fi
 
 # vim: foldmethod=marker :
