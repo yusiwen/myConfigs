@@ -174,3 +174,5 @@ else
     alias curlp='curl -x http://localhost:7890'
   fi
 fi
+
+# vim: foldmethod=marker :

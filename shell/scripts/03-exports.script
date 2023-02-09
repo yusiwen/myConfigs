@@ -1,28 +1,5 @@
 #!/usr/bin/env bash
 
-# {{{ Distribution Information
-# Determine OS platform
-if [ -n "$WINDIR" ]; then
-  OS='Windows_NT'
-else
-  OS=$(uname)
-fi
-export OS
-# If Linux, try to determine specific distribution
-if [ "$OS" = 'Linux' ]; then
-  # If available, use LSB to identify distribution
-  if [ -f /etc/lsb-release ] || [ -d /etc/lsb-release.d ]; then
-    DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
-  # Otherwise, use release info file
-  else
-    DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
-  fi
-  export DISTRO
-fi
-# For everything else (or if above failed), just use generic identifier
-[ "$DISTRO" = '' ] && export DISTRO=$OS
-#}}}
-
 # .local/bin {{{
 # re-check if '$HOME/.local/bin' exists and is in $PATH
 if [ ! -d "$HOME/.local/bin" ]; then
@@ -353,7 +330,7 @@ fi
 GPG_TTY=$(tty)
 export GPG_TTY
 
-# fzf
+# fzf {{{
 _fzf_default_opts=(
   --reverse
   --ansi
@@ -364,10 +341,12 @@ _fzf_default_opts=(
   --bind alt-b:preview-page-up
   --bind pgdn:preview-page-down
   --bind pgup:preview-page-up
+  --bind "ctrl-/:toggle-preview"
 )
 
 FZF_DEFAULT_OPTS="${_fzf_default_opts[*]}"
 export FZF_DEFAULT_OPTS
+# }}}
 
 # Export host IP within WSL
 if [ "$(is_running_in_wsl)" = '1' ]; then

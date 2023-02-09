@@ -1,3 +1,29 @@
+#!/usr/bin/env bash
+
+# {{{ Distribution Information
+# Determine OS platform
+if [ -n "$WINDIR" ]; then
+  OS='Windows_NT'
+else
+  OS=$(uname)
+fi
+export OS
+# If Linux, try to determine specific distribution
+if [ "$OS" = 'Linux' ]; then
+  # If available, use LSB to identify distribution
+  if [ -f /etc/lsb-release ] || [ -d /etc/lsb-release.d ]; then
+    DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
+  # Otherwise, use release info file
+  else
+    DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
+  fi
+  export DISTRO
+fi
+# For everything else (or if above failed), just use generic identifier
+[ "$DISTRO" = '' ] && export DISTRO=$OS
+#}}}
+
+# Locale {{{
 export LC_COLLATE=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export LC_MESSAGES=en_US.UTF-8
@@ -10,3 +36,6 @@ if [ -z "$LANG" ]; then
   export LANG=en_US.UTF-8
   export LANGUAGE=en_US.UTF-8
 fi
+# }}}
+
+# vim: foldmethod=marker :

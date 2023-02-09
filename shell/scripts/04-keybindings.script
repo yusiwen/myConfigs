@@ -71,3 +71,5 @@ bindkey "^y" autosuggest-accept
 # Bind the history search of zsh to [Page UP] and [Page Down]
 bindkey "^[[5~" history-beginning-search-backward
 bindkey "^[[6~" history-beginning-search-forward
+
+# vim: foldmethod=marker :
