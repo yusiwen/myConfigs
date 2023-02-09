@@ -477,14 +477,16 @@ function fetch_myConfigs() { # {{{
 } # }}}
 
 function check_python3_version() { # {{{
-  local PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
+  local PYTHON_VERSION
+  PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
   echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
 
   if [ -z "$(pip3 list | grep packaging)" ]; then
     pip3 install --user packaging
   fi
 
-  local PYTHON_VERSION_COMPARE=$(python3 -c "from packaging import version; print(version.parse('"$PYTHON_VERSION"') > version.parse('3.6'))")
+  local PYTHON_VERSION_COMPARE
+  PYTHON_VERSION_COMPARE=$(python3 -c "from packaging import version; print(version.parse('$PYTHON_VERSION') > version.parse('3.6'))")
 
   if [ "$PYTHON_VERSION_COMPARE" != 'True' ]; then
     echo -e "${COLOR2}WARN${COLOR}Python3 version: ${COLOR1}$PYTHON_VERSION${COLOR} is too old, need latest package${NC}"
