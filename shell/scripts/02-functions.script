@@ -202,7 +202,7 @@ git-fuzzy-diff() { # {{{
 
   git diff --submodule --word-diff --name-only "$@" |
     fzf --exit-0 --preview "${PREVIEW_COMMAND}" \
-      --preview-window=top:85% --bind "enter:toggle-preview"
+      --preview-window=top:85%
 } # }}}
 
 git-fuzzy-log() { # {{{
@@ -221,10 +221,10 @@ git-fuzzy-log() { # {{{
 		)
 	}; f {}'
 
-  git log --graph --color=always --format="%C(auto)%h %s%d " |
+  git log --graph --color=always --format="%C(auto)%h %s%d " |\
     fzf --no-sort --tiebreak=index \
-      --preview "${PREVIEW_COMMAND}" --preview-window=top:15,hidden \
-      --bind "enter:toggle-preview"
+      --preview "${PREVIEW_COMMAND}" --preview-window=top:15,hidden |\
+    sed 's/^[^[:alnum:]]*//' | awk '{ print $1 }'
 } # }}}
 # }}}
 
