@@ -580,6 +580,9 @@ function install_python() { # {{{
         pip3 install --user virtualenv
       fi
     fi
+
+    # Install utilities
+    pip3 install --user pip_search
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       init_env
@@ -593,7 +596,7 @@ function install_python() { # {{{
     echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >>"$HOME"/.config/pip/pip.conf
 
     pip install --user virtualenv
-    pip3 install --user virtualenv
+    pip3 install --user virtualenv pip_search
   else
     echo -e "${COLOR}OS not supported${NC}"
     return
