@@ -15,33 +15,29 @@ yusiwen@gmail.com
 
 ## Contents
 
-1. `deluge/` Deluge downloader configurations.
-2. `docker/` Docker configurations.
-3. `eclipse/` Eclipse configurations under Linux.
-4. `gfw/` configurations for shadowsocks and polipo proxy.
-5. `git/` Git configurations and scripts.
-6. `keyring/` keyring confiurations for i3 and mutt.
-7. `logitech` Logitech device configurations on Linux.
-8. `mac/` configurations for MacOS.
-9. `mail/` settings for all mail clients.
-10. `mc.conf/` confiurations for MidnightCommander.
-11. `misc/` miscellaneous stuffs.
-12. `mpd/` mpd configurations.
-13. `node.js/` Node.js settings.
-14. `oracle/` Oracle Instant Client configurations.
-15. `python/` Python settings.
-16. `razer/` Razer DeathAdder mouse polling rate configurations.
-17. `samba/` Samba configurations.
-18. `shell/` shell environments scripts.
-19. `system/` system & network configurations for VMs.
-20. `tmux/` tmux configurations.
-21. `vim/` VIM configurations.
-22. `vps/` My VPS configurations.
-23. `vscode/` Visual Studio Code configurations.
-24. `X11/` X11 scripts.
-25. `change_font.sh` script for changing font.
-26. `change_theme.sh` script for changing themes of Xresources, vim, etc.
-27. `install.sh` script for installation.
+1. `docker/` Docker configurations.
+2. `eclipse/` Eclipse configurations under Linux.
+3. `git/` Git configurations and scripts.
+4. `keyring/` keyring confiurations for i3 and mutt.
+5. `logitech` Logitech device configurations on Linux.
+6. `mac/` configurations for MacOS.
+7. `mail/` settings for all mail clients.
+8. `mc.conf/` confiurations for MidnightCommander.
+9. `misc/` miscellaneous stuffs.
+10. `mpd/` mpd configurations.
+11. `node.js/` Node.js settings.
+12. `oracle/` Oracle Instant Client configurations.
+13. `python/` Python settings.
+14. `razer/` Razer DeathAdder mouse polling rate configurations.
+15. `samba/` Samba configurations.
+16. `shell/` shell environments scripts.
+17. `system/` system & network configurations for VMs.
+18. `vim/` VIM configurations.
+19. `vscode/` Visual Studio Code configurations.
+20. `X11/` X11 scripts.
+21. `change_font.sh` script for changing font.
+22. `change_theme.sh` script for changing themes of Xresources, vim, etc.
+23. `install.sh` script for installation.
 
 ## Usage
 
