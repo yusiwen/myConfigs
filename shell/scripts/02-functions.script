@@ -304,8 +304,8 @@ docker-fuzzy-image-ls() {
     fzf --no-sort --tiebreak=index \
         --preview 'docker image inspect {1}' --preview-window=top:15,hidden \
         --preview-label='image details' \
-        --bind "space:toggle-preview" \
-        --bind "enter:execute(echo {1})+abort"
+        --bind "space:toggle-preview" |\
+    cut -d ' ' -f 1
 }
 
 docker-fuzzy-container-ls() {
@@ -313,8 +313,8 @@ docker-fuzzy-container-ls() {
     fzf --no-sort --tiebreak=index \
         --preview 'docker container inspect {1}' --preview-window=top:15,hidden \
         --preview-label='container details' \
-        --bind "space:toggle-preview" \
-        --bind "enter:execute(echo {1})+abort"
+        --bind "space:toggle-preview" |\
+    cut -d ' ' -f 1
 }
 
 docker-fuzzy-network-ls() {
@@ -322,7 +322,7 @@ docker-fuzzy-network-ls() {
     fzf --no-sort --tiebreak=index \
         --preview 'docker network inspect {1}' --preview-window=top:15,hidden \
         --preview-label='network details' \
-        --bind "space:toggle-preview" \
-        --bind "enter:execute(echo {1})+abort"
+        --bind "space:toggle-preview" |\
+    cut -d ' ' -f 1
 }
 #}}}
