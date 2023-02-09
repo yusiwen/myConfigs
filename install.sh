@@ -877,7 +877,7 @@ function install_docker() { # {{{
         $SUDO apt-get -y install docker-ce
 
         echo -e "${COLOR}Add user ${COLOR1}${USER}${COLOR} to group 'docker'...${NC}"
-        $SUDO usermod -aG docker $USER
+        $SUDO usermod -aG docker "$USER"
       else
         echo -e "${COLOR1}$(docker -v)${COLOR} is found...${NC}"
       fi
@@ -886,7 +886,7 @@ function install_docker() { # {{{
         $SUDO cp "$HOME"/myConfigs/docker/daemon.json /etc/docker/daemon.json
       fi
 
-      if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+      if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
         if [ ! -e /etc/systemd/system/docker.service.d ]; then
           $SUDO mkdir -p /etc/systemd/system/docker.service.d
           $SUDO cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
@@ -894,7 +894,12 @@ function install_docker() { # {{{
       fi
     fi
 
-    echo -e "${COLOR}Please install ${COLOR1}docker-compose${COLOR} by ${COLOR1}'pip3 install docker-compose'${NC}"
+    # Install docker-compose
+    if ! type pip3 >/dev/null; then
+      install_python
+    fi
+    echo -e "${COLOR}Installing ${COLOR1}docker-compose${COLOR}...${NC}"
+    pip3 install --user docker-compose
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
   fi
@@ -1174,8 +1179,9 @@ function init_ansible() { # {{{
   if ! type pip3 >/dev/null 2>&1; then
     install_python
   fi
-
-  pip3 install ansible
+  
+  echo -e "${COLOR}Install ${COLOR1}ansible${COLOR}...${NC}"
+  pip3 install --user ansible
 } # }}}
 
 function print_info() { # {{{

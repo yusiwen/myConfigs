@@ -191,13 +191,13 @@ fzf-git-checkout() { # {{{
 
 # https://gist.github.com/junegunn/f4fca918e937e6bf5bad {{{
 GIT_FZF_DEFAULT_OPTS=(
-  --ansi --reverse 
+  --ansi --reverse
   --bind ctrl-j:preview-down
-	--bind ctrl-k:preview-up
+  --bind ctrl-k:preview-up
   --bind ctrl-f:preview-page-down
-	--bind ctrl-b:preview-page-up
-	--bind pgdn:preview-page-down
-	--bind pgup:preview-page-up
+  --bind ctrl-b:preview-page-up
+  --bind pgdn:preview-page-down
+  --bind pgup:preview-page-up
 )
 
 git-fuzzy-diff() { # {{{
@@ -241,7 +241,10 @@ git-fuzzy-log() { # {{{
 # using ripgrep combined with preview
 # find-in-file - usage: fif <searchTerm> {{{
 fif() { # {{{
-  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+  if [ ! "$#" -gt 0 ]; then
+    echo "Need a string to search for!"
+    return 1
+  fi
   rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 } # }}}
 
@@ -267,12 +270,40 @@ function drm() { # {{{
 function drmi() { # {{{
   docker images | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $3 }' | xargs -r docker rmi
 } # }}}
- # }}}
+# }}}
 
 # Github {{{
 get_latest_release() {
   curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
     grep '"tag_name":' |                                            # Get tag line
     sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+}
+#}}}
+
+# Python {{{
+function _pip() {
+  if type pip_search >/dev/null; then
+    if [ $1 = "search" ]; then
+     pip_search "$2"
+    else
+      pip "$@"
+    fi
+  else
+    pip "$@"
+  fi
+  
+}
+
+function _pip3() {
+  if type pip_search >/dev/null; then
+    if [ $1 = "search" ]; then
+     pip_search "$2"
+    else
+      pip3 "$@"
+    fi
+  else
+    pip3 "$@"
+  fi
+  
 }
 #}}}

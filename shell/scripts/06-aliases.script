@@ -101,7 +101,7 @@ fi
 # Valgrind aliases
 alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v'
 
-# Python
+# Python {{{
 alias pipi='pip install --user'
 alias pipiu='pip --user --upgrade'
 
@@ -112,6 +112,12 @@ else
   alias virtualenv2='virtualenv --python /usr/bin/python2 --system-site-packages'
   alias virtualenv3='virtualenv --python /usr/bin/python3 --system-site-packages'
 fi
+
+# Use 'pip_search' to replace the disabled search functionality of pip.
+# See '_pip()' in 'shell/scripts/02-functions.script'
+alias pip='_pip'
+alias pip3='_pip3'
+# }}}
 
 # Vim
 if type nvim >/dev/null 2>&1; then
