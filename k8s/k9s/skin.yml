@@ -21,12 +21,13 @@ nord11: &nord11 "#BF616A" #red
 nord13: &nord13 "#EBCB8B" #yellow
 nord14: &nord14 "#A3BE8C" #green
 
+background: &background "default"
 
 k9s:
   # General K9s styles
   body:
     fgColor: *nord4
-    bgColor: *nord0
+    bgColor: *background
     logoColor: *nord10
   # ClusterInfoView styles.
   info:
