@@ -727,22 +727,8 @@ function install_vim() { # {{{
         # Install VIM_PACKAGE
         echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
 
-        if [ "$DISTRO" = 'Ubuntu' ]; then
-          NVIM_PPA=/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$CODENAME.list
-          if [ ! -e "$NVIM_PPA" ]; then
-            echo -e "${COLOR}No latest NeoVim ppa found, adding ${COLOR1}ppa:neovim-ppa/unstable${COLOR}...${NC}"
-            $SUDO add-apt-repository -y ppa:neovim-ppa/unstable
-
-            if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-              $SUDO sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$NVIM_PPA"
-            fi
-            $SUDO apt update
-          else
-            echo -e "${COLOR1}ppa:neovim-ppa/unstable${COLOR} was found${NC}"
-          fi
-        fi
-
-        $SUDO apt install -y neovim
+        curl -L "https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb" -O /tmp/nvim.deb
+        $SUDO dpkp --install /tmp/nvim.deb
       else
         echo -e "${COLOR1}NeoVim${COLOR} is found at '$(which nvim)'${NC}"
       fi
@@ -791,34 +777,8 @@ function install_vim() { # {{{
     return
   fi
 
-  XDGSpaceDir="${XDG_CONFIG_HOME:-${HOME}/.}${XDG_CONFIG_HOME:+/}SpaceVim"
-  XDGSpaceDDir="${XDG_CONFIG_HOME:-${HOME}/.}${XDG_CONFIG_HOME:+/}SpaceVim.d"
-  curl -sLf https://spacevim.org/install.sh | bash -s -- --no-fonts
-  mkdir -p "$XDGSpaceDDir"
-  ln -snvf "$CONFIG_VIM"/SpaceVim/init.toml "$XDGSpaceDDir"/init.toml
-
-  echo -e "${COLOR}Install python3 dependencies...${NC}"
-  if ! type ruby >/dev/null 2>&1; then
-    install_python
-  fi
-  pip3 install pynvim
-
-  echo -e "${COLOR}Install ruby dependencies...${NC}"
-  if ! type ruby >/dev/null 2>&1; then
-    install_ruby
-  fi
-  if [ -z "$GEM_HOME" ]; then
-    GEM_HOME=$(ruby -e 'puts Gem.user_dir')
-    export GEM_HOME
-    export GEM_PATH=$GEM_HOME
-  fi
-  gem install neovim
-
-  echo -e "${COLOR}Install node.js dependencies...${NC}"
-  if ! type node >/dev/null 2>&1; then
-    install_node
-  fi
-  npm install -g neovim
+  # Install LunarVim
+  LV_BRANCH='release-1.2/neovim-0.8' bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/fc6873809934917b470bff1b072171879899a36b/utils/installer/install.sh)
   
 } #}}}
 
