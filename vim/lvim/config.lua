@@ -166,6 +166,7 @@ lvim.builtin.treesitter.highlight.enable = true
 -- Additional Plugins
 lvim.plugins = {
   { 'shaunsingh/nord.nvim' },
+  { 'dracula/vim' },
   { 'tpope/vim-surround' },
   { 'tpope/vim-repeat' },
   { 'lambdalisue/suda.vim' },
