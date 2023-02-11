@@ -153,6 +153,8 @@ alias dcp='docker-compose'
 alias dcls='docker-fuzzy-container-ls'
 alias dils='docker-fuzzy-image-ls'
 alias dnls='docker-fuzzy-network-ls'
+alias drm='_drm'
+alias drmi='_drmi'
 # }}}
 
 if type batcat >/dev/null 2>&1; then

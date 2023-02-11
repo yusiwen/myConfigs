@@ -238,30 +238,6 @@ fif() { # {{{
   rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 } # }}}
 
-# Select a docker container to start and attach to
-function da() { # {{{
-  local cid
-  cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
-
-  [ -n "$cid" ] && docker start "$cid" && docker attach "$cid"
-} # }}}
-# Select a running docker container to stop
-function ds() { # {{{
-  local cid
-  cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
-
-  [ -n "$cid" ] && docker stop "$cid"
-} # }}}
-# Select docker containers to remove
-function drm() { # {{{
-  docker ps -a | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $1 }' | xargs -r docker rm
-} # }}}
-# Select a docker image or images to remove
-function drmi() { # {{{
-  docker images | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $3 }' | xargs -r docker rmi
-} # }}}
-# }}}
-
 # Github {{{
 get_latest_release() {
   curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
@@ -300,15 +276,31 @@ function _pip3() {
 
 # Docker {{{
 docker-fuzzy-image-ls() {
-  docker image ls --format '{{.ID | printf "%-15s"}} {{.Repository | printf "%-50.50s"}}\t{{.Tag | printf "%-20.20s"}}\t{{.Size}}' |\
+  local cid
+  cid=$(docker image ls --format '{{.ID | printf "%-15s"}} {{.Repository | printf "%-50.50s"}}\t{{.Tag | printf "%-20.20s"}}\t{{.Size}}' |\
     fzf --no-sort --tiebreak=index \
         --preview 'docker image inspect {1}' --preview-window=top:15,hidden \
-        --preview-label='image details' |\
-    cut -d ' ' -f 1
+        --preview-label='image details')
+
+  if [ -n "$cid" ]; then
+    if [ "$1" = '-t' ]; then
+      echo "$cid" | awk '{ print $2":"$3 }'
+    else
+      echo "$cid" | awk '{ print $1 }'
+    fi
+  fi
 }
 
 docker-fuzzy-container-ls() {
-  docker container ls -a --format '{{.ID | printf "%-15s"}} {{.Names | printf "%-20.20s"}}\t{{.Status}}' |\
+  local format="--format '{{.ID | printf \"%-15s\"}} {{.Names | printf \"%-20.20s\"}}\t{{.Status}}'"
+  local arguments
+  arguments="container ls $format"
+  if [ -n "$1" ]; then
+    arguments="container ls $1 $format"
+  fi
+  local command="docker $arguments"
+
+  eval "$command" |\
     fzf --no-sort --tiebreak=index \
         --preview 'docker container inspect {1}' --preview-window=top:15,hidden \
         --preview-label='container details' |\
@@ -323,5 +315,39 @@ docker-fuzzy-network-ls() {
     cut -d ' ' -f 1
 }
 #}}}
+
+# Select a docker container to execute command
+function de() { # {{{
+  local cid
+  cid=$(docker-fuzzy-container-ls)
+
+  [ -n "$cid" ] && docker exec "$cid" "$@"
+} # }}}
+# Select a docker container to start and attach to
+function da() { # {{{
+  local cid
+  cid=$(docker-fuzzy-container-ls -a)
+
+  [ -n "$cid" ] && docker start "$cid" && docker attach "$cid"
+} # }}}
+# Select a running docker container to stop
+function ds() { # {{{
+  local cid
+  cid=$(docker-fuzzy-container-ls)
+
+  [ -n "$cid" ] && docker stop "$cid"
+} # }}}
+# Select docker containers to remove
+function _drm() { # {{{
+  local cid
+  cid=$(docker-fuzzy-container-ls -a)
+  [ -n "$cid" ] && docker rm "$cid"
+} # }}}
+# Select a docker image or images to remove
+function _drmi() { # {{{
+  local cid
+  cid=$(docker-fuzzy-image-ls -t)
+  [ -n "$cid" ] && docker rmi "$cid"
+} # }}}
 
 # vim: foldmethod=marker :
