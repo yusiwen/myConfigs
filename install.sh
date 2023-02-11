@@ -852,14 +852,24 @@ function install_docker() { # {{{
           $SUDO cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
         fi
       fi
+
+      # Install dive
+      local dive_version
+      dive_version=$(get_latest_release_from_github wagoodman/dive)
+      if ! type dive >/dev/null 2>&1; then
+        curl -L "https://github.com/wagoodman/dive/releases/download/v${dive_version}/dive_${dive_version}_linux_amd64.tar.gz" -o /tmp/dive.tar.gz
+        tar xvf /tmp/dive.tar.gz -C "$HOME"/.local/bin dive
+      fi
     fi
 
     # Install docker-compose
-    if ! type pip3 >/dev/null; then
-      install_python
+    if ! type docker-compose >/dev/null 2>&1; then
+      if ! type pip3 >/dev/null 2>&1; then
+        install_python
+      fi
+      echo -e "${COLOR}Installing ${COLOR1}docker-compose${COLOR}...${NC}"
+      pip3 install --user docker-compose
     fi
-    echo -e "${COLOR}Installing ${COLOR1}docker-compose${COLOR}...${NC}"
-    pip3 install --user docker-compose
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
   fi
