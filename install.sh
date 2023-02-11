@@ -1144,8 +1144,17 @@ function init_ansible() { # {{{
   pip3 install --user ansible
 } # }}}
 
+function init_mc() { # {{{
+  if [ "$OS" = 'Linux' ]; then
+    curl -L "https://dl.min.io/client/mc/release/linux-$ARCH/mc" -o "$HOME"/.local/bin/mc
+    chmod +x "$HOME"/.local/bin/mc
+  elif [ "$OS" = 'Darwin' ]; then
+    brew install minio/stable/mc
+  fi
+} # }}}
+
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu|ansible|mc]${NC}"
 } # }}}
 
 case $1 in
@@ -1172,6 +1181,7 @@ helm) install_helm ;;
 sdkman) install_sdkman ;;
 byobu) init_byobu ;;
 ansible) init_ansible ;;
+mc) init_mc ;;
 *) print_info ;;
 esac
 
