@@ -582,7 +582,7 @@ function install_python() { # {{{
     fi
 
     # Install utilities
-    pip3 install --user pip_search
+    pip3 install --user pip_search bpytop
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       init_env
