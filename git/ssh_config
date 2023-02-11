@@ -55,12 +55,12 @@ Host vm-k8s-master
   Port 22
 
 Host vm-k8s-node01
-  HostName 192.168.2.67
+  HostName 192.168.2.68
   User yusiwen
   Port 22
 
 Host vm-k8s-node02
-  HostName 192.168.2.68
+  HostName 192.168.2.67
   User yusiwen
   Port 22
 
