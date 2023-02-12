@@ -131,7 +131,7 @@ function init_env() { # {{{
       fi
 
       $SUDO apt update
-      $SUDO apt install -y curl lua5.4 perl cpanminus silversearcher-ag p7zip-full pigz \
+      $SUDO apt install -y curl silversearcher-ag p7zip-full pigz \
                            gdebi-core software-properties-common apt-transport-https \
                            htop atop iotop net-tools iftop nethogs nload sysstat \
                            tmux byobu jq pass \
@@ -163,6 +163,9 @@ function init_env() { # {{{
         $SUDO yum install -y fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
       fi
     fi
+
+    install_perl
+    install_lua
     install_rust
     install_git
     fetch_myConfigs
@@ -1083,6 +1086,40 @@ function install_rust() { # {{{
   fi
 } # }}}
 
+function install_lua() { # {{{
+  if [ "$OS" = 'Linux' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
+      if ! type lua >/dev/null 2>&1; then
+        $SUDO apt install lua5.3 liblua5.3-dev
+      fi
+    elif [ "$DISTRO" = 'CentOS' ]; then
+      # TODO: fix repo, need further checks
+      $SUDO yum install -y lua53u
+    fi
+
+    # LuaRocks
+    if ! type luarocks >/dev/null 2>&1; then
+      wget https://luarocks.org/releases/luarocks-3.9.1.tar.gz -O /tmp/luarocks-3.9.1.tar.gz
+      tar zxpf /tmp/luarocks-3.9.1.tar.gz -C /tmp
+      pushd /tmp/luarocks-3.9.1
+      ./configure && make && sudo make install
+      popd
+      rm -f /tmp/luarocks-3.9.1.tar.gz
+      rm -rf /tmp/luarocks-3.9.1
+    fi
+  fi
+} # }}}
+
+function install_perl() { # {{{
+  if [ "$OS" = 'Linux' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
+      if ! type perl >/dev/null 2>&1; then
+        $SUDO apt install perl cpanminus
+      fi
+    fi
+  fi
+} # }}}
+
 function install_golang() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ -z "$ARCH" ]; then
@@ -1184,6 +1221,8 @@ mysql) install_mysql ;;
 samba) install_samba ;;
 ctags) install_universal_ctags ;;
 rust) install_rust ;;
+lua) install_lua ;;
+perl) install_perl ;;
 golang)
   shift
   install_golang "$@" ;;
