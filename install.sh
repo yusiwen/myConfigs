@@ -1160,7 +1160,10 @@ function install_helm() { # {{{
 function install_sdkman() { # {{{
   # https://sdkman.io/install
   curl -s "https://get.sdkman.io" | bash
+  if [ -e "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
+    # shellcheck source=/dev/null
   source "$HOME/.sdkman/bin/sdkman-init.sh"
+  fi
 } # }}}
 
 function init_byobu() { # {{{
