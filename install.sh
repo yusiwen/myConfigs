@@ -1203,8 +1203,32 @@ function init_mc() { # {{{
   fi
 } # }}}
 
+
+function init_gui() { # {{{
+  if [ "$OS" = 'Linux' ]; then
+    # Install alacritty
+    if ! type alacritty >/dev/null 2>&1; then
+      if ! type cargo >/dev/null 2>&1; then
+        install_rust
+      fi
+      cargo install alacritty
+    fi
+    mkdir -p ~/.config/alacritty
+    if [ ! -d "$HOME/git/myConfigs" ]; then
+      fetch_myConfigs
+    fi
+    cp "$HOME"/git/myConfigs/X11/alacritty/alacritty.yml "$HOME"/.config/alacritty
+    ln -sfnv "$HOME"/git/myConfigs/X11/alacritty/themes "$HOME"/.config/alacritty/themes
+
+    if ! type npm >/dev/null 2>&1; then
+      install_node
+    fi
+    npm install -g alacritty-theme-switch
+  fi
+} # }}}
+
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu|ansible|mc]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu|ansible|mc|cilium|bpf|gui]${NC}"
 } # }}}
 
 case $1 in
@@ -1232,8 +1256,7 @@ golang)
 helm) install_helm ;;
 sdkman) install_sdkman ;;
 byobu) init_byobu ;;
-ansible) init_ansible ;;
-mc) init_mc ;;
+gui) init_gui ;;
 *) print_info ;;
 esac
 
