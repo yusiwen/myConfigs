@@ -1203,6 +1203,16 @@ function init_mc() { # {{{
   fi
 } # }}}
 
+function init_k8s() { # {{{
+  # Krew
+  if [ "$OS" = 'Linux' ]; then
+    KREW="krew-linux_${ARCH}"
+    curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+    tar zxvf "${KREW}.tar.gz"
+    ./"${KREW}" install krew
+    rm -f "${KREW}.tar.gz" "${KREW}"
+  fi
+} # }}}
 
 function init_gui() { # {{{
   if [ "$OS" = 'Linux' ]; then
@@ -1228,7 +1238,7 @@ function init_gui() { # {{{
 } # }}}
 
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu|ansible|mc|cilium|bpf|gui]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu|ansible|mc|k8s|cilium|bpf|gui]${NC}"
 } # }}}
 
 case $1 in
@@ -1256,6 +1266,7 @@ golang)
 helm) install_helm ;;
 sdkman) install_sdkman ;;
 byobu) init_byobu ;;
+k8s) init_k8s ;;
 gui) init_gui ;;
 *) print_info ;;
 esac
