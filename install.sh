@@ -1305,6 +1305,25 @@ function init_cilium() { # {{{
     echo -e "${COLOR}Please manually download ${COLOR1}Hubble CLI${COLOR} from https://github.com/cilium/hubble/releases${NC}"
   fi
 } #}}}
+
+function init_bpf() { # {{{ # Initialization of BPF development environment
+  if [ "$OS" = 'Linux' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ]; then
+      $SUDO apt install build-essential git make libelf-dev libelf1 \
+        clang llvm strace tar make bpfcc-tools \
+        linux-headers-"$(uname -r)" gcc-multilib
+
+      git clone --depth 1 git://kernel.ubuntu.com/ubuntu-stable/ubuntu-stable-"$(lsb_release -c -s)".git /tmp/kernel_src &&
+        $SUDO mv /tmp/kernel_src /opt/kernel-src &&
+        cd /opt/kernel-src/tools/lib/bpf &&
+        $SUDO make && $SUDO make install prefix=/usr/local &&
+        $SUDO mv /usr/local/lib64/libbpf.* /lib/x86_64-linux-gnu/
+    fi
+  else
+    echo -e "${COLOR}OS not supported.${NC}"
+  fi
+} # }}}
+
 function init_gui() { # {{{
   if [ "$OS" = 'Linux' ]; then
     # Install alacritty
@@ -1359,6 +1378,7 @@ sdkman) install_sdkman ;;
 byobu) init_byobu ;;
 k8s) init_k8s ;;
 cilium) init_cilium ;;
+bpf) init_bpf ;;
 gui) init_gui ;;
 *) print_info ;;
 esac
