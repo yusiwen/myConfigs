@@ -132,11 +132,11 @@ function init_env() { # {{{
 
       $SUDO apt update
       $SUDO apt install -y curl silversearcher-ag p7zip-full pigz \
-                           gdebi-core software-properties-common apt-transport-https \
-                           htop atop iotop net-tools iftop nethogs nload sysstat \
-                           tmux byobu jq pass \
-                           build-essential cmake \
-                           ethtool cifs-utils nfs-common libfuse2 
+        gdebi-core software-properties-common apt-transport-https \
+        htop atop iotop net-tools iftop nethogs nload sysstat \
+        tmux byobu jq pass \
+        build-essential cmake \
+        ethtool cifs-utils nfs-common libfuse2
       # Check if ubuntu version is newer than 20.04
       if [ -n "$(echo ${OS_VERSION} | awk '$1 >= 20.04 { print "ok"; }')" ]; then
         $SUDO apt install -y bat
@@ -154,8 +154,8 @@ function init_env() { # {{{
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
         $SUDO yum --enablerepo=epel -y \
-                  install fuse-sshfs net-tools telnet ftp lftp libaio \
-                  libaio-devel bc man lsof wget tmux byobu
+          install fuse-sshfs net-tools telnet ftp lftp libaio \
+          libaio-devel bc man lsof wget tmux byobu
       else
         $SUDO yum config-manager --set-enabled PowerTools
         $SUDO yum install -y epel-release
@@ -171,7 +171,7 @@ function init_env() { # {{{
     fetch_myConfigs
     install_ruby
     install_python
-    # Install gittyleaks after python is initialized 
+    # Install gittyleaks after python is initialized
     pip3 install gittyleaks
     install_sdkman
     install_golang
@@ -338,7 +338,7 @@ function install_git() { # {{{
   git config --global diff.colorMoved zebra
 
   # Global ignore files
-  cat << EOF | tee "$HOME"/.gitignore > /dev/null
+  cat <<EOF | tee "$HOME"/.gitignore >/dev/null
 # Global ignore config for Git
 #   git config --global core.excludesfile $HOME/.gitignore
 #
@@ -782,7 +782,7 @@ function install_vim() { # {{{
 
   # Install LunarVim
   LV_BRANCH='release-1.2/neovim-0.8' bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/fc6873809934917b470bff1b072171879899a36b/utils/installer/install.sh)
-  
+
 } #}}}
 
 function install_rxvt() { # {{{
@@ -818,10 +818,10 @@ function install_docker() { # {{{
         echo -e "${COLOR1}docker${COLOR} is not found, installing...${NC}"
         echo -e "${COLOR}Installing prerequisite packages...${NC}"
         $SUDO apt-get -y install apt-transport-https ca-certificates curl software-properties-common
-        
+
         if [ ! -e /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg ]; then
           echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce public key...${NC}"
-          curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | gpg --dearmor > aliyun-docker-ce.gpg
+          curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | gpg --dearmor >aliyun-docker-ce.gpg
           sudo install -D -o root -m 644 aliyun-docker-ce.gpg /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg
           rm -f aliyun-docker-ce.gpg
         fi
@@ -829,13 +829,13 @@ function install_docker() { # {{{
         if ! grep -q "aliyun.com/docker-ce" /etc/apt/sources.list.d/*.list; then
           echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
           if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-            $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release   -cs) stable"
+            $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
           else
-            $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release   -cs) stable"
+            $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
           fi
           $SUDO apt-get -y update
         fi
-        
+
         echo -e "${COLOR}Installing docker-ce...${NC}"
         $SUDO apt-get -y install docker-ce
 
@@ -899,7 +899,7 @@ function install_containerd() { # {{{
       $SUDO tar -zxvf /tmp/cni-plugins.tgz -C /opt/cni/bin/
       rm -f /tmp/cni-plugins.tgz
       if [ ! -f /etc/cni/net.d/10-containerd-net.conflist ]; then
-        cat << EOF | $SUDO tee /etc/cni/net.d/10-containerd-net.conflist
+        cat <<EOF | $SUDO tee /etc/cni/net.d/10-containerd-net.conflist
 {
   "cniVersion": "1.0.0",
   "name": "containerd-net",
@@ -945,33 +945,32 @@ EOF
       rm /tmp/nerdctl.tar.gz
     fi
 
-
     # {{{ Rootless containers
     read -r -p "Do you want rootless container? (yes/No) " yn
 
-    case $yn in 
-    	yes|YES|Yes|y|Y ) ;;
-    	* ) return ;;
+    case $yn in
+    yes | YES | Yes | y | Y) ;;
+    *) return ;;
     esac
-    
+
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! type newuidmap >/dev/null 2>&1; then
         $SUDO apt install uidmap
       fi
-  
+
       if ! type slirp4netns >/dev/null 2>&1; then
         $SUDO apt install slirp4netns
       fi
-  
+
       if ! type rootlesskit >/dev/null 2>&1; then
         local rootlesskit_version
         rootlesskit_version=$(get_latest_release_from_github rootless-containers/rootlesskit)
         wget "https://github.com/rootless-containers/rootlesskit/releases/download/v${rootlesskit_version}/rootlesskit-${OS_ARCH}.tar.gz" -O /tmp/rootlesskit.tar.gz
         $SUDO tar xvzf /tmp/rootlesskit.tar.gz -C /usr/local/bin
       fi
-      
+
       /usr/local/bin/containerd-rootless-setuptool.sh install
-  
+
       # Install CNI tools
       if ! type cnitool >/dev/null 2>&1; then
         if ! type go >/dev/null 2>&1; then
@@ -983,7 +982,7 @@ EOF
         go install github.com/containernetworking/cni/cnitool@latest
       fi
     else
-      echo -e "${COLOR}Unsupported on this ${COLOR1}${DISTRO}${COLOR}.${NC}" 
+      echo -e "${COLOR}Unsupported on this ${COLOR1}${DISTRO}${COLOR}.${NC}"
     fi
     # }}}
   else
@@ -1162,7 +1161,7 @@ function install_sdkman() { # {{{
   curl -s "https://get.sdkman.io" | bash
   if [ -e "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
     # shellcheck source=/dev/null
-  source "$HOME/.sdkman/bin/sdkman-init.sh"
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
   fi
 } # }}}
 
@@ -1173,10 +1172,10 @@ function init_byobu() { # {{{
     fi
     ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.tmux.conf
     byobu-enable
-  
+
     # Enable mouse by default
     if [ -e "$HOME"/.config/byobu/profile.tmux ]; then
-      cat << EOF | tee -a "$HOME"/.config/byobu/profile.tmux
+      cat <<EOF | tee -a "$HOME"/.config/byobu/profile.tmux
 # Enable mouse support including scrolling
 set -sg mouse on
 set -sg escape-time 50
@@ -1185,16 +1184,16 @@ EOF
   fi
 } # }}}
 
-function init_ansible() { # {{{
+function install_ansible() { # {{{
   if ! type pip3 >/dev/null 2>&1; then
     install_python
   fi
-  
+
   echo -e "${COLOR}Install ${COLOR1}ansible${COLOR}...${NC}"
   pip3 install --user ansible
 } # }}}
 
-function init_mc() { # {{{
+function install_mc() { # {{{
   if [ "$OS" = 'Linux' ]; then
     curl -L "https://dl.min.io/client/mc/release/linux-$ARCH/mc" -o "$HOME"/.local/bin/mc
     chmod +x "$HOME"/.local/bin/mc
@@ -1372,10 +1371,13 @@ lua) install_lua ;;
 perl) install_perl ;;
 golang)
   shift
-  install_golang "$@" ;;
+  install_golang "$@"
+  ;;
 helm) install_helm ;;
 sdkman) install_sdkman ;;
 byobu) init_byobu ;;
+ansible) install_ansible ;;
+mc) install_mc ;;
 k8s) init_k8s ;;
 cilium) init_cilium ;;
 bpf) init_bpf ;;
