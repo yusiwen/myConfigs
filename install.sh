@@ -1206,8 +1206,8 @@ function init_k8s() { # {{{
   # Krew
   if [ "$OS" = 'Linux' ]; then
     KREW="krew-linux_${ARCH}"
-    curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
-    tar zxvf "${KREW}.tar.gz"
+    curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz"
+    tar zxvf "${KREW}.tar.gz" "$KREW"
     ./"${KREW}" install krew
     rm -f "${KREW}.tar.gz" "${KREW}"
   fi
@@ -1337,7 +1337,7 @@ function init_gui() { # {{{
       fetch_myConfigs
     fi
     cp "$HOME"/git/myConfigs/X11/alacritty/alacritty.yml "$HOME"/.config/alacritty
-    
+
     mkdir -p "$HOME"/.config/alacritty/themes
     cp "$HOME"/git/myConfigs/X11/alacritty/themes/* "$HOME"/.config/alacritty/themes
 
