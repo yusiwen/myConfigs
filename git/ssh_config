@@ -138,3 +138,17 @@ Host devserver-department
   HostName devserver-department
   Port 22022
   User yusiwen
+
+Host ser5
+  HostName 192.168.2.45
+  Port 22
+  User yusiwen
+  RequestTTY yes
+  RemoteCommand ~/git/myConfigs/shell/tmux/byobu.sh
+
+Host ser5.wireguard
+  HostName 10.1.0.4
+  Port 22
+  User yusiwen
+  RequestTTY yes
+  RemoteCommand ~/git/myConfigs/shell/tmux/byobu.sh
