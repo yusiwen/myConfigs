@@ -884,56 +884,9 @@ function install_containerd() { # {{{
       local containerd_version
       containerd_version=$(get_latest_release_from_github containerd/containerd)
       echo -e "${COLOR}Installing containerd ${COLOR1}${containerd_version}${COLOR}...${NC}"
-      wget "https://github.com/containerd/containerd/releases/download/v${containerd_version}/cri-containerd-${containerd_version}-linux-${ARCH}.tar.gz" -O /tmp/cri-containerd.tar.gz
+      wget "https://github.com/containerd/containerd/releases/download/v${containerd_version}/cri-containerd-cni-${containerd_version}-linux-${ARCH}.tar.gz" -O /tmp/cri-containerd.tar.gz
       $SUDO tar xvzf /tmp/cri-containerd.tar.gz -C /
       containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
-    fi
-
-    # Install CNI plugins
-    if [ ! -d /opt/cni/bin ]; then
-      local cni_version
-      cni_version=$(get_latest_release_from_github containernetworking/plugins)
-      $SUDO mkdir -p /opt/cni/bin
-      $SUDO mkdir -p /etc/cni/net.d
-      wget "https://github.com/containernetworking/plugins/releases/download/v${cni_version}/cni-plugins-linux-${ARCH}-v${cni_version}.tgz" -O /tmp/cni-plugins.tgz
-      $SUDO tar -zxvf /tmp/cni-plugins.tgz -C /opt/cni/bin/
-      rm -f /tmp/cni-plugins.tgz
-      if [ ! -f /etc/cni/net.d/10-containerd-net.conflist ]; then
-        cat <<EOF | $SUDO tee /etc/cni/net.d/10-containerd-net.conflist
-{
-  "cniVersion": "1.0.0",
-  "name": "containerd-net",
-  "plugins": [
-    {
-      "type": "bridge",
-      "bridge": "cni0",
-      "isGateway": true,
-      "ipMasq": true,
-      "promiscMode": true,
-      "ipam": {
-        "type": "host-local",
-        "ranges": [
-          [{
-            "subnet": "10.88.0.0/16"
-          }],
-          [{
-            "subnet": "2001:4860:4860::/64"
-          }]
-        ],
-        "routes": [
-          { "dst": "0.0.0.0/0" },
-          { "dst": "::/0" }
-        ]
-      }
-    },
-    {
-      "type": "portmap",
-      "capabilities": {"portMappings": true}
-    }
-  ]
-}
-EOF
-      fi
     fi
 
     # Install nerdctl
@@ -1214,7 +1167,6 @@ function init_k8s() { # {{{
 } # }}}
 
 function init_cilium() { # {{{
-  
   if [ "$OS" = 'Linux' ] || [ "$OS" = 'Darwin' ]; then
     local os_name
     os_name=$(echo "$OS" | tr '[:upper:]' '[:lower:]')
