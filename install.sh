@@ -141,13 +141,15 @@ function init_env() { # {{{
       if [ -n "$(echo ${OS_VERSION} | awk '$1 >= 20.04 { print "ok"; }')" ]; then
         $SUDO apt install -y bat
       else
-        echo -e "${COLOR}Installing batcat from DEB pacakge...${NC}"
-        BATCAT_DOWNLOAD_URL="https://share.yusiwen.cn/public/bat_0.22.1_amd64.deb"
-        if [ "$OS_ARCH" = 'aarch64' ]; then
-          BATCAT_DOWNLOAD_URL="https://share.yusiwen.cn/public/bat_0.22.1_arm64.deb"
+        if ! type batcat > /dev/null 2>&1; then
+          echo -e "${COLOR}Installing batcat from DEB pacakge...${NC}"
+          BATCAT_DOWNLOAD_URL="https://share.yusiwen.cn/public/bat_0.22.1_amd64.deb"
+          if [ "$OS_ARCH" = 'aarch64' ]; then
+            BATCAT_DOWNLOAD_URL="https://share.yusiwen.cn/public/bat_0.22.1_arm64.deb"
+          fi
+          wget "${BATCAT_DOWNLOAD_URL}" -O /tmp/batcat.deb
+          $SUDO dpkg --install /tmp/batcat.deb
         fi
-        wget "${BATCAT_DOWNLOAD_URL}" -O /tmp/batcat.deb
-        $SUDO dpkg --install /tmp/batcat.deb
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       yay -S base-devel the_silver_searcher tmux byobu bat
