@@ -141,7 +141,7 @@ function init_env() { # {{{
       if [ -n "$(echo ${OS_VERSION} | awk '$1 >= 20.04 { print "ok"; }')" ]; then
         $SUDO apt install -y bat
       else
-        if ! type batcat > /dev/null 2>&1; then
+        if ! type bat > /dev/null 2>&1; then
           echo -e "${COLOR}Installing batcat from DEB pacakge...${NC}"
           BATCAT_DOWNLOAD_URL="https://share.yusiwen.cn/public/bat_0.22.1_amd64.deb"
           if [ "$OS_ARCH" = 'aarch64' ]; then
