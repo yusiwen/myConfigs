@@ -787,6 +787,7 @@ function install_vim() { # {{{
     bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)
   fi
 
+  ln -sfnv "$HOME"/git/myConfigs/vim/lvim/config.lua "$HOME"/.config/lvim/config.lua
 } #}}}
 
 function install_rxvt() { # {{{
