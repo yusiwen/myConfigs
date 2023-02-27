@@ -166,6 +166,11 @@ if type xclip >/dev/null 2>&1; then
   alias xc='xclip -selection clipboard'
 fi
 
+# netprofiler (https://github.com/yusiwen/netprofiler)
+if type netprofiler >/dev/null 2>&1; then
+  alias np='netprofiler'
+fi
+
 # Check localhost port 7890 of Clash
 if [ "$OS" = 'Windows_NT' ]; then
   if netstat -an|grep LISTEN|grep -q 7890 ; then
