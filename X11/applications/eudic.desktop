@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Terminal=false
+Name=欧陆词典 (EuDic)
+Exec=/home/yusiwen/.local/bin/eudic.AppImage %u
+Icon=eudic
