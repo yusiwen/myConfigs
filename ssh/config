@@ -1,3 +1,5 @@
+Include ~/git/myWorks/ssh/config
+
 # DeskMini-Server with Ubuntu 20.04
 Host deskmini-server
   HostName 192.168.2.54
@@ -152,9 +154,3 @@ Host ser5.wireguard
   User yusiwen
   RequestTTY yes
   RemoteCommand ~/git/myConfigs/shell/tmux/byobu.sh
-
-Host devserver
-  HostName 172.16.62.219
-  Port 22
-  User yusiwen
-

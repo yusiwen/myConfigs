@@ -2,6 +2,7 @@
   "editor.tabSize": 2,
   "files.associations": {
     "*.script": "shellscript",
-    "vimrc*": "viml"
+    "vimrc*": "viml",
+    "ssh/config": "plaintext"
   },
 }
