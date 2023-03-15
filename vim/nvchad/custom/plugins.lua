@@ -45,7 +45,19 @@ local plugins = {
   {
     "shaunsingh/nord.nvim",
     lazy = false
-  }
+  },
+  {
+    'tpope/vim-surround',
+    lazy = false
+  },
+  {
+    'tpope/vim-repeat',
+    lazy = false
+  },
+  {
+    'lambdalisue/suda.vim',
+    lazy = false
+  },
 
   -- To make a plugin not be loaded
   -- {
