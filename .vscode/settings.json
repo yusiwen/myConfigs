@@ -3,6 +3,6 @@
   "files.associations": {
     "*.script": "shellscript",
     "vimrc*": "viml",
-    "ssh/config": "plaintext"
+    "ssh/config": "ssh_config"
   },
 }
