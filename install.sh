@@ -782,13 +782,16 @@ function install_vim() { # {{{
     return
   fi
 
-  # Install LunarVim
-  if ! type lvim >/dev/null 2>&1; then
-    bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)
+  # Install NvChad
+  if [ -d "$HOME"/.config/nvim ]; then
+    if [ -d "$HOME"/.config/nvim.old ]; then
+      rm -rf "$HOME"/.config/nvim.old
+    fi
+    mv "$HOME"/.config/nvim "$HOME"/.config/nvim.old
   fi
-
-  mkdir -p "$HOME"/.config/lvim
-  ln -sfnv "$HOME"/git/myConfigs/vim/lvim/config.lua "$HOME"/.config/lvim/config.lua
+  git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
+  
+  ln -sfnv "$HOME"/git/myConfigs/vim/nvchad/custom "$HOME"/.config/nvim/lua/custom
 } #}}}
 
 function install_rxvt() { # {{{
