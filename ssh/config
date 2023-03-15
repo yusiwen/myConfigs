@@ -159,3 +159,8 @@ Host glinet.chj
   HostName 192.168.8.1
   Port 22
   User root
+
+Host router.home
+  HostName 192.168.2.1
+  Port 22
+  User root
