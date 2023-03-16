@@ -18,6 +18,10 @@ M.ui = {
   }
 }
 
+if vim.g.neovide then
+  vim.opt.guifont = "Sarasa Term SC Nerd Font:h15"
+end
+
 M.plugins = "custom.plugins"
 
 -- check core.mappings for table structure
