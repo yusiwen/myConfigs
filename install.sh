@@ -1091,21 +1091,32 @@ function install_golang() { # {{{
     local version="$1"
     if [ -z "$version" ]; then
       # Get latest stable from official site
-      version=$(curl -L "https://golang.org/VERSION?m=text")
+      version=$(curl -sL "https://golang.org/VERSION?m=text")
       echo -e "${COLOR}The latest stable version is ${COLOR1}$version${COLOR}${NC}"
     elif ! (echo "$version" | grep -Eq ^go); then
       version="go$version"
     fi
-    local installation_path="$HOME"/.local
+
+    local installation_path=/opt
+    local sudo_cmd=sudo
+    if [ "$2" = '--user' ] || [ "$2" = '-u' ]; then
+      installation_path="$HOME"/.local
+      sudo_cmd=
+    fi
+    
     local target_path="$installation_path/$version.linux-$ARCH"
+    if [ -d "$target_path" ]; then
+      echo -e "${COLOR1}$target_path${COLOR} exists, skip${NC}"
+      return
+    fi
 
     echo -e "${COLOR}Downloading ${COLOR1}$version.linux-$ARCH.tar.gz${COLOR}${NC}"
-    wget -P "$installation_path" "https://dl.google.com/go/$version.linux-$ARCH.tar.gz"
+    $sudo_cmd wget -P "$installation_path" "https://dl.google.com/go/$version.linux-$ARCH.tar.gz"
 
-    mkdir -p "$target_path"
-    tar xvvzf "$installation_path/$version.linux-$ARCH.tar.gz" -C "$target_path" --strip-components 1
-    ln -sfnv "$target_path" "$installation_path"/go
-    rm -rf "$installation_path/$version.linux-$ARCH.tar.gz"
+    $sudo_cmd mkdir -p "$target_path"
+    $sudo_cmd tar xvvzf "$installation_path/$version.linux-$ARCH.tar.gz" -C "$target_path" --strip-components 1
+    $sudo_cmd ln -sfnv "$target_path" "$installation_path"/go
+    $sudo_cmd rm -rf "$installation_path/$version.linux-$ARCH.tar.gz"
 
     echo -e "${COLOR1}$version.linux-$ARCH${COLOR} is installed, re-login to take effect${NC}"
   fi
