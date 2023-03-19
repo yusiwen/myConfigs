@@ -1044,6 +1044,8 @@ function install_rust() { # {{{
     else
       echo -e "${COLOR}${COLOR1}ripgrep${COLOR} is found.${NC}"
     fi
+  elif [ "$OS" = "Windows_NT" ]; then
+    echo -e "Please download and run installer from: https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe"
   fi
 } # }}}
 
