@@ -147,7 +147,7 @@ Host devserver2-department
   User root
 
 Host ser5
-  HostName 192.168.2.45
+  HostName ser5.local
   Port 22
   User yusiwen
   RequestTTY yes
