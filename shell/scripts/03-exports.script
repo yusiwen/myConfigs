@@ -344,6 +344,11 @@ if [ "$OS" = 'Darwin' ]; then
   export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 fi
 
+# clangd
+if [ -d "/opt/clangd" ]; then
+  PATH="$PATH:/opt/clangd/bin"
+  export PATH
+fi
 
 # kubectl-krew
 if [ -e "$HOME/.krew/bin/kubectl-krew" ]; then
