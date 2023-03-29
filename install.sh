@@ -1044,6 +1044,13 @@ function install_rust() { # {{{
     else
       echo -e "${COLOR}${COLOR1}ripgrep${COLOR} is found.${NC}"
     fi
+    
+    if ! type cargo-install-update >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}cargo-update${COLOR}...${NC}"
+      cargo install cargo-update
+    else
+      echo -e "${COLOR}${COLOR1}cargo-update${COLOR} is found.${NC}"
+    fi
   elif [ "$OS" = "Windows_NT" ]; then
     echo -e "Please download and run installer from: https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe"
   fi
