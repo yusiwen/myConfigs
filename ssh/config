@@ -160,6 +160,13 @@ Host ser5.wireguard
   RequestTTY yes
   RemoteCommand ~/git/myConfigs/shell/tmux/byobu.sh
 
+Host ser5.chj
+  HostName 192.168.8.45
+  Port 22
+  User yusiwen
+  RequestTTY yes
+  RemoteCommand ~/git/myConfigs/shell/tmux/byobu.sh
+
 Host glinet.chj
   HostName 192.168.8.1
   Port 22
