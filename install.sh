@@ -932,7 +932,7 @@ function install_containerd() { # {{{
     fi
 
     # Install nerdctl
-    if ! check_command nerdct; then
+    if ! check_command nerdctl; then
       local nerdctl_version
       nerdctl_version=$(get_latest_release_from_github containerd/nerdctl)
       wget "https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/nerdctl-${nerdctl_version}-linux-${ARCH}.tar.gz" -O /tmp/nerdctl.tar.gz
