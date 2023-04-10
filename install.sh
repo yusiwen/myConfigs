@@ -905,7 +905,7 @@ function install_docker() { # {{{
 
 function install_containerd() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if ! type containerd >/dev/null 2>&1; then
+    if ! check_command containerd; then
       local containerd_version
       containerd_version=$(get_latest_release_from_github containerd/containerd)
       echo -e "${COLOR}Installing containerd ${COLOR1}${containerd_version}${COLOR}...${NC}"
@@ -914,8 +914,17 @@ function install_containerd() { # {{{
       containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
     fi
 
+    if ! check_command buildctl; then
+      local buildkit_version
+      buildkit_version=$(get_latest_release_from_github moby/buildkit)
+      echo -e "${COLOR}Installing buildkit ${COLOR1}${buildkit_version}${COLOR}...${NC}"
+      wget "https://github.com/moby/buildkit/releases/download/v${buildkit_version}/buildkit-v${buildkit_version}.linux-${ARCH}.tar.gz" -O /tmp/buildkit.tar.gz
+      $SUDO tar xvzf /tmp/buildkit.tar.gz -C /usr/local/
+      rm /tmp/buildkit.tar.gz
+    fi
+
     # Install nerdctl
-    if ! type nerdctl >/dev/null 2>&1; then
+    if ! check_command nerdct; then
       local nerdctl_version
       nerdctl_version=$(get_latest_release_from_github containerd/nerdctl)
       wget "https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/nerdctl-${nerdctl_version}-linux-${ARCH}.tar.gz" -O /tmp/nerdctl.tar.gz
@@ -932,15 +941,15 @@ function install_containerd() { # {{{
     esac
 
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      if ! type newuidmap >/dev/null 2>&1; then
+      if ! check_command newuidmap; then
         $SUDO apt install uidmap
       fi
 
-      if ! type slirp4netns >/dev/null 2>&1; then
+      if ! check_command slirp4netns; then
         $SUDO apt install slirp4netns
       fi
 
-      if ! type rootlesskit >/dev/null 2>&1; then
+      if ! check_command rootlesskit; then
         local rootlesskit_version
         rootlesskit_version=$(get_latest_release_from_github rootless-containers/rootlesskit)
         wget "https://github.com/rootless-containers/rootlesskit/releases/download/v${rootlesskit_version}/rootlesskit-${OS_ARCH}.tar.gz" -O /tmp/rootlesskit.tar.gz
@@ -950,8 +959,8 @@ function install_containerd() { # {{{
       /usr/local/bin/containerd-rootless-setuptool.sh install
 
       # Install CNI tools
-      if ! type cnitool >/dev/null 2>&1; then
-        if ! type go >/dev/null 2>&1; then
+      if ! check_command cnitool; then
+        if ! check_command go; then
           install_golang
           export GOROOT="$HOME"/.local/go
           export GOPATH=$HOME/.gopackages
