@@ -104,9 +104,25 @@ function check_link() { # {{{
   fi
 } # }}}
 
+function check_command() { # {{{
+  if type "$1" >/dev/null 2>&1; then
+    true
+  else
+    false
+  fi
+} # }}}
+
 function get_latest_release_from_github() { # {{{
+  auth_config=''
+  if [ -e "$HOME"/.github_token_cfg ]; then
+    username=$(awk -F "=" '/username/ {print $2}' "$HOME"/.github_token_cfg)
+    password=$(awk -F "=" '/access_token/ {print $2}' "$HOME"/.github_token_cfg)
+    if [ -n "$username" ] && [ -n "$password" ]; then
+      auth_config="--user $username:$password"
+    fi
+  fi
   # Thanks to: https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+  curl $auth_config --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
     grep '"tag_name":' |                                            # Get tag line
     sed -E 's/.*"([^"]+)".*/\1/' |                                  # Pluck JSON value
     sed 's/^v//g'                                                   # Remove leading 'v'
