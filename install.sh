@@ -114,11 +114,19 @@ function check_command() { # {{{
 
 function get_latest_release_from_github() { # {{{
   auth_config=''
-  if [ -e "$HOME"/.github_token_cfg ]; then
-    username=$(awk -F "=" '/username/ {print $2}' "$HOME"/.github_token_cfg)
-    password=$(awk -F "=" '/access_token/ {print $2}' "$HOME"/.github_token_cfg)
+  if check_command pass; then
+    username=$(pass access_token@github.com/scrapy/username)
+    password=$(pass access_token@github.com/scrapy/token)
     if [ -n "$username" ] && [ -n "$password" ]; then
       auth_config="--user $username:$password"
+    fi
+  else
+    if [ -e "$HOME"/.github_token_cfg ]; then
+      username=$(awk -F "=" '/username/ {print $2}' "$HOME"/.github_token_cfg)
+      password=$(awk -F "=" '/access_token/ {print $2}' "$HOME"/.github_token_cfg)
+      if [ -n "$username" ] && [ -n "$password" ]; then
+        auth_config="--user $username:$password"
+      fi
     fi
   fi
   # Thanks to: https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
