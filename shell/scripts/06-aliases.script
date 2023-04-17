@@ -139,6 +139,8 @@ fi
 # Maven
 alias mvn-no-javadoc='mvn -Dmaven.javadoc.skip=true'
 alias mvn-no-test='mvn -Dmaven.test.skip=true'
+alias mvns='_mvn_setting_switch'
+alias mvnds='_mvnd_setting_switch'
 
 # youtube-dl
 alias ytd='youtube-dl --proxy socks5://127.0.0.1:1088 -r 500K'

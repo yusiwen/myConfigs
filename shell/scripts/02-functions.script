@@ -350,4 +350,22 @@ function _drmi() { # {{{
   [ -n "$cid" ] && docker rmi "$cid"
 } # }}}
 
+function _mvn_setting_switch() { # {{{
+  if [ ! -d "$HOME"/.m2 ]; then
+    return
+  fi
+  local settings
+  settings=$(find "$HOME"/.m2/settings*.xml | fzf)
+  [ -n "$settings" ] && mvn -s "$settings" "$@"
+} # }}}
+
+function _mvnd_setting_switch() { # {{{
+  if [ ! -d "$HOME"/.m2 ]; then
+    return
+  fi
+  local settings
+  settings=$(find "$HOME"/.m2/settings*.xml | fzf)
+  [ -n "$settings" ] && mvnd -s "$settings" "$@"
+} # }}}
+
 # vim: foldmethod=marker :
