@@ -113,7 +113,9 @@ function check_command() { # {{{
 } # }}}
 
 function get_latest_release_from_github() { # {{{
-  auth_config=''
+  local auth_config=''
+  local username=''
+  local password=''
   if check_command pass; then
     username=$(pass access_token@github.com/scrapy/username)
     password=$(pass access_token@github.com/scrapy/token)
@@ -134,6 +136,19 @@ function get_latest_release_from_github() { # {{{
     grep '"tag_name":' |                                            # Get tag line
     sed -E 's/.*"([^"]+)".*/\1/' |                                  # Pluck JSON value
     sed 's/^v//g'                                                   # Remove leading 'v'
+} # }}}
+
+function vercomp() { # {{{
+  local this_version=$1
+  local available_version=$2
+
+  if [[ "ok" == "$(echo | awk "(${available_version} > ${this_version}) { print \"ok\"; }")" ]]; then
+    echo 1
+  elif [[ "ok" == "$(echo | awk "(${available_version} == ${this_version}) { print \"ok\"; }")" ]]; then
+    echo 0
+  else
+    echo 2
+  fi
 } # }}}
 
 # Initialize apt and install prerequisite packages
@@ -931,14 +946,30 @@ function install_containerd() { # {{{
       rm /tmp/buildkit.tar.gz
     fi
 
-    # Install nerdctl
+    # {{{ Install nerdctl
+    local nerdctl_version
+    nerdctl_version=$(get_latest_release_from_github containerd/nerdctl)
+    local nerdctl_download_url
     if ! check_command nerdctl; then
-      local nerdctl_version
-      nerdctl_version=$(get_latest_release_from_github containerd/nerdctl)
-      wget "https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/nerdctl-${nerdctl_version}-linux-${ARCH}.tar.gz" -O /tmp/nerdctl.tar.gz
+      nerdctl_download_url="https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/nerdctl-${nerdctl_version}-linux-${ARCH}.tar.gz"
+    else
+      local nerdctl_current_version
+      nerdctl_current_version=$(nerdctl version -f '{{ .Client.Version }}' | sed 's/^v//g')
+      echo -e "${COLOR}Found current nerdctl ${COLOR1}${nerdctl_current_version}${COLOR}${NC}"
+      local vercomp_rst=0
+      vercomp_rst=$(vercomp "$nerdctl_current_version" "$nerdctl_version")
+      if [ "$vercomp_rst" -eq 1 ]; then
+        echo -e "${COLOR}Found latest nerdctl ${COLOR1}${nerdctl_version}${COLOR}${NC}"
+        nerdctl_download_url="https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/nerdctl-${nerdctl_version}-linux-${ARCH}.tar.gz"
+      fi
+    fi
+    echo "$nerdctl_download_url"
+    if [ -n "$nerdctl_download_url" ]; then
+      echo -e "${COLOR}Installing nerdctl ${COLOR1}${nerdctl_version}${COLOR}...${NC}"
+      wget "$nerdctl_download_url" -O /tmp/nerdctl.tar.gz
       $SUDO tar xvzf /tmp/nerdctl.tar.gz -C /usr/local/bin
       rm /tmp/nerdctl.tar.gz
-    fi
+    fi # }}}
 
     # {{{ Rootless containers
     read -r -p "Do you want rootless container? (yes/No) " yn
