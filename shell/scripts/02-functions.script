@@ -21,6 +21,14 @@ whichv() { # {{{
   printf '\e[?7t'
 } # }}}
 
+function check_command() { # {{{
+  if type "$1" >/dev/null 2>&1; then
+    true
+  else
+    false
+  fi
+} # }}}
+
 du1() { du -h --max-depth=1 "$@" | sort -k 1,1hr -k 2,2f; }
 
 # Purge all rc packages

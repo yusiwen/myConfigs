@@ -184,4 +184,13 @@ else
   fi
 fi
 
+if check_command vagrant; then
+  alias vgt='vagrant'
+  alias vgtu='vagrant up'
+  alias vgth='vagrant halt'
+  alias vgtd='vagrant destroy'
+  alias vgts='vagrant ssh'
+  alias vgtst='vagrant status'
+fi
+
 # vim: foldmethod=marker :
