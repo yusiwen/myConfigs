@@ -70,6 +70,8 @@ fi
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
 
 # Git {{{
+alias gitra='git remote -v'
+
 alias gitpso='git push origin'
 alias gitpsa='git push --all'
 alias gitpst='git push --tag'
