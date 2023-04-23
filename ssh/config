@@ -131,6 +131,11 @@ Host raspberry-server-m01
   User yusiwen
   Port 22
 
+Host raspberry-server-m01.chj
+  HostName 192.168.8.46
+  User yusiwen
+  Port 22
+
 Host lattepanda-server-01
   HostName 192.168.2.47
   User yusiwen
