@@ -174,7 +174,7 @@ function init_env() { # {{{
         gdebi-core software-properties-common apt-transport-https \
         htop atop iotop net-tools iftop nethogs nload sysstat \
         tmux byobu jq pass \
-        build-essential cmake \
+        build-essential cmake pstack \
         ethtool cifs-utils nfs-common libfuse2
       # Check if ubuntu version is newer than 20.04
       if [ -n "$(echo ${OS_VERSION} | awk '$1 >= 20.04 { print "ok"; }')" ]; then
