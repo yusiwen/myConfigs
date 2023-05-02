@@ -44,7 +44,6 @@ else
   fi
 fi
 
-
 # On Mac, to enable italic fonts in iTerm2, TERM must be set to 'xterm-256color-italic'.
 # If ssh to a remote server, the environment may be passed on the remote and it will probable don't know this custom terminal.
 # A possible solution on the local host is to alias ssh
@@ -186,7 +185,7 @@ else
   fi
 fi
 
-if check_command vagrant; then
+if type vagrant >/dev/null 2>&1; then
   alias vgt='vagrant'
   alias vgtu='vagrant up'
   alias vgth='vagrant halt'
