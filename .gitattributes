@@ -1,2 +1,5 @@
 *.sh eol=lf
 *.script eol=lf
+shell/bashrc eol=lf
+shell/bash_profile eol=lf
+shell/bash_aliases eol=lf
