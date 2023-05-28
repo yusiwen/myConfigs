@@ -1124,7 +1124,7 @@ function install_lua() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! type lua >/dev/null 2>&1; then
-        $SUDO apt install lua5.3 liblua5.3-dev
+        $SUDO apt install -y lua5.3 liblua5.3-dev
       fi
     elif [ "$DISTRO" = 'CentOS' ]; then
       # TODO: fix repo, need further checks
