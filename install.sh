@@ -170,10 +170,11 @@ function init_env() { # {{{
       fi
 
       $SUDO apt update
-      $SUDO apt install -y curl silversearcher-ag p7zip-full pigz \
+      $SUDO apt install -y silversearcher-ag p7zip-full pigz \
         gdebi-core software-properties-common apt-transport-https \
         htop atop iotop net-tools iftop nethogs nload sysstat \
         tmux byobu jq pass \
+        curl net-tools iputils-ping iputils-arping hping3 \
         build-essential cmake pstack \
         ethtool cifs-utils nfs-common libfuse2
       # Check if ubuntu version is newer than 20.04
@@ -771,8 +772,11 @@ function install_vim() { # {{{
         # Install VIM_PACKAGE
         echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
 
-        curl -L "https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb" -O /tmp/nvim.deb
-        $SUDO dpkp --install /tmp/nvim.deb
+        local installation_target="$HOME/.local/bin/neovim.appimage"
+        local link_target="$HOME/.local/bin/nvim"
+        curl -L "https://github.com/neovim/neovim/releases/download/stable/nvim.appimage" -o "$installation_target"
+        chmod +x "$installation_target"
+        ln -snfv "$installation_target" "$link_target"
       else
         echo -e "${COLOR1}NeoVim${COLOR} is found at '$(which nvim)'${NC}"
       fi
@@ -1080,12 +1084,12 @@ function install_samba() { # {{{
 
 function install_rust() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if ! type rustc >/dev/null 2>&1; then
+    if ! type rustc >/dev/null 2>&1 && [ -e "$HOME"/.cargo/bin/rustc ]; then
       echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
       curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
       source "$HOME/.cargo/env"
     else
-      echo -e "${COLOR}${COLOR1}$(rustc --version)${COLOR} is found.${NC}"
+      echo -e "${COLOR}${COLOR1}$($HOME/.cargo/bin/rustc --version)${COLOR} is found.${NC}"
     fi
 
     if ! type exa >/dev/null 2>&1; then
@@ -1111,6 +1115,7 @@ function install_rust() { # {{{
     
     if ! type cargo-install-update >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}cargo-update${COLOR}...${NC}"
+      sudo apt install -y libssl-dev
       cargo install cargo-update
     else
       echo -e "${COLOR}${COLOR1}cargo-update${COLOR} is found.${NC}"
