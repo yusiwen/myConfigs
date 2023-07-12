@@ -36,7 +36,7 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
 # primary prompt
 PROMPT='${NEWLINE}$my_dark- $my_gray%n@%m $my_dark--------------------------------------\
 %{$reset_color%} $(vi_mode_prompt_info)
-$FG[037]%(5~|%-1~/…/%3~|%4~)\
+$FG[037]%(4~|%-1~/…/%1~|%3~)\
 %{$reset_color%}$(gitprompt) \
 $FG[105]%(!.#.»)%{$reset_color%} '
 PROMPT2='%{$fg[red]%}\ %{$reset_color%}'
