@@ -172,7 +172,7 @@ function init_env() { # {{{
       $SUDO apt update
       $SUDO apt install -y silversearcher-ag p7zip-full pigz \
         gdebi-core software-properties-common apt-transport-https \
-        htop atop iotop net-tools iftop nethogs nload sysstat \
+        htop atop iotop iftop nethogs nload sysstat \
         tmux byobu jq pass \
         curl net-tools iputils-ping iputils-arping hping3 \
         build-essential cmake pstack \
