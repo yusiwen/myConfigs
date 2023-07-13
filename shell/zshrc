@@ -127,7 +127,7 @@ for script in $HOME/myConfigs/shell/scripts/*.script; do
   source "$script"
 done
 
-unalias mvnd
+#unalias mvnd
 
 # WasmEdge
 [[ -s "$HOME/.wasmedge/env" ]] && source "$HOME/.wasmedge/env"
