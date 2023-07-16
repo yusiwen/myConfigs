@@ -170,12 +170,18 @@ function init_env() { # {{{
       fi
 
       $SUDO apt update
+      local pkg_pstack=
+      if [ "$ARCH" = 'amd64' ]; then
+        pkg_pstack='pstack'
+      else
+        pkg_pstack=''
+      fi
       $SUDO apt install -y silversearcher-ag p7zip-full pigz \
         gdebi-core software-properties-common apt-transport-https \
         htop atop iotop iftop nethogs nload sysstat \
         tmux byobu jq pass \
         curl net-tools iputils-ping iputils-arping hping3 \
-        build-essential cmake pstack \
+        build-essential cmake ${pkg_pstack} \
         ethtool cifs-utils nfs-common libfuse2
       # Check if ubuntu version is newer than 20.04
       if [ -n "$(echo ${OS_VERSION} | awk '$1 >= 20.04 { print "ok"; }')" ]; then
