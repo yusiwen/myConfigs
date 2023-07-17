@@ -1090,7 +1090,7 @@ function install_samba() { # {{{
 
 function install_rust() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if ! type rustc >/dev/null 2>&1 && [ -e "$HOME"/.cargo/bin/rustc ]; then
+    if ! type rustc >/dev/null 2>&1 && [ ! -e "$HOME"/.cargo/bin/rustc ]; then
       echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
       curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
       source "$HOME/.cargo/env"
