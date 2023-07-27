@@ -151,13 +151,11 @@ alias ka='kubeadm'
 alias kc='kubectl'
 
 # Docker {{{
-alias do-arch='docker image inspect --format "{{.Architecture}}"'
-alias dcp='docker-compose'
+alias dilsa='docker image inspect --format "{{.Architecture}}"'
 alias dps='docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}"'
-alias dis='docker images'
-alias dcls='docker-fuzzy-container-ls'
-alias dils='docker-fuzzy-image-ls'
-alias dnls='docker-fuzzy-network-ls'
+alias dcfls='docker-fuzzy-container-ls'
+alias difls='docker-fuzzy-image-ls'
+alias dnfls='docker-fuzzy-network-ls'
 alias drm='_drm'
 alias drmi='_drmi'
 # }}}
