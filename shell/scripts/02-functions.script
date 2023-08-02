@@ -322,6 +322,24 @@ docker-fuzzy-network-ls() {
         --preview-label='network details' |\
     cut -d ' ' -f 1
 }
+
+docker-veth-ls() {
+  if ! type docker > /dev/null 2>&1; then
+    return
+  fi
+
+  for container in $(docker ps -q); do
+    local container_name=
+    container_name=$(docker ps --format '{{.Names}}' -f "id=$container")
+    local iflink=
+    iflink=$(docker exec -it "$container" cat /sys/class/net/eth0/iflink)
+    iflink=$(echo "$iflink" | tr -d '\r')
+    local veth=
+    veth=$(grep -l "$iflink" /sys/class/net/veth*/ifindex)
+    veth=$(echo "$veth" | sed -e 's;^.*net/\(.*\)/ifindex$;\1;')
+    echo "$container : $veth : $container_name"
+done
+}
 #}}}
 
 # Select a docker container to execute command
