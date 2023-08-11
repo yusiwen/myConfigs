@@ -273,6 +273,17 @@ if [ ! -z "$DISPLAY" ]; then
 fi
 #}}}
 
+#{{{ CUDA 
+if [ -e /usr/local/cuda/bin ]; then
+  export PATH=$PATH:/usr/local/cuda/bin
+fi
+
+if [ -e /usr/local/cuda/lib64 ]; then
+  export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64\
+                         ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+fi
+#}}}
+
 # {{{ Misc
 # set TERM to 'screen-256color' in tmux
 # if [ -z "$TMUX" ]; then
