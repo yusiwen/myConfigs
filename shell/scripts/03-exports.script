@@ -275,15 +275,24 @@ fi
 
 #{{{ CUDA 
 if [ -e /usr/local/cuda/bin ]; then
-  export PATH=$PATH:/usr/local/cuda/bin
+  export CUDA_HOME=/usr/local/cuda
+  export PATH=$CUDA_HOME/bin:$PATH
 fi
 
 if [ -e /usr/local/cuda/lib64 ]; then
-  export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+  if [ -z "$LD_LIBRARY_PATH" ]; then
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64
+  else
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+  fi  
 fi
 
 if [ -e /usr/lib/llvm-8 ]; then
-  export LD_LIBRARY_PATH=/usr/lib/llvm-8:$LD_LIBRARY_PATH
+  if [ -z "$LD_LIBRARY_PATH" ]; then
+    export LD_LIBRARY_PATH=/usr/lib/llvm-8
+  else
+    export LD_LIBRARY_PATH=/usr/lib/llvm-8:$LD_LIBRARY_PATH
+  fi
 fi
 #}}}
 
