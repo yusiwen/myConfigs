@@ -138,5 +138,10 @@ zinit wait'1' lucid light-mode for \
     " \
   ogham/exa \
     from'gh-r' as'program' pick'**/delta' \
-  dandavison/delta
+  dandavison/delta \
+    as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
+    atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
+    atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
+    atinit"export SDKMAN_DIR=$HOME/.sdkman; source $HOME/.sdkman/bin/sdkman-init.sh" \
+  zdharma-continuum/null
     
