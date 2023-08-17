@@ -17,7 +17,7 @@ disabled = false
 show_always = true
 
 [hostname]
-format = "@[$hostname](dimmed) "
+format = "[@](dimmed)[$hostname](dimmed) "
 
 [directory]
 style = "blue"
