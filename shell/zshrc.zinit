@@ -128,6 +128,9 @@ zinit wait'1' lucid light-mode for \
   tj/n \
     from'gh-r' as'command' atinit'export PATH="$HOME/.yarn/bin:$PATH"' mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
   yarnpkg/yarn \
+    from'gh-r' as'program' mv'docker-compose* -> docker-compose' pick"docker-compose" \
+    atload"alias dco='docker-compose'" \
+  docker/compose \
     from'gh-r' as'program' \
   junegunn/fzf \
     from'gh-r' as'program' pick'bin/exa' \
