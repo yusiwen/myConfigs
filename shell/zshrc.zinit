@@ -117,6 +117,8 @@ zinit wait lucid for \
       zstyle :plugin:history-search-multi-word reset-prompt-protect 1" \
     bindmap"^R -> ^H" \
   zdharma-continuum/history-search-multi-word \
+  zdharma-continuum/z-a-bin-gem-node \
+  zdharma-continuum/zinit-annex-rust \
   unixorn/fzf-zsh-plugin
 #####################
 # PROGRAMS          #
@@ -147,4 +149,4 @@ zinit wait'1' lucid light-mode for \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
     atinit"export SDKMAN_DIR=$HOME/.sdkman; source $HOME/.sdkman/bin/sdkman-init.sh" \
   zdharma-continuum/null
-    
+
