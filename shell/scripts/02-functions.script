@@ -258,7 +258,7 @@ get_latest_release() {
 function _pip() {
   if type pip_search >/dev/null; then
     if [ $1 = "search" ]; then
-     pip_search "$2"
+      pip_search "$2"
     else
       pip "$@"
     fi
@@ -271,7 +271,7 @@ function _pip() {
 function _pip3() {
   if type pip_search >/dev/null; then
     if [ $1 = "search" ]; then
-     pip_search "$2"
+      pip_search "$2"
     else
       pip3 "$@"
     fi
