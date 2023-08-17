@@ -589,6 +589,9 @@ function install_python() { # {{{
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip2.py
         $SUDO python2 /tmp/get-pip2.py
+        if [ -f "/usr/local/bin/pip" ]; then
+          $SUDO mv /usr/local/bin/pip /usr/local/bin/pip.deprecated
+        fi
       elif [ "$DISTRO" = 'Manjaro' ]; then
         echo -e "${COLOR}python2-pip is not officially supported by ${COLOR1}$DISTRO${COLOR}...skip${NC}"
       fi
