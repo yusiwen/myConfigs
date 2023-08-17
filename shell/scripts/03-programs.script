@@ -173,7 +173,7 @@ fi
 #}}}
 
 # {{{ Node.js with th/n
-if [ -d "$HOME"/.n ]; then
+if [ -d "$HOME"/.n ] && [ -z "$N_PREFIX" ]; then
   N_PREFIX="$HOME/.n"
   export N_PREFIX
   PATH="$PATH:$N_PREFIX/bin"
