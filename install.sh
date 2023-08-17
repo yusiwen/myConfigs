@@ -1175,7 +1175,9 @@ function install_golang() { # {{{
     local version="$1"
     if [ -z "$version" ]; then
       # Get latest stable from official site
-      version=$(curl -sL "https://golang.org/VERSION?m=text")
+      local resp_str
+      resp_str=$(curl -sL "https://golang.org/VERSION?m=text")
+      version=$(echo "${resp_str}" | head -1)
       echo -e "${COLOR}The latest stable version is ${COLOR1}$version${COLOR}${NC}"
     elif ! (echo "$version" | grep -Eq ^go); then
       version="go$version"
