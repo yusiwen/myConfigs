@@ -138,9 +138,11 @@ zinit wait'1' lucid light-mode for \
   junegunn/fzf \
     from'gh-r' as'program' pick'bin/exa' \
     atload"
-      alias la='exa --all --git --color=auto'
-      alias ls='exa --git --color=auto'
-      alias ll='exa --long --all --git --color=auto'
+      if [ \"\$(uname -o)\" != 'Msys' ]; then
+        alias la='exa --all --git --color=auto'
+        alias ls='exa --git --color=auto'
+        alias ll='exa --long --all --git --color=auto'
+      fi
     " \
   ogham/exa \
     from'gh-r' as'program' pick'**/delta' \
