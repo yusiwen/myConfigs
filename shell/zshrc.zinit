@@ -150,3 +150,8 @@ zinit wait'1' lucid light-mode for \
     atinit"export SDKMAN_DIR=$HOME/.sdkman; source $HOME/.sdkman/bin/sdkman-init.sh" \
   zdharma-continuum/null
 
+source $HOME/git/myConfigs/shell/scripts/00-environment.script
+source $HOME/git/myConfigs/shell/scripts/02-functions.script
+source $HOME/git/myConfigs/shell/scripts/03-programs.script
+source $HOME/git/myConfigs/shell/scripts/06-aliases.script
+
