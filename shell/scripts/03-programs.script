@@ -273,6 +273,12 @@ if [ ! -z "$DISPLAY" ]; then
 fi
 #}}}
 
+#{{{ Anaconda
+if [ -e /opt/anaconda3/bin/conda ]; then
+  export PATH="/opt/anaconda3/bin:$PATH"
+fi
+#}}}
+
 #{{{ CUDA 
 if [ -e /usr/local/cuda/bin ]; then
   export CUDA_HOME=/usr/local/cuda
