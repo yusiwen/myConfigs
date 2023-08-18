@@ -730,40 +730,14 @@ function install_zsh() { # {{{
     fi
   fi
 
-  # Install oh-my-zsh
-  if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    git clone https://github.com/ohmyzsh/ohmyzsh.git $HOME/.oh-my-zsh
-  fi
-
   check_link "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
   check_link "$CONFIG_SHELL"/bash_aliases "$HOME"/.bash_aliases
   check_link "$CONFIG_SHELL"/bash_profile "$HOME"/.bash_profile
   check_link "$CONFIG_SHELL"/profile "$HOME"/.profile
-  check_link "$CONFIG_SHELL"/zshrc "$HOME"/.zshrc
+  check_link "$CONFIG_SHELL"/zshrc.zinit "$HOME"/.zshrc
+  check_link "$CONFIG_SHELL"/starship/starship.toml "$HOME"/.config/starship.toml
 
-  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
-    echo -e "${COLOR}Installing ${COLOR1}zsh-autosuggestions${COLOR}...${NC}"
-    git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-    echo -e "${COLOR}Installing ${COLOR1}zsh-autosuggestions${COLOR}...OK${NC}"
-  else
-    echo -e "${COLOR}Found ${COLOR1}zsh-autosuggestions${COLOR}...skip${NC}"
-  fi
-
-  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
-    echo -e "${COLOR}Installing ${COLOR1}zsh-syntax-highlighting${COLOR}...${NC}"
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-    echo -e "${COLOR}Installing ${COLOR1}zsh-syntax-highlighting${COLOR}...OK${NC}"
-  else
-    echo -e "${COLOR}Found ${COLOR1}zsh-syntax-highlighting${COLOR}...skip${NC}"
-  fi
-
-  if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/fzf-zsh-plugin ]; then
-    echo -e "${COLOR}Installing ${COLOR1}fzf-zsh-plugin${COLOR}...${NC}"
-    git clone https://github.com/unixorn/fzf-zsh-plugin.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-zsh-plugin
-    echo -e "${COLOR}Installing ${COLOR1}fzf-zsh-plugin${COLOR}...OK${NC}"
-  else
-    echo -e "${COLOR}Found ${COLOR1}fzf-zsh-plugin${COLOR}...skip${NC}"
-  fi
+  source "$HOME/.zshrc"
 } # }}}
 
 function install_vim() { # {{{
@@ -1099,20 +1073,6 @@ function install_rust() { # {{{
       source "$HOME/.cargo/env"
     else
       echo -e "${COLOR}${COLOR1}$($HOME/.cargo/bin/rustc --version)${COLOR} is found.${NC}"
-    fi
-
-    if ! type exa >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing ${COLOR1}exa${COLOR}...${NC}"
-      cargo install exa
-    else
-      echo -e "${COLOR}${COLOR1}exa${COLOR} is found.${NC}"
-    fi
-
-    if ! type delta >/dev/null 2>&1; then
-      echo -e "${COLOR}Installing ${COLOR1}git-delta${COLOR}...${NC}"
-      cargo install git-delta
-    else
-      echo -e "${COLOR}${COLOR1}git-delta${COLOR} is found.${NC}"
     fi
 
     if ! type rg >/dev/null 2>&1; then
