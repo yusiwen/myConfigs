@@ -120,7 +120,8 @@ zinit wait lucid for \
   zdharma-continuum/history-search-multi-word \
   zdharma-continuum/z-a-bin-gem-node \
   zdharma-continuum/zinit-annex-rust \
-  unixorn/fzf-zsh-plugin
+  unixorn/fzf-zsh-plugin \
+  jeffreytse/zsh-vi-mode
 #####################
 # PROGRAMS          #
 #####################

@@ -2,6 +2,7 @@ format = """
 $username\
 $hostname\
 $container\
+$line_break\
 $directory\
 $git_branch\
 $git_state\
@@ -21,18 +22,19 @@ $docker_context\
 $vagrant"""
 
 [username]
-style_user = 'white bold'
+style_user = '243 dimmed'
 style_root = 'red bold'
-format = '[$user]($style)'
+format = '[--- $user]($style)'
 disabled = false
 show_always = true
 
 [hostname]
-format = "[@](dimmed)[$hostname](dimmed)"
+format = "[@$hostname](243 dimmed)"
+ssh_only = false
 
 [directory]
 style = "blue"
-format = " [$path]($style)[$read_only]($read_only_style) "
+format = "[$path]($style)[$read_only]($read_only_style) "
 
 [character]
 success_symbol = "[❯](purple)"
