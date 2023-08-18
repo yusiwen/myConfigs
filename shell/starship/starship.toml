@@ -1,13 +1,24 @@
 format = """
 $username\
 $hostname\
+$container\
 $directory\
 $git_branch\
 $git_state\
 $git_status\
-$cmd_duration\
 $python\
+$conda\
 $character"""
+
+right_format = """
+$cmd_duration\
+$git_metrics\
+$git_commit\
+$golang\
+$java\
+$nodejs\
+$docker_context\
+$vagrant"""
 
 [username]
 style_user = 'white bold'
@@ -17,10 +28,11 @@ disabled = false
 show_always = true
 
 [hostname]
-format = "[@](dimmed)[$hostname](dimmed) "
+format = "[@](dimmed)[$hostname](dimmed)"
 
 [directory]
 style = "blue"
+format = " [$path]($style)[$read_only]($read_only_style) "
 
 [character]
 success_symbol = "[❯](purple)"
@@ -46,6 +58,12 @@ stashed = "≡"
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "bright-black"
 
+[git_metrics]
+disabled=false
+added_style='dimmed green'
+deleted_style='dimmed red'
+format = '[](dimmed)[+$added]($added_style)/[-$deleted]($deleted_style) '
+
 [cmd_duration]
 format = "[$duration]($style) "
 style = "yellow"
@@ -53,3 +71,30 @@ style = "yellow"
 [python]
 format = "[$virtualenv]($style) "
 style = "bright-black"
+
+[conda]
+format = "[$environment]($style) "
+style = "bright-black"
+
+[golang]
+symbol = '🐹'
+style = 'dimmed cyan'
+format = '[$symbol($version )]($style)'
+
+[java]
+symbol = '☕'
+format = '[$symbol($version )]($style)'
+style = 'dimmed green'
+
+[nodejs]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'dimmed green'
+
+[docker_context]
+format = '[🐋$context](blue bold)'
+
+[vagrant]
+symbol = '⍱'
+style = 'dimmed cyan'
+format = '[$symbol($version )]($style)'
