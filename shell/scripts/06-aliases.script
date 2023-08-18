@@ -190,8 +190,9 @@ if type vagrant >/dev/null 2>&1; then
   alias vgtu='vagrant up'
   alias vgth='vagrant halt'
   alias vgtd='vagrant destroy'
-  alias vgts='vagrant ssh'
-  alias vgtst='vagrant status'
+  alias vgtss='vagrant ssh'
+  alias vgts='vagrant status'
+  alias vgtgs='vagrant global-status'
 fi
 
 # vim: foldmethod=marker :
