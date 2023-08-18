@@ -176,12 +176,16 @@ fi
 
 # Check localhost port 7890 of Clash
 if [ "$OS" = 'Windows_NT' ]; then
-  if netstat -an|grep LISTEN|grep -q 7890 ; then
-    alias curlp='curl -x http://localhost:7890'
+  if type netstat >/dev/null 2>&1; then
+    if netstat -an|grep LISTEN|grep -q 7890 ; then
+      alias curlp='curl -x http://localhost:7890'
+    fi
   fi
 else
-  if netstat -lnt | grep -q 7890 ; then
-    alias curlp='curl -x http://localhost:7890'
+  if type netstat >/dev/null 2>&1; then
+    if netstat -lnt | grep -q 7890 ; then
+      alias curlp='curl -x http://localhost:7890'
+    fi
   fi
 fi
 
