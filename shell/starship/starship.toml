@@ -22,14 +22,14 @@ $docker_context\
 $vagrant"""
 
 [username]
-style_user = '243 dimmed'
+style_user = '250 dimmed'
 style_root = 'red bold'
 format = '[--- $user]($style)'
 disabled = false
 show_always = true
 
 [hostname]
-format = "[@$hostname](243 dimmed)"
+format = "[@$hostname](250 dimmed)"
 ssh_only = false
 
 [directory]
