@@ -1,8 +1,4 @@
 #!/usr/bin/env zsh
-#
-# numToStr zinit configuration
-#
-#
 #=== HELPER METHODS ===================================
 function error() { print -P "%F{160}[ERROR] ---%f%b $1" >&2 && exit 1; }
 function info() { print -P "%F{34}[INFO] ---%f%b $1"; }
@@ -79,10 +75,12 @@ zinit wait lucid for \
 	OMZP::git \
   OMZP::z \
 	OMZP::fzf \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
     atload"
       alias dcupb='docker-compose up --build'" \
 	OMZP::docker-compose \
     as"completion" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   OMZP::docker/completions/_docker \
   djui/alias-tips \
   hlissner/zsh-autopair \
@@ -121,24 +119,25 @@ zinit wait lucid light-mode for \
 # PROGRAMS          #
 #####################
 zinit wait lucid light-mode for \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
     as'command' \
     atinit'export N_PREFIX="$HOME/.n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' \
     pick"**/n" \
   tj/n \
     from'gh-r' as'command' atinit'export PATH="$HOME/.yarn/bin:$PATH"' mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
   yarnpkg/yarn \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
     from'gh-r' as'program' mv'docker-compose* -> docker-compose' pick"docker-compose" \
     atload"alias dco='docker-compose'" \
   docker/compose \
     from'gh-r' as'program' \
   junegunn/fzf \
     from'gh-r' as'program' pick'bin/exa' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
     atload"
-      if [ \"\$(uname -o)\" != 'Msys' ]; then
-        alias la='exa --all --git --color=auto'
-        alias ls='exa --git --color=auto'
-        alias ll='exa --long --all --git --color=auto'
-      fi
+      alias la='exa --all --git --color=auto'
+      alias ls='exa --git --color=auto'
+      alias ll='exa --long --all --git --color=auto'
     " \
   ogham/exa \
     from'gh-r' as'program' pick'**/delta' \

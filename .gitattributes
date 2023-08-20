@@ -1,5 +1,9 @@
 *.sh eol=lf
+*.zsh eol=lf
 *.script eol=lf
+shell/profile eol=lf
 shell/bashrc eol=lf
 shell/bash_profile eol=lf
 shell/bash_aliases eol=lf
+shell/zshrc eol=lf
+shell/zshrc.zinit eol=lf
