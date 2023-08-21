@@ -153,6 +153,7 @@ alias kc='kubectl'
 # Docker {{{
 alias dilsa='docker image inspect --format "{{.Architecture}}"'
 alias dps='docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}"'
+alias dcpid='docker container inspect --format "{{.State.Pid}}'
 alias dcfls='docker-fuzzy-container-ls'
 alias difls='docker-fuzzy-image-ls'
 alias dnfls='docker-fuzzy-network-ls'
