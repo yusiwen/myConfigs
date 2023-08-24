@@ -46,7 +46,7 @@ format = "[$branch]($style)"
 style = "bright-black"
 
 [git_status]
-style = "dimmed red"
+style = "dimmed cyan"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
