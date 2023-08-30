@@ -514,12 +514,7 @@ function fetch_myConfigs() { # {{{
 
   if [ "$OS" = 'Linux' ] || [ "$OS" = 'Darwin' ]; then
     mkdir -p "$HOME"/.ssh
-    if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-      ln -sfnv "$HOME"/myConfigs/git/ssh_config.mirror "$HOME"/.ssh/config
-    else
-      ln -sfnv "$HOME"/myConfigs/git/ssh_config "$HOME"/.ssh/config
-    fi
-
+    ln -sfnv "$HOME"/myConfigs/ssh/config "$HOME"/.ssh/config
     mkdir -p "$HOME"/.local/bin
     ln -sfnv "$HOME"/myConfigs/git/git-migrate "$HOME"/.local/bin/git-migrate
     ln -sfnv "$HOME"/myConfigs/git/git-new-workdir "$HOME"/.local/bin/git-new-workdir
@@ -786,7 +781,7 @@ function install_vim() { # {{{
     mv "$HOME"/.config/nvim "$HOME"/.config/nvim.old
   fi
   git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
-  
+
   ln -sfnv "$HOME"/git/myConfigs/vim/nvchad/custom "$HOME"/.config/nvim/lua/custom
 } #}}}
 
@@ -1051,7 +1046,7 @@ function install_rust() { # {{{
     else
       echo -e "${COLOR}${COLOR1}ripgrep${COLOR} is found.${NC}"
     fi
-    
+
     if ! type cargo-install-update >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}cargo-update${COLOR}...${NC}"
       sudo apt install -y libssl-dev
@@ -1122,7 +1117,7 @@ function install_golang() { # {{{
       installation_path="$HOME"/.local
       sudo_cmd=
     fi
-    
+
     local target_path="$installation_path/$version.linux-$ARCH"
     if [ -d "$target_path" ]; then
       echo -e "${COLOR1}$target_path${COLOR} exists, skip${NC}"
@@ -1240,7 +1235,7 @@ function init_cilium() { # {{{
       else
         echo -e "${COLOR}Installing ${COLOR1}Cilium CLI ${cilium_cli_version}${COLOR} ...${NC}"
       fi
-      
+
       curl -L --fail --remote-name-all "https://github.com/cilium/cilium-cli/releases/download/${cilium_cli_version}/cilium-${os_name}-${ARCH}.tar.gz{,.sha256sum}"
       sha256sum --check cilium-"${os_name}"-${ARCH}.tar.gz.sha256sum
       $SUDO tar xzvfC cilium-"${os_name}"-${ARCH}.tar.gz /usr/local/bin
@@ -1285,7 +1280,7 @@ function init_cilium() { # {{{
       else
         echo -e "${COLOR}Installing ${COLOR1}Hubble CLI ${hubble_cli_version}${COLOR} ...${NC}"
       fi
-    
+
       curl -L --fail --remote-name-all "https://github.com/cilium/hubble/releases/download/$hubble_cli_version/hubble-${os_name}-${ARCH}.tar.gz{,.sha256sum}"
       sha256sum --check hubble-"${os_name}"-${ARCH}.tar.gz.sha256sum
       $SUDO tar xzvfC hubble-"${os_name}"-${ARCH}.tar.gz /usr/local/bin
