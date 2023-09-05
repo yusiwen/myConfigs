@@ -635,17 +635,15 @@ function install_node() { # {{{
       export N_PREFIX="$HOME/.n"
       curl -L "https://bit.ly/n-install" | bash -s -- -n -y lts
       export PATH="$PATH:$N_PREFIX/bin"
+
+      n stable
     else
       echo -e "${COLOR}Found ${COLOR1}tj/n${COLOR} in ${COLOR1}\"$N_PREFIX\"${COLOR}...skip${NC}"
     fi
   fi
 
-  if [ ! -e "$HOME"/.npmrc ]; then
-    cp "$HOME"/myConfigs/node.js/npmrc "$HOME"/.npmrc
-  fi
-
   if ! type npm &>/dev/null; then
-    nvm install stable
+    n stable
   fi
 
   echo -e "${COLOR1}Installing yarn, eslint...${NC}"
