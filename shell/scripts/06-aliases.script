@@ -200,4 +200,7 @@ if type vagrant >/dev/null 2>&1; then
   alias vgtgs='vagrant global-status'
 fi
 
+alias ipa='ip -c a'
+alias ipba='ip -br -c a'
+
 # vim: foldmethod=marker :
