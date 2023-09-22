@@ -575,8 +575,6 @@ function install_python() { # {{{
       fi
     fi
 
-    check_python3_version
-
     if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
       mkdir -p "$HOME"/.pip
       if [ -d "$HOME"/myConfigs ]; then
@@ -592,6 +590,8 @@ function install_python() { # {{{
         } >>"$HOME"/.pip/pip.conf
       fi
     fi
+
+    check_python3_version
 
     if ! type virtualenv >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
