@@ -193,7 +193,7 @@ function init_env() { # {{{
           if [ "$OS_ARCH" = 'aarch64' ]; then
             BATCAT_DOWNLOAD_URL="https://share.yusiwen.cn/public/bat_0.22.1_arm64.deb"
           fi
-          wget "${BATCAT_DOWNLOAD_URL}" -O /tmp/batcat.deb
+          curl "${BATCAT_DOWNLOAD_URL}" -o /tmp/batcat.deb
           $SUDO dpkg --install /tmp/batcat.deb
         fi
       fi
