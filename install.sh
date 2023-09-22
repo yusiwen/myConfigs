@@ -1032,7 +1032,11 @@ function install_rust() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if ! type rustc >/dev/null 2>&1 && [ ! -e "$HOME"/.cargo/bin/rustc ]; then
       echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
-      RUSTUP_DIST_SERVER='https://mirrors.tuna.tsinghua.edu.cn/rustup' bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+      if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+        RUSTUP_DIST_SERVER='https://mirrors.tuna.tsinghua.edu.cn/rustup' bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+      else
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      fi
       source "$HOME/.cargo/env"
     else
       echo -e "${COLOR}${COLOR1}$($HOME/.cargo/bin/rustc --version)${COLOR} is found.${NC}"
