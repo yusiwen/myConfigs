@@ -180,7 +180,7 @@ function init_env() { # {{{
         gdebi-core software-properties-common apt-transport-https \
         htop atop iotop iftop nethogs nload sysstat \
         tmux byobu jq pass \
-        curl net-tools iputils-ping iputils-arping hping3 \
+        curl wget net-tools iputils-ping iputils-arping hping3 \
         build-essential cmake ${pkg_pstack} \
         ethtool cifs-utils nfs-common libfuse2
       # Check if ubuntu version is newer than 20.04
