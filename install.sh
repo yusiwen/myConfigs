@@ -679,11 +679,7 @@ function install_zsh() { # {{{
         fi
       fi
       echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
-      if [ "$DEBIAN_FRONTEND" != 'noninteractive' ]; then
-        chsh -s /usr/bin/zsh
-      else
-        $SUDO chsh -s /usr/bin/zsh "$(whoami)"
-      fi
+      $SUDO chsh -s /usr/bin/zsh "$(whoami)"
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if [ ! "$SHELL" = "/usr/local/bin/zsh" ]; then
