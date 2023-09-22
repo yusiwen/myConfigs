@@ -428,7 +428,7 @@ EOF
     cat "$HOME"/.ssh/id_rsa.pub
   else
     echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was not found, generating it now...${NC}"
-    ssh-keygen
+    ssh-keygen -t rsa -N "" -C "default key"
     echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea${NC}"
     cat "$HOME"/.ssh/id_rsa.pub
   fi
