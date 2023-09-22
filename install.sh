@@ -171,7 +171,7 @@ function init_env() { # {{{
 
       $SUDO apt update
       local pkg_pstack=
-      if [ "$ARCH" = 'amd64' ]; then
+      if [ "$ARCH" = 'amd64' ] && [ "$DISTRO" = 'Ubuntu' ]; then
         pkg_pstack='pstack'
       else
         pkg_pstack=''
