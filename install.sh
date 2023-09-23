@@ -399,6 +399,9 @@ target/
 .factorypath
 .settings/
 .idea/
+.vscode/
+node_modules/
+*.iml
 EOF
   git config --global core.excludesfile "$HOME"/.gitignore
 
