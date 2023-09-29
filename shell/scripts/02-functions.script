@@ -265,7 +265,7 @@ function _pip() {
   else
     pip "$@"
   fi
-  
+
 }
 
 function _pip3() {
@@ -278,7 +278,7 @@ function _pip3() {
   else
     pip3 "$@"
   fi
-  
+
 }
 #}}}
 
@@ -392,6 +392,24 @@ function _mvnd_setting_switch() { # {{{
   local settings
   settings=$(find "$HOME"/.m2/settings*.xml | fzf)
   [ -n "$settings" ] && mvnd -s "$settings" "$@"
+} # }}}
+
+# GPG Preset Passphrase {{{}}}
+gpg_agent_preset()
+{
+  local gpg_passphrase="$1"
+  # authorize preset mechanism, in our context agent is not loaded yet.
+  # echo allow-preset-passphrase  >> ~/.gnupg/gpg-agent.conf
+
+  # this will start the agent ang give use keygripID
+  local keygrip
+  keygrip=( $(gpg-connect-agent -q 'keyinfo --list' /bye | awk '/KEYINFO/ { print $3 }') )
+
+  local k
+  for k in "${keygrip[@]}"
+  do
+    echo "$gpg_passphrase"  | /usr/lib/gnupg/gpg-preset-passphrase --preset "$k"
+  done
 } # }}}
 
 # vim: foldmethod=marker :
