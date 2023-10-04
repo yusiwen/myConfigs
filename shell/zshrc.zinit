@@ -29,11 +29,11 @@ source $ZINIT[BIN_DIR]/zinit.zsh \
 #####################
 # PROMPT            #
 #####################
-zinit lucid for \
-    as"command" \
-    from"gh-r" \
-    atinit'export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' atload'eval "$(starship init zsh)"' \
-    starship/starship
+if [ -e "$HOME/.zshrc.prompt" ]; then
+  source $HOME/.zshrc.prompt
+else
+  source $HOME/myConfigs/shell/zshrc.zinit.p10k
+fi
 ##########################
 # OMZ Libs and Plugins   #
 ##########################
@@ -154,3 +154,8 @@ zinit wait light-mode lucid is-snippet for \
   $HOME/git/myConfigs/shell/scripts/03-programs.script \
   $HOME/git/myConfigs/shell/scripts/04-keybindings.script \
   $HOME/git/myConfigs/shell/scripts/06-aliases.script
+
+if [ "$PROMPT_TYPE" = 'p10k' ]; then
+  # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+fi
