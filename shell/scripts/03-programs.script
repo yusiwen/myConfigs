@@ -216,7 +216,7 @@ fi
 #}}}
 
 # {{{ Hadoop & Yarn & Hive & Spark
-if [ -z "$HADOOP_HOME" ] || [ ! -d "$HADOOP_HOME" ]; then 
+if [ -z "$HADOOP_HOME" ] || [ ! -d "$HADOOP_HOME" ]; then
   if [ -d /opt/hadoop ]; then
     HADOOP_HOME=/opt/hadoop
     export HADOOP_HOME
@@ -273,13 +273,17 @@ if [ ! -z "$DISPLAY" ]; then
 fi
 #}}}
 
+# {{{ WasmEdge
+[[ -s "$HOME/.wasmedge/env" ]] && source "$HOME/.wasmedge/env"
+# }}}
+
 #{{{ Anaconda
 if [ -e /opt/anaconda3/bin/conda ]; then
   export PATH="/opt/anaconda3/bin:$PATH"
 fi
 #}}}
 
-#{{{ CUDA 
+#{{{ CUDA
 if [ -e /usr/local/cuda/bin ]; then
   export CUDA_HOME=/usr/local/cuda
   export PATH=$CUDA_HOME/bin:$PATH
@@ -290,7 +294,7 @@ if [ -e /usr/local/cuda/lib64 ]; then
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64
   else
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-  fi  
+  fi
 fi
 
 if [ -e /usr/lib/llvm-8 ]; then
