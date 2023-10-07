@@ -283,6 +283,26 @@ if [ -e /opt/anaconda3/bin/conda ]; then
 fi
 #}}}
 
+#{{{ Miniconda3
+# >>> conda initialize >>>
+__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/opt/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+__conda_ps1="$(/opt/miniconda3/bin/conda config --show changeps1 | awk '{print $2}')"
+if [ "__conda_ps1" = 'True' ]; then
+  /opt/miniconda3/bin/conda config --set changeps1 false
+fi
+# <<< conda initialize <<<
+#}}}
+
 #{{{ CUDA
 if [ -e /usr/local/cuda/bin ]; then
   export CUDA_HOME=/usr/local/cuda
