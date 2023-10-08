@@ -132,6 +132,10 @@ zinit wait lucid light-mode for \
   docker/compose \
     from'gh-r' as'program' \
   junegunn/fzf \
+    from'gh-r' as'program' mv'fd* -> fd' pick'fd/fd' \
+  sharkdp/fd \
+    from'gh-r' as'program' mv'bat* -> bat' pick'bat/bat' \
+  sharkdp/bat \
     from'gh-r' as'program' pick'bin/exa' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     atload"
