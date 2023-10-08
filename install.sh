@@ -183,22 +183,8 @@ function init_env() { # {{{
         curl wget net-tools iputils-ping iputils-arping hping3 \
         build-essential cmake ${pkg_pstack} \
         ethtool cifs-utils nfs-common libfuse2
-      # Check if ubuntu version is newer than 20.04
-      if [ -n "$(echo ${OS_VERSION} | awk '$1 >= 20.04 { print "ok"; }')" ]; then
-        $SUDO apt install -y bat
-      else
-        if ! type bat > /dev/null 2>&1; then
-          echo -e "${COLOR}Installing batcat from DEB pacakge...${NC}"
-          BATCAT_DOWNLOAD_URL="https://share.yusiwen.cn/public/bat_0.22.1_amd64.deb"
-          if [ "$OS_ARCH" = 'aarch64' ]; then
-            BATCAT_DOWNLOAD_URL="https://share.yusiwen.cn/public/bat_0.22.1_arm64.deb"
-          fi
-          curl "${BATCAT_DOWNLOAD_URL}" -o /tmp/batcat.deb
-          $SUDO dpkg --install /tmp/batcat.deb
-        fi
-      fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
-      yay -S base-devel the_silver_searcher tmux byobu bat
+      yay -S base-devel the_silver_searcher tmux byobu
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
         $SUDO yum --enablerepo=epel -y \
@@ -232,7 +218,7 @@ function init_env() { # {{{
     install_rust
   elif [ "$OS" = 'Windows_NT' ]; then
     echo -e "${COLOR}Please install Chocolatey (https://chocolatey.org/install), then executes:${NC}"
-    echo -e "${COLOR}choco install bat delta${NC}"
+    echo -e "${COLOR}choco install delta${NC}"
 
     # exa is currently not supported on Windows, see: https://github.com/ogham/exa/issues/32
     # echo -e "${COLOR}Please install Rust (https://forge.rust-lang.org/infra/other-installation-methods.html), then executes:${NC}"
