@@ -291,6 +291,11 @@ if [ -e /opt/anaconda3/bin/conda ]; then
       fi
   fi
   unset __conda_setup
+  __conda_ps1="$(/opt/miniconda3/bin/conda config --show changeps1 | awk '{print $2}')"
+  if [ "$__conda_ps1" = 'True' ]; then
+    /opt/miniconda3/bin/conda config --set changeps1 false
+  fi
+  unset __conda_ps1
   # <<< conda initialize <<<
 fi
 #}}}
@@ -310,9 +315,10 @@ if [ -e /opt/miniconda3/bin/conda ]; then
   fi
   unset __conda_setup
   __conda_ps1="$(/opt/miniconda3/bin/conda config --show changeps1 | awk '{print $2}')"
-  if [ "__conda_ps1" = 'True' ]; then
+  if [ "$__conda_ps1" = 'True' ]; then
     /opt/miniconda3/bin/conda config --set changeps1 false
   fi
+  unset __conda_ps1
   # <<< conda initialize <<<
 fi
 #}}}
