@@ -641,6 +641,9 @@ function install_node() { # {{{
   echo -e "${COLOR1}Installing conventional-changelog-cli, Commitizen, cz-customizable, standard-version...${NC}"
   npm install -g conventional-changelog-cli commitizen cz-customizable standard-version diff-so-fancy
 
+  echo -e "${COLOR1}Installing tldr...${NC}"
+  npm install -g tldr
+
   if type git >/dev/null 2>&1; then
     git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
   fi
