@@ -99,6 +99,10 @@ else
   alias gitd='git diff --submodule --word-diff'
   alias gitl='git log --graph --oneline --decorate'
 fi
+
+if type lazygit >/dev/null 2>&1; then
+  alias lg='lazygit'
+fi
 # }}}
 
 # Valgrind aliases
