@@ -449,14 +449,6 @@ FZF_DEFAULT_OPTS="${_fzf_default_opts[*]}"
 export FZF_DEFAULT_OPTS
 # }}}
 
-# Export host IP within WSL
-if [ "$(is_running_in_wsl)" = '1' ]; then
-  WSL_HOST_IP=$(grep nameserver < /etc/resolv.conf | awk '{ print $2 }')
-  export WSL_HOST_IP
-  # Set https proxy for git
-  git config --global http.https://github.com.proxy socks5://"$WSL_HOST_IP":7890
-fi
-
 # Support symbolic link in git bash on windows
 if [ "$OS" = 'Windows_NT' ]; then
   export MSYS=winsymlinks:nativestrict
