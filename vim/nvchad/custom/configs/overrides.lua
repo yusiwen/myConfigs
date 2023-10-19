@@ -35,7 +35,10 @@ M.mason = {
     "pyright",
     "mypy",
     "ruff",
-    "black"
+    "black",
+
+    -- Go
+    "gopls"
   },
 }
 
