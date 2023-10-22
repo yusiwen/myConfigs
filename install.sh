@@ -31,6 +31,7 @@ CODENAME=
 OS_NAME=
 OS_VERSION=
 MIRRORS=0
+USE_PROXY=0
 DISTRO=
 
 if [ -n "$WINDIR" ]; then
@@ -839,7 +840,7 @@ function install_docker() { # {{{
         $SUDO cp "$HOME"/myConfigs/docker/daemon.json /etc/docker/daemon.json
       fi
 
-      if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+      if [ -n "$USE_PROXY" ] && [ "$USE_PROXY" -eq 1 ]; then
         if [ ! -e /etc/systemd/system/docker.service.d ]; then
           $SUDO mkdir -p /etc/systemd/system/docker.service.d
           $SUDO cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
@@ -1030,6 +1031,13 @@ function install_rust() { # {{{
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       fi
       source "$HOME/.cargo/env"
+      cat << EOF | tee -a ${CARGO_HOME:-$HOME/.cargo}/config
+[source.crates-io]
+replace-with = 'ustc'
+
+[source.ustc]
+registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+EOF
     else
       echo -e "${COLOR}${COLOR1}$($HOME/.cargo/bin/rustc --version)${COLOR} is found.${NC}"
     fi
