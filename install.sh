@@ -1026,17 +1026,29 @@ function install_rust() { # {{{
     if ! type rustc >/dev/null 2>&1 && [ ! -e "$HOME"/.cargo/bin/rustc ]; then
       echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
       if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-        RUSTUP_DIST_SERVER='https://mirrors.tuna.tsinghua.edu.cn/rustup' bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+        RUSTUP_DIST_SERVER="https://rsproxy.cn" RUSTUP_UPDATE_ROOT="https://rsproxy.cn/rustup" bash -c "curl --proto '=https' --tlsv1.2 -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y"
       else
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       fi
-      source "$HOME/.cargo/env"
-      cat << EOF | tee -a ${CARGO_HOME:-$HOME/.cargo}/config
-[source.crates-io]
-replace-with = 'ustc'
+      
+      if [ -e "$HOME/.cargo/env" ]; then
+        source "$HOME/.cargo/env"
+      else
+        echo -e "${COLOR2}Installation is failed, please check manually.${NC}"
+        exit 1
+      fi
 
-[source.ustc]
-registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+      cat << EOF | tee -a "${CARGO_HOME:-$HOME/.cargo}/config"
+[source.crates-io]
+replace-with = 'rsproxy-sparse'
+[source.rsproxy]
+registry = "https://rsproxy.cn/crates.io-index"
+[source.rsproxy-sparse]
+registry = "sparse+https://rsproxy.cn/index/"
+[registries.rsproxy]
+index = "https://rsproxy.cn/crates.io-index"
+[net]
+git-fetch-with-cli = true
 EOF
     else
       echo -e "${COLOR}${COLOR1}$($HOME/.cargo/bin/rustc --version)${COLOR} is found.${NC}"
