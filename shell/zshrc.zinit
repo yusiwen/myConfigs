@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 #=== LOAD PREREQUISITES IF EXISTS =====================
-if [ -e "$HOME/.zshrc.prerequites" ]; then
-  source "$HOME/.zshrc.prerequites"
+if [ -e "$HOME/.zshrc.prerequisites" ]; then
+  source "$HOME/.zshrc.prerequisites"
 fi
 #=== HELPER METHODS ===================================
 function error() { print -P "%F{160}[ERROR] ---%f%b $1" >&2 && exit 1; }
