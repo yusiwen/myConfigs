@@ -1038,7 +1038,8 @@ function install_rust() { # {{{
         exit 1
       fi
 
-      cat << EOF | tee -a "${CARGO_HOME:-$HOME/.cargo}/config"
+      if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+        cat << EOF | tee -a "${CARGO_HOME:-$HOME/.cargo}/config"
 [source.crates-io]
 replace-with = 'rsproxy-sparse'
 [source.rsproxy]
@@ -1050,8 +1051,18 @@ index = "https://rsproxy.cn/crates.io-index"
 [net]
 git-fetch-with-cli = true
 EOF
+      fi
     else
       echo -e "${COLOR}${COLOR1}$($HOME/.cargo/bin/rustc --version)${COLOR} is found.${NC}"
+    fi
+
+    # Make sure cargo can be built when installing
+    if ! type cc >/dev/null 2>&1; then
+      if [ "$DISTRO" = 'CentOS' ]; then
+        $SUDO yum groupinstall 'Development Tools'
+      else
+        $SUDO apt install -y build-essential
+      fi
     fi
 
     if ! type rg >/dev/null 2>&1; then
@@ -1063,7 +1074,7 @@ EOF
 
     if ! type cargo-install-update >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}cargo-update${COLOR}...${NC}"
-      sudo apt install -y libssl-dev
+      $SUDO apt install -y libssl-dev
       cargo install cargo-update
     else
       echo -e "${COLOR}${COLOR1}cargo-update${COLOR} is found.${NC}"
