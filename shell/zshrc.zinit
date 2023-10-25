@@ -79,10 +79,6 @@ zinit wait lucid for \
 	OMZP::git \
   OMZP::z \
 	OMZP::fzf \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-    atload"
-      alias dcupb='docker-compose up --build'" \
-	OMZP::docker-compose \
     as"completion" \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   OMZP::docker/completions/_docker \
@@ -130,10 +126,6 @@ zinit wait lucid light-mode for \
   tj/n \
     from'gh-r' as'command' atinit'export PATH="$HOME/.yarn/bin:$PATH"' mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
   yarnpkg/yarn \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-    from'gh-r' as'program' mv'docker-compose* -> docker-compose' pick"docker-compose" \
-    atload"alias dco='docker-compose'" \
-  docker/compose \
     from'gh-r' as'program' \
   junegunn/fzf \
     from'gh-r' as'program' mv'fd* -> fd' pick'fd/fd' \
