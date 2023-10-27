@@ -1061,7 +1061,7 @@ EOF
       if [ "$DISTRO" = 'CentOS' ]; then
         $SUDO yum groupinstall 'Development Tools'
       else
-        $SUDO apt install -y build-essential
+        $SUDO apt install -y build-essential pkg-config
       fi
     fi
 
