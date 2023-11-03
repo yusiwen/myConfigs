@@ -75,7 +75,7 @@ set -e
 set -o pipefail
 
 function make_link() { # {{{
-  local target=("$1") linkname=("$2")
+  local target="$1" linkname="$2"
   ln -sfnv "$target" "$linkname"
 }
 # }}}
@@ -85,7 +85,7 @@ function check_link() { # {{{
     return
   fi
 
-  local target=("$1") linkname=("$2")
+  local target="$1" linkname="$2"
   echo -e "${COLOR}Checking link ${COLOR1}'${linkname}'${COLOR} to ${COLOR1}'${target}'${COLOR}...${NC}"
   if [ ! -e "${linkname}" ]; then
     make_link ${target} ${linkname}
