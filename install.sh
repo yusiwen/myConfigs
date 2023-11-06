@@ -1199,7 +1199,7 @@ function init_byobu() { # {{{
         cat <<EOF | tee -a "$HOME"/.config/byobu/profile.tmux
 source $HOME/git/myConfigs/shell/tmux/tmux.conf
 EOF
-        echo -e "${COLOR}Restart byobu session and install plugins using '${COLOR1}'ctrl+a I${COLOR}'${NC}"
+        echo -e "${COLOR}Restart byobu session and install plugins using '${COLOR1}ctrl+a I${COLOR}'${NC}"
       fi
     fi
   fi
