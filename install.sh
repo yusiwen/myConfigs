@@ -1187,6 +1187,7 @@ function install_sdkman() { # {{{
 function init_byobu() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ ! -d ~/.tmux/plugins/tpm ]; then
+      echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR}...${NC}"
       git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
     fi
     ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.tmux.conf
@@ -1194,11 +1195,12 @@ function init_byobu() { # {{{
 
     # Enable mouse by default
     if [ -e "$HOME"/.config/byobu/profile.tmux ]; then
-      cat <<EOF | tee -a "$HOME"/.config/byobu/profile.tmux
-# Enable mouse support including scrolling
-set -sg mouse on
-set -sg escape-time 50
+      if ! grep -q 'myConfigs/shell/tmux/tmux.conf' "$HOME"/.config/byobu/profile.tmux ; then
+        cat <<EOF | tee -a "$HOME"/.config/byobu/profile.tmux
+source $HOME/git/myConfigs/shell/tmux/tmux.conf
 EOF
+        echo -e "${COLOR}Restart byobu session and install plugins using '${COLOR1}'ctrl+a I${COLOR}'${NC}"
+      fi
     fi
   fi
 } # }}}
