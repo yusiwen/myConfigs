@@ -190,6 +190,7 @@ fi
 
 # {{{ Rust
 if [ -e "$HOME/.cargo/env" ]; then
+  # shellcheck source=/dev/null
   source "$HOME/.cargo/env"
 else
   case ":${PATH}:" in
@@ -456,6 +457,12 @@ if [ -d "$HOME"/.exports ]; then
       source "$script"
     fi
   done
+fi
+
+# broot (https://dystroy.org/broot/)
+if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
+  # shellcheck source=/dev/null
+  source "$HOME/.config/broot/launcher/bash/br"
 fi
 
 # vim: foldmethod=marker :
