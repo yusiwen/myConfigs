@@ -1191,10 +1191,15 @@ function init_byobu() { # {{{
 
   if [ "$OS" = 'Linux' ]; then
     if [ ! -d ~/.tmux/plugins/tpm ]; then
-      echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR}...${NC}"
+      echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR} for tmux...${NC}"
       git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    fi
+
+    if [ ! -d ~/.config/byobu/plugins/tpm ]; then
+      echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR} for byobu...${NC}"
       git clone https://github.com/tmux-plugins/tpm ~/.config/byobu/plugins/tpm
     fi
+    
     ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.tmux.conf
     byobu-enable
 
