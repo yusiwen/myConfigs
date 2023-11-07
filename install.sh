@@ -1197,6 +1197,7 @@ function init_byobu() { # {{{
     ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.tmux.conf
     byobu-enable
 
+    mkdir -p "$HOME"/.config
     ln -snfv "$HOME"/git/myConfigs/shell/byobu "$HOME"/.config/byobu
     echo -e "${COLOR}Restart byobu session and install plugins using '${COLOR1}ctrl+a I${COLOR}'${NC}"
   fi
