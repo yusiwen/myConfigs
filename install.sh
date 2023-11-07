@@ -1202,7 +1202,6 @@ function init_byobu() { # {{{
     
     mkdir -p "$HOME"/.config/tmux
     ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.config/tmux/tmux.conf
-    byobu-enable
 
     mkdir -p "$HOME"/.config
     ln -snfv "$HOME"/git/myConfigs/shell/byobu "$HOME"/.config/byobu
