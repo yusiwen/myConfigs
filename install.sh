@@ -1193,6 +1193,7 @@ function init_byobu() { # {{{
     if [ ! -d ~/.tmux/plugins/tpm ]; then
       echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR}...${NC}"
       git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+      git clone https://github.com/tmux-plugins/tpm ~/.config/byobu/plugins/tpm
     fi
     ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.tmux.conf
     byobu-enable
