@@ -1356,10 +1356,7 @@ function init_gui() { # {{{
     if [ ! -d "$HOME/git/myConfigs" ]; then
       fetch_myConfigs
     fi
-    cp "$HOME"/git/myConfigs/X11/alacritty/alacritty.yml "$HOME"/.config/alacritty
-
-    mkdir -p "$HOME"/.config/alacritty/themes
-    cp "$HOME"/git/myConfigs/X11/alacritty/themes/* "$HOME"/.config/alacritty/themes
+    ln -snfv "$HOME"/git/myConfigs/X11/alacritty "$HOME"/.config/alacritty
 
     if ! type npm >/dev/null 2>&1; then
       install_node
