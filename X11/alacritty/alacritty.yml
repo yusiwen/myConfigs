@@ -123,7 +123,8 @@ shell:
     - '--login'
     - '-c'
     - 'tmux'
-    - 'new'
+    - '-f'
+    - '/home/yusiwen/.config/tmux/tmux.conf'
 working_directory: None
 enable_experimental_conpty_backend: false
 debug:

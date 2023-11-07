@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# shellcheck source=/dev/null
-_byobu_sourced=1 . /usr/bin/byobu-launch 2>/dev/null || true
-
 if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
   # shellcheck source=/dev/null
   . "$HOME/.config/broot/launcher/bash/br"

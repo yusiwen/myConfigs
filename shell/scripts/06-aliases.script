@@ -208,4 +208,8 @@ fi
 alias ipa='ip -c a'
 alias ipba='ip -br -c a'
 
+if [ -e "$HOME/.config/tmux/tmux.conf" ]; then
+  alias tmux='tmux -f $HOME/.config/tmux/tmux.conf'
+fi
+
 # vim: foldmethod=marker :

@@ -1200,7 +1200,8 @@ function init_byobu() { # {{{
       git clone https://github.com/tmux-plugins/tpm ~/.config/byobu/plugins/tpm
     fi
     
-    ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.tmux.conf
+    mkdir -p "$HOME"/.config/tmux
+    ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.config/tmux/tmux.conf
     byobu-enable
 
     mkdir -p "$HOME"/.config
