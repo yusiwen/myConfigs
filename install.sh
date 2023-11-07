@@ -1190,9 +1190,9 @@ function init_byobu() { # {{{
   fi
 
   if [ "$OS" = 'Linux' ]; then
-    if [ ! -d ~/.tmux/plugins/tpm ]; then
+    if [ ! -d ~/.config/tmux/plugins/tpm ]; then
       echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR} for tmux...${NC}"
-      git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+      git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
     fi
 
     if [ ! -d ~/.config/byobu/plugins/tpm ]; then
