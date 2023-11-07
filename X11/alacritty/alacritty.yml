@@ -122,9 +122,7 @@ shell:
   args:
     - '--login'
     - '-c'
-    - 'tmux'
-    - '-f'
-    - '/home/yusiwen/.config/tmux/tmux.conf'
+    - 'tmux -f ~/.config/mytmux/tmux.conf'
 working_directory: None
 enable_experimental_conpty_backend: false
 debug:

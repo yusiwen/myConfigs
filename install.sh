@@ -1189,13 +1189,15 @@ function init_byobu() { # {{{
     fetch_myConfigs
   fi
 
+  rm -rf "$HOME"/.config/tmux "$HOME"/.tmux "$HOME"/.tmux.conf
+
   if [ "$OS" = 'Linux' ]; then
-    mkdir -p "$HOME"/.config/tmux
-    ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.config/tmux/tmux.conf
+    mkdir -p "$HOME"/.config/mytmux
+    ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.config/mytmux/tmux.conf
 
     if [ ! -d ~/.config/tmux/plugins/tpm ]; then
       echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR} for tmux...${NC}"
-      git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+      git clone https://github.com/tmux-plugins/tpm ~/.config/mytmux/plugins/tpm
     fi
 
     mkdir -p "$HOME"/.config
