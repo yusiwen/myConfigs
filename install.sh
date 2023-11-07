@@ -1190,21 +1190,21 @@ function init_byobu() { # {{{
   fi
 
   if [ "$OS" = 'Linux' ]; then
+    mkdir -p "$HOME"/.config/tmux
+    ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.config/tmux/tmux.conf
+
     if [ ! -d ~/.config/tmux/plugins/tpm ]; then
       echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR} for tmux...${NC}"
       git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
     fi
 
+    mkdir -p "$HOME"/.config
+    ln -snfv "$HOME"/git/myConfigs/shell/byobu "$HOME"/.config/byobu
+
     if [ ! -d ~/.config/byobu/plugins/tpm ]; then
       echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR} for byobu...${NC}"
       git clone https://github.com/tmux-plugins/tpm ~/.config/byobu/plugins/tpm
     fi
-    
-    mkdir -p "$HOME"/.config/tmux
-    ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.config/tmux/tmux.conf
-
-    mkdir -p "$HOME"/.config
-    ln -snfv "$HOME"/git/myConfigs/shell/byobu "$HOME"/.config/byobu
     echo -e "${COLOR}Restart byobu session and install plugins using '${COLOR1}ctrl+a I${COLOR}'${NC}"
   fi
 } # }}}
