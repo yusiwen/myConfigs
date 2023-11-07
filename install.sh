@@ -1185,6 +1185,10 @@ function install_sdkman() { # {{{
 } # }}}
 
 function init_byobu() { # {{{
+  if [ ! -d "$HOME/git/myConfigs" ]; then
+    fetch_myConfigs
+  fi
+
   if [ "$OS" = 'Linux' ]; then
     if [ ! -d ~/.tmux/plugins/tpm ]; then
       echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR}...${NC}"
@@ -1193,15 +1197,8 @@ function init_byobu() { # {{{
     ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.tmux.conf
     byobu-enable
 
-    # Enable mouse by default
-    if [ -e "$HOME"/.config/byobu/profile.tmux ]; then
-      if ! grep -q 'myConfigs/shell/tmux/tmux.conf' "$HOME"/.config/byobu/profile.tmux ; then
-        cat <<EOF | tee -a "$HOME"/.config/byobu/profile.tmux
-source $HOME/git/myConfigs/shell/tmux/tmux.conf
-EOF
-        echo -e "${COLOR}Restart byobu session and install plugins using '${COLOR1}ctrl+a I${COLOR}'${NC}"
-      fi
-    fi
+    ln -snfv "$HOME"/git/myConfigs/shell/byobu "$HOME"/.config/byobu
+    echo -e "${COLOR}Restart byobu session and install plugins using '${COLOR1}ctrl+a I${COLOR}'${NC}"
   fi
 } # }}}
 
