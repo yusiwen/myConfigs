@@ -15,6 +15,9 @@ set -- $(stty size) #$1=rows, $2=columns
 
 #start a new session in dettached mode with resizable panes
 tmux new-session -s $session -n $window1 -d -x "$2" -y "$(($1 - 1))"
+if [ -e ~/.config/mytmux/tmux.conf ]; then
+  tmux source-file ~/.config/mytmux/tmux.conf
+fi
     
 #rename pane 0 with value of $pane1
 tmux set -p @mytitle "$pane1"
