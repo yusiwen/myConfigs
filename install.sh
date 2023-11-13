@@ -74,6 +74,17 @@ fi
 set -e
 set -o pipefail
 
+function show_sysinfo() {
+  echo "OS=$OS"
+  echo "OS_ARCH=$OS_ARCH"
+  echo "ARCH=$ARCH"
+  echo "CODENAME=$CODENAME"
+  echo "OS_NAME=$OS_NAME"
+  echo "OS_VERSION=$OS_VERSION"
+  echo "DISTRO=$DISTRO"
+  echo "MIRRORS=$MIRRORS"
+}
+
 function make_link() { # {{{
   local target="$1" linkname="$2"
   ln -sfnv "$target" "$linkname"
@@ -1376,6 +1387,7 @@ function print_info() { # {{{
 } # }}}
 
 case $1 in
+info) show_sysinfo ;;
 init) init_env ;;
 git) install_git ;;
 ruby) install_ruby ;;
