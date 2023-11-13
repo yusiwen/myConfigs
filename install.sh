@@ -30,9 +30,11 @@ fi
 CODENAME=
 OS_NAME=
 OS_VERSION=
+DISTRO=
 MIRRORS=0
 USE_PROXY=0
-DISTRO=
+
+PIP_EXTERNAL_MANAGEMENT=
 
 if [ -n "$WINDIR" ]; then
   OS='Windows_NT'
@@ -218,7 +220,7 @@ function init_env() { # {{{
     install_ruby
     install_python
     # Install gittyleaks after python is initialized
-    pip3 install gittyleaks
+    pip3 install --user "$PIP_EXTERNAL_MANAGEMENT" gittyleaks
     install_sdkman
     install_golang
   elif [ "$OS" = 'Darwin' ]; then
@@ -523,7 +525,6 @@ function fetch_myConfigs() { # {{{
   fi
 } # }}}
 
-PIP_EXTERNAL_MANAGEMENT=
 function check_python3_version() { # {{{
   local PYTHON_VERSION
   PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
@@ -613,7 +614,6 @@ function install_python() { # {{{
     echo "[global]" >"$HOME"/.config/pip/pip.conf
     echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >>"$HOME"/.config/pip/pip.conf
 
-    pip install --user virtualenv
     pip3 install --user virtualenv pip_search
   else
     echo -e "${COLOR}OS not supported${NC}"
@@ -812,7 +812,7 @@ function install_rxvt() { # {{{
 
 function install_docker() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       echo -e "${COLOR}Ubuntu is found, checking ${COLOR1}docker${COLOR}...${NC}"
       if ! type docker >/dev/null 2>&1; then
         echo -e "${COLOR1}docker${COLOR} is not found, installing...${NC}"
@@ -863,15 +863,6 @@ function install_docker() { # {{{
         curl -L "https://github.com/wagoodman/dive/releases/download/v${dive_version}/dive_${dive_version}_linux_amd64.tar.gz" -o /tmp/dive.tar.gz
         tar xvf /tmp/dive.tar.gz -C "$HOME"/.local/bin dive
       fi
-    fi
-
-    # Install docker-compose
-    if ! type docker-compose >/dev/null 2>&1; then
-      if ! type pip3 >/dev/null 2>&1; then
-        install_python
-      fi
-      echo -e "${COLOR}Installing ${COLOR1}docker-compose${COLOR}...${NC}"
-      pip3 install --user docker-compose
     fi
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
@@ -1226,7 +1217,7 @@ function install_ansible() { # {{{
   fi
 
   echo -e "${COLOR}Install ${COLOR1}ansible${COLOR}...${NC}"
-  pip3 install --user ansible
+  pip3 install --user "$PIP_EXTERNAL_MANAGEMENT" ansible
 } # }}}
 
 function install_mc() { # {{{
