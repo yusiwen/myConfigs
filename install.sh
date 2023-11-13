@@ -523,6 +523,7 @@ function fetch_myConfigs() { # {{{
   fi
 } # }}}
 
+PIP_EXTERNAL_MANAGEMENT=
 function check_python3_version() { # {{{
   local PYTHON_VERSION
   PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
@@ -531,9 +532,9 @@ function check_python3_version() { # {{{
   local PYTHON_EXTERNAL_MANAGEMENT
   PYTHON_EXTERNAL_MANAGEMENT=$(python3 -c "import sys; print(sys.path[2])")/EXTERNALLY-MANAGED
   if [ -e "$PYTHON_EXTERNAL_MANAGEMENT" ]; then
-    echo '--break-system-package'
+    PIP_EXTERNAL_MANAGEMENT='--break-system-package'
   else
-    echo ''
+    PIP_EXTERNAL_MANAGEMENT=''
   fi
 } # }}}
 
@@ -589,18 +590,17 @@ function install_python() { # {{{
       fi
     fi
 
-    local ADDITIONAL_OPTS
-    ADDITIONAL_OPTS=$(check_python3_version)
+    check_python3_version
 
     if ! type virtualenv >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
       if type pip3 >/dev/null 2>&1; then
-        pip3 install --user "$ADDITIONAL_OPTS" virtualenv
+        pip3 install --user "$PIP_EXTERNAL_MANAGEMENT" virtualenv
       fi
     fi
 
     # Install utilities
-    pip3 install --user "$ADDITIONAL_OPTS" pip_search bpytop
+    pip3 install --user "$PIP_EXTERNAL_MANAGEMENT" pip_search bpytop
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       init_env
