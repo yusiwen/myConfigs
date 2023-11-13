@@ -221,7 +221,6 @@ function init_env() { # {{{
     install_python
     # Install gittyleaks after python is initialized
     pip3 install --user "$PIP_EXTERNAL_MANAGEMENT" gittyleaks
-    install_sdkman
     install_golang
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
