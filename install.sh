@@ -528,15 +528,12 @@ function check_python3_version() { # {{{
   PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
   echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
 
-  if [ -z "$(pip3 list | grep packaging)" ]; then
-    pip3 install --user packaging
-  fi
-
-  local PYTHON_VERSION_COMPARE
-  PYTHON_VERSION_COMPARE=$(python3 -c "from packaging import version; print(version.parse('$PYTHON_VERSION') > version.parse('3.6'))")
-
-  if [ "$PYTHON_VERSION_COMPARE" != 'True' ]; then
-    echo -e "${COLOR2}WARN${COLOR}Python3 version: ${COLOR1}$PYTHON_VERSION${COLOR} is too old, need latest package${NC}"
+  local PYTHON_EXTERNAL_MANAGEMENT
+  PYTHON_EXTERNAL_MANAGEMENT=$(python3 -c "import sys; print(sys.path[2])")/EXTERNALLY-MANAGED
+  if [ -e "$PYTHON_EXTERNAL_MANAGEMENT" ]; then
+    echo '--break-system-package'
+  else
+    echo ''
   fi
 } # }}}
 
@@ -592,17 +589,18 @@ function install_python() { # {{{
       fi
     fi
 
-    check_python3_version
+    local ADDITIONAL_OPTS
+    ADDITIONAL_OPTS=$(check_python3_version)
 
     if ! type virtualenv >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
       if type pip3 >/dev/null 2>&1; then
-        pip3 install --user virtualenv
+        pip3 install --user "$ADDITIONAL_OPTS" virtualenv
       fi
     fi
 
     # Install utilities
-    pip3 install --user pip_search bpytop
+    pip3 install --user "$ADDITIONAL_OPTS" pip_search bpytop
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       init_env
