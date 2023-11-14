@@ -6,7 +6,7 @@ if [ -z "$session_name" ]; then
 fi
 
 # Test if there's a session already set up
-if ! byobu list-sessions | grep -q "$session_name"; then
+if ! byobu list-sessions 2>&1 | grep -q "$session_name"; then
     # Create a new detached session named 'jupyter'
     byobu new-session -d -s "$session_name"
 fi
