@@ -133,6 +133,7 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' mv'bat* -> bat' pick'bat/bat' \
   @sharkdp/bat \
     from'gh-r' as'program' mv'lazygit* -> lazygit' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   jesseduffield/lazygit \
     from'gh-r' as'program' pick'bin/exa' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
@@ -145,8 +146,10 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' pick'**/delta' \
   dandavison/delta \
     from'gh-r' as'program' pick'zellij' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   zellij-org/zellij \
     from'gh-r' as'program' pick'k9s' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   derailed/k9s \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
