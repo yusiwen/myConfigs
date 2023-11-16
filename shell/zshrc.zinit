@@ -114,6 +114,8 @@ zinit wait lucid light-mode for \
       zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap" \
     blockf \
   zsh-users/zsh-completions \
+    pick"zsh-lazyload.zsh" \
+  qoomon/zsh-lazyload \
   unixorn/fzf-zsh-plugin
 #####################
 # PROGRAMS          #
@@ -151,6 +153,12 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' pick'k9s' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   derailed/k9s \
+    from'gh-r' as'program' pick'stern' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  stern/stern \
+    from'gh-r' as'program' pick'flux' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  fluxcd/flux2 \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
@@ -161,6 +169,7 @@ zinit wait light-mode lucid is-snippet for \
   $HOME/git/myConfigs/shell/scripts/00-environment.script \
   $HOME/git/myConfigs/shell/scripts/02-functions.script \
   $HOME/git/myConfigs/shell/scripts/03-programs.script \
+  $HOME/git/myConfigs/shell/scripts/03-completions.script \
   $HOME/git/myConfigs/shell/scripts/04-keybindings.script \
   $HOME/git/myConfigs/shell/scripts/06-aliases.script
 
