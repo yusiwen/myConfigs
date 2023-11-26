@@ -1029,7 +1029,7 @@ function install_rust() { # {{{
       else
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       fi
-      
+
       if [ -e "$HOME/.cargo/env" ]; then
         source "$HOME/.cargo/env"
       else
@@ -1069,6 +1069,13 @@ EOF
       cargo install ripgrep
     else
       echo -e "${COLOR}${COLOR1}ripgrep${COLOR} is found.${NC}"
+    fi
+
+    if ! type btm >/dev/null 2>&1; then
+      echo -e "${COLOR}Installing ${COLOR1}bottom${COLOR}...${NC}"
+      cargo install bottom
+    else
+      echo -e "${COLOR}${COLOR1}bottom${COLOR} is found.${NC}"
     fi
 
     if ! type cargo-install-update >/dev/null 2>&1; then
