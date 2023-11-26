@@ -158,6 +158,8 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' pick'flux' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   fluxcd/flux2 \
+    from'gh-r' as'program' mv'gdu* -> gdu' pick'gdu' \
+  dundee/gdu \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
