@@ -1053,6 +1053,9 @@ EOF
       fi
     else
       echo -e "${COLOR}${COLOR1}$($HOME/.cargo/bin/rustc --version)${COLOR} is found.${NC}"
+      if type rustup >/dev/null 2>&1; then
+        rustup update
+      fi
     fi
 
     # Make sure cargo can be built when installing
@@ -1082,8 +1085,10 @@ EOF
       echo -e "${COLOR}Installing ${COLOR1}cargo-update${COLOR}...${NC}"
       $SUDO apt install -y libssl-dev
       cargo install cargo-update
+      cargo install-update  -a
     else
       echo -e "${COLOR}${COLOR1}cargo-update${COLOR} is found.${NC}"
+      cargo install-update  -a
     fi
 
     if ! type cargo-cache >/dev/null 2>&1; then
