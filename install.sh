@@ -714,18 +714,35 @@ function install_vim() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
 
+      # Get latest version
+      local latest_version
+      latest_version=$(curl -sL 'https://api.github.com/repos/neovim/neovim/releases/tags/stable' | jq --raw-output '.created_at')
+      local installation_target="$HOME/.local/bin/neovim.$latest_version.appimage"
+
       if ! type nvim >/dev/null 2>&1; then
         echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
+    
         # Install VIM_PACKAGE
-        echo -e "${COLOR}Install ${COLOR1}NeoVim${COLOR}...${NC}"
+        echo -e "${COLOR}Install latest stable ${COLOR1}NeoVim${COLOR} created at $latest_version...${NC}"
 
-        local installation_target="$HOME/.local/bin/neovim.appimage"
         local link_target="$HOME/.local/bin/nvim"
         curl -L "https://github.com/neovim/neovim/releases/download/stable/nvim.appimage" -o "$installation_target"
         chmod +x "$installation_target"
-        ln -snfv "$installation_target" "$link_target"
+        check_link "$installation_target" "$link_target"
       else
         echo -e "${COLOR1}NeoVim${COLOR} is found at '$(which nvim)'${NC}"
+        if [ ! -e "$installation_target" ]; then
+          # Upgrade VIM_PACKAGE
+          echo -e "${COLOR}Upgrade to latest stable ${COLOR1}NeoVim${COLOR} created at $latest_version...${NC}"
+
+          local link_target="$HOME/.local/bin/nvim"
+          curl -L "https://github.com/neovim/neovim/releases/download/stable/nvim.appimage" -o "$installation_target"
+          chmod +x "$installation_target"
+          if [ -e  "$(readlink "$link_target")" ]; then
+            rm -f "$(readlink "$link_target")"
+          fi
+          check_link "$installation_target" "$link_target"
+        fi
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
@@ -772,16 +789,37 @@ function install_vim() { # {{{
     return
   fi
 
-  # Install NvChad
+  # Install config bundle
+  local need_install_bundle=0
+  local bundle_name=NvChad
+  local bundle_url=https://github.com/NvChad/NvChad
   if [ -d "$HOME"/.config/nvim ]; then
+    # Check if it's a git repo
+    if git -C "$HOME"/.config/nvim rev-parse >/dev/null 2>&1; then
+      # Check if it's bundle repo
+      if git -C "$HOME"/.config/nvim remote show origin | grep -q $bundle_name; then
+        # Upgrade if possible
+        git -C "$HOME"/.config/nvim pull
+      else
+        need_install_bundle=1
+      fi
+    else
+      need_install_bundle=1
+    fi
+  else
+    need_install_bundle=1
+  fi
+
+  if [ $need_install_bundle = 1 ]; then
     if [ -d "$HOME"/.config/nvim.old ]; then
       rm -rf "$HOME"/.config/nvim.old
     fi
     mv "$HOME"/.config/nvim "$HOME"/.config/nvim.old
-  fi
-  git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
 
-  ln -sfnv "$HOME"/git/myConfigs/vim/nvchad/custom "$HOME"/.config/nvim/lua/custom
+    git clone "$bundle_url" "$HOME"/.config/nvim --depth 1
+  fi
+  
+  check_link "$HOME"/git/myConfigs/vim/nvchad/custom "$HOME"/.config/nvim/lua/custom
 } #}}}
 
 function install_rxvt() { # {{{
