@@ -69,25 +69,8 @@ fi
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
 
 # Git {{{
-alias gitra='git remote -v'
-
-alias gitpso='git push origin'
-alias gitpsa='git push --all'
-alias gitpst='git push --tag'
-alias gitplo='git pull origin'
-alias gitfup='git fetch upstream'
-alias gitfo='git fetch origin'
-alias gitc='git commit --verbose'
-alias gits='git status --short --branch'
-alias gitss='git status --short --branch --untracked-files'
-
-alias gitds='git diff --submodule --word-diff --staged'
-
-alias gitla='git log --graph --pretty="%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s" --date=relative --date-order --all'
-alias gitll='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --stat'
-alias gitlla='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --stat --all'
-alias gitlp='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%b" -p'
-alias gitlpa='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%b" -p --all'
+alias gsbu='git status --short --branch --untracked-files'
+alias gdss='git diff --submodule --word-diff --staged'
 
 if type fzf >/dev/null 2>&1; then
   alias gb='fzf-git-branch'
