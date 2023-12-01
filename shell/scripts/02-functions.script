@@ -173,11 +173,25 @@ fzf-git-branch() { # {{{
   git branch --color=always --all --sort=-committerdate |
     grep -v HEAD |
     fzf --height 50% --ansi --no-multi --preview-window right:65% \
-      --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {}) | sed "s/.* //"'
+      --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
+    sed 's/^\*\?\s\+//'      
 } # }}}
 
 fzf-git-checkout() { # {{{
   git rev-parse HEAD >/dev/null 2>&1 || return
+
+  local current_branch
+  current_branch=$(git branch --show-current)
+
+  if [ -n "$(git status -s)" ]; then
+    echo -n 'The working directory is dirty, stash before checkout? [YES|no] '
+    read -r yn
+
+    case $yn in
+      "" | yes | YES | Yes | y | Y) git stash -u || exit 1 ;;
+      *) ;;
+    esac
+  fi
 
   local branch
 
@@ -186,14 +200,36 @@ fzf-git-checkout() { # {{{
     echo "No branch selected."
     return
   fi
+  
+  echo -n "Checkout specific commit? [yes|NO] "
+  read -r yn
+
+  local get_commit=0
+  case $yn in
+    yes | YES | Yes | y | Y) get_commit=1;;
+    *) ;;
+  esac
+
+  local commit=""
+  if [ $get_commit = 1 ]; then
+    commit=$(git log "$branch" --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" | fzf | cut -d' ' -f 2)
+  fi
+
+  if [[ "$commit" = "" ]]; then
+    commit="$branch"
+  fi
+
+  if [ "$commit" = "$current_branch" ]; then
+    return
+  fi
 
   # If branch name starts with 'remotes/' then it is a remote branch. By
   # using --track and a remote branch name, it is the same as:
   # git checkout -b branchName --track origin/branchName
-  if [[ "$branch" = 'remotes/'* ]]; then
-    git checkout --track $branch
+  if [[ "$commit" = 'remotes/'* ]]; then
+    git checkout --track $commit
   else
-    git checkout $branch
+    git checkout $commit
   fi
 } # }}}
 
