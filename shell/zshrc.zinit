@@ -116,8 +116,7 @@ zinit wait lucid light-mode for \
   zsh-users/zsh-completions \
     pick"zsh-lazyload.zsh" \
   qoomon/zsh-lazyload \
-  unixorn/fzf-zsh-plugin \
-  fdellwing/zsh-bat
+  unixorn/fzf-zsh-plugin  
 #####################
 # PROGRAMS          #
 #####################
@@ -135,6 +134,7 @@ zinit wait lucid light-mode for \
   @sharkdp/fd \
     from'gh-r' as'program' mv'bat* -> bat' pick'bat/bat' \
   @sharkdp/bat \
+  fdellwing/zsh-bat \
     from'gh-r' as'program' mv'lazygit* -> lazygit' \
   jesseduffield/lazygit \
     from'gh-r' as'program' pick'bin/exa' \
