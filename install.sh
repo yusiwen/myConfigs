@@ -721,7 +721,7 @@ function install_vim() { # {{{
 
       if ! type nvim >/dev/null 2>&1; then
         echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
-    
+
         # Install VIM_PACKAGE
         echo -e "${COLOR}Install latest stable ${COLOR1}NeoVim${COLOR} created at $latest_version...${NC}"
 
@@ -814,12 +814,18 @@ function install_vim() { # {{{
     if [ -d "$HOME"/.config/nvim.old ]; then
       rm -rf "$HOME"/.config/nvim.old
     fi
-    mv "$HOME"/.config/nvim "$HOME"/.config/nvim.old
+    if [ -d "$HOME"/.config/nvim ]; then
+      mv "$HOME"/.config/nvim "$HOME"/.config/nvim.old
+    fi
 
     git clone "$bundle_url" "$HOME"/.config/nvim --depth 1
   fi
-  
+
   check_link "$HOME"/git/myConfigs/vim/nvchad/custom "$HOME"/.config/nvim/lua/custom
+
+  if [ "$OS" = 'Windows_NT' ]; then
+    check_link "$HOME"/.config/nvim "$HOME"/AppData/Local/nvim
+  fi
 } #}}}
 
 function install_rxvt() { # {{{
