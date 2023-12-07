@@ -4,6 +4,7 @@ Configuration files for X11 softwares.
 
 ## Contents
 
+1. `desktop/` desktop file for applications package in AppImage format
 1. `dual-monitor/` contains script for dual monitor settings
 1. `fonts/` contains script for edit truetype fonts by fontforge
 1. `gtk/` contains gtk themes settings
