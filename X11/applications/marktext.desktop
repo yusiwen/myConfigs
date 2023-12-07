@@ -1,5 +1,5 @@
 [Desktop Entry]
-Exec=marktext-x86_64.AppImage
-Name=MarkText
-Type=Application
+Exec=/opt/bin/marktext-x86_64.AppImage
+Name=marktext
 Icon=marktext
+Type=Application
