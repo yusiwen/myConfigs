@@ -133,6 +133,7 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' mv'fd* -> fd' pick'fd/fd' \
   @sharkdp/fd \
     from'gh-r' as'program' mv'bat* -> bat' pick'bat/bat' \
+    atinit"export MANROFFOPT='-c'" \
   @sharkdp/bat \
   fdellwing/zsh-bat \
     from'gh-r' as'program' mv'lazygit* -> lazygit' \
