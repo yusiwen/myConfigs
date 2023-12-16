@@ -1281,6 +1281,8 @@ function install_mc() { # {{{
     chmod +x "$HOME"/.local/bin/mc
   elif [ "$OS" = 'Darwin' ]; then
     brew install minio/stable/mc
+  elif [ "$OS" = 'Windows_NT' ]; then
+    curl -L "https://dl.minio.io/client/mc/release/windows-amd64/mc.exe" -o "$HOME"/.local/bin/mc.exe
   fi
 } # }}}
 
