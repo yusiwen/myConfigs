@@ -8,6 +8,11 @@ pane3=$5
 pane4=$6
 window2=$7
 window3=$8
+
+if tmux list-sessions -F "#{session_name}" | grep -q "$session" ; then
+  tmux attach-session -t $session
+  exit 0
+fi
     
 #Get width and lenght size of terminal, this is needed if one wants to resize a detached session/window/pane
 #with resize-pane command here
