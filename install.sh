@@ -195,7 +195,7 @@ function init_env() { # {{{
         htop atop iotop iftop nethogs nload sysstat \
         tmux byobu jq pass unzip ncdu \
         curl wget net-tools iputils-ping iputils-arping hping3 \
-        build-essential cmake ${pkg_pstack} \
+        build-essential cmake ${pkg_pstack} ltrace \
         ethtool cifs-utils nfs-common libfuse2
     elif [ "$DISTRO" = 'Manjaro' ]; then
       yay -S base-devel the_silver_searcher tmux byobu
