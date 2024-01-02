@@ -1,0 +1,17 @@
+set clipboard+=unnamed
+
+" set <leader> to <space>
+let mapleader = " "
+
+nnoremap Y "+y
+vnoremap Y "+y
+nnoremap P "+P
+vnoremap P "+P
+
+map <leader>f <Action>(GotoFile)
+map <leader>g <Action>(FindInPath)
+map <leader>b <Action>(Switcher)
+
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround'
+Plug 'terryma/vim-multiple-cursors'
