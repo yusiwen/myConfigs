@@ -1231,6 +1231,11 @@ function install_golang() { # {{{
       mkdir -p "$target_path"
     fi
 
+    if [ -d "$target_path/$version" ]; then
+      echo -e "${COLOR1}$version${COLOR} is already installed${NC}"
+      exit 0
+    fi
+
     curl -L "https://dl.google.com/go/$version.windows-amd64.zip" -o $target_path/$version.windows-amd64.zip
     unzip -d "$target_path/$version" "$target_path/$version".windows-amd64.zip
 
@@ -1243,6 +1248,7 @@ function install_golang() { # {{{
     fi
 
     ln -sfnv "$target_path/$version" "$target_path"/go
+    echo -e "${COLOR1}$version${COLOR} is installed, please set the correct environment variables in System Settings${NC}"
   fi
 }
 # }}}
