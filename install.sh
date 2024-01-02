@@ -826,6 +826,8 @@ function install_vim() { # {{{
   if [ "$OS" = 'Windows_NT' ]; then
     check_link "$HOME"/.config/nvim "$HOME"/AppData/Local/nvim
   fi
+
+  check_link "$HOME"/git/myConfigs/vim/ideavimrc "$HOME"/.ideavimrc
 } #}}}
 
 function install_rxvt() { # {{{
