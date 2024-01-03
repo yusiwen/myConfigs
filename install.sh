@@ -1169,6 +1169,7 @@ function install_lua() { # {{{
 
     # LuaRocks
     if ! type luarocks >/dev/null 2>&1; then
+      $SUDO apt install -y liblua5.3-dev
       wget https://luarocks.org/releases/luarocks-3.9.1.tar.gz -O /tmp/luarocks-3.9.1.tar.gz
       tar zxpf /tmp/luarocks-3.9.1.tar.gz -C /tmp
       pushd /tmp/luarocks-3.9.1
