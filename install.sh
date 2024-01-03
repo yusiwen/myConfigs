@@ -1113,6 +1113,14 @@ EOF
       fi
     fi
 
+    if ! type pkg-config >/dev/null 2>&1; then
+      if [ "$DISTRO" = 'CentOS' ]; then
+        $SUDO yum install pkgconfig
+      else
+        $SUDO apt install -y pkg-config
+      fi
+    fi
+
     if ! type rg >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}ripgrep${COLOR}...${NC}"
       cargo install ripgrep
