@@ -1192,21 +1192,21 @@ function install_perl() { # {{{
 } # }}}
 
 function install_golang() { # {{{
+  local version="$1"
+  if [ -z "$version" ]; then
+    # Get latest stable from official site
+    local resp_str
+    resp_str=$(curl -sL "https://golang.org/VERSION?m=text")
+    version=$(echo "${resp_str}" | head -1)
+    echo -e "${COLOR}The latest stable version is ${COLOR1}$version${COLOR}${NC}"
+  elif ! (echo "$version" | grep -Eq ^go); then
+    version="go$version"
+  fi
+
   if [ "$OS" = 'Linux' ]; then
     if [ -z "$ARCH" ]; then
       echo -e "${COLOR2}Unknown archetecture ${COLOR1}$ARCH${NC}"
       exit 1
-    fi
-
-    local version="$1"
-    if [ -z "$version" ]; then
-      # Get latest stable from official site
-      local resp_str
-      resp_str=$(curl -sL "https://golang.org/VERSION?m=text")
-      version=$(echo "${resp_str}" | head -1)
-      echo -e "${COLOR}The latest stable version is ${COLOR1}$version${COLOR}${NC}"
-    elif ! (echo "$version" | grep -Eq ^go); then
-      version="go$version"
     fi
 
     local installation_path=/opt
@@ -1231,6 +1231,35 @@ function install_golang() { # {{{
     $sudo_cmd rm -rf "$installation_path/$version.linux-$ARCH.tar.gz"
 
     echo -e "${COLOR1}$version.linux-$ARCH${COLOR} is installed, re-login to take effect${NC}"
+  elif [ "$OS" = 'Windows_NT' ]; then
+    local target_path
+    if [ -d "/d/opt/runtimes" ]; then
+      target_path=/d/opt/runtimes
+    elif [ -d "/e/opt/runtimes" ]; then
+      target_path=/e/opt/runtimes
+    else
+      target_path=~/.local
+      mkdir -p "$target_path"
+    fi
+
+    if [ -d "$target_path/$version" ]; then
+      echo -e "${COLOR1}$version${COLOR} is already installed${NC}"
+      exit 0
+    fi
+
+    curl -L "https://dl.google.com/go/$version.windows-amd64.zip" -o $target_path/$version.windows-amd64.zip
+    unzip -d "$target_path/$version" "$target_path/$version".windows-amd64.zip
+
+    if [ -d "$target_path/$version"/go ]; then
+      mv "$target_path/$version"/go/* "$target_path/$version" && rm -rf "$target_path/$version/go"
+    fi
+
+    if [ -d "$target_path/go" ]; then
+      rm -f "$target_path/go"
+    fi
+
+    ln -sfnv "$target_path/$version" "$target_path"/go
+    echo -e "${COLOR1}$version${COLOR} is installed, please set the correct environment variables in System Settings${NC}"
   fi
 }
 # }}}
