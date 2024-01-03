@@ -534,7 +534,7 @@ function check_python3_version() { # {{{
   if [ -e "$PYTHON_EXTERNAL_MANAGEMENT" ]; then
     PIP_EXTERNAL_MANAGEMENT='--break-system-package'
   else
-    PIP_EXTERNAL_MANAGEMENT=''
+    PIP_EXTERNAL_MANAGEMENT=
   fi
 } # }}}
 
