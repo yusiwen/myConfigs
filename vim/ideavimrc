@@ -5,8 +5,8 @@ let mapleader = " "
 
 nnoremap Y "+y
 vnoremap Y "+y
-nnoremap P "+P
-vnoremap P "+P
+nnoremap P "+p
+vnoremap P "+p
 
 map <leader>f <Action>(GotoFile)
 map <leader>g <Action>(FindInPath)
