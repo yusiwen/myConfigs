@@ -547,6 +547,7 @@ function install_python() { # {{{
       elif [ "$DISTRO" = 'CentOS' ]; then
         curl -L "https://share.yusiwen.cn/public/python/python3.8.18.tar.gz" -o "/tmp/python3.8.18.tar.gz"
         $SUDO tar -xzf "/tmp/python3.8.18.tar.gz" -C /usr/local/ --strip-components=1
+        rm -f "/tmp/python3.8.18.tar.gz"
       else
         echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
         return
