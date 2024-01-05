@@ -545,19 +545,8 @@ function install_python() { # {{{
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         $SUDO apt-get install -y python3
       elif [ "$DISTRO" = 'CentOS' ]; then
-        if [ "$OS_VERSION" = '"7"' ]; then
-          PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
-          if [ "$PACKAGE" = 0 ]; then
-            $SUDO yum -y install https://centos7.iuscommunity.org/ius-release.rpm
-          fi
-
-          $SUDO yum update -y
-          $SUDO yum install -y python36u python36u-pip
-          $SUDO ln -snv /usr/bin/python3.6 /usr/bin/python3
-          $SUDO ln -snv /usr/bin/pip3.6 /usr/bin/pip3
-        else
-          $SUDO yum install python3
-        fi
+        curl -L "https://share.yusiwen.cn/public/python/python3.8.18.tar.gz" -o "/tmp/python3.8.18.tar.gz"
+        $SUDO tar -xzf "/tmp/python3.8.18.tar.gz" -C /usr/local/ --strip-components=1
       else
         echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
         return
