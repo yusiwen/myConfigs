@@ -545,7 +545,17 @@ function install_python() { # {{{
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         $SUDO apt-get install -y python3
       elif [ "$DISTRO" = 'CentOS' ]; then
-        curl -L "https://share.yusiwen.cn/public/python/python3.8.18.tar.gz" -o "/tmp/python3.8.18.tar.gz"
+        local target_version
+        if [ "$OS_VERSION" = '7' ]; then
+          target_version='el7'
+        elif [ "$OS_VERSION" = '8' ]; then
+          target_version='el8'
+        else
+          echo -e "${COLOR}OS version ${COLOR1}$OS_VERSION${COLOR} not supported yet${NC}"
+          exit 1
+        fi
+        $SUDO yum upgrade ca-certificates
+        curl -L "https://share.yusiwen.cn/public/python/python3.8.18-$target_version.tar.gz" -o "/tmp/python3.8.18.tar.gz"
         $SUDO tar -xzf "/tmp/python3.8.18.tar.gz" -C /usr/local/ --strip-components=1
         rm -f "/tmp/python3.8.18.tar.gz"
       else
