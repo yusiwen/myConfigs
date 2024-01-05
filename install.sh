@@ -57,7 +57,7 @@ else
       DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
     fi
     OS_NAME=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
-    OS_VERSION=$(grep "^VERSION_ID" /etc/os-release | cut -d'=' -f2)
+    OS_VERSION=$(grep "^VERSION_ID" /etc/os-release | xargs | cut -d'=' -f2)
   else
     DISTRO=$OS
   fi
