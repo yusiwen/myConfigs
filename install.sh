@@ -585,12 +585,12 @@ function install_python() { # {{{
     if ! type virtualenv >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
       if type pip3 >/dev/null 2>&1; then
-        pip3 install --user "$PIP_EXTERNAL_MANAGEMENT" virtualenv
+        pip3 install --user $PIP_EXTERNAL_MANAGEMENT virtualenv
       fi
     fi
 
     # Install utilities
-    pip3 install --user "$PIP_EXTERNAL_MANAGEMENT" pip_search bpytop
+    pip3 install --user $PIP_EXTERNAL_MANAGEMENT pip_search bpytop
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       init_env
