@@ -112,7 +112,7 @@ function check_link() { # {{{
         return
       fi
     else
-      mv ${linkname} ${linkname}.backup
+      mv ${linkname} ${linkname}.$(date '+%s')
       make_link ${target} ${linkname}
     fi
   fi
