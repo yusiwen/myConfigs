@@ -1121,6 +1121,15 @@ EOF
       fi
     fi
 
+    if ! type cargo >/dev/null 2>&1; then
+      if [ -e "$HOME/.cargo/env" ]; then
+        source "$HOME/.cargo/env"
+      else
+        echo -e "${COLOR2}Installation is failed, please check manually.${NC}"
+        exit 1
+      fi
+    fi
+
     if ! type rg >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}ripgrep${COLOR}...${NC}"
       cargo install ripgrep
