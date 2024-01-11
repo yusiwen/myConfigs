@@ -112,7 +112,7 @@ function check_link() { # {{{
         return
       fi
     else
-      mv ${linkname} ${linkname}.backup
+      mv ${linkname} ${linkname}.$(date '+%s')
       make_link ${target} ${linkname}
     fi
   fi
@@ -1297,7 +1297,7 @@ function init_byobu() { # {{{
 
   if [ "$OS" = 'Linux' ]; then
     mkdir -p "$HOME"/.config/mytmux
-    ln -snfv "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.config/mytmux/tmux.conf
+    check_link "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.config/mytmux/tmux.conf
 
     if [ ! -d ~/.config/mytmux/plugins/tpm ]; then
       echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR} for tmux...${NC}"
@@ -1305,7 +1305,7 @@ function init_byobu() { # {{{
     fi
 
     mkdir -p "$HOME"/.config
-    ln -snfv "$HOME"/git/myConfigs/shell/byobu "$HOME"/.config/byobu
+    check_link "$HOME"/git/myConfigs/shell/byobu "$HOME"/.config/byobu
 
     if [ ! -d ~/.config/byobu/plugins/tpm ]; then
       echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR} for byobu...${NC}"
