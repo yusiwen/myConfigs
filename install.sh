@@ -194,7 +194,7 @@ function init_env() { # {{{
         gdebi-core software-properties-common apt-transport-https \
         htop atop iotop iftop nethogs nload sysstat \
         tmux byobu jq pass unzip ncdu \
-        curl wget net-tools iputils-ping iputils-arping hping3 \
+        curl wget net-tools iputils-ping iputils-arping hping3 nmap \
         build-essential cmake ${pkg_pstack} ltrace \
         ethtool cifs-utils nfs-common libfuse2
     elif [ "$DISTRO" = 'Manjaro' ]; then
