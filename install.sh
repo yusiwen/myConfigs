@@ -50,7 +50,7 @@ else
     if [ "$ID" = 'ubuntu' ] || [ "$ID_LIKE" = 'ubuntu' ]; then
       DISTRO='Ubuntu'
       CODENAME=$(grep "^UBUNTU_CODENAME" /etc/os-release | cut -d'=' -f2)
-    elif [ "ID" = 'Deepin' ]; then
+    elif [ "$ID" = 'Deepin' ]; then
       DISTRO='Deepin'
       CODENAME='buster'
     else
