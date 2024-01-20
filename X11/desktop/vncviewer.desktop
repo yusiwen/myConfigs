@@ -1,5 +1,5 @@
 [Desktop Entry]
-Exec=/opt/bin/VNC-Viewer-7.8.0-Linux-x64
-Name=VNC Viewer (7.8.0)
+Exec=/opt/bin/VNC-Viewer-Linux-x64
+Name=VNC Viewer
 Icon=vncviewer
 Type=Application

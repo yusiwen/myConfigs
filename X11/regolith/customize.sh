@@ -19,3 +19,6 @@ $SUDO sed -i -e "s/\$mod+\$wm.binding.launcher.app/\$alt+\$wm.binding.launcher.a
 
 # Command
 $SUDO sed -i -e "s/\$mod+\$wm.binding.launcher.cmd/\$alt+\$wm.binding.launcher.cmd/ w /dev/stdout" $ILIA_CONFIG_FILE
+
+# Windows
+$SUDO sed -i -e "s/wm.binding.launcher.window Ctrl+space/wm.binding.launcher.window space/ w /dev/stdout" $ILIA_CONFIG_FILE
