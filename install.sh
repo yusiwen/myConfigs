@@ -1554,7 +1554,7 @@ function print_info() { # {{{
   echo -e "\trust \t\tInstall Rust"
   echo -e "\tlua \t\tInstall lua"
   echo -e "\tperl \t\tInstall perl"
-  echo -e "\tgolang \t\tInstall golang"
+  echo -e "\tgolang \t\tInstall golang, version can be specified as the next argument"
   echo -e "\thelm \t\tInstall helm"
   echo -e "\ttalosctl \tInstall talosctl"
   echo -e "\tsdkman \t\tInstall sdkman"
