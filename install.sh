@@ -334,7 +334,7 @@ function install_git() { # {{{
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
             $SUDO apt-add-repository -y ppa:git-core/ppa
 
-            if [ ! -z "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
+            if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
               # Replace official launchpad address with reverse proxy from USTC
               $SUDO sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$GIT_PPA"
             fi
@@ -351,6 +351,15 @@ function install_git() { # {{{
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}git${COLOR} was found.${NC}"
+      fi
+
+      if ! check_command git-credential-manager; then
+        local gcm_latest_version
+        gcm_latest_version=$(get_latest_version_from_github 'git-ecosystem/git-credential-manager')
+        curl -L "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux_amd64.$gcm_latest_version.deb" -o /tmp/gcm.deb
+        $SUDO dpkg --install /tmp/gcm.deb
+        git-credential-manager configure
+        rm -f /tmp/gcm.deb
       fi
 
       if ! type tig >/dev/null 2>&1; then
