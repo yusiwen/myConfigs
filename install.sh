@@ -167,6 +167,11 @@ function vercomp() { # {{{
 
 # Initialize apt and install prerequisite packages
 function init_env() { # {{{
+  local minimal=0
+  if [ "$1" = '-m' ]; then
+    minimal=1
+  fi
+
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
@@ -177,7 +182,6 @@ function init_env() { # {{{
         else
           $SUDO sed -i "s/^deb http:\/\/.*archive\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list
         fi
-
         if ls /etc/apt/sources.list.d/*.list 1>/dev/null 2>&1; then
           $SUDO sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" /etc/apt/sources.list.d/*.list
         fi
@@ -190,13 +194,33 @@ function init_env() { # {{{
       else
         pkg_pstack=''
       fi
-      $SUDO apt install -y silversearcher-ag p7zip-full pigz \
-        gdebi-core software-properties-common apt-transport-https \
-        htop atop iotop iftop nethogs nload sysstat \
-        tmux byobu jq pass unzip ncdu \
-        curl wget net-tools iputils-ping iputils-arping hping3 nmap \
-        build-essential cmake ${pkg_pstack} ltrace \
-        ethtool cifs-utils nfs-common libfuse2
+      
+      local pkg_core=( gdebi-core software-properties-common apt-transport-https )
+      local pkg_zip=( p7zip-full pigz unzip )
+      local pkg_network=( curl wget net-tools iputils-ping iputils-arping hping3 nmap ethtool )
+      local pkg_build=( build-essential cmake "${pkg_pstack}" ltrace )
+      local pkg_fs=( cifs-utils nfs-common libfuse2 )
+      local pkg_monitor=( htop atop iotop iftop nethogs nload sysstat )
+      local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag )
+
+      if [ $minimal -eq 1 ]; then
+        $SUDO apt install -y \
+          "${pkg_core[@]}" \
+          "${pkg_zip[@]}" \
+          "${pkg_network[@]}" \
+          "${pkg_fs[@]}" \
+          "${pkg_monitor[@]}" \
+          "${pkg_misc[@]}"
+      else
+        $SUDO apt install -y \
+          "${pkg_core[@]}" \
+          "${pkg_zip[@]}" \
+          "${pkg_network[@]}" \
+          "${pkg_fs[@]}" \
+          "${pkg_monitor[@]}" \
+          "${pkg_misc[@]}" \
+          "${pkg_build[@]}"
+      fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       yay -S base-devel the_silver_searcher tmux byobu
     elif [ "$DISTRO" = 'CentOS' ]; then
@@ -212,16 +236,21 @@ function init_env() { # {{{
       fi
     fi
 
-    install_perl
-    install_lua
-    install_rust
-    install_git
-    fetch_myConfigs
-    install_ruby
-    install_python
-    # Install gittyleaks after python is initialized
-    pip3 install --user $PIP_EXTERNAL_MANAGEMENT gittyleaks
-    install_golang
+    if [ $minimal -eq 1 ]; then
+      install_git
+      fetch_myConfigs
+    else
+      install_perl
+      install_lua
+      install_rust
+      install_git
+      fetch_myConfigs
+      install_ruby
+      install_python
+      # Install gittyleaks after python is initialized
+      pip3 install --user $PIP_EXTERNAL_MANAGEMENT gittyleaks
+      install_golang
+    fi
   elif [ "$OS" = 'Darwin' ]; then
     if ! type brew >/dev/null 2>&1; then
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
@@ -1483,7 +1512,10 @@ function print_info() { # {{{
 
 case $1 in
 info) show_sysinfo ;;
-init) init_env ;;
+init)
+  shift
+  init_env "$@"
+  ;;
 git) install_git ;;
 ruby) install_ruby ;;
 myConfigs) fetch_myConfigs ;;
