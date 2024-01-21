@@ -267,7 +267,7 @@ function init_env() { # {{{
       install_golang
     fi
   elif [ "$OS" = 'Darwin' ]; then
-    if ! type brew >/dev/null 2>&1; then
+    if ! check_command brew; then
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
       # On MacOS ruby is pre-installed already
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -305,7 +305,7 @@ function install_universal_ctags() { # {{{
 
     if [ ! -d ~/git/universal-ctags ]; then
       mkdir -p ~/git
-      if ! type git >/dev/null 2>&1; then
+      if ! check_command git; then
         install_git
       fi
       pushd ~/git
@@ -327,7 +327,7 @@ function install_git() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       # install git if not exist
-      if ! type git >/dev/null 2>&1; then
+      if ! check_command git; then
         if [ "$DISTRO" = 'Ubuntu' ]; then
           GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
           if [ ! -e "$GIT_PPA" ]; then
@@ -362,7 +362,7 @@ function install_git() { # {{{
         rm -f /tmp/gcm.deb
       fi
 
-      if ! type tig >/dev/null 2>&1; then
+      if ! check_command tig; then
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
         $SUDO apt install -y tig
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
@@ -371,7 +371,7 @@ function install_git() { # {{{
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       # Manjaro has git installed already
-      if ! type tig >/dev/null 2>&1; then
+      if ! check_command tig; then
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
         yay -S tig
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
@@ -396,7 +396,7 @@ function install_git() { # {{{
   elif [ "$OS" = 'Darwin' ]; then
     brew install git
   elif [ "$OS" = 'Windows_NT' ]; then
-    if ! type git >/dev/null 2>&1; then
+    if ! check_command git; then
       echo -e "${COLOR}Please download git-for-windows from https://git-scm.com/ and install it manually${NC}"
       return
     fi
@@ -457,7 +457,7 @@ node_modules/
 EOF
   git config --global core.excludesfile "$HOME"/.gitignore
 
-  if type delta >/dev/null 2>&1; then
+  if check_command delta; then
     git config --global core.pager "delta --line-numbers"
     git config --global interactive.diffFilter "delta --color-only --line-numbers"
     git config --global delta.navigate true
@@ -470,7 +470,7 @@ EOF
     git config --global delta.decorations.hunk-header-file-style red
     git config --global delta.decorations.hunk-header-line-number-style "#067a00"
     git config --global delta.decorations.hunk-header-style "file line-number syntax"
-  elif type diff-so-fancy >/dev/null 2>&1; then
+  elif check_command diff-so-fancy; then
     git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
   fi
 
@@ -490,7 +490,7 @@ EOF
 function install_ruby() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      if ! type ruby >/dev/null 2>&1; then
+      if ! check_command ruby; then
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
         $SUDO apt install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
@@ -505,7 +505,7 @@ function install_ruby() { # {{{
         fi
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
-      if ! type ruby >/dev/null 2>&1; then
+      if ! check_command ruby; then
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
         yay -S ruby
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
@@ -517,7 +517,7 @@ function install_ruby() { # {{{
       return
     fi
   elif [ "$OS" = 'Darwin' ]; then
-    if ! type ruby >/dev/null 2>&1; then
+    if ! check_command ruby; then
       brew install ruby
     else
       echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
@@ -534,7 +534,7 @@ function install_ruby() { # {{{
 
   PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
   export PATH
-  if ! type bundle >/dev/null 2>&1; then
+  if ! check_command bundle; then
     echo -e "${COLOR}Installing bundler...${NC}"
     gem install --user-install bundler
     echo -e "${COLOR}Installing bundler...OK${NC}"
@@ -549,7 +549,7 @@ function install_ruby() { # {{{
 
 # Initialize myConfigs repo
 function fetch_myConfigs() { # {{{
-  if ! type git >/dev/null 2>&1; then
+  if ! check_command git; then
     install_git
   fi
 
@@ -590,7 +590,7 @@ function check_python3_version() { # {{{
 function install_python() { # {{{
   if [ "$OS" = 'Linux' ]; then
 
-    if ! type python3 &>/dev/null; then
+    if ! check_command python3; then
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         $SUDO apt-get install -y python3
       elif [ "$DISTRO" = 'CentOS' ]; then
@@ -613,7 +613,7 @@ function install_python() { # {{{
       fi
     fi
 
-    if ! type pip3 >/dev/null 2>&1; then
+    if ! check_command pip3; then
       echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
         $SUDO apt install -y python3-pip
@@ -641,9 +641,9 @@ function install_python() { # {{{
 
     check_python3_version
 
-    if ! type virtualenv >/dev/null 2>&1; then
+    if ! check_command virtualenv; then
       echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
-      if type pip3 >/dev/null 2>&1; then
+      if check_command pip3; then
         pip3 install --user $PIP_EXTERNAL_MANAGEMENT virtualenv
       fi
     fi
@@ -651,7 +651,7 @@ function install_python() { # {{{
     # Install utilities
     pip3 install --user $PIP_EXTERNAL_MANAGEMENT pip_search bpytop
   elif [ "$OS" = 'Darwin' ]; then
-    if ! type brew >/dev/null 2>&1; then
+    if ! check_command brew; then
       init_env
     fi
 
@@ -689,7 +689,7 @@ function install_node() { # {{{
     fi
   fi
 
-  if ! type npm &>/dev/null; then
+  if ! check_command npm; then
     n stable
   fi
 
@@ -702,7 +702,7 @@ function install_node() { # {{{
   echo -e "${COLOR1}Installing tldr...${NC}"
   npm install -g tldr
 
-  if type git >/dev/null 2>&1; then
+  if check_command git; then
     git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
   fi
 } # }}}
@@ -768,7 +768,7 @@ function install_vim() { # {{{
       latest_version=$(curl -sL 'https://api.github.com/repos/neovim/neovim/releases/tags/stable' | jq --raw-output '.created_at')
       local installation_target="$HOME/.local/bin/neovim.$latest_version.appimage"
 
-      if ! type nvim >/dev/null 2>&1; then
+      if ! check_command nvim; then
         echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
 
         # Install VIM_PACKAGE
@@ -797,11 +797,11 @@ function install_vim() { # {{{
       echo -e "${COLOR}Install supplementary tools...${NC}"
       $SUDO apt install -y silversearcher-ag cscope astyle lua5.3 perl
     elif [ "$DISTRO" = 'Manjaro' ]; then
-      if ! type nvim >/dev/null 2>&1; then
+      if ! check_command nvim; then
         yay -S neovim
       fi
     elif [ "$DISTRO" = 'CentOS' ]; then
-      if ! type nvim >/dev/null 2>&1; then
+      if ! check_command nvim; then
         set +e
         PACKAGE=$(yum list installed | grep -c ^wget.x86_64)
         set -e
@@ -829,7 +829,7 @@ function install_vim() { # {{{
     echo -e "${COLOR}Install supplementary tools...${NC}"
     brew install the_silver_searcher cscope astyle
   elif [ "$OS" = 'Windows_NT' ]; then
-    if ! type nvim >/dev/null 2>&1; then
+    if ! check_command nvim; then
       echo -e "${COLOR}Please make sure neovim is installed.${NC}"
       return
     fi
@@ -894,7 +894,7 @@ function install_rxvt() { # {{{
     xrdb -load "$HOME"/.Xresources
 
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      if ! type rxvt >/dev/null 2>&1; then
+      if ! check_command rxvt; then
         echo -e "${COLOR}Installing ${COLOR1}rxvt-unicode-256color${COLOR}...${NC}"
         $SUDO apt install -y rxvt-unicode-256color
       fi
@@ -908,7 +908,7 @@ function install_docker() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       echo -e "${COLOR}Ubuntu is found, checking ${COLOR1}docker${COLOR}...${NC}"
-      if ! type docker >/dev/null 2>&1; then
+      if ! check_command docker; then
         echo -e "${COLOR1}docker${COLOR} is not found, installing...${NC}"
         echo -e "${COLOR}Installing prerequisite packages...${NC}"
         $SUDO apt-get -y install apt-transport-https ca-certificates curl software-properties-common
@@ -953,7 +953,7 @@ function install_docker() { # {{{
       # Install dive
       local dive_version
       dive_version=$(get_latest_release_from_github wagoodman/dive)
-      if ! type dive >/dev/null 2>&1; then
+      if ! check_command dive; then
         curl -L "https://github.com/wagoodman/dive/releases/download/v${dive_version}/dive_${dive_version}_linux_amd64.tar.gz" -o /tmp/dive.tar.gz
         tar xvf /tmp/dive.tar.gz -C "$HOME"/.local/bin dive
       fi
@@ -1117,7 +1117,7 @@ function install_samba() { # {{{
 
 function install_rust() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if ! type rustc >/dev/null 2>&1 && [ ! -e "$HOME"/.cargo/bin/rustc ]; then
+    if ! check_command rustc && [ ! -e "$HOME"/.cargo/bin/rustc ]; then
       echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
       if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
         RUSTUP_DIST_SERVER="https://rsproxy.cn" RUSTUP_UPDATE_ROOT="https://rsproxy.cn/rustup" bash -c "curl --proto '=https' --tlsv1.2 -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y"
@@ -1148,13 +1148,13 @@ EOF
       fi
     else
       echo -e "${COLOR}${COLOR1}$($HOME/.cargo/bin/rustc --version)${COLOR} is found.${NC}"
-      if type rustup >/dev/null 2>&1; then
+      if check_command rustup; then
         rustup update
       fi
     fi
 
     # Make sure cargo can be built when installing
-    if ! type cc >/dev/null 2>&1; then
+    if ! check_command cc; then
       if [ "$DISTRO" = 'CentOS' ]; then
         $SUDO yum groupinstall 'Development Tools'
       else
@@ -1162,7 +1162,7 @@ EOF
       fi
     fi
 
-    if ! type pkg-config >/dev/null 2>&1; then
+    if ! check_command pkg-config; then
       if [ "$DISTRO" = 'CentOS' ]; then
         $SUDO yum install pkgconfig
       else
@@ -1170,7 +1170,7 @@ EOF
       fi
     fi
 
-    if ! type cargo >/dev/null 2>&1; then
+    if ! check_command cargo; then
       if [ -e "$HOME/.cargo/env" ]; then
         source "$HOME/.cargo/env"
       else
@@ -1179,21 +1179,21 @@ EOF
       fi
     fi
 
-    if ! type rg >/dev/null 2>&1; then
+    if ! check_command rg; then
       echo -e "${COLOR}Installing ${COLOR1}ripgrep${COLOR}...${NC}"
       cargo install ripgrep
     else
       echo -e "${COLOR}${COLOR1}ripgrep${COLOR} is found.${NC}"
     fi
 
-    if ! type btm >/dev/null 2>&1; then
+    if ! check_command btm; then
       echo -e "${COLOR}Installing ${COLOR1}bottom${COLOR}...${NC}"
       cargo install bottom
     else
       echo -e "${COLOR}${COLOR1}bottom${COLOR} is found.${NC}"
     fi
 
-    if ! type cargo-install-update >/dev/null 2>&1; then
+    if ! check_command cargo-install-update; then
       echo -e "${COLOR}Installing ${COLOR1}cargo-update${COLOR}...${NC}"
       $SUDO apt install -y libssl-dev
       cargo install cargo-update
@@ -1203,7 +1203,7 @@ EOF
       cargo install-update  -a
     fi
 
-    if ! type cargo-cache >/dev/null 2>&1; then
+    if ! check_command cargo-cache; then
       echo -e "${COLOR}Installing ${COLOR1}cargo-cache${COLOR}...${NC}"
       cargo install cargo-cache
     else
@@ -1217,7 +1217,7 @@ EOF
 function install_lua() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      if ! type lua >/dev/null 2>&1; then
+      if ! check_command lua; then
         $SUDO apt install -y lua5.3 liblua5.3-dev
       fi
     elif [ "$DISTRO" = 'CentOS' ]; then
@@ -1226,7 +1226,7 @@ function install_lua() { # {{{
     fi
 
     # LuaRocks
-    if ! type luarocks >/dev/null 2>&1; then
+    if ! check_command luarocks; then
       $SUDO apt install -y liblua5.3-dev
       wget https://luarocks.org/releases/luarocks-3.9.1.tar.gz -O /tmp/luarocks-3.9.1.tar.gz
       tar zxpf /tmp/luarocks-3.9.1.tar.gz -C /tmp
@@ -1242,7 +1242,7 @@ function install_lua() { # {{{
 function install_perl() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      if ! type perl >/dev/null 2>&1; then
+      if ! check_command perl; then
         $SUDO apt install perl cpanminus
       fi
     fi
@@ -1365,7 +1365,7 @@ function init_byobu() { # {{{
 } # }}}
 
 function install_ansible() { # {{{
-  if ! type pip3 >/dev/null 2>&1; then
+  if ! check_command pip3; then
     install_python
   fi
 
@@ -1408,7 +1408,7 @@ function init_cilium() { # {{{
 
     local cilium_cli_current_version
     local cilium_cli_version
-    if ! type cilium >/dev/null 2>&1; then
+    if ! check_command cilium; then
       echo -e "${COLOR1}Cilium CLI${COLOR} not found.${NC}"
       cilium_cli_version="$cilium_cli_latest_version"
     else
@@ -1452,7 +1452,7 @@ function init_cilium() { # {{{
 
     local hubble_cli_current_version
     local hubble_cli_version
-    if ! type cilium >/dev/null 2>&1; then
+    if ! check_command cilium; then
       echo -e "${COLOR1}Hubble CLI${COLOR} not found.${NC}"
       hubble_cli_version="$hubble_cli_latest_version"
     else
@@ -1513,8 +1513,8 @@ function install_talosctl { # {{{ Install talosctl, see https://www.talos.dev
 function init_gui() { # {{{
   if [ "$OS" = 'Linux' ]; then
     # Install alacritty
-    if ! type alacritty >/dev/null 2>&1; then
-      if ! type cargo >/dev/null 2>&1; then
+    if ! check_command alacritty; then
+      if ! check_command cargo; then
         install_rust
       fi
       cargo install alacritty
@@ -1525,7 +1525,7 @@ function init_gui() { # {{{
     fi
     ln -snfv "$HOME"/git/myConfigs/X11/alacritty "$HOME"/.config/alacritty
 
-    if ! type npm >/dev/null 2>&1; then
+    if ! check_command npm; then
       install_node
     fi
     npm install -g alacritty-theme-switch
