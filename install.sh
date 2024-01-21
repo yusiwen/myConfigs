@@ -1504,6 +1504,12 @@ function init_bpf() { # {{{ # Initialization of BPF development environment
   fi
 } # }}}
 
+function install_talosctl { # {{{ Install talosctl, see https://www.talos.dev
+  if ! check_command talosctl; then
+    curl -sL https://talos.dev/install | sh
+  fi
+} # }}}
+
 function init_gui() { # {{{
   if [ "$OS" = 'Linux' ]; then
     # Install alacritty
@@ -1527,7 +1533,38 @@ function init_gui() { # {{{
 } # }}}
 
 function print_info() { # {{{
-  echo -e "\nUsage:\n${COLOR}install.sh [init|git|myConfigs|node|python|ruby|rxvt|vim|zsh|llvm|docker|containerd|mysql|samba|ctags|rust|sdkman|byobu|ansible|mc|k8s|cilium|bpf|gui]${NC}"
+  echo -e "\nUsage:\n${COLOR}install.sh [COMMAND]${NC}"
+  echo -e "\nCommands:"
+  echo -e "\tinfo \t\tShow system information"
+  echo -e "\tinit \t\tInitialize environment, '-m' for minimal setup"
+  echo -e "\tgit \t\tInstall git"
+  echo -e "\truby \t\tInstall ruby"
+  echo -e "\tmyConfigs \tClone myConfigs repository"
+  echo -e "\tpython \t\tInstall python"
+  echo -e "\tnode \t\tInstall node"
+  echo -e "\tzsh \t\tInstall zsh"
+  echo -e "\tvim \t\tInstall vim"
+  echo -e "\trxvt \t\tInstall rxvt"
+  echo -e "\tllvm \t\tInstall llvm"
+  echo -e "\tdocker \t\tInstall docker"
+  echo -e "\tcontainerd \tInstall containerd"
+  echo -e "\tmysql \t\tInstall mysql"
+  echo -e "\tsamba \t\tInstall samba"
+  echo -e "\tctags \t\tInstall universal ctags"
+  echo -e "\trust \t\tInstall Rust"
+  echo -e "\tlua \t\tInstall lua"
+  echo -e "\tperl \t\tInstall perl"
+  echo -e "\tgolang \t\tInstall golang"
+  echo -e "\thelm \t\tInstall helm"
+  echo -e "\ttalosctl \tInstall talosctl"
+  echo -e "\tsdkman \t\tInstall sdkman"
+  echo -e "\tbyobu \t\tInstall byobu"
+  echo -e "\tansible \tInstall ansible"
+  echo -e "\tmc \t\tInstall Minio client" 
+  echo -e "\tk8s \t\tInitialize Kubernetes"
+  echo -e "\tcilium \t\tInitialize Cilium"
+  echo -e "\tbpf \t\tInitialize BPF development environment"
+  echo -e "\tgui \t\tInitialize GUI"
 } # }}}
 
 case $1 in
@@ -1558,6 +1595,7 @@ golang)
   install_golang "$@"
   ;;
 helm) install_helm ;;
+talosctl) install_talosctl ;;
 sdkman) install_sdkman ;;
 byobu) init_byobu ;;
 ansible) install_ansible ;;
