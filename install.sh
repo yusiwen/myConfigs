@@ -136,10 +136,12 @@ function get_latest_release_from_github() { # {{{
   local username=''
   local password=''
   if check_command pass; then
-    username=$(pass access_token@github.com/scrapy/username)
-    password=$(pass access_token@github.com/scrapy/token)
-    if [ -n "$username" ] && [ -n "$password" ]; then
-      auth_config="--user $username:$password"
+    if [ -e "$HOME/.password-store/access_token@github.com" ]; then
+      username=$(pass access_token@github.com/scrapy/username)
+      password=$(pass access_token@github.com/scrapy/token)
+      if [ -n "$username" ] && [ -n "$password" ]; then
+        auth_config="--user $username:$password"
+      fi
     fi
   else
     if [ -e "$HOME"/.github_token_cfg ]; then
@@ -158,9 +160,9 @@ function get_latest_release_from_github() { # {{{
       sed -E 's/.*"([^"]+)".*/\1/' |                                  # Pluck JSON value
       sed 's/^v//g'                                                   # Remove leading 'v'
   else
-    curl -i "https://github.com/$1/releases/latest" |
-      grep 'localtion: ' |
-      sed 's/.*releases\/tag\/(.*)/\1/' |
+    curl -i --silent "https://github.com/$1/releases/latest" |
+      grep 'location: ' |
+      sed 's/.*releases\/tag\/\(.*\)/\1/' |
       sed 's/^v//g'                                                   # Remove leading 'v'
   fi
 } # }}}
