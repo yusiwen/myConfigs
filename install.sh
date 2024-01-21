@@ -201,7 +201,7 @@ function init_env() { # {{{
       fi
       
       local pkg_core=( gdebi-core software-properties-common apt-transport-https )
-      local pkg_zip=( p7zip-full pigz unzip )
+      local pkg_zip=( p7zip-full pigz zip unzip )
       local pkg_network=( curl wget net-tools iputils-ping iputils-arping hping3 nmap ethtool )
       local pkg_build=( build-essential cmake "${pkg_pstack}" ltrace )
       local pkg_fs=( cifs-utils nfs-common libfuse2 )
@@ -707,9 +707,9 @@ function install_zsh() { # {{{
       if [ ! -e /usr/bin/zsh ]; then
         echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
         if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-          $SUDO apt install -y zsh
+          $SUDO apt install -y zsh zip
         elif [ "$DISTRO" = 'CentOS' ]; then
-          $SUDO yum install -y zsh
+          $SUDO yum install -y zsh zip
           echo '/usr/bin/zsh' | $SUDO tee -a /etc/shells
         fi
       fi
