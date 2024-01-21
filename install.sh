@@ -89,6 +89,11 @@ function show_sysinfo() {
 
 function make_link() { # {{{
   local target="$1" linkname="$2"
+  local link_path
+  link_path=$(dirname "$linkname")
+  if [ ! -d "$link_path" ]; then
+    mkdir -p "$link_path"
+  fi
   ln -sfnv "$target" "$linkname"
 }
 # }}}
@@ -101,19 +106,19 @@ function check_link() { # {{{
   local target="$1" linkname="$2"
   echo -e "${COLOR}Checking link ${COLOR1}'${linkname}'${COLOR} to ${COLOR1}'${target}'${COLOR}...${NC}"
   if [ ! -e "${linkname}" ]; then
-    make_link ${target} ${linkname}
+    make_link "${target}" "${linkname}"
   else
     if [ -L "${linkname}" ]; then
-      if [ $(readlink -f ${linkname}) = $(readlink -f ${target}) ]; then
+      if [ "$(readlink -f "${linkname}")" = "$(readlink -f "${target}")" ]; then
         echo -e "${COLOR}Link ${COLOR1}'${linkname}'${COLOR} to ${COLOR1}'${target}'${COLOR} already exists${NC}"
         return
       else
-        make_link ${target} ${linkname}
+        make_link "${target}" "${linkname}"
         return
       fi
     else
-      mv ${linkname} ${linkname}.$(date '+%s')
-      make_link ${target} ${linkname}
+      mv "${linkname}" "${linkname}.$(date '+%s')"
+      make_link "${target}" "${linkname}"
     fi
   fi
 } # }}}
