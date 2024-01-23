@@ -79,9 +79,7 @@ zinit wait lucid for \
 	OMZP::git \
   OMZP::z \
 	OMZP::fzf \
-    as"completion" \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  OMZP::docker/completions/_docker \
+  https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker \
   djui/alias-tips \
   hlissner/zsh-autopair \
   chriskempson/base16-shell
