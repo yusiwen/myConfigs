@@ -1,0 +1,1 @@
+PATH DEFAULT=/home/@{PAM_USER}/.n/bin:/home/@{PAM_USER}/.sdkman/candidates/maven/current/bin:/home/@{PAM_USER}/.sdkman/candidates/java/current/bin:/opt/go/bin:${PATH}
