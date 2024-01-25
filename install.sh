@@ -155,7 +155,7 @@ function get_latest_release_from_github() { # {{{
 
   if [ -n "$auth_config" ]; then
     # Thanks to: https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
-    curl $auth_config --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+    curl "$auth_config" --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
       grep '"tag_name":' |                                            # Get tag line
       sed -E 's/.*"([^"]+)".*/\1/' |                                  # Pluck JSON value
       sed 's/^v//g'                                                   # Remove leading 'v'
@@ -350,16 +350,19 @@ function install_git() { # {{{
         $SUDO apt install -y git
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
       else
-        echo -e "${COLOR1}git${COLOR} was found.${NC}"
+        echo -e "${COLOR1}git${COLOR} was found at '$(which git)'.${NC}"
       fi
 
       if ! check_command git-credential-manager; then
+        echo -e "${COLOR}Installing ${COLOR1}git-credential-manager${COLOR}...${NC}"
         local gcm_latest_version
         gcm_latest_version=$(get_latest_release_from_github 'git-ecosystem/git-credential-manager')
         curl -L "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux_amd64.$gcm_latest_version.deb" -o /tmp/gcm.deb
         $SUDO dpkg --install /tmp/gcm.deb
         git-credential-manager configure
         rm -f /tmp/gcm.deb
+      else
+        echo -e "${COLOR1}git-credential-manager${COLOR} was found at '$(which git-credential-manager)'.${NC}"
       fi
 
       if ! check_command tig; then
@@ -367,7 +370,7 @@ function install_git() { # {{{
         $SUDO apt install -y tig
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
       else
-        echo -e "${COLOR1}tig${COLOR} was found.${NC}"
+        echo -e "${COLOR1}tig${COLOR} was found at '$(which tig)'.${NC}"
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       # Manjaro has git installed already
@@ -376,7 +379,7 @@ function install_git() { # {{{
         yay -S tig
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
       else
-        echo -e "${COLOR1}tig${COLOR} was found.${NC}"
+        echo -e "${COLOR1}tig${COLOR} was found at '$(which tig)'.${NC}"
       fi
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
