@@ -203,17 +203,17 @@ function init_env() { # {{{
       fi
 
       $SUDO apt update
-      local pkg_pstack=
+      local pkg_pstack=()
       if [ "$ARCH" = 'amd64' ] && [ "$DISTRO" = 'Ubuntu' ]; then
-        pkg_pstack='pstack'
+        pkg_pstack=( pstack ltrace )
       else
-        pkg_pstack=''
+        pkg_pstack=()
       fi
       
       local pkg_core=( gdebi-core software-properties-common apt-transport-https )
       local pkg_zip=( p7zip-full pigz zip unzip )
       local pkg_network=( curl wget net-tools iputils-ping iputils-arping hping3 nmap ethtool )
-      local pkg_build=( build-essential cmake "${pkg_pstack}" ltrace )
+      local pkg_build=( build-essential cmake "${pkg_pstack}" )
       local pkg_fs=( cifs-utils nfs-common libfuse2 )
       local pkg_monitor=( htop atop iotop iftop nethogs nload sysstat )
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag )
