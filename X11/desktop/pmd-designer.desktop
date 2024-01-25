@@ -1,0 +1,5 @@
+[Desktop Entry]
+Exec=env JAVAFX_HOME=/opt/javafx-sdk-17.0.10 /opt/pmd-bin-6.55.0/bin/run.sh designer
+Name=PMD Designer
+Icon=pmd-designer
+Type=Application
