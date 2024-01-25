@@ -79,7 +79,10 @@ zinit wait lucid for \
 	OMZP::git \
   OMZP::z \
 	OMZP::fzf \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  OMZP::docker-compose/_docker-compose \
   djui/alias-tips \
   hlissner/zsh-autopair \
   chriskempson/base16-shell
@@ -164,6 +167,9 @@ zinit wait lucid light-mode for \
   denisidoro/navi \
     from'gh-r' as'program' mv'yq* -> yq' pick'yq' \
   mikefarah/yq \
+    from'gh-r' as'program' mv'docker-compose* -> docker-compose' pick'docker-compose' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  docker/compose \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
