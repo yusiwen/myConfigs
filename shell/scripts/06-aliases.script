@@ -146,11 +146,7 @@ alias difls='docker-fuzzy-image-ls'
 alias dnfls='docker-fuzzy-network-ls'
 alias drm='_drm'
 alias drmi='_drmi'
-if type docker-compose >/dev/null 2>&1; then
-  alias dco='docker-compose'
-else
-  alias dco='docker compose'
-fi
+alias dco='_docker_compose_project'
 # }}}
 
 if type batcat >/dev/null 2>&1; then
