@@ -157,11 +157,13 @@ function get_latest_release_from_github() { # {{{
     # Thanks to: https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
     curl "${auth_config[@]}" --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
       grep '"tag_name":' |                                            # Get tag line
+      tr -d '\n\r' |                                                  # Remove newline
       sed -E 's/.*"([^"]+)".*/\1/' |                                  # Pluck JSON value
       sed 's/^v//g'                                                   # Remove leading 'v'
   else
     curl -i --silent "https://github.com/$1/releases/latest" |
       grep 'location: ' |
+      tr -d '\n\r' |                                                  # Remove newline
       sed 's/.*releases\/tag\/\(.*\)/\1/' |
       sed 's/^v//g'                                                   # Remove leading 'v'
   fi
