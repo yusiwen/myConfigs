@@ -80,8 +80,10 @@ zinit wait lucid for \
   OMZP::z \
 	OMZP::fzf \
     if'[[ "$(uname -o)" != "Msys" ]]' \
+    if'type docker >/dev/null 2>&1' \
   https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker \
     if'[[ "$(uname -o)" != "Msys" ]]' \
+    if'type docker >/dev/null 2>&1 || type docker-compose >/dev/null 2>&1' \
   OMZP::docker-compose/_docker-compose \
   djui/alias-tips \
   hlissner/zsh-autopair \
