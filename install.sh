@@ -132,7 +132,7 @@ function check_command() { # {{{
 } # }}}
 
 function get_latest_release_from_github() { # {{{
-  local auth_config=''
+  local auth_config=()
   local username=''
   local password=''
   if check_command pass; then
@@ -140,7 +140,7 @@ function get_latest_release_from_github() { # {{{
       username=$(pass access_token@github.com/scrapy/username)
       password=$(pass access_token@github.com/scrapy/token)
       if [ -n "$username" ] && [ -n "$password" ]; then
-        auth_config="--user $username:$password"
+        auth_config=("--user" "$username:$password")
       fi
     fi
   else
@@ -148,14 +148,14 @@ function get_latest_release_from_github() { # {{{
       username=$(awk -F "=" '/username/ {print $2}' "$HOME"/.github_token_cfg)
       password=$(awk -F "=" '/access_token/ {print $2}' "$HOME"/.github_token_cfg)
       if [ -n "$username" ] && [ -n "$password" ]; then
-        auth_config="--user $username:$password"
+        auth_config=("--user" "$username:$password")
       fi
     fi
   fi
 
-  if [ -n "$auth_config" ]; then
+  if [ ${#auth_config[@]} -gt 0 ]; then
     # Thanks to: https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
-    curl "$auth_config" --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+    curl "${auth_config[@]}" --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
       grep '"tag_name":' |                                            # Get tag line
       sed -E 's/.*"([^"]+)".*/\1/' |                                  # Pluck JSON value
       sed 's/^v//g'                                                   # Remove leading 'v'
