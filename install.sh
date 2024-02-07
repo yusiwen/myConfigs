@@ -216,7 +216,7 @@ function init_env() { # {{{
       local pkg_build=( build-essential cmake "${pkg_pstack}" )
       local pkg_fs=( cifs-utils nfs-common libfuse2 )
       local pkg_monitor=( htop atop iotop iftop nethogs nload sysstat )
-      local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag )
+      local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck )
 
       if [ $minimal -eq 1 ]; then
         $SUDO apt install -y \
@@ -753,7 +753,11 @@ function install_zsh() { # {{{
   check_link "$CONFIG_SHELL"/zshrc.zinit "$HOME"/.zshrc
   check_link "$CONFIG_SHELL"/starship/starship.toml "$HOME"/.config/starship.toml
 
-  source "$HOME/.zshrc"
+  if [ "$SHELL" = 'zsh' ]; then
+    source "$HOME/.zshrc"
+  else
+    echo -e "${COLOR}Please restart your terminal${NC}"
+  fi
 } # }}}
 
 function install_vim() { # {{{
