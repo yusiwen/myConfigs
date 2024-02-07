@@ -219,7 +219,7 @@ function init_env() { # {{{
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck )
 
       if [ $minimal -eq 1 ]; then
-        $SUDO apt install -y \
+        $SUDO DEBIAN_FRONTEND=noninteractive apt install -y \
           "${pkg_core[@]}" \
           "${pkg_zip[@]}" \
           "${pkg_network[@]}" \
@@ -227,7 +227,7 @@ function init_env() { # {{{
           "${pkg_monitor[@]}" \
           "${pkg_misc[@]}"
       else
-        $SUDO apt install -y \
+        $SUDO DEBIAN_FRONTEND=noninteractive apt install -y \
           "${pkg_core[@]}" \
           "${pkg_zip[@]}" \
           "${pkg_network[@]}" \
