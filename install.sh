@@ -952,14 +952,6 @@ function install_docker() { # {{{
           $SUDO cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
         fi
       fi
-
-      # Install dive
-      local dive_version
-      dive_version=$(get_latest_release_from_github wagoodman/dive)
-      if ! check_command dive; then
-        curl -L "https://github.com/wagoodman/dive/releases/download/v${dive_version}/dive_${dive_version}_linux_amd64.tar.gz" -o /tmp/dive.tar.gz
-        tar xvf /tmp/dive.tar.gz -C "$HOME"/.local/bin dive
-      fi
     fi
   else
     echo -e "${COLOR}Unsupported on this OS.${NC}"
