@@ -221,7 +221,7 @@ function init_env() { # {{{
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck )
 
       if [ $minimal -eq 1 ]; then
-        $SUDO DEBIAN_FRONTEND=noninteractive apt install -y \
+        $SUDO NEEDRESTART_MODE=a apt install -y \
           "${pkg_core[@]}" \
           "${pkg_zip[@]}" \
           "${pkg_network[@]}" \
@@ -229,7 +229,7 @@ function init_env() { # {{{
           "${pkg_monitor[@]}" \
           "${pkg_misc[@]}"
       else
-        $SUDO DEBIAN_FRONTEND=noninteractive apt install -y \
+        $SUDO NEEDRESTART_MODE=a apt install -y \
           "${pkg_core[@]}" \
           "${pkg_zip[@]}" \
           "${pkg_network[@]}" \
@@ -930,19 +930,19 @@ function install_docker() { # {{{
         fi
 
         if [ -e /etc/apt/sources.list.d ] && [ -n "$(find /etc/apt/sources.list.d -maxdepth 1 -name '*.list' -printf 'FOUND' -quit)" ]; then
-        if ! grep -q "aliyun.com/docker-ce" /etc/apt/sources.list.d/*.list; then
-          echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
-          if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-            $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-          else
-            $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-          fi
-          $SUDO apt-get -y update
+          if ! grep -q "aliyun.com/docker-ce" /etc/apt/sources.list.d/*.list; then
+            echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
+            if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
+              $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+            else
+              $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+            fi
+            $SUDO apt-get -y update
           fi
         fi
 
         echo -e "${COLOR}Installing docker-ce...${NC}"
-        $SUDO apt-get -y install docker-ce
+        $SUDO NEEDRESTART_MODE=a apt-get -y install docker-ce
 
         echo -e "${COLOR}Add user ${COLOR1}${USER}${COLOR} to group 'docker'...${NC}"
         $SUDO usermod -aG docker "$USER"
