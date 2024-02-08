@@ -221,7 +221,7 @@ function init_env() { # {{{
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck )
 
       if [ $minimal -eq 1 ]; then
-        $SUDO NEEDRESTART_MODE=a apt-get install -y \
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y \
           "${pkg_core[@]}" \
           "${pkg_zip[@]}" \
           "${pkg_network[@]}" \
@@ -229,7 +229,7 @@ function init_env() { # {{{
           "${pkg_monitor[@]}" \
           "${pkg_misc[@]}"
       else
-        $SUDO NEEDRESTART_MODE=a apt-get install -y \
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y \
           "${pkg_core[@]}" \
           "${pkg_zip[@]}" \
           "${pkg_network[@]}" \
@@ -343,13 +343,13 @@ function install_git() { # {{{
 
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
             $SUDO apt-get update
-            $SUDO NEEDRESTART_MODE=a apt-get full-upgrade -y
+            $SUDO env NEEDRESTART_MODE=a apt-get full-upgrade -y
           else
             echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
           fi
         fi
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
-        $SUDO NEEDRESTART_MODE=a apt-get install -y git
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y git
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}git${COLOR} was found at '$(which git)'.${NC}"
@@ -942,7 +942,7 @@ function install_docker() { # {{{
         fi
 
         echo -e "${COLOR}Installing docker-ce...${NC}"
-        $SUDO NEEDRESTART_MODE=a apt-get -y install docker-ce
+        $SUDO env NEEDRESTART_MODE=a apt-get -y install docker-ce
 
         echo -e "${COLOR}Add user ${COLOR1}${USER}${COLOR} to group 'docker'...${NC}"
         $SUDO usermod -aG docker "$USER"
