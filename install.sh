@@ -187,6 +187,8 @@ function init_env() { # {{{
   local minimal=0
   if [ "$1" = '-m' ]; then
     minimal=1
+  elif [ "$1" = '-b' ]; then
+    minimal=2
   fi
 
   if [ "$OS" = 'Linux' ]; then
@@ -253,7 +255,7 @@ function init_env() { # {{{
       fi
     fi
 
-    if [ $minimal -eq 1 ]; then
+    if [ $minimal -eq 1 ] || [ $minimal -eq 2 ]; then
       install_git
       fetch_myConfigs
     else
