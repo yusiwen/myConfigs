@@ -187,7 +187,8 @@ zinit wait light-mode lucid is-snippet for \
   $HOME/git/myConfigs/shell/scripts/03-programs.script \
   $HOME/git/myConfigs/shell/scripts/03-completions.script \
   $HOME/git/myConfigs/shell/scripts/04-keybindings.script \
-  $HOME/git/myConfigs/shell/scripts/06-aliases.script
+  $HOME/git/myConfigs/shell/scripts/06-aliases.script \
+  $HOME/git/myConfigs/shell/scripts/99-customize.script
 
 if [ "$PROMPT_TYPE" = 'p10k' ]; then
   # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

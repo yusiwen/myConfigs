@@ -455,14 +455,11 @@ if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
   source "$HOME/.config/broot/launcher/bash/br"
 fi
 
-# Source any extended scrips stored in $HOME/.exports/ folder
-if [ -d "$HOME"/.exports ]; then
-  for script in "$HOME"/.exports/*.script; do
-    if [ -e "$script" ]; then
-      # shellcheck source=/dev/null
-      source "$script"
-    fi
-  done
+# git-credential-manager
+if [ -e /usr/local/bin/git-credential-manager ]; then
+  if [ "$(git config --global --get credential.helper)" != '/usr/local/bin/git-credential-manager' ]; then
+    /usr/local/bin/git-credential-manager configure
+  fi
 fi
 
 # vim: foldmethod=marker :

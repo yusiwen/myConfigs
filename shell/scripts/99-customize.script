@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Source any extended scrips stored in $HOME/.exports/ folder
+if [ -d "$HOME"/.exports ]; then
+  for script in "$HOME"/.exports/*.script; do
+    if [ -e "$script" ]; then
+      # shellcheck source=/dev/null
+      source "$script"
+    fi
+  done
+fi
+
+# vim: foldmethod=marker :
