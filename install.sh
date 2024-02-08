@@ -360,9 +360,8 @@ function install_git() { # {{{
         local gcm_latest_version
         gcm_latest_version=$(get_latest_release_from_github 'git-ecosystem/git-credential-manager')
         curl -L "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux_amd64.$gcm_latest_version.deb" -o /tmp/gcm.deb
-        $SUDO dpkg --install /tmp/gcm.deb
-        git-credential-manager configure
-        rm -f /tmp/gcm.deb
+        $SUDO dpkg --install /tmp/gcm.deb && rm -f /tmp/gcm.deb
+        /usr/local/bin/git-credential-manager configure
       else
         echo -e "${COLOR1}git-credential-manager${COLOR} was found at '$(which git-credential-manager)'.${NC}"
       fi
