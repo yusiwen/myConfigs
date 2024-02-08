@@ -171,9 +171,11 @@ zinit wait lucid light-mode for \
   mikefarah/yq \
     from'gh-r' as'program' mv'docker-compose* -> docker-compose' pick'docker-compose' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
+    if'type docker >/dev/null 2>&1' \
   docker/compose \
     from'gh-r' as'program' pick'dive' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
+    if'type docker >/dev/null 2>&1' \
   wagoodman/dive \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
