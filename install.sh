@@ -929,6 +929,7 @@ function install_docker() { # {{{
           rm -f aliyun-docker-ce.gpg
         fi
 
+        if [ -e /etc/apt/sources.list.d ] && [ -n "$(find /etc/apt/sources.list.d -maxdepth 1 -name '*.list' -printf 'FOUND' -quit)" ]; then
         if ! grep -q "aliyun.com/docker-ce" /etc/apt/sources.list.d/*.list; then
           echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
           if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
@@ -937,6 +938,7 @@ function install_docker() { # {{{
             $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
           fi
           $SUDO apt-get -y update
+          fi
         fi
 
         echo -e "${COLOR}Installing docker-ce...${NC}"
