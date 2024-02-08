@@ -945,9 +945,9 @@ function install_docker() { # {{{
         if [ $add_docker_repo -eq 1 ]; then
           echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
           if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-            $SUDO add-apt-repository "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+            $SUDO add-apt-repository -y "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
           else
-            $SUDO add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+            $SUDO add-apt-repository -y "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
           fi
           $SUDO apt-get -y update
         fi
