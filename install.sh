@@ -397,6 +397,10 @@ function install_git() { # {{{
       else
         $SUDO yum -y install git
       fi
+    elif [ "$DISTRO" = 'OpenWrt' ]; then
+      if ! check_command git; then
+        $SUDO opkg update && opkg install git
+      fi
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
       return
@@ -482,15 +486,32 @@ EOF
     git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
   fi
 
-  if [ -e "$HOME"/.ssh/id_rsa.pub ]; then
-    echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
-    cat "$HOME"/.ssh/id_rsa.pub
+  if [ "$DISTRO" = 'OpenWrt' ]; then
+    if ! check_command dropbearkey; then
+      $SUDO opkg install dropbear
+    fi
+    if [ ! -e "$HOME/.ssh" ]; then
+      mkdir -p "$HOME/.ssh"
+    fi
+    if [ -e "$HOME"/.ssh/id_dropbear.pub ]; then
+      echo -e "${COLOR1}.ssh/id_dropbear.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
+      cat "$HOME"/.ssh/id_dropbear.pub
+    else
+      dropbearkey -t rsa -s 4096 -f "$HOME/.ssh/id_dropbear" | grep "^ssh-rsa " > "$HOME"/.ssh/id_dropbear.pub
+      echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea${NC}"
+    fi
   else
-    echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was not found, generating it now...${NC}"
-    ssh-keygen -t rsa -N "" -C "default key" -f "$HOME"/.ssh/id_rsa
-    echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea${NC}"
-    cat "$HOME"/.ssh/id_rsa.pub
+    if [ -e "$HOME"/.ssh/id_rsa.pub ]; then
+      echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
+      cat "$HOME"/.ssh/id_rsa.pub
+    else
+      echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was not found, generating it now...${NC}"
+      ssh-keygen -t rsa -N "" -C "default key" -f "$HOME"/.ssh/id_rsa
+      echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea${NC}"
+      cat "$HOME"/.ssh/id_rsa.pub
+    fi
   fi
+
 
   echo -e "${COLOR}You need 'commitizen', 'cz-customizable' to run git commit conventions, run './install.sh node' to setup.${NC}"
 } # }}}
