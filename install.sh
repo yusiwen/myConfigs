@@ -219,7 +219,7 @@ function init_env() { # {{{
       local pkg_network=( curl wget net-tools iputils-ping iputils-arping hping3 nmap ethtool )
       local pkg_build=( build-essential cmake "${pkg_pstack}" )
       local pkg_fs=( cifs-utils nfs-common libfuse2 )
-      local pkg_monitor=( htop atop iotop iftop nethogs nload sysstat )
+      local pkg_monitor=( htop atop btop iotop iftop nethogs nload sysstat )
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck )
 
       if [ $minimal -eq 1 ]; then
