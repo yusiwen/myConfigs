@@ -79,6 +79,7 @@ zinit wait lucid for \
 	OMZP::git \
   OMZP::z \
 	OMZP::fzf \
+  OMZP::command-not-found \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
   https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker \
