@@ -513,7 +513,7 @@ EOF
   fi
 
 
-  echo -e "${COLOR}You need 'commitizen', 'cz-customizable' to run git commit conventions, run './install.sh node' to setup.${NC}"
+  echo -e "${COLOR}You may need 'commitizen', 'cz-customizable' to run git commit conventions, run './install.sh node' to setup.${NC}"
 } # }}}
 
 function install_ruby() { # {{{
