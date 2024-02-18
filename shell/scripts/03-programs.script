@@ -255,11 +255,12 @@ fi
 
 # {{{ Montiors
 # Set $DISPLAY on WSL, needed by VcXsrv
-if [ ! -z "$(uname -a | grep 'microsoft')" ]; then
-  export DISPLAY="`sed -n 's/nameserver //p' /etc/resolv.conf`:0"
+if uname -a | grep -q 'microsoft'; then
+  DISPLAY="$(sed -n 's/nameserver //p' /etc/resolv.conf):0"
+  export DISPLAY
 fi
 
-if [ ! -z "$DISPLAY" ]; then
+if [ -n "$DISPLAY" ]; then
   MONITOR=
   if [ "$HOSTNAME" = 'deskmini-server' ]; then
     MONITOR='HDMI-A-0'
@@ -459,6 +460,13 @@ fi
 if [ -e /usr/local/bin/git-credential-manager ]; then
   if [ "$(git config --global --get credential.helper)" != '/usr/local/bin/git-credential-manager' ]; then
     /usr/local/bin/git-credential-manager configure
+  fi
+  if ! git config --global --get credential.credentialStore >/dev/null 2>&1; then
+    if check_command pass; then
+      git config --global credential.credentialStore gpg
+    else
+      git config --global credential.credentialStore cache
+    fi
   fi
 fi
 
