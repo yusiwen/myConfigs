@@ -1,4 +1,5 @@
 set clipboard+=unnamed
+set keep-english-in-normal-and-restore-in-insert
 
 " set <leader> to <space>
 let mapleader = " "
