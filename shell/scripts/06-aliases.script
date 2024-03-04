@@ -103,6 +103,8 @@ else
   alias virtualenv3='virtualenv --python /usr/bin/python3 --system-site-packages'
 fi
 
+alias venv='python3 -m venv'
+
 # Use 'pip_search' to replace the disabled search functionality of pip.
 # See '_pip()' in 'shell/scripts/02-functions.script'
 alias pip='_pip'
