@@ -670,10 +670,14 @@ function install_python() { # {{{
 
     check_python3_version
 
-    if ! check_command virtualenv; then
-      echo -e "${COLOR}Installing ${COLOR1}virtualenv${COLOR}...${NC}"
-      if check_command pip3; then
-        pip3 install --user $PIP_EXTERNAL_MANAGEMENT virtualenv
+    if ! check_command venv; then
+      echo -e "${COLOR}Installing ${COLOR1}venv${COLOR}...${NC}"
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
+        $SUDO apt-get install python3-venv
+      else
+        if check_command pip3; then
+          pip3 install --user $PIP_EXTERNAL_MANAGEMENT virtualenv
+        fi
       fi
     fi
 
