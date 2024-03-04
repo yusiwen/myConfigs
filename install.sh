@@ -670,17 +670,6 @@ function install_python() { # {{{
 
     check_python3_version
 
-    if ! check_command venv; then
-      echo -e "${COLOR}Installing ${COLOR1}venv${COLOR}...${NC}"
-      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-        $SUDO apt-get install python3-venv
-      else
-        if check_command pip3; then
-          pip3 install --user $PIP_EXTERNAL_MANAGEMENT virtualenv
-        fi
-      fi
-    fi
-
     # Install utilities
     pip3 install --user $PIP_EXTERNAL_MANAGEMENT pip_search bpytop
   elif [ "$OS" = 'Darwin' ]; then
@@ -695,7 +684,7 @@ function install_python() { # {{{
     echo "[global]" >"$HOME"/.config/pip/pip.conf
     echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >>"$HOME"/.config/pip/pip.conf
 
-    pip3 install --user virtualenv pip_search
+    pip3 install --user pip_search bpytop
   else
     echo -e "${COLOR}OS not supported${NC}"
     return
