@@ -143,14 +143,13 @@ zinit wait lucid light-mode for \
   fdellwing/zsh-bat \
     from'gh-r' as'program' mv'lazygit* -> lazygit' \
   jesseduffield/lazygit \
-    from'gh-r' as'program' pick'bin/exa' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
+    from'gh-r' as'program' pick'eza' \
     atload"
-      alias la='exa --all --git --color=auto'
-      alias ls='exa --git --color=auto'
-      alias ll='exa --long --all --git --color=auto'
+      alias la='eza --all --git --color=auto'
+      alias ls='eza --git --color=auto'
+      alias ll='eza --long --all --git --color=auto'
     " \
-  ogham/exa \
+  eza-community/eza \
     from'gh-r' as'program' pick'**/delta' \
   dandavison/delta \
     from'gh-r' as'program' pick'zellij' \

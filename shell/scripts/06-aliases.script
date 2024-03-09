@@ -6,7 +6,7 @@ alias mv='mv -iv'
 alias cp='cp -iv'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
-if ! type exa>/dev/null 2>&1; then
+if ! type eza>/dev/null 2>&1; then
   if [ "$(uname)" = 'Darwin' ]; then
     alias l='ls -GF'
     alias la='ls -G -aF'
@@ -26,9 +26,9 @@ if ! type exa>/dev/null 2>&1; then
   fi
 else
   if [ "$(uname)" = 'Darwin' ]; then
-    alias l='exa --oneline'
-    alias la='exa --oneline --all'
-    alias ll='exa --lone --all'
+    alias l='eza --oneline'
+    alias la='eza --oneline --all'
+    alias ll='eza --long --all'
     alias dir='ls -G'
   else
     alias l='vdir -h --format=across --color'
@@ -36,9 +36,9 @@ else
       alias la='ls++ -aF'
       alias ls='ls++ -F'
     else
-      alias la='exa --all --git --color=auto'
-      alias ls='exa --git --color=auto'
-      alias ll='exa --long --all --git --color=auto'
+      alias la='eza --all --git --color=auto'
+      alias ls='eza --git --color=auto'
+      alias ll='eza --long --all --git --color=auto'
     fi
     alias dir='dir -l --color'
   fi
