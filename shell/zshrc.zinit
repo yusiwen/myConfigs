@@ -171,6 +171,8 @@ zinit wait lucid light-mode for \
   denisidoro/navi \
     from'gh-r' as'program' mv'yq* -> yq' pick'yq' \
   mikefarah/yq \
+    from'gh-r' as'program' pick'**/dust' \
+  bootandy/dust \
     from'gh-r' as'program' mv'docker-compose* -> docker-compose' pick'docker-compose' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
