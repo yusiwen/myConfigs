@@ -724,6 +724,9 @@ function install_node() { # {{{
   echo -e "${COLOR1}Installing tldr...${NC}"
   npm install -g tldr
 
+  echo -e "${COLOR1}Installing sonar-scanner...${NC}"
+  npm install -g sonar-scanner
+
   if check_command git; then
     git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
   fi
