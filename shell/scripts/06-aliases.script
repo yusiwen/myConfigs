@@ -5,6 +5,8 @@ alias rm='rm -iv'
 alias mv='mv -iv'
 alias cp='cp -iv'
 
+alias less='less -R'
+
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
 if ! type eza>/dev/null 2>&1; then
   if [ "$(uname)" = 'Darwin' ]; then
@@ -36,11 +38,12 @@ else
       alias la='ls++ -aF'
       alias ls='ls++ -F'
     else
-      alias la='eza --all --git --color=auto'
-      alias ls='eza --git --color=auto'
-      alias ll='eza --long --all --git --color=auto'
+      alias la='eza --all --git --color=always'
+      alias ls='eza --git --color=always'
+      alias ll='eza --long --all --git --color=always'
     fi
     alias dir='dir -l --color'
+    alias tree='eza --tree --all --git --color=always'
   fi
 fi
 
