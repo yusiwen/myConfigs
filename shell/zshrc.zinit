@@ -180,6 +180,11 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
   wagoodman/dive \
+    from'gh-r' as'program' pick'**/keadm/keadm' \
+    bpick'keadm*' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+    if'type docker >/dev/null 2>&1' \
+  kubeedge/kubeedge \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
