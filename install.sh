@@ -521,7 +521,7 @@ function install_ruby() { # {{{
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! check_command ruby; then
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
-        $SUDO apt-get install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
@@ -530,7 +530,7 @@ function install_ruby() { # {{{
         set -e
         if [ "$PACKAGE" -eq 0 ]; then
           echo -e "${COLOR}Installing ${COLOR1}ruby-full${COLOR}...${NC}"
-          $SUDO apt-get install -y ruby-full
+          $SUDO env NEEDRESTART_MODE=a apt-get install -y ruby-full
         fi
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
@@ -621,7 +621,7 @@ function install_python() { # {{{
 
     if ! check_command python3; then
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-        $SUDO apt-get install -y python3
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y python3
       elif [ "$DISTRO" = 'CentOS' ]; then
         local target_version
         if [ "$OS_VERSION" = '7' ]; then
@@ -645,7 +645,7 @@ function install_python() { # {{{
     if ! check_command pip3; then
       echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-        $SUDO apt-get install -y python3-pip
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y python3-pip
         $SUDO update-alternatives --install /usr/bin/python python /usr/bin/python3 20
       elif [ "$DISTRO" = 'Manjaro' ]; then
         yay -S python-pip
