@@ -184,6 +184,8 @@ zinit wait lucid light-mode for \
     bpick'keadm*' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   kubeedge/kubeedge \
+    from'gh-r' as'program' mv'k0sctl* -> k0sctl' pick'k0sctl' \
+  k0sproject/k0sctl \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
