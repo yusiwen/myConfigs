@@ -872,7 +872,7 @@ function install_vim() { # {{{
   # Install config bundle
   local need_install_bundle=0
   local bundle_name=NvChad
-  local bundle_url=https://github.com/NvChad/NvChad
+  local bundle_url=https://github.com/AstroNvim/AstroNvim
   if [ -d "$HOME"/.config/nvim ]; then
     # Check if it's a git repo
     if git -C "$HOME"/.config/nvim rev-parse >/dev/null 2>&1; then
@@ -901,7 +901,7 @@ function install_vim() { # {{{
     git clone "$bundle_url" "$HOME"/.config/nvim --depth 1
   fi
 
-  check_link "$HOME"/git/myConfigs/vim/nvchad/custom "$HOME"/.config/nvim/lua/custom
+  check_link "$HOME"/git/myConfigs/vim/astronvim/user "$HOME"/.config/nvim/lua/user
 
   if [ "$OS" = 'Windows_NT' ]; then
     check_link "$HOME"/.config/nvim "$HOME"/AppData/Local/nvim
