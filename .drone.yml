@@ -1,0 +1,24 @@
+---
+kind: pipeline
+type: docker # 在 Docker Runner 中运行
+name: default
+
+steps:
+  - name: sync-install-script
+    image: yusiwen/repo-sync:1.1 
+    pull: if-not-exists
+    environment:
+      MINIO_ENDPOINT: https://share.yusiwen.cn
+      MINIO_ACCESS_KEY:
+        from_secret: minio-access-key
+      MINIO_SECRET_KEY:
+        from_secret: minio-secret-key
+      SYNC_LOCAL_PATH: install.sh
+      SYNC_REMOTE_PATH: public/install.sh
+    when:
+      branch:
+        - master
+
+
+node:
+  node-tag: dev-private
