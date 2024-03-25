@@ -298,7 +298,7 @@ function install_universal_ctags() { # {{{
         echo -e "${COLOR}Finding exuberant-ctags, it's very old, uninstalling it..${NC}"
         $SUDO apt purge exuberant-ctags
       fi
-      $SUDO apt-get install -y autoconf pkg-config
+      $SUDO env NEEDRESTART_MODE=a apt-get install -y autoconf pkg-config
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
         $SUDO yum install -y pkgconfig autoconf automake python36-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
@@ -372,7 +372,7 @@ function install_git() { # {{{
 
       if ! check_command tig; then
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
-        $SUDO apt-get install -y tig
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y tig
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}tig${COLOR} was found at '$(which tig)'.${NC}"
@@ -747,7 +747,7 @@ function install_zsh() { # {{{
       if [ ! -e /usr/bin/zsh ]; then
         echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
         if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-          $SUDO apt-get install -y zsh zip
+          $SUDO env NEEDRESTART_MODE=a apt-get install -y zsh zip
         elif [ "$DISTRO" = 'CentOS' ]; then
           $SUDO yum install -y zsh zip
           echo '/usr/bin/zsh' | $SUDO tee -a /etc/shells
@@ -824,7 +824,9 @@ function install_vim() { # {{{
       fi
 
       echo -e "${COLOR}Install supplementary tools...${NC}"
-      $SUDO apt-get install -y silversearcher-ag cscope astyle lua5.3 perl
+      install_perl
+      install_lua
+      $SUDO env NEEDRESTART_MODE=a apt-get install -y silversearcher-ag cscope astyle
     elif [ "$DISTRO" = 'Manjaro' ]; then
       if ! check_command nvim; then
         yay -S neovim
@@ -925,7 +927,7 @@ function install_rxvt() { # {{{
     if [ "$DISTRO" = 'Ubuntu' ]; then
       if ! check_command rxvt; then
         echo -e "${COLOR}Installing ${COLOR1}rxvt-unicode-256color${COLOR}...${NC}"
-        $SUDO apt-get install -y rxvt-unicode-256color
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y rxvt-unicode-256color
       fi
     fi
   else
@@ -940,7 +942,7 @@ function install_docker() { # {{{
       if ! check_command docker; then
         echo -e "${COLOR1}docker${COLOR} is not found, installing...${NC}"
         echo -e "${COLOR}Installing prerequisite packages...${NC}"
-        $SUDO apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+        $SUDO env NEEDRESTART_MODE=a apt-get -y install apt-transport-https ca-certificates curl software-properties-common
 
         if [ ! -e /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg ]; then
           echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce public key...${NC}"
@@ -1049,11 +1051,11 @@ function install_containerd() { # {{{
 
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! check_command newuidmap; then
-        $SUDO apt-get install uidmap
+        $SUDO env NEEDRESTART_MODE=a apt-get install uidmap
       fi
 
       if ! check_command slirp4netns; then
-        $SUDO apt-get install slirp4netns
+        $SUDO env NEEDRESTART_MODE=a apt-get install slirp4netns
       fi
 
       if ! check_command rootlesskit; then
@@ -1088,7 +1090,7 @@ function install_containerd() { # {{{
 function install_llvm() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      $SUDO apt-get install -y llvm clang clang-format clang-tidy clang-tools lldb lld
+      $SUDO env NEEDRESTART_MODE=a apt-get install -y llvm clang clang-format clang-tidy clang-tools lldb lld
     elif [ "$DISTRO" = 'CentOS' ]; then
       set +e
       PACKAGE=$(yum list installed | grep -c ^centos-release-scl)
@@ -1137,7 +1139,7 @@ function install_mysql() { # {{{
 function install_samba() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      $SUDO apt-get install -y samba samba-common
+      $SUDO env NEEDRESTART_MODE=a apt-get install -y samba samba-common
       $SUDO cp "$HOME"/git/myConfigs/samba/smb.conf /etc/samba/smb.conf
       $SUDO smbpasswd -a yusiwen
       $SUDO systemctl restart smbd
@@ -1189,7 +1191,7 @@ EOF
       if [ "$DISTRO" = 'CentOS' ]; then
         $SUDO yum groupinstall 'Development Tools'
       else
-        $SUDO apt-get install -y build-essential pkg-config
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y build-essential pkg-config
       fi
     fi
 
@@ -1197,7 +1199,7 @@ EOF
       if [ "$DISTRO" = 'CentOS' ]; then
         $SUDO yum install pkgconfig
       else
-        $SUDO apt-get install -y pkg-config
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y pkg-config
       fi
     fi
 
@@ -1226,7 +1228,7 @@ EOF
 
     if ! check_command cargo-install-update; then
       echo -e "${COLOR}Installing ${COLOR1}cargo-update${COLOR}...${NC}"
-      $SUDO apt-get install -y libssl-dev
+      $SUDO env NEEDRESTART_MODE=a apt-get install -y libssl-dev
       cargo install cargo-update
       cargo install-update  -a
     else
@@ -1249,7 +1251,7 @@ function install_lua() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! check_command lua; then
-        $SUDO apt-get install -y lua5.3 liblua5.3-dev
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y lua5.3 liblua5.3-dev
       fi
     elif [ "$DISTRO" = 'CentOS' ]; then
       # TODO: fix repo, need further checks
@@ -1258,7 +1260,7 @@ function install_lua() { # {{{
 
     # LuaRocks
     if ! check_command luarocks; then
-      $SUDO apt-get install -y liblua5.3-dev
+      $SUDO env NEEDRESTART_MODE=a apt-get install -y liblua5.3-dev
       wget https://luarocks.org/releases/luarocks-3.9.1.tar.gz -O /tmp/luarocks-3.9.1.tar.gz
       tar zxpf /tmp/luarocks-3.9.1.tar.gz -C /tmp
       pushd /tmp/luarocks-3.9.1
@@ -1274,7 +1276,7 @@ function install_perl() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! check_command perl; then
-        $SUDO apt-get install perl cpanminus
+        $SUDO env NEEDRESTART_MODE=a apt-get install perl cpanminus
       fi
     fi
   fi
@@ -1520,7 +1522,7 @@ function init_cilium() { # {{{
 function init_bpf() { # {{{ # Initialization of BPF development environment
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      $SUDO apt-get install build-essential git make libelf-dev libelf1 \
+      $SUDO env NEEDRESTART_MODE=a apt-get install build-essential git make libelf-dev libelf1 \
         clang llvm strace tar make bpfcc-tools \
         linux-headers-"$(uname -r)" gcc-multilib
 
