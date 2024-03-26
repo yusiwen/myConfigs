@@ -80,6 +80,7 @@ zinit wait lucid for \
 	OMZP::git \
   OMZP::z \
     if'type fzf >/dev/null 2>&1' \
+    if'[[ -d "$HOME"/.fzf ]]' \
 	OMZP::fzf \
   OMZP::command-not-found \
     if'[[ "$(uname -o)" != "Msys" ]]' \
