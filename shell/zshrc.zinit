@@ -79,7 +79,7 @@ zinit wait lucid for \
     atload"alias gcd='gco dev'" \
 	OMZP::git \
   OMZP::z \
-    if'type fzf >/dev/null 2>&1' \
+    wait'type fzf >/dev/null 2>&1' \
     if'[[ -d "$HOME"/.fzf ]]' \
 	OMZP::fzf \
   OMZP::command-not-found \
@@ -127,6 +127,7 @@ zinit wait lucid light-mode for \
     pick"zsh-lazyload.zsh" \
   qoomon/zsh-lazyload \
   unixorn/fzf-zsh-plugin \
+    wait'type fzf>/dev/null 2>&1' \
   urbainvaes/fzf-marks
 #####################
 # PROGRAMS          #
@@ -139,8 +140,6 @@ zinit wait lucid light-mode for \
   tj/n \
     from'gh-r' as'command' atinit'export PATH="$HOME/.yarn/bin:$PATH"' mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
   yarnpkg/yarn \
-    from'gh-r' as'program' \
-  junegunn/fzf \
     from'gh-r' as'program' mv'fd* -> fd' pick'fd/fd' \
   @sharkdp/fd \
     from'gh-r' as'program' mv'bat* -> bat' pick'bat/bat' \

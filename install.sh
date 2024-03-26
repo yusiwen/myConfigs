@@ -768,10 +768,6 @@ function install_zsh() { # {{{
     fi
   fi
 
-  if [ ! -d "$HOME"/.fzf ]; then
-    git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME"/.fzf
-  fi
-
   check_link "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
   check_link "$CONFIG_SHELL"/bash_aliases "$HOME"/.bash_aliases
   check_link "$CONFIG_SHELL"/bash_profile "$HOME"/.bash_profile
