@@ -97,6 +97,9 @@ zinit wait lucid for \
 #####################
 zinit wait lucid light-mode for \
     atinit"
+      zstyle ':fzf-tab:*' switch-group '<' '>'" \
+  Aloxaf/fzf-tab \
+    atinit"
       ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
       ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=241'
       ZSH_AUTOSUGGEST_USE_ASYNC='true'" \
