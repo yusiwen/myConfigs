@@ -79,6 +79,7 @@ zinit wait lucid for \
     atload"alias gcd='gco dev'" \
 	OMZP::git \
   OMZP::z \
+    if'type fzf >/dev/null 2>&1' \
 	OMZP::fzf \
   OMZP::command-not-found \
     if'[[ "$(uname -o)" != "Msys" ]]' \
@@ -120,7 +121,8 @@ zinit wait lucid light-mode for \
     blockf \
   zsh-users/zsh-completions \
     pick"zsh-lazyload.zsh" \
-  qoomon/zsh-lazyload
+  qoomon/zsh-lazyload \
+  urbainvaes/fzf-marks
 #####################
 # PROGRAMS          #
 #####################
