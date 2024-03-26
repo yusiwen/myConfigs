@@ -126,6 +126,7 @@ zinit wait lucid light-mode for \
   zsh-users/zsh-completions \
     pick"zsh-lazyload.zsh" \
   qoomon/zsh-lazyload \
+  unixorn/fzf-zsh-plugin \
   urbainvaes/fzf-marks
 #####################
 # PROGRAMS          #
@@ -140,7 +141,6 @@ zinit wait lucid light-mode for \
   yarnpkg/yarn \
     from'gh-r' as'program' \
   junegunn/fzf \
-  unixorn/fzf-zsh-plugin \
     from'gh-r' as'program' mv'fd* -> fd' pick'fd/fd' \
   @sharkdp/fd \
     from'gh-r' as'program' mv'bat* -> bat' pick'bat/bat' \
