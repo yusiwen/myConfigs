@@ -182,6 +182,24 @@ function vercomp() { # {{{
   fi
 } # }}}
 
+function enable_FUSE() { # {{{
+  if [ "$OS" = 'Linux' ]; then
+    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
+      $SUDO add-apt-repository -y universe
+      $SUDO env NEEDRESTART_MODE=a apt-get install libfuse2
+    elif [ "$DISTRO" = 'CentOS' ]; then
+      if [ "$OS_VERSION" = '"7"' ]; then
+        $SUDO yum --enablerepo=epel -y install fuse-sshfs # install from EPEL
+      else
+        $SUDO yum install -y epel-release
+        $SUDO yum update -y
+        $SUDO yum install -y fuse-sshfs
+      fi
+      $SUDO usermod -a -G fuse "$(whoami)"
+    fi
+  fi
+} # }}}
+
 # Initialize apt and install prerequisite packages
 function init_env() { # {{{
   local minimal=0
@@ -217,8 +235,8 @@ function init_env() { # {{{
       local pkg_core=( gdebi-core software-properties-common apt-transport-https )
       local pkg_zip=( p7zip-full pigz zip unzip )
       local pkg_network=( curl wget net-tools iputils-ping iputils-arping hping3 nmap ethtool )
-      local pkg_build=( build-essential cmake "${pkg_pstack}" )
-      local pkg_fs=( cifs-utils nfs-common libfuse2 )
+      local pkg_build=( build-essential cmake "${pkg_pstack[@]}" )
+      local pkg_fs=( cifs-utils nfs-common )
       local pkg_monitor=( htop atop btop iotop iftop nethogs nload sysstat )
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found )
 
@@ -245,13 +263,13 @@ function init_env() { # {{{
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
         $SUDO yum --enablerepo=epel -y \
-          install fuse-sshfs net-tools telnet ftp lftp libaio \
+          install net-tools telnet ftp lftp libaio \
           libaio-devel bc man lsof wget tmux byobu
       else
         $SUDO yum config-manager --set-enabled PowerTools
         $SUDO yum install -y epel-release
         $SUDO yum update -y
-        $SUDO yum install -y fuse-sshfs net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
+        $SUDO yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
       fi
     fi
 
