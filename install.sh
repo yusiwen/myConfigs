@@ -272,6 +272,8 @@ function init_env() { # {{{
         $SUDO yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
       fi
     fi
+    
+    enable_FUSE
 
     if [ $minimal -eq 1 ] || [ $minimal -eq 2 ]; then
       install_git
