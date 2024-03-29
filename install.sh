@@ -992,7 +992,7 @@ function install_containerd() { # {{{
       echo -e "${COLOR}Installing containerd ${COLOR1}${containerd_version}${COLOR}...${NC}"
       wget "https://github.com/containerd/containerd/releases/download/v${containerd_version}/cri-containerd-cni-${containerd_version}-linux-${ARCH}.tar.gz" -O /tmp/cri-containerd.tar.gz
       $SUDO tar xvzf /tmp/cri-containerd.tar.gz -C /
-      mkdir -p /etc/containerd && /usr/local/bin/containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
+      $SUDO mkdir -p /etc/containerd && /usr/local/bin/containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
     fi
 
     if ! check_command buildctl; then
