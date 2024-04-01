@@ -1029,6 +1029,12 @@ function install_containerd() { # {{{
       rm /tmp/nerdctl.tar.gz
     fi # }}}
 
+    if [ -e /etc/systemd/system/containerd.service ]; then
+      $SUDO systemctl daemon-reload
+      $SUDO systemctl enable containerd
+      $SUDO systemctl start containerd
+    fi
+
     # {{{ Rootless containers
     read -r -p "Do you want rootless container? (yes/No) " yn
 
