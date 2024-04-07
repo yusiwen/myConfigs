@@ -7,7 +7,6 @@ return {
     end,
   },
 
-  -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -24,7 +23,7 @@ return {
       require "configs.lspconfig"
     end,
   },
-  --
+
   {
   	"williamboman/mason.nvim",
   	opts = {
@@ -37,16 +36,28 @@ return {
   		},
   	},
   },
-  --
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- }
+
+  {
+    "nvim-treesitter/nvim-treesitter",
+    --opts = overrides.treesitter,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      {
+        "nvim-treesitter/nvim-treesitter-context",
+        config = function()
+          require "configs.treesitter-context"
+        end,
+      },
+      {
+        "abecodes/tabout.nvim",
+        event = "InsertEnter",
+        config = function()
+          require "configs.tabout"
+        end,
+      },
+    },
+  },
+
   {
     'lambdalisue/suda.vim',
     event = "BufReadPost",
@@ -68,6 +79,31 @@ return {
   {
     "karb94/neoscroll.nvim",
     event = "BufReadPost",
+  },
+
+  {
+    "max397574/better-escape.nvim",
+    event = "InsertEnter",
+    config = function()
+      require "configs.better-escape"
+    end,
+  },
+
+  {
+    "phaazon/hop.nvim",
+    event = "BufReadPost",
+    branch = "v2",
+    config = function()
+      require "configs.hop"
+    end,
+  },
+
+  {
+    "mg979/vim-visual-multi",
+    event = "BufReadPost",
+    init = function()
+      require "configs.visual-multi"
+    end,
   },
 
 }
