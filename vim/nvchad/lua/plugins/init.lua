@@ -8,23 +8,35 @@ return {
   },
 
   -- These are some examples, uncomment them if you want to see them work!
-  -- {
-  --   "neovim/nvim-lspconfig",
-  --   config = function()
-  --     require("nvchad.configs.lspconfig").defaults()
-  --     require "configs.lspconfig"
-  --   end,
-  -- },
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      -- format & linting
+      {
+        "jose-elias-alvarez/null-ls.nvim",
+        config = function()
+          require "configs.null-ls"
+        end,
+      },
+    },
+    config = function()
+      require("nvchad.configs.lspconfig").defaults()
+      require "configs.lspconfig"
+    end,
+  },
   --
-  -- {
-  -- 	"williamboman/mason.nvim",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"lua-language-server", "stylua",
-  -- 			"html-lsp", "css-lsp" , "prettier"
-  -- 		},
-  -- 	},
-  -- },
+  {
+  	"williamboman/mason.nvim",
+  	opts = {
+  		ensure_installed = {
+  			"lua-language-server", "stylua", "gopls",
+  			"html-lsp", "css-lsp" , "prettier",
+        "json-lsp", "dockerfile-language-server", "docker-compose-language-service",
+        "yaml-language-server", "sqls", "rust-analyzer", "typescript-language-server", "pyright",
+        "bash-language-server", "clangd", "cmake-language-server"
+  		},
+  	},
+  },
   --
   -- {
   -- 	"nvim-treesitter/nvim-treesitter",
@@ -37,6 +49,25 @@ return {
   -- }
   {
     'lambdalisue/suda.vim',
-    lazy = false
+    event = "BufReadPost",
   },
+
+  {
+    "tpope/vim-surround",
+    event = "BufReadPost",
+  },
+
+  {
+    "RRethy/vim-illuminate",
+    event = "BufReadPost",
+    config = function()
+      require "configs.illuminate"
+    end,
+  },
+
+  {
+    "karb94/neoscroll.nvim",
+    event = "BufReadPost",
+  },
+
 }

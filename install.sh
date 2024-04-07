@@ -896,6 +896,8 @@ function install_vim() { # {{{
   fi
 
   check_link "$HOME"/git/myConfigs/vim/ideavimrc "$HOME"/.ideavimrc
+
+  echo -e "${COLOR}Run ${COLOR1}nvim${COLOR} to initialize plugins and run ${COLOR1}:MasonInstallAll${COLOR} to install LSP${NC}"
 } #}}}
 
 function install_rxvt() { # {{{
