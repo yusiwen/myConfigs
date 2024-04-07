@@ -81,3 +81,10 @@ lspconfig.gopls.setup {
 
 lspconfig.pyright.setup {}
 lspconfig.rust_analyzer.setup {}
+lspconfig.yamlls.setup {
+  settings = {
+    yaml = {
+      schemas = { kubernetes = "globPattern" },
+    }
+  }
+}
