@@ -193,6 +193,11 @@ zinit wait lucid light-mode for \
   kubeedge/kubeedge \
     from'gh-r' as'program' mv'k0sctl* -> k0sctl' pick'k0sctl' \
   k0sproject/k0sctl \
+    from'gh-r' as'program' pick'containerlab' \
+    atload"
+      alias clab='containerlab'
+    " \
+  srl-labs/containerlab \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
