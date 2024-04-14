@@ -816,6 +816,12 @@ function install_vim() { # {{{
       local latest_version
       latest_version=$(curl -sL 'https://api.github.com/repos/neovim/neovim/releases/tags/stable' | jq --raw-output '.created_at')
       local installation_target="$HOME/.local/bin/neovim.$latest_version.appimage"
+      local download_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
+
+      if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
+        installation_target="$HOME/.local/bin/nvim-v0.9.5-aarch64.appimage"
+        download_url="https://share.yusiwen.cn/public/nvim-v0.9.5-aarch64.appimage"
+      fi
 
       if ! check_command nvim; then
         echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
@@ -824,7 +830,7 @@ function install_vim() { # {{{
         echo -e "${COLOR}Install latest stable ${COLOR1}NeoVim${COLOR} created at $latest_version...${NC}"
 
         local link_target="$HOME/.local/bin/nvim"
-        curl -L "https://github.com/neovim/neovim/releases/download/stable/nvim.appimage" -o "$installation_target"
+        curl -L "$download_url" -o "$installation_target"
         chmod +x "$installation_target"
         check_link "$installation_target" "$link_target"
       else
@@ -834,7 +840,7 @@ function install_vim() { # {{{
           echo -e "${COLOR}Upgrade to latest stable ${COLOR1}NeoVim${COLOR} created at $latest_version...${NC}"
 
           local link_target="$HOME/.local/bin/nvim"
-          curl -L "https://github.com/neovim/neovim/releases/download/stable/nvim.appimage" -o "$installation_target"
+          curl -L "$download_url" -o "$installation_target"
           chmod +x "$installation_target"
           if [ -e  "$(readlink "$link_target")" ]; then
             rm -f "$(readlink "$link_target")"
@@ -870,7 +876,7 @@ function install_vim() { # {{{
         fi
 
         echo -e "${COLOR}Get latest ${COLOR1}NeoVim${COLOR} AppImage from GitHub repo...${NC}"
-        wget "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage" -P "$HOME"/.local/bin
+        wget "$download_url" -P "$HOME"/.local/bin
         ln -sfnv "$HOME"/.local/bin/nvim.appimage "$HOME"/.local/bin/nvim
       fi
     fi
