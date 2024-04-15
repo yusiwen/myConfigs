@@ -91,6 +91,8 @@ zinit wait lucid for \
     if'type docker >/dev/null 2>&1 || type docker-compose >/dev/null 2>&1' \
     as"completion" \
   OMZP::docker-compose/_docker-compose \
+    as"completion" \
+  https://share.yusiwen.cn/public/_fvm \
   djui/alias-tips \
   hlissner/zsh-autopair \
   chriskempson/base16-shell
@@ -214,3 +216,9 @@ if [ "$PROMPT_TYPE" = 'p10k' ]; then
 fi
 
 unset TMUX
+
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /home/yusiwen/.config/.dart-cli-completion/zsh-config.zsh ]] && . /home/yusiwen/.config/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
+
