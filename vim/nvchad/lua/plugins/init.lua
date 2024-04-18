@@ -60,7 +60,7 @@ return {
 
   {
     'lambdalisue/suda.vim',
-    event = "BufReadPost",
+    event = { "BufNewFile", "BufReadPost" },
   },
 
   {
