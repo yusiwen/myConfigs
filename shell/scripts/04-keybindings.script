@@ -42,6 +42,10 @@ zle -N down-line-or-beginning-search
 bindkey "^P" up-line-or-beginning-search
 bindkey "^N" down-line-or-beginning-search
 
+# Bind the history search of zsh to [Page UP] and [Page Down]
+bindkey "^[[5~" history-beginning-search-backward
+bindkey "^[[6~" history-beginning-search-forward
+
 # ctrl-w removed word backwards
 bindkey '^w' backward-kill-word
 
@@ -68,8 +72,5 @@ bindkey '^w' backward-kill-word
 
 # zsh-autosuggestions
 bindkey "^y" autosuggest-accept
-# Bind the history search of zsh to [Page UP] and [Page Down]
-bindkey "^[[5~" history-beginning-search-backward
-bindkey "^[[6~" history-beginning-search-forward
 
 # vim: foldmethod=marker :
