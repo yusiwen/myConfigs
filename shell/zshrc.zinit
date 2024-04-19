@@ -132,7 +132,9 @@ zinit wait lucid light-mode for \
   qoomon/zsh-lazyload \
   unixorn/fzf-zsh-plugin \
     wait'type fzf>/dev/null 2>&1' \
-  urbainvaes/fzf-marks
+  urbainvaes/fzf-marks \
+    pick"zsh-autocomplete.plugin.zsh" \
+  marlonrichert/zsh-autocomplete
 #####################
 # PROGRAMS          #
 #####################
