@@ -39,13 +39,21 @@ else
       alias la='ls++ -aF'
       alias ls='ls++ -F'
     else
-      alias la='eza --all --git --color=always'
-      alias ls='eza --git --color=always'
-      alias ll='eza --long --git --color=always --group'
-      alias lla='eza --long --all --git --color=always --group'
+      if eza --version | grep -q '\-git'; then
+        alias la='eza --all --color=always'
+        alias ls='eza --color=always'
+        alias ll='eza --long --color=always --group'
+        alias lla='eza --long --all --color=always --group'
+        alias tree='eza --tree --all --color=always'
+      else
+        alias la='eza --all --git --color=always'
+        alias ls='eza --git --color=always'
+        alias ll='eza --long --git --color=always --group'
+        alias lla='eza --long --all --git --color=always --group'
+        alias tree='eza --tree --all --git --color=always'
+      fi
     fi
     alias dir='dir -l --color'
-    alias tree='eza --tree --all --git --color=always'
   fi
 fi
 
