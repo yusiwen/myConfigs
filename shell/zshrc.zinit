@@ -108,10 +108,12 @@ zinit wait lucid light-mode for \
       ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=241'
       ZSH_AUTOSUGGEST_USE_ASYNC='false'" \
     atload"_zsh_autosuggest_start" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   zsh-users/zsh-autosuggestions \
     atinit"
       typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100;
       zpcompinit; zpcdreplay" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   zdharma-continuum/fast-syntax-highlighting \
     atpull'zinit creinstall -q .' \
     atinit"
@@ -127,11 +129,17 @@ zinit wait lucid light-mode for \
       zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
       zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap" \
     blockf \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  zdharma-continuum/fast-syntax-highlighting \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   zsh-users/zsh-completions \
     pick"zsh-lazyload.zsh" \
   qoomon/zsh-lazyload \
   unixorn/fzf-zsh-plugin \
     wait'type fzf>/dev/null 2>&1' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  zdharma-continuum/fast-syntax-highlighting \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   urbainvaes/fzf-marks \
     pick"zsh-autocomplete.plugin.zsh" \
   marlonrichert/zsh-autocomplete
@@ -153,6 +161,10 @@ zinit wait lucid light-mode for \
   @sharkdp/bat \
   fdellwing/zsh-bat \
     from'gh-r' as'program' mv'lazygit* -> lazygit' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  jesseduffield/lazygit \
+    from'gh-r' as'program' mv'lazygit* -> lazygit' bpick'*Windows*' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
   jesseduffield/lazygit \
     from'gh-r' as'program' pick'eza' \
     atload"
@@ -162,6 +174,10 @@ zinit wait lucid light-mode for \
     " \
   eza-community/eza \
     from'gh-r' as'program' pick'**/delta' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  dandavison/delta \
+    from'gh-r' as'program' pick'**/delta' bpick'*windows*' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
   dandavison/delta \
     from'gh-r' as'program' pick'zellij' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
@@ -176,10 +192,18 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   fluxcd/flux2 \
     from'gh-r' as'program' mv'gdu* -> gdu' pick'gdu' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  dundee/gdu \
+    from'gh-r' as'program' mv'gdu* -> gdu' pick'gdu' bpick'*windows*' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
   dundee/gdu \
     from'gh-r' as'program' pick'navi' \
   denisidoro/navi \
     from'gh-r' as'program' mv'yq* -> yq' pick'yq' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  mikefarah/yq \
+    from'gh-r' as'program' mv'yq* -> yq' pick'yq' bpick'*windows*.zip' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
   mikefarah/yq \
     from'gh-r' as'program' pick'**/dust' \
   bootandy/dust \
@@ -196,8 +220,13 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   kubeedge/kubeedge \
     from'gh-r' as'program' mv'k0sctl* -> k0sctl' pick'k0sctl' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   k0sproject/k0sctl \
     from'gh-r' as'program' mv'codegpt* -> codegpt' pick'codegpt' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  appleboy/CodeGPT \
+    from'gh-r' as'program' mv'codegpt* -> codegpt' pick'codegpt' bpick'*windows*' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
   appleboy/CodeGPT \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
