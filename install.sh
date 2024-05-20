@@ -728,11 +728,10 @@ function install_node() { # {{{
       n stable
     else
       echo -e "${COLOR}Found ${COLOR1}tj/n${COLOR} in ${COLOR1}\"$N_PREFIX\"${COLOR}...skip${NC}"
+      if ! check_command npm; then
+        n stable
+      fi
     fi
-  fi
-
-  if ! check_command npm; then
-    n stable
   fi
 
   echo -e "${COLOR1}Installing yarn, eslint...${NC}"
