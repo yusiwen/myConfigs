@@ -449,21 +449,22 @@ function _docker_compose_projects() {
 
   local names
   names=()
-  while IFS='' read -r line; do names+=("$line"); done < < (docker compose ls -q)
+  while IFS='' read -r line; do names+=("$line"); done < <(docker compose ls -q)
 
   local offset
   offset=1
 
-  for name in $names; do
+  for name in "${names[@]}"; do
     echo "$offset - $name"
     offset=$((offset+1))
   done
-  read -r -p "Select project: " selection
+  printf "Select project: "
+  read -r selection
 
   local project_path
-  project_path=$(docker compose config -q --filter "name=$names[$selection]")
+  project_path=$(docker compose ls --filter "name=$names[$selection]" --format json | jq '.[].ConfigFiles' | tr -d '"')
 
-  echo "$project_path"
+  cd "$(dirname "$project_path")" || exit 1
 }
 
 function _mvn_setting_switch() { # {{{
