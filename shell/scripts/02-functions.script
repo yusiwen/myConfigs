@@ -436,6 +436,36 @@ function _docker_compose_project() {
   fi
 }
 
+function _docker_compose_projects() {
+  if ! type docker >/dev/null 2>&1; then
+    echo 'docker is not found, please install docker first.'
+    exit 1
+  fi
+
+  if ! type jq >/dev/null 2>&1; then
+    echo 'jq is not found, please install jq first.'
+    exit 1
+  fi
+
+  local names
+  names=()
+  while IFS='' read -r line; do names+=("$line"); done < < (docker compose ls -q)
+
+  local offset
+  offset=1
+
+  for name in $names; do
+    echo "$offset - $name"
+    offset=$((offset+1))
+  done
+  read -r -p "Select project: " selection
+
+  local project_path
+  project_path=$(docker compose config -q --filter "name=$names[$selection]")
+
+  echo "$project_path"
+}
+
 function _mvn_setting_switch() { # {{{
   if [ ! -d "$HOME"/.m2 ]; then
     return
