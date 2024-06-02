@@ -436,7 +436,7 @@ function _docker_compose_project() {
   fi
 }
 
-function _docker_compose_projects() {
+function _docker_compose_change_dir_to_project() {
   if ! type docker >/dev/null 2>&1; then
     echo 'docker is not found, please install docker first.'
     exit 1
@@ -447,22 +447,16 @@ function _docker_compose_projects() {
     exit 1
   fi
 
-  local names
-  names=()
-  while IFS='' read -r line; do names+=("$line"); done < <(docker compose ls -q)
+  if ! type fzf >/dev/null 2>&1; then
+    echo 'fzf is not found, please install fzf first.'
+    exit 1
+  fi
 
-  local offset
-  offset=1
-
-  for name in "${names[@]}"; do
-    echo "$offset: $name"
-    offset=$((offset+1))
-  done
-  printf "Select project: "
-  read -r selection
+  local selection
+  selection=$(docker compose ls -q | fzf)
 
   local project_path
-  project_path=$(docker compose ls --filter "name=$names[$selection]" --format json | jq '.[].ConfigFiles' | tr -d '"')
+  project_path=$(docker compose ls --filter "name=$selection" --format json | jq -r '.[].ConfigFiles')
 
   cd "$(dirname "$project_path")" || exit 1
 }
