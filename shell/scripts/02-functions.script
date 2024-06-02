@@ -455,7 +455,7 @@ function _docker_compose_projects() {
   offset=1
 
   for name in "${names[@]}"; do
-    echo "$offset - $name"
+    echo "$offset: $name"
     offset=$((offset+1))
   done
   printf "Select project: "
