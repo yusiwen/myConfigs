@@ -3,7 +3,7 @@ zinit lucid for \
     from"gh-r" \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     atinit'export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' atload'eval "$(starship init zsh)"' \
-  starship/starship
+  starship/starship \
     as"command" \
     from"gh-r" bpick'windows-msvc' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
