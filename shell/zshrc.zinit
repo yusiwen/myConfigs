@@ -100,6 +100,7 @@ zinit wait lucid for \
 # PLUGINS           #
 #####################
 zinit wait lucid light-mode for \
+    wait'type fzf >/dev/null 2>&1' \
     atinit"
       zstyle ':fzf-tab:*' switch-group '<' '>'" \
   Aloxaf/fzf-tab \
@@ -222,6 +223,12 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' mv'k0sctl* -> k0sctl' pick'k0sctl' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   k0sproject/k0sctl \
+    from'gh-r' as'program' pick'**/rg' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  BurntSushi/ripgrep \
+    from'gh-r' as'program' pick'**/rg' bpick'*windows-msvc*' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  BurntSushi/ripgrep \
     from'gh-r' as'program' mv'codegpt* -> codegpt' pick'codegpt' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   appleboy/CodeGPT \
@@ -254,4 +261,3 @@ unset TMUX
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /home/yusiwen/.config/.dart-cli-completion/zsh-config.zsh ]] && . /home/yusiwen/.config/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
-
