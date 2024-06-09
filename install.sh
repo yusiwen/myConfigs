@@ -1213,13 +1213,6 @@ EOF
       fi
     fi
 
-    if ! check_command rg; then
-      echo -e "${COLOR}Installing ${COLOR1}ripgrep${COLOR}...${NC}"
-      cargo install ripgrep
-    else
-      echo -e "${COLOR}${COLOR1}ripgrep${COLOR} is found.${NC}"
-    fi
-
     if ! check_command btm; then
       echo -e "${COLOR}Installing ${COLOR1}bottom${COLOR}...${NC}"
       cargo install bottom
