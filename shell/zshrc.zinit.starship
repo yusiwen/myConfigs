@@ -5,7 +5,7 @@ zinit lucid for \
     atinit'export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' atload'eval "$(starship init zsh)"' \
   starship/starship \
     as"command" \
-    from"gh-r" bpick'windows-msvc' \
+    from"gh-r" bpick'*windows-msvc*.zip' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
     atinit'export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' atload'eval "$(starship init zsh)"' \
   starship/starship
