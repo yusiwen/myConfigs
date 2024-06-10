@@ -99,8 +99,7 @@ zinit wait lucid for \
 #####################
 # PLUGINS           #
 #####################
-zinit wait lucid light-mode for \
-    wait'type fzf >/dev/null 2>&1' \
+zinit wait lucid for \
     atinit"
       zstyle ':fzf-tab:*' switch-group '<' '>'" \
   Aloxaf/fzf-tab \
@@ -112,24 +111,7 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zsh-users/zsh-autosuggestions \
     atinit"
-      typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100;
-      zpcompinit; zpcdreplay" \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  zdharma-continuum/fast-syntax-highlighting \
-    atpull'zinit creinstall -q .' \
-    atinit"
-      zstyle ':completion:*' completer _expand _complete _ignored _approximate
-      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-      zstyle ':completion:*' menu select=2
-      zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-      zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
-      zstyle ':completion:*:descriptions' format '-- %d --'
-      zstyle ':completion:*:processes' command 'ps -au$USER'
-      zstyle ':completion:complete:*:options' sort false
-      zstyle ':fzf-tab:complete:_zlua:*' query-string input
-      zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
-      zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap" \
-    blockf \
+      typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zdharma-continuum/fast-syntax-highlighting \
     if'[[ "$(uname -o)" != "Msys" ]]' \
@@ -137,9 +119,6 @@ zinit wait lucid light-mode for \
     pick"zsh-lazyload.zsh" \
   qoomon/zsh-lazyload \
   unixorn/fzf-zsh-plugin \
-    wait'type fzf>/dev/null 2>&1' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  zdharma-continuum/fast-syntax-highlighting \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   urbainvaes/fzf-marks \
     pick"zsh-autocomplete.plugin.zsh" \
