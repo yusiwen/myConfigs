@@ -54,6 +54,7 @@ zinit lucid for \
       ZSH_TMUX_FIXTERM=false
       ZSH_TMUX_AUTOSTART=false
       ZSH_TMUX_AUTOCONNECT=false" \
+    if'type tmux >/dev/null 2>&1' \
   OMZP::tmux \
   atinit"HIST_STAMPS=dd.mm.yyyy" \
   OMZL::history.zsh \
