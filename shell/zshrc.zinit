@@ -101,6 +101,8 @@ zinit wait lucid for \
 # PLUGINS           #
 #####################
 zinit wait lucid for \
+    pick"zsh-lazyload.zsh" \
+  qoomon/zsh-lazyload \
     atinit"
       zstyle ':fzf-tab:*' switch-group '<' '>'" \
   Aloxaf/fzf-tab \
@@ -117,13 +119,10 @@ zinit wait lucid for \
   zdharma-continuum/fast-syntax-highlighting \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zsh-users/zsh-completions \
-    pick"zsh-lazyload.zsh" \
-  qoomon/zsh-lazyload \
   unixorn/fzf-zsh-plugin \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   urbainvaes/fzf-marks \
-    pick"zsh-autocomplete.plugin.zsh" \
-  marlonrichert/zsh-autocomplete
+  hlissner/zsh-autopair
 #####################
 # PROGRAMS          #
 #####################
