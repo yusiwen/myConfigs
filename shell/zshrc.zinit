@@ -147,7 +147,7 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' mv'lazygit* -> lazygit' bpick'*Windows*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   jesseduffield/lazygit \
-    from'gh-r' as'program' pick'eza' \
+    from'gh-r' as'program' ver'v0.18.17' pick'eza' \
     atload"
       alias la='eza --all --git --color=auto'
       alias ls='eza --git --color=auto'
