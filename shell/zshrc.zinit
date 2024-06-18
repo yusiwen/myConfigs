@@ -134,7 +134,10 @@ zinit wait lucid light-mode for \
   tj/n \
     from'gh-r' as'command' atinit'export PATH="$HOME/.yarn/bin:$PATH"' mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
   yarnpkg/yarn \
-    from'gh-r' as'program' mv'fd* -> fd' pick'fd/fd' \
+    from'gh-r' as'program' \
+    mv'fd* -> fd' \
+    mv'autocomplete/_fd -> _fd' \
+    pick'fd/fd' \
   @sharkdp/fd \
     from'gh-r' as'program' mv'bat* -> bat' pick'bat/bat' \
     atinit"export MANROFFOPT='-c'" \
