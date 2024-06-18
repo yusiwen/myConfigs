@@ -215,6 +215,12 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' mv'codegpt* -> codegpt' pick'codegpt' bpick'*windows*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   appleboy/CodeGPT \
+    from'gh-r' as'program' mv'media-get* -> media-get' pick'media-get' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  foamzou/media-get \
+    from'gh-r' as'program' mv'media-get*.exe -> media-get.exe' pick'media-get' bpick'*win.exe*' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  foamzou/media-get \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
