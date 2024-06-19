@@ -87,7 +87,7 @@ zinit wait lucid for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
     as"completion" \
-  OMZP::docker/comppletions/_docker \
+  OMZP::docker/completions/_docker \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1 || type docker-compose >/dev/null 2>&1' \
     as"completion" \
