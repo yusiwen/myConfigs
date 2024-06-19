@@ -87,20 +87,15 @@ zinit wait lucid for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
     as"completion" \
-  https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker \
+  OMZP::docker/comppletions/_docker \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1 || type docker-compose >/dev/null 2>&1' \
     as"completion" \
-  OMZP::docker-compose/_docker-compose \
-    as"completion" \
-  https://share.yusiwen.cn/public/_fvm \
-  djui/alias-tips \
-  hlissner/zsh-autopair \
-  chriskempson/base16-shell
+  OMZP::docker-compose/_docker-compose
 #####################
 # PLUGINS           #
 #####################
-zinit wait lucid for \
+zinit wait lucid light-mode for \
     pick"zsh-lazyload.zsh" \
   qoomon/zsh-lazyload \
     atinit"
@@ -117,11 +112,14 @@ zinit wait lucid for \
       typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zdharma-continuum/fast-syntax-highlighting \
+    blockf atpull'zinit creinstall -q .' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zsh-users/zsh-completions \
   unixorn/fzf-zsh-plugin \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  urbainvaes/fzf-marks \
+    as"completion" \
+  https://share.yusiwen.cn/public/_fvm \
+  djui/alias-tips \
+  chriskempson/base16-shell \
   hlissner/zsh-autopair
 #####################
 # PROGRAMS          #
