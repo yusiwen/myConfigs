@@ -116,8 +116,6 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zsh-users/zsh-completions \
   unixorn/fzf-zsh-plugin \
-    as"completion" \
-  https://share.yusiwen.cn/public/_fvm \
   djui/alias-tips \
   chriskempson/base16-shell \
   hlissner/zsh-autopair
