@@ -80,9 +80,6 @@ zinit wait lucid for \
     atload"alias gcd='gco dev'" \
 	OMZP::git \
   OMZP::z \
-    wait'type fzf >/dev/null 2>&1' \
-    if'[[ -d "$HOME"/.fzf ]]' \
-	OMZP::fzf \
   OMZP::command-not-found \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
@@ -110,7 +107,6 @@ zinit wait lucid light-mode for \
   zsh-users/zsh-autosuggestions \
     atinit"
       typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
   zdharma-continuum/fast-syntax-highlighting \
     blockf atpull'zinit creinstall -q .' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
