@@ -114,102 +114,118 @@ zinit wait lucid light-mode for \
   unixorn/fzf-zsh-plugin \
   djui/alias-tips \
   chriskempson/base16-shell \
-  hlissner/zsh-autopair
+  hlissner/zsh-autopair \
+    wait'type bat >/dev/null 2>&1' \
+  fdellwing/zsh-bat
 #####################
 # PROGRAMS          #
 #####################
 zinit wait lucid light-mode for \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-    as'command' \
+    as'command' id-as'n' pick"**/n" \
     atinit'export N_PREFIX="$HOME/.n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' \
-    pick"**/n" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   tj/n \
-    from'gh-r' as'command' atinit'export PATH="$HOME/.yarn/bin:$PATH"' mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
+    from'gh-r' as'command' id-as'yarn' \
+    mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
+    atinit'export PATH="$HOME/.yarn/bin:$PATH"' \
   yarnpkg/yarn \
-    from'gh-r' as'program' mv'fd* -> fd' pick'fd/fd' \
+    from'gh-r' as'program' id-as'fd' \
+    mv'fd* -> fd' pick'fd/fd' \
   @sharkdp/fd \
-    from'gh-r' as'program' mv'bat* -> bat' pick'bat/bat' \
+    from'gh-r' as'program' id-as'bat' \
+    mv'bat* -> bat' pick'bat/bat' \
     atinit"export MANROFFOPT='-c'" \
   @sharkdp/bat \
-  fdellwing/zsh-bat \
-    from'gh-r' as'program' mv'lazygit* -> lazygit' \
+    from'gh-r' as'program' id-as'lazygit' \
+    mv'lazygit* -> lazygit' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   jesseduffield/lazygit \
-    from'gh-r' as'program' mv'lazygit* -> lazygit' bpick'*Windows*' \
+    from'gh-r' as'program' id-as'lazygit' \
+    mv'lazygit* -> lazygit' bpick'*Windows*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   jesseduffield/lazygit \
-    from'gh-r' as'program' ver'v0.18.17' pick'eza' \
+    from'gh-r' as'program' ver'v0.18.17' id-as'eza' pick'eza' \
     atload"
       alias la='eza --all --git --color=auto'
       alias ls='eza --git --color=auto'
       alias ll='eza --long --all --git --color=auto'
     " \
   eza-community/eza \
-    from'gh-r' as'program' pick'**/delta' \
+    from'gh-r' as'program' id-as'delta' pick'**/delta' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   dandavison/delta \
-    from'gh-r' as'program' pick'**/delta' bpick'*windows*' \
+    from'gh-r' as'program' id-as'delta' pick'**/delta' bpick'*windows*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   dandavison/delta \
-    from'gh-r' as'program' pick'zellij' \
+    from'gh-r' as'program' id-as'zellij' pick'zellij' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zellij-org/zellij \
-    from'gh-r' as'program' pick'k9s' \
+    from'gh-r' as'program' id-as'k9s' pick'k9s' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   derailed/k9s \
-    from'gh-r' as'program' pick'stern' \
+    from'gh-r' as'program' id-as'stern' pick'stern' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   stern/stern \
-    from'gh-r' as'program' pick'flux' \
+    from'gh-r' as'program' id-as'flux' pick'flux' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   fluxcd/flux2 \
-    from'gh-r' as'program' mv'gdu* -> gdu' pick'gdu' \
+    from'gh-r' as'program' id-as'gdu' \
+    mv'gdu* -> gdu' pick'gdu' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   dundee/gdu \
-    from'gh-r' as'program' mv'gdu* -> gdu' pick'gdu' bpick'*windows*' \
+    from'gh-r' as'program' id-as'gdu' \
+    mv'gdu* -> gdu' pick'gdu' bpick'*windows*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   dundee/gdu \
-    from'gh-r' as'program' pick'navi' \
+    from'gh-r' as'program' id-as'navi' pick'navi' \
   denisidoro/navi \
-    from'gh-r' as'program' mv'yq* -> yq' pick'yq' \
+    from'gh-r' as'program' id-as'yq' \
+    mv'yq* -> yq' pick'yq' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   mikefarah/yq \
-    from'gh-r' as'program' mv'yq* -> yq' pick'yq' bpick'*windows*.zip' \
+    from'gh-r' as'program' id-as'yq' \
+    mv'yq* -> yq' pick'yq' bpick'*windows*.zip' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   mikefarah/yq \
-    from'gh-r' as'program' pick'**/dust' \
+    from'gh-r' as'program' id-as'dust' pick'**/dust' \
   bootandy/dust \
-    from'gh-r' as'program' mv'docker-compose* -> docker-compose' pick'docker-compose' \
+    from'gh-r' as'program' id-as'docker-compose' \
+    mv'docker-compose* -> docker-compose' pick'docker-compose' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
   docker/compose \
-    from'gh-r' as'program' pick'dive' \
+    from'gh-r' as'program' id-as'dive' pick'dive' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
   wagoodman/dive \
-    from'gh-r' as'program' pick'**/keadm/keadm' \
+    from'gh-r' as'program' id-as'kubeedge' pick'**/keadm/keadm' \
     bpick'keadm*' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   kubeedge/kubeedge \
-    from'gh-r' as'program' mv'k0sctl* -> k0sctl' pick'k0sctl' \
+    from'gh-r' as'program' id-as'k0sctl' \
+    mv'k0sctl* -> k0sctl' pick'k0sctl' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   k0sproject/k0sctl \
-    from'gh-r' as'program' pick'**/rg' \
+    from'gh-r' as'program' id-as'rg' pick'**/rg' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   BurntSushi/ripgrep \
-    from'gh-r' as'program' pick'**/rg' bpick'*windows-msvc*' \
+    from'gh-r' as'program' id-as'rg' pick'**/rg' bpick'*windows-msvc*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   BurntSushi/ripgrep \
-    from'gh-r' as'program' mv'codegpt* -> codegpt' pick'codegpt' \
+    from'gh-r' as'program' id-as'codegpt' \
+    mv'codegpt* -> codegpt' pick'codegpt' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   appleboy/CodeGPT \
-    from'gh-r' as'program' mv'codegpt* -> codegpt' pick'codegpt' bpick'*windows*' \
+    from'gh-r' as'program' id-as'codegpt' \
+    mv'codegpt* -> codegpt' pick'codegpt' bpick'*windows*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   appleboy/CodeGPT \
-    from'gh-r' as'program' mv'media-get* -> media-get' pick'media-get' \
+    from'gh-r' as'program' id-as'media-get' \
+    mv'media-get* -> media-get' pick'media-get' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   foamzou/media-get \
-    from'gh-r' as'program' mv'media-get*.exe -> media-get.exe' pick'media-get' bpick'*win.exe*' \
+    from'gh-r' as'program' id-as'media-get' \
+    mv'media-get*.exe -> media-get.exe' pick'media-get' bpick'*win.exe*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   foamzou/media-get \
     as"program" id-as'kubectl' run-atpull \
