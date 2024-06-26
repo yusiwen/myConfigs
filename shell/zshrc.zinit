@@ -232,6 +232,10 @@ zinit wait lucid light-mode for \
     atclone"curl -qLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- install" \
     atpull"curl -qLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- update" \
   zdharma-continuum/null \
+    as"program" id-as'helm' run-atpull \
+    atclone"curl -qLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
+    atpull"curl -qLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
+  zdharma-continuum/null \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
