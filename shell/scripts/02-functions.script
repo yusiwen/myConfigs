@@ -461,6 +461,35 @@ function _docker_compose_change_dir_to_project() {
   cd "$(dirname "$project_path")" || exit 1
 }
 
+function _docker_images_group_by_name() {
+  local lines
+  IFS=$'\n' lines=( $(docker images --format '{{.ID}}' | sort | uniq) )
+  for id in "${lines[@]}"; do
+    
+
+    last_id=''
+    images=( $(docker images --format '{{.ID}} {{.Repository}}:{{.Tag}}' | grep "${id}") )
+    for image in "${images[@]}"; do
+      current_id=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\1/p')
+      name=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\2/p')
+      suffix=''
+
+      if docker container ls --format '{{.Image}}' | grep -q "$name"; then
+        suffix=" (${BOLD_YELLOW}running${NC})"
+      fi
+
+      if [ "$last_id" != "$current_id" ]; then
+        echo "${BOLD_GREEN}$id${NC} - $name$suffix"
+      else
+        echo "               $name$suffix"
+      fi
+
+      last_id="$id"
+    done
+
+  done
+}
+
 function _mvn_setting_switch() { # {{{
   if [ ! -d "$HOME"/.m2 ]; then
     return

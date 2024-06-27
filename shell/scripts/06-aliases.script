@@ -163,6 +163,7 @@ alias drm='_drm'
 alias drmi='_drmi'
 alias dco='_docker_compose_project'
 alias dcpcd='_docker_compose_change_dir_to_project'
+alias dilsg='_docker_images_group_by_name'
 # }}}
 
 if type batcat >/dev/null 2>&1; then
