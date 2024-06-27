@@ -234,7 +234,7 @@ zinit wait lucid light-mode for \
   zdharma-continuum/null \
     as"program" id-as'helm' run-atpull \
     atclone"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
-    atpull"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
+    atpull"curl -qLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
   zdharma-continuum/null \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
