@@ -233,8 +233,8 @@ zinit wait lucid light-mode for \
     atpull"curl -qLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- update" \
   zdharma-continuum/null \
     as"program" id-as'helm' run-atpull \
-    atclone"curl -qLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
-    atpull"curl -qLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
+    atclone"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
+    atpull"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
   zdharma-continuum/null \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
@@ -244,6 +244,7 @@ zinit wait lucid light-mode for \
 
 zinit wait light-mode lucid is-snippet for \
   $HOME/git/myConfigs/shell/scripts/00-environment.script \
+  $HOME/git/myConfigs/shell/scripts/01-colors.script \
   $HOME/git/myConfigs/shell/scripts/02-functions.script \
   $HOME/git/myConfigs/shell/scripts/03-programs.script \
   $HOME/git/myConfigs/shell/scripts/03-completions.script \
