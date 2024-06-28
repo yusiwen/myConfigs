@@ -461,7 +461,7 @@ function _docker_compose_change_dir_to_project() {
   cd "$(dirname "$project_path")" || exit 1
 }
 
-function _docker_images_group_by_name() {
+function _docker_images_group_by_id() {
   local lines
   IFS=$'\n' lines=( $(docker images --format '{{.ID}}' | sort | uniq) )
   for id in "${lines[@]}"; do
@@ -485,6 +485,42 @@ function _docker_images_group_by_name() {
       fi
 
       last_id="$id"
+    done
+
+  done
+}
+
+function _docker_images_group_by_name() {
+  local lines
+  IFS=$'\n' lines=( $(docker images --format '{{.Repository}}:{{.Tag}}' | sort | uniq) )
+  local max_name_length
+  for name in "${lines[@]}"; do
+    len="${#name}"
+    if [ "$len" -gt "$max_name_length" ]; then
+    max_name_length="$len"
+    fi
+  done
+
+  IFS=$'\n' lines=( $(docker images --format '{{.Repository}}' | sort | uniq) )
+  for name in "${lines[@]}"; do
+    last_id=''
+    images=( $(docker images --format '{{.ID}} {{.Repository}}:{{.Tag}}' | grep "${name}") )
+    for image in "${images[@]}"; do
+      current_id=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\1/p')
+      name_with_tag=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\2/p')
+      suffix=''
+
+      if docker container ls --format '{{.Image}}' | grep -q "$name_with_tag"; then
+        suffix="(${BOLD_YELLOW}running${NC})"
+      fi
+
+      if [ "$last_id" != "$current_id" ]; then
+        printf "%${max_name_length}s %12b %b\n" "$name_with_tag" "${BOLD_GREEN}$current_id${NC}" "$suffix"
+      else
+        printf "%${max_name_length}s %12s %b\n" "$name_with_tag" " " "$suffix"
+      fi
+
+      last_id="$current_id"
     done
 
   done
@@ -525,5 +561,43 @@ gpg_agent_preset()
     echo "$gpg_passphrase"  | /usr/lib/gnupg/gpg-preset-passphrase --preset "$k"
   done
 } # }}}
+
+# https://github.com/ardnew/bash-busy/blob/main/busy.bash
+# Usage: busy [delay] <prompt> <expression>
+busy() {
+	# Define the animation frames in-order.
+	#local -a frame=( '/' '-' '\' '|' )
+	local -a frame=( ⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏ )
+	
+	local delay='0.1s' # Animated frame duration
+	local prompt       # Message displayed after frame animation
+
+	# Test if first argument appears to be a sleep(1) duration.
+	local pat='^([0-9](\.[0-9]*)?|[0-9]*\.[0-9]{1,})[smhd]?$'
+	if [[ ${#} -gt 0 ]] && [[ "${1}" =~ ${pat} ]]; then
+		delay=${1}
+		prompt=${2}
+		shift
+		shift
+	else
+		prompt=${1}
+		shift
+	fi
+	
+	# Find the widest frame in the animation.
+	local wide=0
+	for s in "${frame[@]}"; do 
+		[[ ${#s} -gt ${wide} ]] && wide=${#s}
+	done
+
+	local n=0
+	printf ' %*s %s\r' ${wide} '' "${prompt}"
+	while ! eval -- "${*}"; do
+		printf ' %*s \r' ${wide} "${frame[((n=++n%${#frame[@]}))]}"
+		sleep "${delay}"
+	done
+	# Clear the animation frame and prompt
+	printf ' %*s %*s\r' ${wide} '' ${#prompt} ''
+}
 
 # vim: foldmethod=marker :
