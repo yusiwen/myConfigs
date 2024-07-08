@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if type lazyload >/dev/null 2>&1; then
+if check_command lazyload; then
   lazyload kubectl -- 'source <(kubectl completion zsh)'
   lazyload stern -- 'source <(stern --completion=zsh)'
   lazyload clusterctl -- 'source <(clusterctl completion zsh 2>/dev/null)'
