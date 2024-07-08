@@ -470,4 +470,10 @@ if [ -e /usr/local/bin/git-credential-manager ]; then
   fi
 fi
 
+# pass
+if check_command pass; then
+  PASSWORD_STORE_ENABLE_EXTENSIONS=true
+  export PASSWORD_STORE_ENABLE_EXTENSIONS
+fi
+
 # vim: foldmethod=marker :
