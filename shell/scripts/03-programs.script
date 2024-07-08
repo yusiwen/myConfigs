@@ -350,10 +350,10 @@ fi
 
 # {{{ Misc
 # TERMINAL used in i3-sensible-terminal
-if type alacritty >/dev/null 2>&1; then
+if check_command alacritty; then
   TERMINAL=alacritty
   export TERMINAL
-elif type urxvtc >/dev/null 2>&1; then
+elif check_command urxvtc; then
   TERMINAL=urxvtc
   export TERMINAL
 else
@@ -362,9 +362,9 @@ else
 fi
 
 if [ -z "$EDITOR" ]; then
-  if type nvim >/dev/null 2>&1; then
+  if check_command nvim; then
     export EDITOR=nvim
-  elif type vim >/dev/null 2>&1; then
+  elif check_command vim; then
     export EDITOR=vim
   else
     export EDITOR=nano

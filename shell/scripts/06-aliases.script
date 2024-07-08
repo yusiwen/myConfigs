@@ -8,7 +8,7 @@ alias cp='cp -iv'
 alias less='less -R'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
-if ! type eza>/dev/null 2>&1; then
+if ! check_command eza; then
   if [ "$(uname)" = 'Darwin' ]; then
     alias l='ls -GF'
     alias la='ls -G -aF'
@@ -85,7 +85,7 @@ alias svnkdiff3='svn diff --diff-cmd kdiff3'
 alias gsbu='git status --short --branch --untracked-files'
 alias gdss='git diff --submodule --word-diff --staged'
 
-if type fzf >/dev/null 2>&1; then
+if check_command fzf; then
   alias gb='fzf-git-branch'
   alias gco='fzf-git-checkout'
 
@@ -96,7 +96,7 @@ else
   alias gitl='git log --graph --oneline --decorate'
 fi
 
-if type lazygit >/dev/null 2>&1; then
+if check_command lazygit; then
   alias lg='lazygit'
 fi
 # }}}
@@ -125,14 +125,14 @@ alias pip3='_pip3'
 # }}}
 
 # Vim
-if type nvim >/dev/null 2>&1; then
+if check_command nvim; then
   alias vi='nvim'
   alias vim='nvim'
   alias v='nvim'
   alias nv='nvim'
 fi
 
-if type lvim >/dev/null 2>&1; then
+if check_command lvim; then
   alias vi='lvim'
   alias vim='lvim'
   alias v='lvim'
@@ -166,36 +166,36 @@ alias dcpcd='_docker_compose_change_dir_to_project'
 alias dilsg='_docker_images_group_by_name'
 # }}}
 
-if type batcat >/dev/null 2>&1; then
+if check_command batcat; then
   alias bat='batcat'
 fi
 
 # Check xclip
-if type xclip >/dev/null 2>&1; then
+if check_command xclip; then
   alias xc='xclip -selection clipboard'
 fi
 
 # netprofiler (https://github.com/yusiwen/netprofiler)
-if type netprofiler >/dev/null 2>&1; then
+if check_command netprofiler; then
   alias np='netprofiler'
 fi
 
 # Check localhost port 7890 of Clash
 if [ "$OS" = 'Windows_NT' ]; then
-  if type netstat >/dev/null 2>&1; then
+  if check_command netstat; then
     if netstat -an|grep LISTEN|grep -q 7890 ; then
       alias curlp='curl -x http://localhost:7890'
     fi
   fi
 else
-  if type netstat >/dev/null 2>&1; then
+  if check_command netstat; then
     if netstat -lnt | grep -q 7890 ; then
       alias curlp='curl -x http://localhost:7890'
     fi
   fi
 fi
 
-if type vagrant >/dev/null 2>&1; then
+if check_command vagrant; then
   alias vgt='vagrant'
   alias vgtu='vagrant up'
   alias vgth='vagrant halt'
