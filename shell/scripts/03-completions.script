@@ -9,4 +9,5 @@ if check_command lazyload; then
   lazyload flux -- 'source <(flux completion zsh) && compdef _flux flux'
   lazyload talosctl -- 'source <(talosctl completion zsh)'
   lazyload containerlab -- 'source <(containerlab completion zsh)'
+  lazyload gitleaks -- 'source <(gitleaks completion zsh)'
 fi
