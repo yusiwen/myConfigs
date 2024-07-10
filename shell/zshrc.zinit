@@ -225,9 +225,17 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   foamzou/media-get \
     from'gh-r' as'program' id-as'media-get' \
-    mv'media-get*.exe -> media-get.exe' pick'media-get' bpick'*win.exe*' \
+    mv'media-get*.exe -> media-get.exe' pick'media-get.exe' bpick'*win.exe*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   foamzou/media-get \
+    from'gh-r' as'program' id-as'gitleaks' \
+    pick'gitleaks' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  gitleaks/gitleaks \
+    from'gh-r' as'program' id-as'gitleaks' \
+    pick'gitleaks.exe' bpick'*windows*' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  gitleaks/gitleaks \
     as"program" id-as'kubectl' run-atpull \
     atclone"curl -qLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- install" \
     atpull"curl -qLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- update" \
