@@ -121,16 +121,16 @@ zinit wait lucid light-mode for \
 # PROGRAMS          #
 #####################
 zinit wait lucid light-mode for \
-    as'command' id-as'n' pick"**/n" \
+    from'gh-r' as'program' id-as'n' pick"**/n" \
     atinit'export N_PREFIX="$HOME/.n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   tj/n \
-    from'gh-r' as'command' id-as'yarn' \
+    from'gh-r' as'program' id-as'yarn' \
     mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
     atinit'export PATH="$HOME/.yarn/bin:$PATH"' \
   yarnpkg/yarn \
     from'gh-r' as'program' id-as'fd' \
-    mv'fd* -> fd' pick'fd/fd' \
+    pick'**/fd' \
   @sharkdp/fd \
     from'gh-r' as'program' id-as'bat' \
     mv'bat* -> bat' pick'bat/bat' \
@@ -138,12 +138,24 @@ zinit wait lucid light-mode for \
   @sharkdp/bat \
     from'gh-r' as'program' id-as'lazygit' \
     mv'lazygit* -> lazygit' \
+    has'git' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   jesseduffield/lazygit \
     from'gh-r' as'program' id-as'lazygit' \
     mv'lazygit* -> lazygit' bpick'*Windows*' \
+    has'git' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   jesseduffield/lazygit \
+    from'gh-r' as'program' id-as'gitleaks' \
+    pick'gitleaks' \
+    has'git' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  @gitleaks/gitleaks \
+    from'gh-r' as'program' id-as'gitleaks' \
+    pick'gitleaks.exe' bpick'*windows*' \
+    has'git' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  @gitleaks/gitleaks \
     from'gh-r' as'program' ver'v0.18.17' id-as'eza' pick'eza' \
     atload"
       alias la='eza --all --git --color=auto'
@@ -228,21 +240,13 @@ zinit wait lucid light-mode for \
     mv'media-get*.exe -> media-get.exe' pick'media-get.exe' bpick'*win.exe*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   foamzou/media-get \
-    from'gh-r' as'program' id-as'gitleaks' \
-    pick'gitleaks' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  gitleaks/gitleaks \
-    from'gh-r' as'program' id-as'gitleaks' \
-    pick'gitleaks.exe' bpick'*windows*' \
-    if'[[ "$(uname -o)" = "Msys" ]]' \
-  gitleaks/gitleaks \
     as"program" id-as'kubectl' run-atpull \
-    atclone"curl -qLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- install" \
-    atpull"curl -qLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- update" \
+    atclone"curl -sLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- install" \
+    atpull"curl -sLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- update" \
   zdharma-continuum/null \
     as"program" id-as'helm' run-atpull \
     atclone"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
-    atpull"curl -qLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
+    atpull"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
   zdharma-continuum/null \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
