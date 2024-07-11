@@ -205,13 +205,17 @@ zinit wait lucid light-mode for \
   bootandy/dust \
     from'gh-r' as'program' id-as'docker-compose' \
     mv'docker-compose* -> docker-compose' pick'docker-compose' \
+    has'docker' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
-    if'type docker >/dev/null 2>&1' \
   docker/compose \
     from'gh-r' as'program' id-as'dive' pick'dive' \
+    has'docker' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
-    if'type docker >/dev/null 2>&1' \
   wagoodman/dive \
+    from'gh-r' as'program' id-as'lazydocker' pick'lazydocker' \
+    has'docker' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  jesseduffield/lazydocker \
     from'gh-r' as'program' id-as'kubeedge' pick'**/keadm/keadm' \
     bpick'keadm*' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
@@ -228,10 +232,12 @@ zinit wait lucid light-mode for \
   BurntSushi/ripgrep \
     from'gh-r' as'program' id-as'codegpt' \
     mv'codegpt* -> codegpt' pick'codegpt' \
+    has'git' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   appleboy/CodeGPT \
     from'gh-r' as'program' id-as'codegpt' \
     mv'codegpt* -> codegpt' pick'codegpt' bpick'*windows*' \
+    has'git' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   appleboy/CodeGPT \
     from'gh-r' as'program' id-as'media-get' \
