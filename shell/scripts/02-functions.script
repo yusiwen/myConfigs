@@ -292,7 +292,7 @@ get_latest_release() {
 
 # Python {{{
 function _pip() {
-  if type pip_search >/dev/null; then
+  if check_command pip_search; then
     if [ $1 = "search" ]; then
       pip_search "$2"
     else
@@ -305,7 +305,7 @@ function _pip() {
 }
 
 function _pip3() {
-  if type pip_search >/dev/null; then
+  if check_command pip_search; then
     if [ $1 = "search" ]; then
       pip_search "$2"
     else
@@ -360,7 +360,7 @@ docker-fuzzy-network-ls() {
 }
 
 docker-veth-ls() {
-  if ! type docker > /dev/null 2>&1; then
+  if ! check_command docker; then
     return
   fi
 
@@ -425,8 +425,13 @@ function _docker_compose_project() {
   fi
 
   docker_compose_command='docker compose'
-  if type docker-compose >/dev/null 2>&1; then
-    docker_compose_command='docker-compose'
+  if docker compose version >/dev/null 2>&1  && check_command docker-compose; then
+    if check_command docker-compose; then
+      docker_compose_command='docker-compose'
+    else
+      echo 'docker compose must be installed.'
+      exit 1
+    fi
   fi
 
   if [ -n "$project_name" ] && [ -z "$cli_project_name" ]; then
@@ -437,17 +442,17 @@ function _docker_compose_project() {
 }
 
 function _docker_compose_change_dir_to_project() {
-  if ! type docker >/dev/null 2>&1; then
+  if check_command docker; then
     echo 'docker is not found, please install docker first.'
     exit 1
   fi
 
-  if ! type jq >/dev/null 2>&1; then
+  if check_command jq; then
     echo 'jq is not found, please install jq first.'
     exit 1
   fi
 
-  if ! type fzf >/dev/null 2>&1; then
+  if check_command fzf; then
     echo 'fzf is not found, please install fzf first.'
     exit 1
   fi
