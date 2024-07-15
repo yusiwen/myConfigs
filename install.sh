@@ -1318,32 +1318,40 @@ function install_golang() { # {{{
     echo -e "${COLOR1}$version.linux-$ARCH${COLOR} is installed, re-login to take effect${NC}"
   elif [ "$OS" = 'Windows_NT' ]; then
     local target_path
+    local installation_path
+    target_path="$HOME"/.local
+    mkdir -p "$target_path"
     if [ -d "/d/opt/runtimes" ]; then
-      target_path=/d/opt/runtimes
+      installation_path=/d/opt/runtimes
     elif [ -d "/e/opt/runtimes" ]; then
-      target_path=/e/opt/runtimes
+      installation_path=/e/opt/runtimes
     else
-      target_path=~/.local
-      mkdir -p "$target_path"
+      installation_path="$target_path"
     fi
 
-    if [ -d "$target_path/$version" ]; then
+    if [ -d "$installation_path/$version" ]; then
       echo -e "${COLOR1}$version${COLOR} is already installed${NC}"
-      exit 0
+    else
+      curl -L "https://dl.google.com/go/$version.windows-amd64.zip" -o "$installation_path/$version".windows-amd64.zip
+      unzip -d "$installation_path/$version" "$installation_path/$version".windows-amd64.zip
+
+      if [ -d "$installation_path/$version"/go ]; then
+        mv "$installation_path/$version"/go/* "$installation_path/$version" && rm -rf "$installation_path/$version/go"
+      fi
     fi
 
-    curl -L "https://dl.google.com/go/$version.windows-amd64.zip" -o $target_path/$version.windows-amd64.zip
-    unzip -d "$target_path/$version" "$target_path/$version".windows-amd64.zip
-
-    if [ -d "$target_path/$version"/go ]; then
-      mv "$target_path/$version"/go/* "$target_path/$version" && rm -rf "$target_path/$version/go"
+    if [ -d "$installation_path/go" ]; then
+      rm -f "$installation_path/go"
     fi
+
+    ln -sfnv "$installation_path/$version" "$installation_path"/go
 
     if [ -d "$target_path/go" ]; then
       rm -f "$target_path/go"
     fi
 
-    ln -sfnv "$target_path/$version" "$target_path"/go
+    ln -sfnv "$installation_path/$version" "$target_path"/go
+
     echo -e "${COLOR1}$version${COLOR} is installed, please set the correct environment variables in System Settings${NC}"
   fi
 }
