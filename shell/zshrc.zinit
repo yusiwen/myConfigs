@@ -123,10 +123,6 @@ zinit wait lucid light-mode for \
 # PROGRAMS          #
 #####################
 zinit wait lucid light-mode for \
-    from'gh-r' as'program' id-as'n' pick"**/n" \
-    atinit'export N_PREFIX="$HOME/.n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  tj/n \
     from'gh-r' as'program' id-as'yarn' \
     mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
     atinit'export PATH="$HOME/.yarn/bin:$PATH"' \
@@ -255,6 +251,12 @@ zinit wait lucid light-mode for \
     as"program" id-as'helm' run-atpull \
     atclone"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
     atpull"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
+  zdharma-continuum/null \
+    as'program' id-as'n' pick"$HOME/.n/bin/n" run-atpull \
+    atclone'curl -sL https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | N_PREFIX="$HOME/.n" bash -s -- -y' \
+    atpull'curl -sL https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-update | N_PREFIX="$HOME/.n" bash -s -- -y' \
+    atinit'export N_PREFIX="$HOME/.n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   zdharma-continuum/null \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
