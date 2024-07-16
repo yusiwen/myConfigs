@@ -71,6 +71,24 @@ if [ "$OS" = 'Linux' ]; then
     SUDO=sudo
   fi
 fi
+
+OPT_PATH=/opt
+if [ "$OS" = 'Windows_NT' ] && [ "$(uname -o)" = 'Msys' ] && [ ! -d "$OPT_PATH" ]; then
+    OPT_WIN_PATH=
+    if [ -d "/d/opt" ]; then
+      OPT_WIN_PATH=D:/opt
+    elif [ -d "/e/opt" ]; then
+      OPT_WIN_PATH=E:/opt
+    fi
+    mkdir -p "$OPT_PATH"
+
+    if [ -n "$OPT_WIN_PATH" ]; then
+      echo "Mounting $OPT_WIN_PATH to $OPT_PATH ..."
+      mount -fo binary,noacl,posix=0,user "$OPT_WIN_PATH" "$OPT_PATH"
+    fi
+fi
+
+APP_HOME=$OPT_PATH/apps
 # }}}
 
 set -e
@@ -1294,7 +1312,7 @@ function install_golang() { # {{{
       exit 1
     fi
 
-    local installation_path=/opt
+    local installation_path=$OPT_PATH
     local sudo_cmd=sudo
     if [ "$2" = '--user' ] || [ "$2" = '-u' ]; then
       installation_path="$HOME"/.local
@@ -1321,10 +1339,8 @@ function install_golang() { # {{{
     local installation_path
     target_path="$HOME"/.local
     mkdir -p "$target_path"
-    if [ -d "/d/opt/runtimes" ]; then
-      installation_path=/d/opt/runtimes
-    elif [ -d "/e/opt/runtimes" ]; then
-      installation_path=/e/opt/runtimes
+    if [ -d "$OPT_PATH" ]; then
+      installation_path=$OPT_PATH/runtimes
     else
       installation_path="$target_path"
     fi
