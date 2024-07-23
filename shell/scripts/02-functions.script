@@ -188,7 +188,7 @@ fzf-git-checkout() { # {{{
     read -r yn
 
     case $yn in
-      "" | yes | YES | Yes | y | Y) git stash -u || exit 1 ;;
+      "" | yes | YES | Yes | y | Y) git stash -u || return 1 ;;
       *) ;;
     esac
   fi
@@ -430,7 +430,7 @@ function _docker_compose_project() {
       docker_compose_command='docker-compose'
     else
       echo 'docker compose must be installed.'
-      exit 1
+      return 1
     fi
   fi
 
@@ -444,17 +444,17 @@ function _docker_compose_project() {
 function _docker_compose_change_dir_to_project() {
   if check_command docker; then
     echo 'docker is not found, please install docker first.'
-    exit 1
+    return 1
   fi
 
   if check_command jq; then
     echo 'jq is not found, please install jq first.'
-    exit 1
+    return 1
   fi
 
   if check_command fzf; then
     echo 'fzf is not found, please install fzf first.'
-    exit 1
+    return 1
   fi
 
   local selection
@@ -463,7 +463,7 @@ function _docker_compose_change_dir_to_project() {
   local project_path
   project_path=$(docker compose ls --filter "name=$selection" --format json | jq -r '.[].ConfigFiles')
 
-  cd "$(dirname "$project_path")" || exit 1
+  cd "$(dirname "$project_path")" || return 1
 }
 
 function _docker_images_group_by_id() {
