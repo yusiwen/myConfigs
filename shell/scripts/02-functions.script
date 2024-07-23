@@ -442,17 +442,17 @@ function _docker_compose_project() {
 }
 
 function _docker_compose_change_dir_to_project() {
-  if check_command docker; then
+  if ! check_command docker; then
     echo 'docker is not found, please install docker first.'
     return 1
   fi
 
-  if check_command jq; then
+  if ! check_command jq; then
     echo 'jq is not found, please install jq first.'
     return 1
   fi
 
-  if check_command fzf; then
+  if ! check_command fzf; then
     echo 'fzf is not found, please install fzf first.'
     return 1
   fi
