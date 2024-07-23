@@ -10,4 +10,5 @@ if check_command lazyload; then
   lazyload talosctl -- 'source <(talosctl completion zsh)'
   lazyload containerlab -- 'source <(containerlab completion zsh)'
   lazyload gitleaks -- 'source <(gitleaks completion zsh)'
+  lazyload pipx -- 'source <(register-python-argcomplete pipx)'
 fi
