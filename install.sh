@@ -34,8 +34,6 @@ DISTRO=
 MIRRORS=0
 USE_PROXY=0
 
-PIP_EXTERNAL_MANAGEMENT=
-
 if [ -n "$WINDIR" ]; then
   OS='Windows_NT'
   tmp_str=$(cmd //C ver)
@@ -305,7 +303,7 @@ function init_env() { # {{{
       install_ruby
       install_python
       # Install gittyleaks after python is initialized
-      pip3 install --user $PIP_EXTERNAL_MANAGEMENT gittyleaks
+      pipx install gittyleaks
       install_golang
     fi
   elif [ "$OS" = 'Darwin' ]; then
@@ -644,14 +642,6 @@ function check_python3_version() { # {{{
   local PYTHON_VERSION
   PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
   echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
-
-  local PYTHON_EXTERNAL_MANAGEMENT
-  PYTHON_EXTERNAL_MANAGEMENT=$(python3 -c "import sys; print(sys.path[2])")/EXTERNALLY-MANAGED
-  if [ -e "$PYTHON_EXTERNAL_MANAGEMENT" ]; then
-    PIP_EXTERNAL_MANAGEMENT='--break-system-package'
-  else
-    PIP_EXTERNAL_MANAGEMENT=
-  fi
 } # }}}
 
 function install_python() { # {{{
@@ -690,6 +680,15 @@ function install_python() { # {{{
       fi
     fi
 
+    if ! check_command pipx; then
+      echo -e "${COLOR}Installing ${COLOR1}pipx${COLOR}...${NC}"
+      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
+        $SUDO env NEEDRESTART_MODE=a apt-get install -y pipx
+      else
+        python3 -m pip install --user pipx
+      fi
+    fi
+
     if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
       mkdir -p "$HOME"/.pip
       if [ -d "$HOME"/myConfigs ]; then
@@ -709,7 +708,7 @@ function install_python() { # {{{
     check_python3_version
 
     # Install utilities
-    pip3 install --user $PIP_EXTERNAL_MANAGEMENT pip_search bpytop
+    pipx install pip_search bpytop
   elif [ "$OS" = 'Darwin' ]; then
     if ! check_command brew; then
       init_env
@@ -722,7 +721,12 @@ function install_python() { # {{{
     echo "[global]" >"$HOME"/.config/pip/pip.conf
     echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >>"$HOME"/.config/pip/pip.conf
 
-    pip3 install --user pip_search bpytop
+    if ! check_command pipx; then
+      echo -e "${COLOR}Installing ${COLOR1}pipx${COLOR}...${NC}"
+      brew install pipx
+    fi
+
+    pipx install --user pip_search bpytop
   else
     echo -e "${COLOR}OS not supported${NC}"
     return
@@ -1421,7 +1425,7 @@ function install_ansible() { # {{{
   fi
 
   echo -e "${COLOR}Install ${COLOR1}ansible${COLOR}...${NC}"
-  pip3 install --user "$PIP_EXTERNAL_MANAGEMENT" ansible
+  pipx install ansible
 } # }}}
 
 function install_mc() { # {{{
