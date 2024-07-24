@@ -273,7 +273,7 @@ git-fuzzy-log() { # {{{
 # }}}
 
 # using ripgrep combined with preview
-# find-in-file - usage: fif <searchTerm> {{{
+# find-in-file - usage: fif <searchTerm>
 fif() { # {{{
   if [ ! "$#" -gt 0 ]; then
     echo "Need a string to search for!"
@@ -412,7 +412,7 @@ function _drmi() { # {{{
   [ -n "$cid" ] && docker rmi "$cid"
 } # }}}
 
-function _docker_compose_project() {
+function _docker_compose_project() { # {{{
   local cli_project_name
   local project_name
   local docker_compose_command
@@ -439,9 +439,9 @@ function _docker_compose_project() {
   else
     "$docker_compose_command" "$@"
   fi
-}
+} # }}}
 
-function _docker_compose_change_dir_to_project() {
+function _docker_compose_change_dir_to_project() { # {{{
   if ! check_command docker; then
     echo 'docker is not found, please install docker first.'
     return 1
@@ -464,9 +464,9 @@ function _docker_compose_change_dir_to_project() {
   project_path=$(docker compose ls --filter "name=$selection" --format json | jq -r '.[].ConfigFiles')
 
   cd "$(dirname "$project_path")" || return 1
-}
+} # }}}
 
-function _docker_images_group_by_id() {
+function _docker_images_group_by_id() { # {{{
   local lines
   IFS=$'\n' lines=( $(docker images --format '{{.ID}}' | sort | uniq) )
   for id in "${lines[@]}"; do
@@ -493,9 +493,9 @@ function _docker_images_group_by_id() {
     done
 
   done
-}
+} # }}}
 
-function _docker_images_group_by_name() {
+function _docker_images_group_by_name() { # {{{
   local lines
   IFS=$'\n' lines=( $(docker images --format '{{.Repository}}:{{.Tag}}' | sort | uniq) )
   local max_name_length
@@ -529,7 +529,7 @@ function _docker_images_group_by_name() {
     done
 
   done
-}
+} # }}}
 
 function _mvn_setting_switch() { # {{{
   if [ ! -d "$HOME"/.m2 ]; then
@@ -549,7 +549,7 @@ function _mvnd_setting_switch() { # {{{
   [ -n "$settings" ] && mvnd -s "$settings" "$@"
 } # }}}
 
-# GPG Preset Passphrase {{{}}}
+# GPG Preset Passphrase {{{
 gpg_agent_preset()
 {
   local gpg_passphrase="$1"
@@ -569,7 +569,7 @@ gpg_agent_preset()
 
 # https://github.com/ardnew/bash-busy/blob/main/busy.bash
 # Usage: busy [delay] <prompt> <expression>
-busy() {
+busy() { # {{{
 	# Define the animation frames in-order.
 	#local -a frame=( '/' '-' '\' '|' )
 	local -a frame=( ⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏ )
@@ -603,6 +603,6 @@ busy() {
 	done
 	# Clear the animation frame and prompt
 	printf ' %*s %*s\r' ${wide} '' ${#prompt} ''
-}
+} # }}}
 
 # vim: foldmethod=marker :
