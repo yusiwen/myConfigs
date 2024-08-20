@@ -644,6 +644,17 @@ function check_python3_version() { # {{{
   echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
 } # }}}
 
+function install_miniconda3() { # {{{
+  if ! check_command conda; then
+    if [ -d /opt/miniconda3 ]; then
+      $SUDO mv /opt/miniconda3 /opt/miniconda3.old
+    fi
+    $SUDO mkdir -p /opt/miniconda3
+    wget "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-${OS_ARCH}.sh" -O /tmp/miniconda.sh
+    $SUDO bash /tmp/miniconda.sh -b -u -p /opt/miniconda3
+  fi
+} # }}}
+
 function install_python() { # {{{
   if [ "$OS" = 'Linux' ]; then
 
@@ -669,6 +680,8 @@ function install_python() { # {{{
         return
       fi
     fi
+
+    check_python3_version
 
     if ! check_command pip3; then
       echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
@@ -705,10 +718,12 @@ function install_python() { # {{{
       fi
     fi
 
-    check_python3_version
-
     # Install utilities
     pipx install pip_search bpytop
+
+    # Install Miniconda3
+    install_miniconda3
+    
   elif [ "$OS" = 'Darwin' ]; then
     if ! check_command brew; then
       init_env
@@ -727,6 +742,11 @@ function install_python() { # {{{
     fi
 
     pipx install --user pip_search bpytop
+  elif [ "$OS" = 'Windows_NT' ]; then
+    echo -e "${COLOR}Please install Pyhton runtime manually or from Microsoft Store.${NC}"
+    echo -e "${COLOR}Please install Conda environment manually from:${NC}"
+    echo -e "\thttps://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe?file=Miniconda3-latest-Windows-x86_64.exe"
+    echo -e "\thttps://www.anaconda.com/download/"
   else
     echo -e "${COLOR}OS not supported${NC}"
     return
