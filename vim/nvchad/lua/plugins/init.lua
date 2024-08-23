@@ -69,6 +69,12 @@ return {
   },
 
   {
+    "tpope/vim-fugitive",
+    event = "BufReadPost",
+  },
+
+
+  {
     "RRethy/vim-illuminate",
     event = "BufReadPost",
     config = function()
