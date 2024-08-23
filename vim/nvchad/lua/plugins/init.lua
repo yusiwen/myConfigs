@@ -65,14 +65,13 @@ return {
 
   {
     "tpope/vim-surround",
-    event = "BufReadPost",
+    event = { "BufNewFile", "BufReadPost" },
   },
 
   {
     "tpope/vim-fugitive",
-    event = "BufReadPost",
+    event = { "BufNewFile", "BufReadPost" },
   },
-
 
   {
     "RRethy/vim-illuminate",

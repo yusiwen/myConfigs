@@ -18,3 +18,5 @@ map("n", "<leader><leader>k", "<cmd> HopLine <CR>", { desc = "hint line" })
 
 map("n", "<leader>fr", "<cmd>Telescope resume<CR>", { desc = "telescope resume" })
 
+map("n", "<leader>G", "<cmd>Git<CR>", { desc = "fugitive" })
+
