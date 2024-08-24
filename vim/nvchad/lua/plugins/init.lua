@@ -40,6 +40,10 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     --opts = overrides.treesitter,
+    build = ":TSUpdate",
+    config = function()
+      require "configs.treesitter"
+    end,
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
       {
