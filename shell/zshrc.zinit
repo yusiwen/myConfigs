@@ -251,6 +251,12 @@ zinit wait lucid light-mode for \
     as"program" id-as'helm' run-atpull \
     atclone"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
     atpull"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  zdharma-continuum/null \
+    as"program" id-as'helm' run-atpull \
+    atclone"export HELM_INSTALL_DIR=$HOME/.local/bin && curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s -- --no-sudo" \
+    atpull"export HELM_INSTALL_DIR=$HOME/.local/bin && curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s -- --no-sudo" \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
   zdharma-continuum/null \
     as'program' id-as'n' pick"$HOME/.n/bin/n" run-atpull \
     atclone'curl -sL https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | N_PREFIX="$HOME/.n" bash -s -- -y -n' \
