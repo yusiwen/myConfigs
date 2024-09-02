@@ -859,7 +859,7 @@ function install_vim() { # {{{
       local download_url
 
       if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-        latest_version=$(get_latest_version_from_github_api 'matsuu/neovim-aarch64-appimage')
+        latest_version=$(get_latest_release_from_github 'matsuu/neovim-aarch64-appimage')
         installation_target="$HOME/.local/bin/nvim-v${latest_version}-aarch64.appimage"
         download_url="https://github.com/matsuu/neovim-aarch64-appimage/releases/download/v${latest_version}/nvim-v${latest_version}-aarch64.appimage"
       else
