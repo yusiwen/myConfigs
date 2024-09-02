@@ -855,13 +855,17 @@ function install_vim() { # {{{
 
       # Get latest version
       local latest_version
-      latest_version=$(curl -sL 'https://api.github.com/repos/neovim/neovim/releases/tags/stable' | jq --raw-output '.created_at')
-      local installation_target="$HOME/.local/bin/neovim.$latest_version.appimage"
-      local download_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
+      local installation_target
+      local download_url
 
       if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-        installation_target="$HOME/.local/bin/nvim-v0.9.5-aarch64.appimage"
-        download_url="https://share.yusiwen.cn/public/nvim-v0.9.5-aarch64.appimage"
+        latest_version=$(get_latest_version_from_github_api 'matsuu/neovim-aarch64-appimage')
+        installation_target="$HOME/.local/bin/nvim-v${latest_version}-aarch64.appimage"
+        download_url="https://github.com/matsuu/neovim-aarch64-appimage/releases/download/v${latest_version}/nvim-v${latest_version}-aarch64.appimage"
+      else
+        latest_version=$(curl -sL 'https://api.github.com/repos/neovim/neovim/releases/tags/stable' | jq --raw-output '.created_at')
+        installation_target="$HOME/.local/bin/neovim.${latest_version}.appimage"
+        download_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
       fi
 
       if ! check_command nvim; then
@@ -1397,12 +1401,6 @@ function install_golang() { # {{{
 }
 # }}}
 
-function install_helm() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-  fi
-} # }}}
-
 function install_sdkman() { # {{{
   # https://sdkman.io/install
   curl -s "https://get.sdkman.io" | bash
@@ -1630,7 +1628,6 @@ function print_info() { # {{{
   echo -e "\tlua \t\tInstall lua"
   echo -e "\tperl \t\tInstall perl"
   echo -e "\tgolang \t\tInstall golang, version can be specified as the next argument"
-  echo -e "\thelm \t\tInstall helm"
   echo -e "\ttalosctl \tInstall talosctl"
   echo -e "\tsdkman \t\tInstall sdkman"
   echo -e "\tbyobu \t\tInstall byobu"
@@ -1669,7 +1666,6 @@ golang)
   shift
   install_golang "$@"
   ;;
-helm) install_helm ;;
 talosctl) install_talosctl ;;
 sdkman) install_sdkman ;;
 byobu) init_byobu ;;
