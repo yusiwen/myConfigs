@@ -162,6 +162,7 @@ if check_command docker; then
   alias dcfls='docker-fuzzy-container-ls'
   alias difls='docker-fuzzy-image-ls'
   alias dnfls='docker-fuzzy-network-ls'
+  alias dcpid='docker-get-pid-by-container-id'
   alias drm='_drm'
   alias drmi='_drmi'
   alias dco='_docker_compose_project'

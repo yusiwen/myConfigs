@@ -336,7 +336,7 @@ docker-fuzzy-image-ls() {
 }
 
 docker-fuzzy-container-ls() {
-  local format="--format '{{.ID | printf \"%-15s\"}} {{.Names | printf \"%-20.20s\"}}\t{{.Status}}'"
+  local format="--format '{{.ID | printf \"%-15s\"}} {{.Names | printf \"%-40.40s\"}}\t{{.Status | printf \"%-16.16s\"}} {{.Image}}'"
   local arguments
   arguments="container ls $format"
   if [ -n "$1" ]; then
@@ -349,6 +349,12 @@ docker-fuzzy-container-ls() {
         --preview 'docker container inspect {1}' --preview-window=top:15,hidden \
         --preview-label='container details' |\
     cut -d ' ' -f 1
+}
+
+docker-get-pid-by-container-id() {
+  local container_id
+  container_id=$(docker-fuzzy-container-ls)
+  docker inspect --format '{{.State.Pid}}' "$container_id"
 }
 
 docker-fuzzy-network-ls() {
