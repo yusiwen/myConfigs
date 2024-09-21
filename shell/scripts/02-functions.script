@@ -447,7 +447,8 @@ function _docker_compose_project() { # {{{
   fi
 } # }}}
 
-function _docker_compose_change_dir_to_project() { # {{{
+
+function _docker_compose_project_dir() { # {{{
   if ! check_command docker; then
     echo 'docker is not found, please install docker first.'
     return 1
@@ -468,8 +469,11 @@ function _docker_compose_change_dir_to_project() { # {{{
 
   local project_path
   project_path=$(docker compose ls --filter "name=$selection" --format json | jq -r '.[].ConfigFiles')
+  dirname "$project_path"
+} # }}}
 
-  cd "$(dirname "$project_path")" || return 1
+function _docker_compose_change_dir_to_project() { # {{{
+  cd "$(_docker_compose_project_dir)" || return 1
 } # }}}
 
 function _docker_images_group_by_id() { # {{{
