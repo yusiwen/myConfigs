@@ -164,7 +164,7 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' id-as'delta' pick'**/delta' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   dandavison/delta \
-    from'gh-r' as'program' id-as'delta' pick'**/delta' bpick'*windows*' \
+    from'gh-r' as'program' id-as'delta' pick'**/delta.exe' bpick'*windows*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   dandavison/delta \
     from'gh-r' as'program' id-as'zellij' pick'zellij' \
