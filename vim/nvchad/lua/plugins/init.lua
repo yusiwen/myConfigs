@@ -27,7 +27,7 @@ return {
   {
   	"williamboman/mason.nvim",
   	opts = {
-  		ensure_installed = {
+  		pkgs = {
   			"lua-language-server", "stylua", "gopls",
   			"html-lsp", "css-lsp" , "prettier",
         "json-lsp", "dockerfile-language-server", "docker-compose-language-service",
