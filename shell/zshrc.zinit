@@ -244,6 +244,11 @@ zinit wait lucid light-mode for \
     mv'media-get*.exe -> media-get.exe' pick'media-get.exe' bpick'*win.exe*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   foamzou/media-get \
+    as'program' id-as'micromamba' pick"$HOME/.micromamba/bin" run-atpull \
+    atclone'curl -sL https://raw.githubusercontent.com/mamba-org/micromamba-releases/main/install.sh | PREFIX_LOCATION="$HOME/.micromamba";INIT_YES="no";bash -s' \
+    atpull'if type micromamba >/dev/null 2>&1; then micromamba self-update' \
+    atinit'export MAMBA_ROOT_PREFIX="$HOME/.micromamba"; [[ :$PATH: == *":$HOME/.local/bin:"* ]] || PATH+=":$HOME/.local/bin"' \
+  zdharma-continuum/null \
     as"program" id-as'kubectl' run-atpull \
     atclone"curl -sLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- install" \
     atpull"curl -sLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- update" \
@@ -291,3 +296,16 @@ unset TMUX
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /home/yusiwen/.config/.dart-cli-completion/zsh-config.zsh ]] && . /home/yusiwen/.config/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
+
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba init' !!
+export MAMBA_EXE='/home/yusiwen/.local/bin/micromamba';
+export MAMBA_ROOT_PREFIX='/home/yusiwen/.micromamba';
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias micromamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+fi
+unset __mamba_setup
+# <<< mamba initialize <<<
