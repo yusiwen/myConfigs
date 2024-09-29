@@ -20,3 +20,5 @@ map("n", "<leader>fr", "<cmd>Telescope resume<CR>", { desc = "telescope resume" 
 
 map("n", "<leader>G", "<cmd>Git<CR>", { desc = "fugitive" })
 
+map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle nvimtree" })
+
