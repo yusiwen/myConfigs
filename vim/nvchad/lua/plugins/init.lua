@@ -8,6 +8,13 @@ return {
   },
 
   {
+    "nvim-java/nvim-java",
+    config = function()
+      require('java').setup()
+    end,
+  },
+
+  {
     "neovim/nvim-lspconfig",
     dependencies = {
       -- format & linting

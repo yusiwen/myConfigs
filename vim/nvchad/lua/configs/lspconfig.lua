@@ -88,3 +88,5 @@ lspconfig.yamlls.setup {
     }
   }
 }
+
+lspconfig.jdtls.setup({})

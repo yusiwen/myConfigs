@@ -132,6 +132,11 @@ if [ -z "$CONFLUENT_HOME" ] || [ ! -d "$CONFLUENT_HOME" ]; then
     export PATH=$PATH:$CONFLUENT_HOME/bin
   fi
 fi
+
+if [ -e "$HOME/.jdtls/bin/jdtls" ] || [ -e "$HOME/.jdtls/bin/jdtls.bat" ]; then
+  export JDTLS_HOME="$HOME/.jdtls"
+  export PATH=$PATH:$JDTLS_HOME/bin
+fi
 #}}}
 
 # {{{ Ruby
