@@ -621,7 +621,7 @@ function link_jdk_version_to_latest_installed_dir() {
   local jdk_installed
   jdk_installed="$(/usr/bin/ls -d "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"*tem|head -1)"
   if [ -n "$jdk_installed" ] && [ -n "$jdk_version" ]; then
-    ln -sfnv "$SDKMAN_CANDIDATES_DIR/java/$jdk_installed" "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"
+    ln -sfnv "$jdk_installed" "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"
   fi
 }
 

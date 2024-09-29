@@ -272,7 +272,7 @@ zinit wait lucid light-mode for \
   zdharma-continuum/null \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
-    atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate" \
+    atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate && ! type link_jdks>/dev/null 2>&1 || link_jdks" \
     atinit"export SDKMAN_DIR=$HOME/.sdkman; source $HOME/.sdkman/bin/sdkman-init.sh" \
   zdharma-continuum/null
 
