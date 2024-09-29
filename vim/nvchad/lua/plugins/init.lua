@@ -8,7 +8,7 @@ return {
   },
 
   {
-    "yusiwen/nvim-java",
+    "nvim-java/nvim-java",
     config = false,
   },
 
@@ -131,6 +131,10 @@ return {
         "json-lsp", "dockerfile-language-server", "docker-compose-language-service",
         "yaml-language-server", "sqls", "rust-analyzer", "typescript-language-server", "pyright",
         "bash-language-server", "clangd", "cmake-language-server"
+      },
+      registries = {
+        'github:nvim-java/mason-registry',
+        'github:mason-org/mason-registry',
       },
     },
   },

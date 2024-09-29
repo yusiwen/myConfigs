@@ -90,5 +90,5 @@ lspconfig.yamlls.setup {
 }
 
 lspconfig.jdtls.setup({
-  require("java").setup({})
+  -- require("java").setup({})
 })
