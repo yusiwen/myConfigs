@@ -8,10 +8,8 @@ return {
   },
 
   {
-    "nvim-java/nvim-java",
-    config = function()
-      require('java').setup()
-    end,
+    "yusiwen/nvim-java",
+    config = false,
   },
 
   {
@@ -32,16 +30,18 @@ return {
   },
 
   {
-  	"williamboman/mason.nvim",
-  	opts = {
-  		pkgs = {
-  			"lua-language-server", "stylua", "gopls",
-  			"html-lsp", "css-lsp" , "prettier",
-        "json-lsp", "dockerfile-language-server", "docker-compose-language-service",
-        "yaml-language-server", "sqls", "rust-analyzer", "typescript-language-server", "pyright",
-        "bash-language-server", "clangd", "cmake-language-server"
-  		},
-  	},
+    "hedyhli/outline.nvim",
+    lazy = true,
+    cmd = { "Outline", "OutlineOpen" },
+    keys = { -- Example mapping to toggle outline
+      { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
+    },
+    opts = {
+      -- Your setup opts here
+    },
+    config = function()
+      require('outline').setup(opts)
+    end,
   },
 
   {
@@ -120,6 +120,19 @@ return {
     init = function()
       require "configs.visual-multi"
     end,
+  },
+
+  {
+    "williamboman/mason.nvim",
+    opts = {
+      pkgs = {
+        "lua-language-server", "stylua", "gopls",
+        "html-lsp", "css-lsp" , "prettier",
+        "json-lsp", "dockerfile-language-server", "docker-compose-language-service",
+        "yaml-language-server", "sqls", "rust-analyzer", "typescript-language-server", "pyright",
+        "bash-language-server", "clangd", "cmake-language-server"
+      },
+    },
   },
 
 }
