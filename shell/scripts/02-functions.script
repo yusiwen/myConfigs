@@ -560,7 +560,7 @@ function _mvnd_setting_switch() { # {{{
 } # }}}
 
 # GPG Preset Passphrase {{{
-gpg_agent_preset()
+function gpg_agent_preset()
 {
   local gpg_passphrase="$1"
   # authorize preset mechanism, in our context agent is not loaded yet.
@@ -579,7 +579,7 @@ gpg_agent_preset()
 
 # https://github.com/ardnew/bash-busy/blob/main/busy.bash
 # Usage: busy [delay] <prompt> <expression>
-busy() { # {{{
+function busy() { # {{{
 	# Define the animation frames in-order.
 	#local -a frame=( '/' '-' '\' '|' )
 	local -a frame=( ⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏ )
@@ -614,5 +614,25 @@ busy() { # {{{
 	# Clear the animation frame and prompt
 	printf ' %*s %*s\r' ${wide} '' ${#prompt} ''
 } # }}}
+
+# {{{ Java
+function link_jdk_version_to_latest_installed_dir() {
+  local jdk_version="$1"
+  local jdk_installed
+  jdk_installed="$(/usr/bin/ls -d "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"*tem|head -1)"
+  if [ -n "$jdk_installed" ] && [ -n "$jdk_version" ]; then
+    ln -sfnv "$SDKMAN_CANDIDATES_DIR/java/$jdk_installed" "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"
+  fi
+}
+
+function link_jdks() {
+  if [ -e "$SDKMAN_CANDIDATES_DIR/java" ]; then
+    link_jdk_version_to_latest_installed_dir 8
+    link_jdk_version_to_latest_installed_dir 11
+    link_jdk_version_to_latest_installed_dir 17
+    link_jdk_version_to_latest_installed_dir 21
+  fi
+}
+# }}}
 
 # vim: foldmethod=marker :
