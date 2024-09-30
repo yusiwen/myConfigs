@@ -127,7 +127,7 @@ return {
     opts = function() 
       return {
         pkgs = {
-          "lua-language-server", "stylua", "gopls",
+          "lua-language-server", "stylua", "gopls", "delve",
           "html-lsp", "css-lsp" , "prettier",
           "json-lsp", "dockerfile-language-server", "docker-compose-language-service",
           "yaml-language-server", "sqls", "rust-analyzer", "typescript-language-server", "pyright",
