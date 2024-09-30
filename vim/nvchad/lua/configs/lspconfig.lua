@@ -89,6 +89,12 @@ lspconfig.yamlls.setup {
   }
 }
 
-lspconfig.jdtls.setup({
-  -- require("java").setup({})
+require("java").setup({
+  settings = {
+    jdk = {
+      -- install jdk using mason.nvim
+      auto_install = true,
+    },
+  },
 })
+lspconfig.jdtls.setup({})
