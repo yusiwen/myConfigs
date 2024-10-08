@@ -4,16 +4,19 @@
 ---@type ChadrcConfig
 local M = {}
 
-M.ui = {
+M.base46 = {
   transparency = true,
 	theme = "nord",
 
-	-- hl_override = {
-	-- 	Comment = { italic = true },
-	-- 	["@comment"] = { italic = true },
-	-- },
+	hl_override = {
+		Comment = { italic = true },
+		["@comment"] = { italic = true },
+	},
+}
+
+M.ui = {
   statusline = {
-    theme = "vscode"
+    theme = "vscode_colored"
   }
 }
 
