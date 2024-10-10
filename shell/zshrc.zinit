@@ -56,14 +56,16 @@ zinit lucid for \
       ZSH_TMUX_AUTOCONNECT=false" \
     if'type tmux >/dev/null 2>&1' \
   OMZP::tmux \
-  atinit"HIST_STAMPS=dd.mm.yyyy" \
+    atinit"HIST_STAMPS=dd.mm.yyyy" \
   OMZL::history.zsh \
 
 zinit wait lucid for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::clipboard.zsh \
 	OMZL::compfix.zsh \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::completion.zsh \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::correction.zsh \
     atload"
       alias ..='cd ..'
@@ -80,6 +82,7 @@ zinit wait lucid for \
     atload"alias gcd='gco dev'" \
 	OMZP::git \
   OMZP::z \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   OMZP::command-not-found \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
@@ -99,6 +102,7 @@ zinit wait lucid light-mode for \
       zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
       zstyle ':fzf-tab:complete:cd:*' fzf-preview 'if type eza>/dev/null 2>&1; then eza -1 --color=always $realpath; else ls -1 $realpath; fi'
       zstyle ':fzf-tab:*' switch-group '<' '>'" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   Aloxaf/fzf-tab \
     atinit"
       ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
@@ -109,6 +113,7 @@ zinit wait lucid light-mode for \
   zsh-users/zsh-autosuggestions \
     atinit"
       typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   zdharma-continuum/fast-syntax-highlighting \
     blockf atpull'zinit creinstall -q .' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
@@ -283,6 +288,8 @@ zinit wait light-mode lucid is-snippet for \
   $HOME/git/myConfigs/shell/scripts/03-programs.script \
   $HOME/git/myConfigs/shell/scripts/03-completions.script \
   $HOME/git/myConfigs/shell/scripts/04-keybindings.script \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  $HOME/git/myConfigs/shell/scripts/05-themes.script \
   $HOME/git/myConfigs/shell/scripts/06-aliases.script \
   $HOME/git/myConfigs/shell/scripts/99-customize.script
 
