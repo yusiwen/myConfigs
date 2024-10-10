@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+zmodload zsh/zprof
 #=== LOAD PREREQUISITES IF EXISTS =====================
 if [ -e "$HOME/.zshrc.prerequisites" ]; then
   source "$HOME/.zshrc.prerequisites"
@@ -57,11 +58,13 @@ zinit lucid for \
     if'type tmux >/dev/null 2>&1' \
   OMZP::tmux \
     atinit"HIST_STAMPS=dd.mm.yyyy" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   OMZL::history.zsh \
 
 zinit wait lucid for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::clipboard.zsh \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::compfix.zsh \
     if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::completion.zsh \
@@ -72,6 +75,7 @@ zinit wait lucid for \
       alias ...='cd ../..'
       alias ....='cd ../../..'
       alias .....='cd ../../../..'" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::directories.zsh \
 	OMZL::git.zsh \
 	OMZL::grep.zsh \
@@ -97,6 +101,7 @@ zinit wait lucid for \
 #####################
 zinit wait lucid light-mode for \
     pick"zsh-lazyload.zsh" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   qoomon/zsh-lazyload \
     atinit"
       zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
@@ -119,10 +124,14 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zsh-users/zsh-completions \
   unixorn/fzf-zsh-plugin \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   djui/alias-tips \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   chriskempson/base16-shell \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   hlissner/zsh-autopair \
     wait'type bat >/dev/null 2>&1' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   fdellwing/zsh-bat
 #####################
 # PROGRAMS          #
