@@ -83,7 +83,7 @@ KEYTIMEOUT=1
 source "$ZSH/oh-my-zsh.sh"
 
 # Customize to your needs...
-source "$HOME/myConfigs/shell/git-prompt.zsh"
+source "$HOME/myConfigs/shell/git/git-prompt.zsh"
 
 if [ -z "$OS" ]; then
   export OS=$(uname)
