@@ -41,7 +41,7 @@ local path_join = function(...)
   return table.concat(all_parts, path_separator)
 end
 
-vim.g.base46_cache = path_join(vim.fn.stdpath("data"), "base46")
+vim.g.base46_cache = path_join(vim.fn.stdpath("data"), "base46") .. path_separator
 vim.g.mapleader = " "
 
 -- bootstrap lazy and all plugins
