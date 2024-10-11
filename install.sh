@@ -943,7 +943,7 @@ function install_vim() { # {{{
   check_link "$HOME"/git/myConfigs/vim/nvchad "$HOME"/.config/nvim
 
   if [ "$OS" = 'Windows_NT' ]; then
-    check_link "$HOME"/.config/nvim "$HOME"/AppData/Local/nvim
+    check_link "$HOME"/git/myConfigs/vim/nvchad "$HOME"/AppData/Local/nvim
   fi
 
   check_link "$HOME"/git/myConfigs/vim/ideavimrc "$HOME"/.ideavimrc
