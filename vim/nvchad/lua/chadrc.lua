@@ -6,7 +6,7 @@ local M = {}
 
 M.base46 = {
   transparency = true,
-	theme = "nord",
+	theme = "onenord",
 
 	hl_override = {
 		Comment = { italic = true },
@@ -18,6 +18,10 @@ M.ui = {
   statusline = {
     theme = "vscode"
   }
+}
+
+M.themes = {
+	style = "compact"
 }
 
 return M
