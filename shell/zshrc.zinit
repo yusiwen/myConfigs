@@ -59,7 +59,7 @@ zinit lucid for \
   OMZP::tmux \
     atinit"HIST_STAMPS=dd.mm.yyyy" \
     if'[[ "$(uname -o)" != "Msys" ]]' \
-  OMZL::history.zsh \
+  OMZL::history.zsh
 
 zinit wait lucid for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
