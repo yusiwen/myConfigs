@@ -235,12 +235,17 @@ fzf-git-checkout() { # {{{
 
 # https://gist.github.com/junegunn/f4fca918e937e6bf5bad
 git-fuzzy-diff() { # {{{
-  PREVIEW_PAGER="less --tabs=4 -Rc"
+  local PREVIEW_PAGER="less --tabs=4 -Rc"
+
+  local REVISION="${@[1]}"
+  if [ "$REVISION" = '.' ]; then
+    REVISION='HEAD'
+  fi
 
   # Don't just diff the selected file alone, get related files first using
   # '--name-status -R' in order to include moves and renames in the diff.
   # See for reference: https://stackoverflow.com/q/71268388/3018229
-  PREVIEW_COMMAND='git diff --color=always '$@' -- \
+  local PREVIEW_COMMAND='git diff --color=always '$REVISION' -- \
 		$(echo $(git diff --name-status -R '$@' | grep {}) | cut -d" " -f 2-) \
 		| '$PREVIEW_PAGER
 
