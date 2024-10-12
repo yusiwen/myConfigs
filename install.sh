@@ -804,7 +804,7 @@ function install_zsh() { # {{{
   git -C "$HOME/myConfigs" submodule update --init
 
   if [ "$OS" = 'Linux' ]; then
-    if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
+    if [ ! "$SHELL" = "/usr/bin/zsh" ] && [ ! "$SHELL" = "/usr/local/bin/zsh" ]; then
       echo -e "${COLOR}Current SHELL is not ${COLOR1}Zsh${NC}"
       if [ ! -e /usr/bin/zsh ]; then
         echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
@@ -812,11 +812,11 @@ function install_zsh() { # {{{
           $SUDO env NEEDRESTART_MODE=a apt-get install -y zsh zip
         elif [ "$DISTRO" = 'CentOS' ]; then
           $SUDO yum install -y zsh zip
-          echo '/usr/bin/zsh' | $SUDO tee -a /etc/shells
+          which zsh | $SUDO tee -a /etc/shells >/dev/null
         fi
       fi
       echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
-      $SUDO chsh -s /usr/bin/zsh "$(whoami)"
+      $SUDO chsh -s "$(which zsh)" "$(whoami)"
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if [ ! "$SHELL" = "/usr/local/bin/zsh" ]; then
