@@ -71,6 +71,7 @@ if [ "$OS" = 'Linux' ]; then
 fi
 
 OPT_PATH=/opt
+# Mount /opt on Windows
 if [ "$OS" = 'Windows_NT' ] && [ "$(uname -o)" = 'Msys' ] && [ ! -d "$OPT_PATH" ]; then
     OPT_WIN_PATH=
     if [ -d "/d/opt" ]; then
@@ -827,13 +828,24 @@ function install_zsh() { # {{{
         chsh -s /usr/local/bin/zsh
       fi
     fi
+  elif [ "$OS" = 'Windows_NT' ]; then
+    if [ ! -e /usr/bin/zsh ]; then
+      if check_command pacman; then
+        echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
+        pacman -S zsh --overwrite '*'
+      else
+        echo -e "${COLOR}Please install ${COLOR1}pacman${COLOR} first or manually install zsh${NC}"
+      fi
+    fi
+  else
+    echo -e "${COLOR}Unsupported OS: ${COLOR1}${OS}{COLOR}${NC}"
   fi
 
-  check_link "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
-  check_link "$CONFIG_SHELL"/bash_aliases "$HOME"/.bash_aliases
-  check_link "$CONFIG_SHELL"/bash_profile "$HOME"/.bash_profile
+  check_link "$CONFIG_SHELL"/bash/bashrc "$HOME"/.bashrc
+  check_link "$CONFIG_SHELL"/bash/bash_aliases "$HOME"/.bash_aliases
+  check_link "$CONFIG_SHELL"/bash/bash_profile "$HOME"/.bash_profile
   check_link "$CONFIG_SHELL"/profile "$HOME"/.profile
-  check_link "$CONFIG_SHELL"/zshrc.zinit "$HOME"/.zshrc
+  check_link "$CONFIG_SHELL"/zsh/zshrc.zinit "$HOME"/.zshrc
   check_link "$CONFIG_SHELL"/starship/starship.toml "$HOME"/.config/starship.toml
 
   if [ "$SHELL" = 'zsh' ]; then
