@@ -37,7 +37,7 @@ source $ZINIT[BIN_DIR]/zinit.zsh \
 if [ -e "$HOME/.zshrc.prompt" ]; then
   source $HOME/.zshrc.prompt
 else
-  source $HOME/myConfigs/shell/zshrc.zinit.p10k
+  source $HOME/myConfigs/shell/zsh/zshrc.zinit.p10k
 fi
 ##########################
 # OMZ Libs and Plugins   #
