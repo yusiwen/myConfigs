@@ -86,6 +86,18 @@ alias g='git'
 alias ga='git add'
 alias gcmsg='git commit -m'
 
+alias glgp='git log --stat --patch'
+alias glo='git log --oneline --decorate'
+alias glol='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset"'
+alias glola='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --all'
+alias glols='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --stat'
+
+alias gl='git pull'
+alias gp='git push'
+alias gpd='git push --dry-run'
+alias gpf='git push --force-with-lease --force-if-includes'
+alias 'gpf!'='git push --force'
+
 alias grh='git reset'
 alias gru='git reset --'
 alias grhh='git reset --hard'
