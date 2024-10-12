@@ -89,11 +89,8 @@ if check_command fzf; then
   alias gb='fzf-git-branch'
   alias gco='fzf-git-checkout'
 
-  alias gitd='git-fuzzy-diff'
-  alias gitl='git-fuzzy-log'
-else
-  alias gitd='git diff --submodule --word-diff'
-  alias gitl='git log --graph --oneline --decorate'
+  alias gdz='git-fuzzy-diff'
+  alias glz='git-fuzzy-log'
 fi
 
 if check_command lazygit; then
