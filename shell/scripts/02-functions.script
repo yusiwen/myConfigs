@@ -452,7 +452,6 @@ function _docker_compose_project() { # {{{
   fi
 } # }}}
 
-
 function _docker_compose_project_dir() { # {{{
   if ! check_command docker; then
     echo 'docker is not found, please install docker first.'
@@ -542,6 +541,39 @@ function _docker_images_group_by_name() { # {{{
 
   done
 } # }}}
+
+function _docker_search_tags() {
+  if ! check_command fzf; then
+    echo 'fzf is not found, please install fzf first.'
+    return
+  fi
+  if ! check_command jq; then
+    echo 'jq is not found, please install jq first.'
+    return
+  fi
+  if ! check_command wget; then
+    echo 'wget is not found, please install wget first.'
+    return
+  fi
+
+  if [ -z "$1" ]; then
+    echo 'Please input search keyword.'
+    return
+  fi
+
+  local namespace
+  local repo 
+
+  if echo "$1" | grep -q '/'; then
+    namespace=$(echo "$1" | cut -d'/' -f1)
+    repo=$(echo "$1" | cut -d'/' -f2)
+  else
+    namespace='library'
+    repo="$1"
+  fi
+
+  wget -q -O - "https://hub.docker.com/v2/namespaces/$namespace/repositories/$repo/tags"|jq -r '.results[].name'|fzf 
+}
 
 function _mvn_setting_switch() { # {{{
   if [ ! -d "$HOME"/.m2 ]; then
