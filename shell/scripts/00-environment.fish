@@ -25,6 +25,22 @@ end
 export DISTRO
 #}}}
 
+set -l OPT_PATH /opt
+# Mount /opt on Windows
+if test "$OS" = 'Windows_NT' && test "$(uname -o)" = 'Msys'
+  set -l OPT_WIN_PATH ''
+  if test -d "/d/opt"
+    set OPT_WIN_PATH 'D:/opt'
+  else if test -d "/e/opt"
+    set OPT_WIN_PATH 'E:/opt'
+  end 
+  mkdir -p "$OPT_PATH"
+
+  if test -n "$OPT_WIN_PATH"
+    mount -fo binary,noacl,posix=0,user "$OPT_WIN_PATH" "$OPT_PATH"
+  end
+end
+
 # Locale {{{
 if test -z "$LC_COLLATE"
   export LC_COLLATE=en_US.UTF-8
