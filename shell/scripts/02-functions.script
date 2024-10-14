@@ -543,10 +543,6 @@ function _docker_images_group_by_name() { # {{{
 } # }}}
 
 function _docker_search_tags() {
-  if ! check_command fzf; then
-    echo 'fzf is not found, please install fzf first.'
-    return
-  fi
   if ! check_command jq; then
     echo 'jq is not found, please install jq first.'
     return
@@ -572,7 +568,16 @@ function _docker_search_tags() {
     repo="$1"
   fi
 
-  wget -q -O - "https://hub.docker.com/v2/namespaces/$namespace/repositories/$repo/tags"|jq -r '.results[].name'|fzf 
+  wget -q -O - "https://hub.docker.com/v2/namespaces/$namespace/repositories/$repo/tags"|jq -r '.results[].name' 
+}
+
+function _docker_pull_tags() {
+  if ! check_command fzf; then
+    echo 'fzf is not found, please install fzf first.'
+    return
+  fi
+
+  _docker_search_tags "$1" | fzf | xargs -I{} docker pull "$1:{}"
 }
 
 function _mvn_setting_switch() { # {{{
