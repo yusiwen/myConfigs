@@ -500,8 +500,13 @@ function install_node() { # {{{
   fi
 } # }}}
 
+function install_fish() {
+  source $HOME/myConfigs/shell/fish/install.sh
+  _install_fish
+}
+
 function install_zsh() { # {{{
-  source $HOME/myConfigs/shell/install.sh
+  source $HOME/myConfigs/shell/zsh/install.sh
   _install_zsh
 } # }}}
 
@@ -1027,6 +1032,7 @@ function print_info() { # {{{
   echo -e "\tmyConfigs \tClone myConfigs repository"
   echo -e "\tpython \t\tInstall python"
   echo -e "\tnode \t\tInstall node"
+  echo -e "\tfish \t\tInstall fish shell (On Windows only)"
   echo -e "\tzsh \t\tInstall zsh"
   echo -e "\tvim \t\tInstall vim"
   echo -e "\trxvt \t\tInstall rxvt"
@@ -1062,6 +1068,7 @@ ruby) install_ruby ;;
 myConfigs) fetch_myConfigs ;;
 python) install_python ;;
 node) install_node ;;
+fish) install_fish ;;
 zsh) install_zsh ;;
 vim) install_vim ;;
 rxvt) install_rxvt ;;
