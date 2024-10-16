@@ -228,16 +228,6 @@ else
   end 
 end
 
-if check_command vagrant
-  alias vgt='vagrant'
-  alias vgtu='vagrant up'
-  alias vgth='vagrant halt'
-  alias vgtd='vagrant destroy'
-  alias vgtss='vagrant ssh'
-  alias vgts='vagrant status'
-  alias vgtgs='vagrant global-status'
-end
-
 alias ipa='ip -c a'
 alias ipba='ip -br -c a'
 
