@@ -513,10 +513,11 @@ function _docker_images_group_by_name() { # {{{
   for name in "${lines[@]}"; do
     len="${#name}"
     if [ "$len" -gt "$max_name_length" ]; then
-    max_name_length="$len"
+      max_name_length="$len"
     fi
   done
 
+  local previous_image_name_without_tag
   IFS=$'\n' lines=( $(docker images --format '{{.Repository}}' | sort | uniq) )
   for name in "${lines[@]}"; do
     last_id=''
@@ -524,6 +525,10 @@ function _docker_images_group_by_name() { # {{{
     for image in "${images[@]}"; do
       current_id=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\1/p')
       name_with_tag=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\2/p')
+      name_without_tag=${name_with_tag%:*}
+      if [ ! "$previous_image_name_without_tag" = "$name_without_tag" ]; then
+        printf "\e[1;2m%${max_name_length}s\e[m\n" "-" | tr ' ' '-'
+      fi
       suffix=''
 
       if docker container ls --format '{{.Image}}' | grep -q "$name_with_tag"; then
@@ -537,8 +542,8 @@ function _docker_images_group_by_name() { # {{{
       fi
 
       last_id="$current_id"
+      previous_image_name_without_tag="$name_without_tag"
     done
-
   done
 } # }}}
 
