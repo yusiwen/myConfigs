@@ -23,3 +23,7 @@ if test -e /usr/local/go/bin/go || test -e /opt/go/bin/go || test -e "$HOME"/.lo
   fish_add_path "$GOPATH/bin"
 end
 #}}}
+
+if ! check_command nvim
+  fish_add_path "/opt/apps/nvim/bin"
+end

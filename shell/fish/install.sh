@@ -93,8 +93,8 @@ function _install_fish() {
 
     _install_fzf
 
-    # install lua
-    pacman -Syu mingw-w64-x86_64-lua51
+    # install lua, tmux
+    pacman -Syu mingw-w64-x86_64-lua51 tmux zip make autoconf --overwrite '*'
 
     cd
   fi
