@@ -235,4 +235,6 @@ if test -e "$HOME/.config/mytmux/tmux.conf"
   alias tmux='tmux -f $HOME/.config/mytmux/tmux.conf'
 end
 
+alias m='mvn'
+
 # vim: foldmethod=marker :
