@@ -104,6 +104,8 @@ alias grhh='git reset --hard'
 alias grhk='git reset --keep'
 alias grhs='git reset --soft'
 
+alias grv='git remote -v'
+
 alias gss='git status -s --show-stash'
 alias gsbu='git status --short --branch --untracked-files'
 
