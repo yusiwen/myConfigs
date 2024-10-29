@@ -239,4 +239,8 @@ end
 
 alias m='mvn'
 
+if check_command z
+  alias zf="z -t -l |tr -s ' ' |cut -d ' ' -f 2|fzf"
+end
+
 # vim: foldmethod=marker :
