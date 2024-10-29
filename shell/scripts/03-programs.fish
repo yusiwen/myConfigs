@@ -27,3 +27,17 @@ end
 if ! check_command nvim
   fish_add_path "/opt/apps/nvim/bin"
 end
+
+set -l _fzf_default_opts '--reverse' \
+  '--ansi' \
+  '--height 80%' \
+  '--bind alt-j:preview-down' \
+  '--bind alt-k:preview-up' \
+  '--bind alt-f:preview-page-down' \
+  '--bind alt-b:preview-page-up' \
+  '--bind pgdn:preview-page-down' \
+  '--bind pgup:preview-page-up' \
+  '--bind "ctrl-/:toggle-preview"'
+
+set FZF_DEFAULT_OPTS (string join ' ' -- $_fzf_default_opts)
+export FZF_DEFAULT_OPTS
