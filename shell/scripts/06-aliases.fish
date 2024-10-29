@@ -86,6 +86,9 @@ alias g='git'
 alias ga='git add'
 alias gcmsg='git commit -m'
 
+alias gcspx='_set_github_proxy'
+alias gcuspx='_unset_github_proxy'
+
 alias glgp='git log --stat --patch'
 alias glo='git log --oneline --decorate'
 alias glol='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset"'

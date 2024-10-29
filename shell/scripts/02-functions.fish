@@ -102,4 +102,12 @@ function _fzf_git_diff
     fzf --exit-0 --preview "$PREVIEW_COMMAND" \
       --preview-window=top:85%
 end
+
+function _set_github_proxy
+  git config --global http.https://github.com.proxy localhost:7897  
+end
+
+function _unset_github_proxy
+  git config --global --unset http.https://github.com.proxy
+end
 # }}}
