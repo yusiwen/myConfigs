@@ -146,11 +146,6 @@ else
 end
 
 alias venv='python3 -m venv'
-
-# Use 'pip_search' to replace the disabled search functionality of pip.
-# See '_pip()' in 'shell/scripts/02-functions.script'
-alias pip='_pip'
-alias pip3='_pip3'
 # }}}
 
 # Vim

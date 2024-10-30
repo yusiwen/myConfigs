@@ -111,3 +111,6 @@ function _unset_github_proxy
   git config --global --unset http.https://github.com.proxy
 end
 # }}}
+
+# Python {{{
+# }}}
