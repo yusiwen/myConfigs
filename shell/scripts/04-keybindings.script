@@ -57,6 +57,6 @@ bindkey '^w' backward-kill-word
 # bindkey '^R' history-incremental-pattern-search-backward
 
 # zsh-autosuggestions
-bindkey "^y" autosuggest-accept
+bindkey "^f" autosuggest-accept
 
 # vim: foldmethod=marker :
