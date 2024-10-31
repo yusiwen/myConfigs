@@ -3,6 +3,7 @@ if status is-interactive
     source $HOME/myConfigs/shell/scripts/00-environment.fish
     source $HOME/myConfigs/shell/scripts/02-functions.fish
     source $HOME/myConfigs/shell/scripts/03-programs.fish
+    source $HOME/myConfigs/shell/scripts/04-keybindings.fish
     source $HOME/myConfigs/shell/scripts/06-aliases.fish
 
     # >>> conda initialize >>>
