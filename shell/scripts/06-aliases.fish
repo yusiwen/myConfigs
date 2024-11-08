@@ -199,8 +199,8 @@ if check_command docker
 end
 # }}}
 
-if check_command batcat
-  alias bat='batcat'
+if check_command bat
+  alias cat='bat'
 end
 
 # Check xclip
