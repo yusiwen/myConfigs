@@ -142,12 +142,12 @@ function _upgrade_fzf
     return
   end
 
-  set -l fzf_version $(fzf --version | cut -d' ' -f 2)
+  set -l fzf_version $(fzf --version | cut -d' ' -f 1)
   set -l fzf_latest_version $(get_latest_release 'junegunn/fzf'|sed 's/^v*//')
   echo "Current fzf version: $fzf_version"
   echo "Latest fzf version: $fzf_latest_version"
 
-  if $fzf_latest_version != $fzf_version
+  if test $fzf_latest_version != $fzf_version
     echo "Upgrading fzf from $fzf_version to $fzf_latest_version"
     _install_fzf $fzf_latest_version
     echo "Done"
