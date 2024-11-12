@@ -114,3 +114,44 @@ end
 
 # Python {{{
 # }}}
+
+# Upgrade {{{
+function _install_fzf
+  if test -z $argv[1]
+    set fzf_latest_version $(get_latest_release 'junegunn/fzf'|sed 's/^v*//')
+  else
+    set fzf_latest_version $argv[1]
+  end
+
+  if test -z $fzf_latest_version
+    echo "Could not get latest fzf version"
+    return
+  end
+
+  echo "Installing fzf $fzf_latest_version"
+
+  curl -s -o /tmp/fzf-$fzf_latest_version.zip \
+    -L "https://github.com/junegunn/fzf/releases/download/v$fzf_latest_version/fzf-$fzf_latest_version-windows_amd64.zip"
+  unzip /tmp/fzf-$fzf_latest_version.zip fzf.exe -d /opt/apps
+  rm -f /tmp/fzf-$fzf_latest_version.zip
+end
+
+function _upgrade_fzf
+  if ! check_command fzf
+    _install_fzf
+    return
+  end
+
+  set -l fzf_version $(fzf --version | cut -d' ' -f 2)
+  set -l fzf_latest_version $(get_latest_release 'junegunn/fzf'|sed 's/^v*//')
+  echo "Current fzf version: $fzf_version"
+  echo "Latest fzf version: $fzf_latest_version"
+
+  if $fzf_latest_version != $fzf_version
+    echo "Upgrading fzf from $fzf_version to $fzf_latest_version"
+    _install_fzf $fzf_latest_version
+    echo "Done"
+  end
+
+end
+# }}}
