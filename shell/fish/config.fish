@@ -18,4 +18,6 @@ if status is-interactive
         end
     end
     # <<< conda initialize <<<
+
+    source $HOME/.asdf/asdf.fish
 end
