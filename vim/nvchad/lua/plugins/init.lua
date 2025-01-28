@@ -6,6 +6,26 @@ return {
       require "configs.conform"
     end,
   },
+  {
+    "williamboman/mason.nvim",
+    opts = function() 
+      return {
+        pkgs = {
+          "lua-language-server", "stylua", "gopls", "delve",
+          "html-lsp", "css-lsp" , "prettier",
+          "json-lsp", "dockerfile-language-server", "docker-compose-language-service",
+          "yaml-language-server", "sqls", "rust-analyzer", "typescript-language-server", "pyright",
+          "bash-language-server", "clangd", "cmake-language-server"
+        },
+        registries = {
+          'github:nvim-java/mason-registry',
+          'github:mason-org/mason-registry',
+        },
+      }
+    end
+  },
+
+  { "williamboman/mason-lspconfig.nvim" },
 
   {
     "nvim-java/nvim-java",
@@ -120,25 +140,6 @@ return {
     init = function()
       require "configs.visual-multi"
     end,
-  },
-
-  {
-    "williamboman/mason.nvim",
-    opts = function() 
-      return {
-        pkgs = {
-          "lua-language-server", "stylua", "gopls", "delve",
-          "html-lsp", "css-lsp" , "prettier",
-          "json-lsp", "dockerfile-language-server", "docker-compose-language-service",
-          "yaml-language-server", "sqls", "rust-analyzer", "typescript-language-server", "pyright",
-          "bash-language-server", "clangd", "cmake-language-server"
-        },
-        registries = {
-          'github:nvim-java/mason-registry',
-          'github:mason-org/mason-registry',
-        },
-      }
-    end
   },
 
 }

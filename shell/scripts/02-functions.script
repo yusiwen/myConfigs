@@ -235,12 +235,17 @@ fzf-git-checkout() { # {{{
 
 # https://gist.github.com/junegunn/f4fca918e937e6bf5bad
 git-fuzzy-diff() { # {{{
-  PREVIEW_PAGER="less --tabs=4 -Rc"
+  local PREVIEW_PAGER="less --tabs=4 -Rc"
+
+  local REVISION="${@[1]}"
+  if [ "$REVISION" = '.' ]; then
+    REVISION='HEAD'
+  fi
 
   # Don't just diff the selected file alone, get related files first using
   # '--name-status -R' in order to include moves and renames in the diff.
   # See for reference: https://stackoverflow.com/q/71268388/3018229
-  PREVIEW_COMMAND='git diff --color=always '$@' -- \
+  local PREVIEW_COMMAND='git diff --color=always '$REVISION' -- \
 		$(echo $(git diff --name-status -R '$@' | grep {}) | cut -d" " -f 2-) \
 		| '$PREVIEW_PAGER
 
@@ -447,7 +452,6 @@ function _docker_compose_project() { # {{{
   fi
 } # }}}
 
-
 function _docker_compose_project_dir() { # {{{
   if ! check_command docker; then
     echo 'docker is not found, please install docker first.'
@@ -509,10 +513,11 @@ function _docker_images_group_by_name() { # {{{
   for name in "${lines[@]}"; do
     len="${#name}"
     if [ "$len" -gt "$max_name_length" ]; then
-    max_name_length="$len"
+      max_name_length="$len"
     fi
   done
 
+  local previous_image_name_without_tag
   IFS=$'\n' lines=( $(docker images --format '{{.Repository}}' | sort | uniq) )
   for name in "${lines[@]}"; do
     last_id=''
@@ -520,6 +525,10 @@ function _docker_images_group_by_name() { # {{{
     for image in "${images[@]}"; do
       current_id=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\1/p')
       name_with_tag=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\2/p')
+      name_without_tag=${name_with_tag%:*}
+      if [ ! "$previous_image_name_without_tag" = "$name_without_tag" ]; then
+        printf "\e[1;2m%${max_name_length}s\e[m\n" "-" | tr ' ' '-'
+      fi
       suffix=''
 
       if docker container ls --format '{{.Image}}' | grep -q "$name_with_tag"; then
@@ -533,10 +542,48 @@ function _docker_images_group_by_name() { # {{{
       fi
 
       last_id="$current_id"
+      previous_image_name_without_tag="$name_without_tag"
     done
-
   done
 } # }}}
+
+function _docker_search_tags() {
+  if ! check_command jq; then
+    echo 'jq is not found, please install jq first.'
+    return
+  fi
+  if ! check_command wget; then
+    echo 'wget is not found, please install wget first.'
+    return
+  fi
+
+  if [ -z "$1" ]; then
+    echo 'Please input search keyword.'
+    return
+  fi
+
+  local namespace
+  local repo 
+
+  if echo "$1" | grep -q '/'; then
+    namespace=$(echo "$1" | cut -d'/' -f1)
+    repo=$(echo "$1" | cut -d'/' -f2)
+  else
+    namespace='library'
+    repo="$1"
+  fi
+
+  wget -q -O - "https://hub.docker.com/v2/namespaces/$namespace/repositories/$repo/tags"|jq -r '.results[].name' 
+}
+
+function _docker_pull_tags() {
+  if ! check_command fzf; then
+    echo 'fzf is not found, please install fzf first.'
+    return
+  fi
+
+  _docker_search_tags "$1" | fzf | xargs -I{} docker pull "$1:{}"
+}
 
 function _mvn_setting_switch() { # {{{
   if [ ! -d "$HOME"/.m2 ]; then

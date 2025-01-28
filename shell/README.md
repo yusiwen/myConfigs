@@ -11,8 +11,8 @@
 1. Install `oh-my-zsh`
 
     ```sh
-    ln -sf $HOME/myConfigs/shell/oh-my-zsh $HOME/.oh-my-zsh
-    ln -sf $HOME/myConfigs/shell/zshrc $HOME/.zshrc
+    ln -sfnv $HOME/myConfigs/shell/zsh/oh-my-zsh $HOME/.oh-my-zsh
+    ln -sfnv $HOME/myConfigs/shell/zsh/zshrc $HOME/.zshrc
     ```
 
 1. Set zsh as default shell:

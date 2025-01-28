@@ -71,6 +71,7 @@ if [ "$OS" = 'Linux' ]; then
 fi
 
 OPT_PATH=/opt
+# Mount /opt on Windows
 if [ "$OS" = 'Windows_NT' ] && [ "$(uname -o)" = 'Msys' ] && [ ! -d "$OPT_PATH" ]; then
     OPT_WIN_PATH=
     if [ -d "/d/opt" ]; then
@@ -364,192 +365,8 @@ function install_universal_ctags() { # {{{
 
 # Git
 function install_git() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      # install git if not exist
-      if ! check_command git; then
-        if [ "$DISTRO" = 'Ubuntu' ]; then
-          GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
-          if [ ! -e "$GIT_PPA" ]; then
-            echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
-            $SUDO apt-add-repository -y ppa:git-core/ppa
-
-            if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-              # Replace official launchpad address with reverse proxy from USTC
-              $SUDO sed -i "s/http:\/\/ppa\.launchpad\.net/https:\/\/launchpad\.proxy\.ustclug\.org/g" "$GIT_PPA"
-            fi
-
-            echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
-            $SUDO apt-get update
-            $SUDO env NEEDRESTART_MODE=a apt-get full-upgrade -y
-          else
-            echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
-          fi
-        fi
-        echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y git
-        echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
-      else
-        echo -e "${COLOR1}git${COLOR} was found at '$(which git)'.${NC}"
-      fi
-
-      if ! check_command git-credential-manager && [ ! -e /usr/local/bin/git-credential-manager ]; then
-        echo -e "${COLOR}Installing ${COLOR1}git-credential-manager${COLOR}...${NC}"
-        local gcm_latest_version
-        gcm_latest_version=$(get_latest_release_from_github 'git-ecosystem/git-credential-manager')
-        curl -L "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux_amd64.$gcm_latest_version.deb" -o /tmp/gcm.deb
-        $SUDO dpkg --install /tmp/gcm.deb && rm -f /tmp/gcm.deb
-      else
-        echo -e "${COLOR1}git-credential-manager${COLOR} was found at '/usr/local/bin/git-credential-manager'.${NC}"
-      fi
-      if [ "$(git config --global --get credential.helper)" != '/usr/local/bin/git-credential-manager' ]; then
-        /usr/local/bin/git-credential-manager configure
-      fi
-
-      if ! check_command tig; then
-        echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y tig
-        echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
-      else
-        echo -e "${COLOR1}tig${COLOR} was found at '$(which tig)'.${NC}"
-      fi
-    elif [ "$DISTRO" = 'Manjaro' ]; then
-      # Manjaro has git installed already
-      if ! check_command tig; then
-        echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
-        yay -S tig
-        echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
-      else
-        echo -e "${COLOR1}tig${COLOR} was found at '$(which tig)'.${NC}"
-      fi
-    elif [ "$DISTRO" = 'CentOS' ]; then
-      if [ "$OS_VERSION" = '"7"' ]; then
-        PACKAGE=$(yum list installed | grep -c ^ius-release.noarch)
-        if [ "$PACKAGE" = 0 ]; then
-          $SUDO yum -y install https://centos7.iuscommunity.org/ius-release.rpm
-        fi
-
-        $SUDO yum -y install git2u-all
-      else
-        $SUDO yum -y install git
-      fi
-    elif [ "$DISTRO" = 'OpenWrt' ]; then
-      if ! check_command git; then
-        $SUDO opkg update && opkg install git
-      fi
-    else
-      echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
-      return
-    fi
-  elif [ "$OS" = 'Darwin' ]; then
-    brew install git
-  elif [ "$OS" = 'Windows_NT' ]; then
-    if ! check_command git; then
-      echo -e "${COLOR}Please download git-for-windows from https://git-scm.com/ and install it manually${NC}"
-      return
-    fi
-  else
-    echo -e "${COLOR}OS not supported${NC}"
-    return
-  fi
-
-  echo -e "${COLOR}Configuring...${NC}"
-  echo -e "${COLOR}Setting 'user.email' to 'yusiwen@gmail.com'${NC}"
-  git config --global user.email "yusiwen@gmail.com"
-
-  echo -e "${COLOR}Setting 'user.name' to 'Siwen Yu'${NC}"
-  git config --global user.name "Siwen Yu"
-
-  echo -e "${COLOR}Setting line feed behavior...${NC}"
-  if [ "$OS" = "Windows_NT" ]; then
-    # On Windows, commit with LF and checkout with CRLF
-    git config --global core.autocrlf true
-  else
-    # On Linux or Mac, commit with LF and no change on checkout
-    git config --global core.autocrlf input
-  fi
-  # Turn on warning on convert EOL failure
-  git config --global core.safecrlf warn
-
-  echo -e "${COLOR}Setting misc...${NC}"
-  git config --global core.editor vim
-  if [ "$OS" = 'Windows_NT' ]; then
-    if [ -n "$APP_HOME" ]; then
-      git config --global core.editor "$APP_HOME/GitExtensions/GitExtensions.exe fileeditor"
-    fi
-  fi
-  git config --global pull.rebase true
-  git config --global fetch.prune true
-  git config --global merge.tool vimdiff
-  git config --global merge.conflictstyle diff3
-  git config --global mergetool.prompt false
-  git config --global diff.colorMoved zebra
-
-  # Global ignore files
-  cat <<EOF | tee "$HOME"/.gitignore >/dev/null
-# Global ignore config for Git
-#   git config --global core.excludesfile $HOME/.gitignore
-#
-# Siwen Yu (yusiwen@gmail.com)
-
-# Ignore all ctags files
-target/
-.project
-.classpath
-.factorypath
-.settings/
-.idea/
-.vscode/
-node_modules/
-*.iml
-EOF
-  git config --global core.excludesfile "$HOME"/.gitignore
-
-  if check_command delta; then
-    git config --global core.pager "delta --line-numbers"
-    git config --global interactive.diffFilter "delta --color-only --line-numbers"
-    git config --global delta.navigate true
-    git config --global delta.features decorations
-    git config --global delta.interactive.keep-plus-minus-markers false
-    git config --global delta.decorations.commit-decoration-style "blue ol"
-    git config --global delta.decorations.commit-style raw
-    git config --global delta.decorations.file-style omit
-    git config --global delta.decorations.hunk-header-decoration-style "blue box"
-    git config --global delta.decorations.hunk-header-file-style red
-    git config --global delta.decorations.hunk-header-line-number-style "#067a00"
-    git config --global delta.decorations.hunk-header-style "file line-number syntax"
-  elif check_command diff-so-fancy; then
-    git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
-  fi
-
-  if [ "$DISTRO" = 'OpenWrt' ]; then
-    if ! check_command dropbearkey; then
-      $SUDO opkg install dropbear
-    fi
-    if [ ! -e "$HOME/.ssh" ]; then
-      mkdir -p "$HOME/.ssh"
-    fi
-    if [ -e "$HOME"/.ssh/id_dropbear.pub ]; then
-      echo -e "${COLOR1}.ssh/id_dropbear.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
-      cat "$HOME"/.ssh/id_dropbear.pub
-    else
-      dropbearkey -t rsa -s 4096 -f "$HOME/.ssh/id_dropbear" | grep "^ssh-rsa " > "$HOME"/.ssh/id_dropbear.pub
-      echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea${NC}"
-    fi
-  else
-    if [ -e "$HOME"/.ssh/id_rsa.pub ]; then
-      echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was found, please add it to GitHub, BitBucket, GitLab and Gitea${NC}"
-      cat "$HOME"/.ssh/id_rsa.pub
-    else
-      echo -e "${COLOR1}.ssh/id_rsa.pub${COLOR} was not found, generating it now...${NC}"
-      ssh-keygen -t rsa -N "" -C "default key" -f "$HOME"/.ssh/id_rsa
-      echo -e "${COLOR}Please add it to GitHub, BitBucket, Gitlab and Gitea${NC}"
-      cat "$HOME"/.ssh/id_rsa.pub
-    fi
-  fi
-
-
-  echo -e "${COLOR}You may need 'commitizen', 'cz-customizable' to run git commit conventions, run './install.sh node' to setup.${NC}"
+  source $HOME/myConfigs/git/install.sh
+  _install_git 
 } # }}}
 
 function install_ruby() { # {{{
@@ -638,119 +455,9 @@ function fetch_myConfigs() { # {{{
   fi
 } # }}}
 
-function check_python3_version() { # {{{
-  local PYTHON_VERSION
-  PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')
-  echo -e "${COLOR}Detect Python3 version: $PYTHON_VERSION${NC}"
-} # }}}
-
-function install_miniconda3() { # {{{
-  if ! check_command conda; then
-    if [ -d /opt/miniconda3 ]; then
-      $SUDO mv /opt/miniconda3 /opt/miniconda3.old
-    fi
-    $SUDO mkdir -p /opt/miniconda3
-    wget "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-${OS_ARCH}.sh" -O /tmp/miniconda.sh
-    $SUDO bash /tmp/miniconda.sh -b -u -p /opt/miniconda3
-  fi
-} # }}}
-
 function install_python() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-
-    if ! check_command python3; then
-      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y python3
-      elif [ "$DISTRO" = 'CentOS' ]; then
-        local target_version
-        if [ "$OS_VERSION" = '7' ]; then
-          target_version='el7'
-        elif [ "$OS_VERSION" = '8' ]; then
-          target_version='el8'
-        else
-          echo -e "${COLOR}OS version ${COLOR1}$OS_VERSION${COLOR} not supported yet${NC}"
-          exit 1
-        fi
-        $SUDO yum upgrade ca-certificates
-        curl -L "https://share.yusiwen.cn/public/python/python3.8.18-$target_version.tar.gz" -o "/tmp/python3.8.18.tar.gz"
-        $SUDO tar -xzf "/tmp/python3.8.18.tar.gz" -C /usr/local/ --strip-components=1
-        rm -f "/tmp/python3.8.18.tar.gz"
-      else
-        echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
-        return
-      fi
-    fi
-
-    check_python3_version
-
-    if ! check_command pip3; then
-      echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
-      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y python3-pip
-        $SUDO update-alternatives --install /usr/bin/python python /usr/bin/python3 20
-      elif [ "$DISTRO" = 'Manjaro' ]; then
-        yay -S python-pip
-      fi
-    fi
-
-    if ! check_command pipx; then
-      echo -e "${COLOR}Installing ${COLOR1}pipx${COLOR}...${NC}"
-      if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y pipx
-      else
-        python3 -m pip install --user pipx
-      fi
-    fi
-
-    if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-      mkdir -p "$HOME"/.pip
-      if [ -d "$HOME"/myConfigs ]; then
-        check_link "$HOME"/myConfigs/python/pip.conf "$HOME"/.pip/pip.conf
-      else
-        # Using aliyun as mirror
-        {
-          echo '[global]'
-          echo 'index-url = https://mirrors.aliyun.com/pypi/simple/'
-          echo ''
-          echo '[install]'
-          echo 'trusted-host=mirrors.aliyun.com'
-        } >>"$HOME"/.pip/pip.conf
-      fi
-    fi
-
-    # Install utilities
-    pipx install pip_search bpytop
-
-    # Install Miniconda3
-    install_miniconda3
-    
-  elif [ "$OS" = 'Darwin' ]; then
-    if ! check_command brew; then
-      init_env
-    fi
-
-    # Homebrew's python has pip included
-    brew install python
-
-    mkdir -p "$HOME"/.config/pip
-    echo "[global]" >"$HOME"/.config/pip/pip.conf
-    echo "index-url = https://mirrors.ustc.edu.cn/pypi/web/simple" >>"$HOME"/.config/pip/pip.conf
-
-    if ! check_command pipx; then
-      echo -e "${COLOR}Installing ${COLOR1}pipx${COLOR}...${NC}"
-      brew install pipx
-    fi
-
-    pipx install --user pip_search bpytop
-  elif [ "$OS" = 'Windows_NT' ]; then
-    echo -e "${COLOR}Please install Pyhton runtime manually or from Microsoft Store.${NC}"
-    echo -e "${COLOR}Please install Conda environment manually from:${NC}"
-    echo -e "\thttps://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe?file=Miniconda3-latest-Windows-x86_64.exe"
-    echo -e "\thttps://www.anaconda.com/download/"
-  else
-    echo -e "${COLOR}OS not supported${NC}"
-    return
-  fi
+  source $HOME/myConfigs/python/install.sh
+  _install_python 
 } # }}}
 
 function install_node() { # {{{
@@ -793,162 +500,19 @@ function install_node() { # {{{
   fi
 } # }}}
 
+function install_fish() {
+  source $HOME/myConfigs/shell/fish/install.sh
+  _install_fish
+}
+
 function install_zsh() { # {{{
-  CONFIG_SHELL="$HOME"/myConfigs/shell
-  if [ ! -d "$CONFIG_SHELL" ]; then
-    fetch_myConfigs
-  fi
-
-  # Make sure submodules are fetched or updated
-  git -C "$HOME/myConfigs" submodule update --init
-
-  if [ "$OS" = 'Linux' ]; then
-    if [ ! "$SHELL" = "/usr/bin/zsh" ]; then
-      echo -e "${COLOR}Current SHELL is not ${COLOR1}Zsh${NC}"
-      if [ ! -e /usr/bin/zsh ]; then
-        echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
-        if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-          $SUDO env NEEDRESTART_MODE=a apt-get install -y zsh zip
-        elif [ "$DISTRO" = 'CentOS' ]; then
-          $SUDO yum install -y zsh zip
-          echo '/usr/bin/zsh' | $SUDO tee -a /etc/shells
-        fi
-      fi
-      echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
-      $SUDO chsh -s /usr/bin/zsh "$(whoami)"
-    fi
-  elif [ "$OS" = 'Darwin' ]; then
-    if [ ! "$SHELL" = "/usr/local/bin/zsh" ]; then
-      echo -e "${COLOR}Current SHELL is not latest ${COLOR1}Zsh${NC}"
-      if [ ! -e /usr/local/bin/zsh ]; then
-        echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
-        brew install zsh
-        echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
-        chsh -s /usr/local/bin/zsh
-      fi
-    fi
-  fi
-
-  check_link "$CONFIG_SHELL"/bashrc "$HOME"/.bashrc
-  check_link "$CONFIG_SHELL"/bash_aliases "$HOME"/.bash_aliases
-  check_link "$CONFIG_SHELL"/bash_profile "$HOME"/.bash_profile
-  check_link "$CONFIG_SHELL"/profile "$HOME"/.profile
-  check_link "$CONFIG_SHELL"/zshrc.zinit "$HOME"/.zshrc
-  check_link "$CONFIG_SHELL"/starship/starship.toml "$HOME"/.config/starship.toml
-
-  if [ "$SHELL" = 'zsh' ]; then
-    source "$HOME/.zshrc"
-  else
-    echo -e "${COLOR}Please restart your terminal${NC}"
-  fi
+  source $HOME/myConfigs/shell/zsh/install.sh
+  _install_zsh
 } # }}}
 
 function install_vim() { # {{{
-  CONFIG_VIM="$HOME"/myConfigs/vim
-
-  if [ ! -d "$CONFIG_VIM" ]; then
-    fetch_myConfigs
-  fi
-
-  if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-
-      # Get latest version
-      local latest_version
-      local installation_target
-      local download_url
-
-      if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-        latest_version=$(get_latest_release_from_github 'matsuu/neovim-aarch64-appimage')
-        installation_target="$HOME/.local/bin/nvim-v${latest_version}-aarch64.appimage"
-        download_url="https://github.com/matsuu/neovim-aarch64-appimage/releases/download/v${latest_version}/nvim-v${latest_version}-aarch64.appimage"
-      else
-        latest_version=$(curl -sL 'https://api.github.com/repos/neovim/neovim/releases/tags/stable' | jq --raw-output '.created_at')
-        installation_target="$HOME/.local/bin/neovim.${latest_version}.appimage"
-        download_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
-      fi
-
-      if ! check_command nvim; then
-        echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
-
-        # Install VIM_PACKAGE
-        echo -e "${COLOR}Install latest stable ${COLOR1}NeoVim${COLOR} created at $latest_version...${NC}"
-
-        local link_target="$HOME/.local/bin/nvim"
-        curl -L "$download_url" -o "$installation_target"
-        chmod +x "$installation_target"
-        check_link "$installation_target" "$link_target"
-      else
-        echo -e "${COLOR1}NeoVim${COLOR} is found at '$(which nvim)'${NC}"
-        if [ ! -e "$installation_target" ]; then
-          # Upgrade VIM_PACKAGE
-          echo -e "${COLOR}Upgrade to latest stable ${COLOR1}NeoVim${COLOR} created at $latest_version...${NC}"
-
-          local link_target="$HOME/.local/bin/nvim"
-          curl -L "$download_url" -o "$installation_target"
-          chmod +x "$installation_target"
-          if [ -e  "$(readlink "$link_target")" ]; then
-            rm -f "$(readlink "$link_target")"
-          fi
-          check_link "$installation_target" "$link_target"
-        fi
-      fi
-
-      echo -e "${COLOR}Install supplementary tools...${NC}"
-      install_perl
-      install_lua
-      $SUDO env NEEDRESTART_MODE=a apt-get install -y silversearcher-ag cscope astyle
-    elif [ "$DISTRO" = 'Manjaro' ]; then
-      if ! check_command nvim; then
-        yay -S neovim
-      fi
-    elif [ "$DISTRO" = 'CentOS' ]; then
-      if ! check_command nvim; then
-        set +e
-        PACKAGE=$(yum list installed | grep -c ^wget.x86_64)
-        set -e
-        if [ "$PACKAGE" = 0 ]; then
-          echo -e "${COLOR}No ${COLOR1}wget${COLOR} found, install it...${NC}"
-          $SUDO yum install -y wget
-        fi
-
-        set +e
-        PACKAGE=$(yum list installed | grep -c ^fuse-sshfs.x86_64)
-        set -e
-        if [ "$PACKAGE" = 0 ]; then
-          echo -e "${COLOR}No ${COLOR1}fuse-sshfs${COLOR} found, install it...${NC}"
-          $SUDO yum install -y fuse-sshfs
-        fi
-
-        echo -e "${COLOR}Get latest ${COLOR1}NeoVim${COLOR} AppImage from GitHub repo...${NC}"
-        wget "$download_url" -P "$HOME"/.local/bin
-        ln -sfnv "$HOME"/.local/bin/nvim.appimage "$HOME"/.local/bin/nvim
-      fi
-    fi
-  elif [ "$OS" = 'Darwin' ]; then
-    echo -e "${COLOR}Install development branch of Neovim...${NC}"
-    brew install --HEAD neovim
-    echo -e "${COLOR}Install supplementary tools...${NC}"
-    brew install the_silver_searcher cscope astyle
-  elif [ "$OS" = 'Windows_NT' ]; then
-    if ! check_command nvim; then
-      echo -e "${COLOR}Please make sure neovim is installed.${NC}"
-      return
-    fi
-  else
-    echo -e "${COLOR}Unknown OS, please make sure neovim is installed.${NC}"
-    return
-  fi
-
-  check_link "$HOME"/git/myConfigs/vim/nvchad "$HOME"/.config/nvim
-
-  if [ "$OS" = 'Windows_NT' ]; then
-    check_link "$HOME"/.config/nvim "$HOME"/AppData/Local/nvim
-  fi
-
-  check_link "$HOME"/git/myConfigs/vim/ideavimrc "$HOME"/.ideavimrc
-
-  echo -e "${COLOR}Run ${COLOR1}nvim${COLOR} to initialize plugins and run ${COLOR1}:MasonInstallAll${COLOR} to install LSP${NC}"
+  source $HOME/myConfigs/vim/install.sh
+  _install_vim
 } #}}}
 
 function install_rxvt() { # {{{
@@ -977,160 +541,13 @@ function install_rxvt() { # {{{
 } # }}}
 
 function install_docker() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      echo -e "${COLOR}Ubuntu is found, checking ${COLOR1}docker${COLOR}...${NC}"
-      if ! check_command docker; then
-        echo -e "${COLOR1}docker${COLOR} is not found, installing...${NC}"
-        echo -e "${COLOR}Installing prerequisite packages...${NC}"
-        $SUDO env NEEDRESTART_MODE=a apt-get -y install apt-transport-https ca-certificates curl software-properties-common
-
-        if [ ! -e /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg ]; then
-          echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce public key...${NC}"
-          curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | gpg --dearmor >aliyun-docker-ce.gpg
-          sudo install -D -o root -m 644 aliyun-docker-ce.gpg /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg
-          rm -f aliyun-docker-ce.gpg
-        fi
-
-        local add_docker_repo
-        add_docker_repo=0
-        if [ -e /etc/apt/sources.list.d ] && [ -n "$(find /etc/apt/sources.list.d -maxdepth 1 -name '*.list' -printf 'FOUND' -quit)" ]; then
-          if ! grep -q "aliyun.com/docker-ce" /etc/apt/sources.list.d/*.list; then
-            add_docker_repo=1
-          fi
-        else
-          add_docker_repo=1
-        fi
-
-        if [ $add_docker_repo -eq 1 ]; then
-          echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
-          if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-            $SUDO add-apt-repository -y "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-          else
-            $SUDO add-apt-repository -y "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-          fi
-          $SUDO apt-get -y update
-        fi
-
-        echo -e "${COLOR}Installing docker-ce...${NC}"
-        $SUDO env NEEDRESTART_MODE=a apt-get -y install docker-ce
-
-        echo -e "${COLOR}Add user ${COLOR1}${USER}${COLOR} to group 'docker'...${NC}"
-        $SUDO usermod -aG docker "$USER"
-      else
-        echo -e "${COLOR1}$(docker -v)${COLOR} is found...${NC}"
-      fi
-
-      if [ ! -e /etc/docker/daemon.json ]; then
-        $SUDO cp "$HOME"/myConfigs/docker/daemon.json /etc/docker/daemon.json
-      fi
-
-      if [ -n "$USE_PROXY" ] && [ "$USE_PROXY" -eq 1 ]; then
-        if [ ! -e /etc/systemd/system/docker.service.d ]; then
-          $SUDO mkdir -p /etc/systemd/system/docker.service.d
-          $SUDO cp "$HOME"/myConfigs/docker/proxy.conf /etc/systemd/system/docker.service.d/proxy.conf
-        fi
-      fi
-    fi
-  else
-    echo -e "${COLOR}Unsupported on this OS.${NC}"
-  fi
+  source $HOME/myConfigs/docker/install.sh
+  _install_docker
 } # }}}
 
 function install_containerd() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    if ! check_command containerd; then
-      local containerd_version
-      containerd_version=$(get_latest_release_from_github containerd/containerd)
-      echo -e "${COLOR}Installing containerd ${COLOR1}${containerd_version}${COLOR}...${NC}"
-      wget "https://github.com/containerd/containerd/releases/download/v${containerd_version}/cri-containerd-cni-${containerd_version}-linux-${ARCH}.tar.gz" -O /tmp/cri-containerd.tar.gz
-      $SUDO tar xvzf /tmp/cri-containerd.tar.gz -C /
-      $SUDO mkdir -p /etc/containerd && /usr/local/bin/containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
-    fi
-
-    if ! check_command buildctl; then
-      local buildkit_version
-      buildkit_version=$(get_latest_release_from_github moby/buildkit)
-      echo -e "${COLOR}Installing buildkit ${COLOR1}${buildkit_version}${COLOR}...${NC}"
-      wget "https://github.com/moby/buildkit/releases/download/v${buildkit_version}/buildkit-v${buildkit_version}.linux-${ARCH}.tar.gz" -O /tmp/buildkit.tar.gz
-      $SUDO tar xvzf /tmp/buildkit.tar.gz -C /usr/local/
-      rm /tmp/buildkit.tar.gz
-    fi
-
-    # {{{ Install nerdctl
-    local nerdctl_version
-    nerdctl_version=$(get_latest_release_from_github containerd/nerdctl)
-    local nerdctl_download_url
-    if ! check_command nerdctl; then
-      nerdctl_download_url="https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/nerdctl-${nerdctl_version}-linux-${ARCH}.tar.gz"
-    else
-      local nerdctl_current_version
-      nerdctl_current_version=$(nerdctl version -f '{{ .Client.Version }}' | sed 's/^v//g')
-      echo -e "${COLOR}Found current nerdctl ${COLOR1}${nerdctl_current_version}${COLOR}${NC}"
-      local vercomp_rst=0
-      vercomp_rst=$(vercomp "$nerdctl_current_version" "$nerdctl_version")
-      if [ "$vercomp_rst" -eq 1 ]; then
-        echo -e "${COLOR}Found latest nerdctl ${COLOR1}${nerdctl_version}${COLOR}${NC}"
-        nerdctl_download_url="https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/nerdctl-${nerdctl_version}-linux-${ARCH}.tar.gz"
-      fi
-    fi
-    echo "$nerdctl_download_url"
-    if [ -n "$nerdctl_download_url" ]; then
-      echo -e "${COLOR}Installing nerdctl ${COLOR1}${nerdctl_version}${COLOR}...${NC}"
-      wget "$nerdctl_download_url" -O /tmp/nerdctl.tar.gz
-      $SUDO tar xvzf /tmp/nerdctl.tar.gz -C /usr/local/bin
-      rm /tmp/nerdctl.tar.gz
-    fi # }}}
-
-    if [ -e /etc/systemd/system/containerd.service ]; then
-      $SUDO systemctl daemon-reload
-      $SUDO systemctl enable containerd
-      $SUDO systemctl start containerd
-    fi
-
-    # {{{ Rootless containers
-    read -r -p "Do you want rootless container? (yes/No) " yn
-
-    case $yn in
-    yes | YES | Yes | y | Y) ;;
-    *) return ;;
-    esac
-
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      if ! check_command newuidmap; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install uidmap
-      fi
-
-      if ! check_command slirp4netns; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install slirp4netns
-      fi
-
-      if ! check_command rootlesskit; then
-        local rootlesskit_version
-        rootlesskit_version=$(get_latest_release_from_github rootless-containers/rootlesskit)
-        wget "https://github.com/rootless-containers/rootlesskit/releases/download/v${rootlesskit_version}/rootlesskit-${OS_ARCH}.tar.gz" -O /tmp/rootlesskit.tar.gz
-        $SUDO tar xvzf /tmp/rootlesskit.tar.gz -C /usr/local/bin
-      fi
-
-      /usr/local/bin/containerd-rootless-setuptool.sh install
-
-      # Install CNI tools
-      if ! check_command cnitool; then
-        if ! check_command go; then
-          install_golang
-          export GOROOT="$HOME"/.local/go
-          export GOPATH=$HOME/.gopackages
-        fi
-        echo -e "${COLOR}Installing ${COLOR1}cnitool${COLOR}...${NC}"
-        go install github.com/containernetworking/cni/cnitool@latest
-      fi
-    else
-      echo -e "${COLOR}Unsupported on this ${COLOR1}${DISTRO}${COLOR}.${NC}"
-    fi
-    # }}}
-  else
-    echo -e "${COLOR}Unsupported on this OS.${NC}"
-  fi
+  source $HOME/myConfigs/docker/install.sh
+  _install_containerd
 }
 # }}}
 
@@ -1615,6 +1032,7 @@ function print_info() { # {{{
   echo -e "\tmyConfigs \tClone myConfigs repository"
   echo -e "\tpython \t\tInstall python"
   echo -e "\tnode \t\tInstall node"
+  echo -e "\tfish \t\tInstall fish shell (On Windows only)"
   echo -e "\tzsh \t\tInstall zsh"
   echo -e "\tvim \t\tInstall vim"
   echo -e "\trxvt \t\tInstall rxvt"
@@ -1650,6 +1068,7 @@ ruby) install_ruby ;;
 myConfigs) fetch_myConfigs ;;
 python) install_python ;;
 node) install_node ;;
+fish) install_fish ;;
 zsh) install_zsh ;;
 vim) install_vim ;;
 rxvt) install_rxvt ;;

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env fish
 
 # Make some possibly destructive commands more interactive.
 alias rm='rm -iv'
@@ -8,26 +8,26 @@ alias cp='cp -iv'
 alias less='less -R'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
-if ! check_command eza; then
-  if [ "$(uname)" = 'Darwin' ]; then
+if ! check_command eza
+  if test "$OS" = 'Darwin' 
     alias l='ls -GF'
     alias la='ls -G -aF'
     alias ll='ls -G -alF'
     alias dir='ls -G'
   else
     alias l='vdir -h --format=across --color'
-    if [ -e /usr/local/bin/ls++ ]; then
+    if check_command ls++
       alias la='ls++ -aF'
       alias ls='ls++ -F'
     else
       alias la='ls -a --color=auto'
       alias ls='ls --color=auto'
       alias ll='ls -la --color=auto'
-    fi
+    end
     alias dir='dir -l --color'
-  fi
+  end
 else
-  if [ "$(uname)" = 'Darwin' ]; then
+  if test "$OS" = 'Darwin'
     alias l='eza --oneline'
     alias la='eza --oneline --all'
     alias ll='eza --long --group'
@@ -35,11 +35,11 @@ else
     alias dir='ls -G'
   else
     alias l='vdir -h --format=across --color'
-    if [ -e /usr/local/bin/ls++ ]; then
+    if check_command ls++
       alias la='ls++ -aF'
       alias ls='ls++ -F'
     else
-      if eza --version | grep -q '\-git'; then
+      if eza --version | grep -q '\-git'
         alias la='eza --all --color=always'
         alias ls='eza --color=always'
         alias ll='eza --long --color=always --group'
@@ -51,19 +51,19 @@ else
         alias ll='eza --long --git --color=always --group'
         alias lla='eza --long --all --git --color=always --group'
         alias tree='eza --tree --all --git --color=always'
-      fi
-    fi
+      end
+    end 
     alias dir='dir -l --color'
-  fi
-fi
+  end 
+end
 
 # On Mac, to enable italic fonts in iTerm2, TERM must be set to 'xterm-256color-italic'.
 # If ssh to a remote server, the environment may be passed on the remote and it will probable don't know this custom terminal.
 # A possible solution on the local host is to alias ssh
 # See 'https://gist.github.com/sos4nt/3187620' for detail
-if [ "$(uname)" = 'Darwin' ]; then
+if test "$OS" = 'Darwin'
   alias ssh='TERM=xterm-256color ssh'
-fi
+end
 
 # Make grep more user friendly by highlighting matches
 # and exclude grepping through .svn folders.
@@ -72,30 +72,62 @@ alias pgrep='pgrep -a'
 
 alias ag='ag --nogroup'
 
-if [ "$(uname)" = 'Darwin' ]; then
+if test "$OS" = 'Darwin'
   alias df='df -h'
 else
   alias df='df -h --total'
-fi
+end
 
 # Shortcut for using the Kdiff3 tool for svn diffs.
 alias svnkdiff3='svn diff --diff-cmd kdiff3'
 
 # Git {{{
+alias g='git'
+alias ga='git add'
+alias gcmsg='git commit -m'
+
+alias gcspx='_set_github_proxy'
+alias gcuspx='_unset_github_proxy'
+
+alias glgp='git log --stat --patch'
+alias glo='git log --oneline --decorate'
+alias glol='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset"'
+alias glola='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --all'
+alias glols='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --stat'
+
+alias gl='git pull'
+alias gp='git push'
+alias gpd='git push --dry-run'
+alias gpf='git push --force-with-lease --force-if-includes'
+alias 'gpf!'='git push --force'
+
+alias grh='git reset'
+alias gru='git reset --'
+alias grhh='git reset --hard'
+alias grhk='git reset --keep'
+alias grhs='git reset --soft'
+
+alias grv='git remote -v'
+
+alias gss='git status -s --show-stash'
 alias gsbu='git status --short --branch --untracked-files'
+
+alias gd='git diff --submodule --word-diff'
 alias gdss='git diff --submodule --word-diff --staged'
+alias glo='git log --graph --oneline --decorate'
 
-if check_command fzf; then
-  alias gb='fzf-git-branch'
-  alias gco='fzf-git-checkout'
+if check_command fzf
+  alias gb='_fzf_git_branch'
+  alias gco='_fzf_git_checkout'
 
-  alias gdz='git-fuzzy-diff'
-  alias glz='git-fuzzy-log'
-fi
+  alias gdz='_fzf_git_diff'
+  alias gloz='_fzf_search_git_log'  # need fzf.fish
+  alias gssz='_fzf_search_git_status' # ned fzf.fish
+end
 
-if check_command lazygit; then
+if check_command lazygit
   alias lg='lazygit'
-fi
+end
 # }}}
 
 # Valgrind aliases
@@ -105,36 +137,31 @@ alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
 alias pipi='pip install --user'
 alias pipiu='pip --user --upgrade'
 
-if [ "$(uname)" = 'Darwin' ]; then
+if test "$OS" = 'Darwin'
   alias virtualenv2='virtualenv --python /usr/local/bin/python2 --system-site-packages'
   alias virtualenv3='virtualenv --python /usr/local/bin/python3 --system-site-packages'
 else
   alias virtualenv2='virtualenv --python /usr/bin/python2 --system-site-packages'
   alias virtualenv3='virtualenv --python /usr/bin/python3 --system-site-packages'
-fi
+end
 
 alias venv='python3 -m venv'
-
-# Use 'pip_search' to replace the disabled search functionality of pip.
-# See '_pip()' in 'shell/scripts/02-functions.script'
-alias pip='_pip'
-alias pip3='_pip3'
 # }}}
 
 # Vim
-if check_command nvim; then
+if check_command nvim
   alias vi='nvim'
   alias vim='nvim'
   alias v='nvim'
   alias nv='nvim'
-fi
+end
 
-if check_command lvim; then
+if check_command lvim
   alias vi='lvim'
   alias vim='lvim'
   alias v='lvim'
   alias nv='lvim'
-fi
+end
 
 # Maven
 alias mvn-no-javadoc='mvn -Dmaven.javadoc.skip=true'
@@ -152,7 +179,7 @@ alias ke='keadm'
 alias k9='k9s'
 
 # Docker {{{
-if check_command docker; then
+if check_command docker
   alias dilsa='docker image inspect --format "{{.Architecture}}"'
   alias dps='docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}"'
   alias dcpid='docker container inspect --format "{{.State.Pid}}"'
@@ -168,57 +195,50 @@ if check_command docker; then
   alias dilsg='_docker_images_group_by_name'
   alias dilsgi='_docker_images_group_by_id'
 
-  alias dst='_docker_search_tags' 
-  alias dpt='_docker_pull_tags'
-
   alias lzd='lazydocker'
-fi
+end
 # }}}
 
-if check_command batcat; then
-  alias bat='batcat'
-fi
+if check_command bat
+  alias cat='bat'
+end
 
 # Check xclip
-if check_command xclip; then
+if check_command xclip
   alias xc='xclip -selection clipboard'
-fi
+end
 
 # netprofiler (https://github.com/yusiwen/netprofiler)
-if check_command netprofiler; then
+if check_command netprofiler
   alias np='netprofiler'
-fi
+end
 
 # Check localhost port 7890 of Clash
-if [ "$OS" = 'Windows_NT' ]; then
-  if check_command netstat; then
-    if netstat -an|grep LISTEN|grep -q 7890 ; then
+if test "$OS" = 'Windows_NT'
+  if check_command netstat
+    if netstat -an|grep LISTEN|grep -q 7890
       alias curlp='curl -x http://localhost:7890'
-    fi
-  fi
+    end
+  end 
 else
-  if check_command netstat; then
-    if netstat -lnt | grep -q 7890 ; then
+  if check_command netstat
+    if netstat -lnt | grep -q 7890
       alias curlp='curl -x http://localhost:7890'
-    fi
-  fi
-fi
-
-if check_command vagrant; then
-  alias vgt='vagrant'
-  alias vgtu='vagrant up'
-  alias vgth='vagrant halt'
-  alias vgtd='vagrant destroy'
-  alias vgtss='vagrant ssh'
-  alias vgts='vagrant status'
-  alias vgtgs='vagrant global-status'
-fi
+    end 
+  end 
+end
 
 alias ipa='ip -c a'
 alias ipba='ip -br -c a'
 
-if [ -e "$HOME/.config/mytmux/tmux.conf" ]; then
+if test -e "$HOME/.config/mytmux/tmux.conf"
   alias tmux='tmux -f $HOME/.config/mytmux/tmux.conf'
-fi
+end
+
+alias m='mvn'
+
+if check_command z
+  alias zf="z -t -l |tr -s ' ' |cut -d ' ' -f 2|fzf"
+end
 
 # vim: foldmethod=marker :

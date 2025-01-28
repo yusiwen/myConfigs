@@ -1,0 +1,1 @@
+bind \co forward-char

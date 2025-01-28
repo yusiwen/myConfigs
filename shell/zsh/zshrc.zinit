@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+zmodload zsh/zprof
 #=== LOAD PREREQUISITES IF EXISTS =====================
 if [ -e "$HOME/.zshrc.prerequisites" ]; then
   source "$HOME/.zshrc.prerequisites"
@@ -36,7 +37,7 @@ source $ZINIT[BIN_DIR]/zinit.zsh \
 if [ -e "$HOME/.zshrc.prompt" ]; then
   source $HOME/.zshrc.prompt
 else
-  source $HOME/myConfigs/shell/zshrc.zinit.p10k
+  source $HOME/myConfigs/shell/zsh/zshrc.zinit.p10k
 fi
 ##########################
 # OMZ Libs and Plugins   #
@@ -56,20 +57,25 @@ zinit lucid for \
       ZSH_TMUX_AUTOCONNECT=false" \
     if'type tmux >/dev/null 2>&1' \
   OMZP::tmux \
-  atinit"HIST_STAMPS=dd.mm.yyyy" \
-  OMZL::history.zsh \
+    atinit"HIST_STAMPS=dd.mm.yyyy" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  OMZL::history.zsh
 
 zinit wait lucid for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::clipboard.zsh \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::compfix.zsh \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::completion.zsh \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::correction.zsh \
     atload"
       alias ..='cd ..'
       alias ...='cd ../..'
       alias ....='cd ../../..'
       alias .....='cd ../../../..'" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
 	OMZL::directories.zsh \
 	OMZL::git.zsh \
 	OMZL::grep.zsh \
@@ -80,6 +86,7 @@ zinit wait lucid for \
     atload"alias gcd='gco dev'" \
 	OMZP::git \
   OMZP::z \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   OMZP::command-not-found \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
@@ -94,11 +101,13 @@ zinit wait lucid for \
 #####################
 zinit wait lucid light-mode for \
     pick"zsh-lazyload.zsh" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   qoomon/zsh-lazyload \
     atinit"
       zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
       zstyle ':fzf-tab:complete:cd:*' fzf-preview 'if type eza>/dev/null 2>&1; then eza -1 --color=always $realpath; else ls -1 $realpath; fi'
       zstyle ':fzf-tab:*' switch-group '<' '>'" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   Aloxaf/fzf-tab \
     atinit"
       ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
@@ -109,15 +118,20 @@ zinit wait lucid light-mode for \
   zsh-users/zsh-autosuggestions \
     atinit"
       typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   zdharma-continuum/fast-syntax-highlighting \
     blockf atpull'zinit creinstall -q .' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zsh-users/zsh-completions \
   unixorn/fzf-zsh-plugin \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   djui/alias-tips \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   chriskempson/base16-shell \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   hlissner/zsh-autopair \
     wait'type bat >/dev/null 2>&1' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   fdellwing/zsh-bat
 #####################
 # PROGRAMS          #
@@ -283,6 +297,8 @@ zinit wait light-mode lucid is-snippet for \
   $HOME/git/myConfigs/shell/scripts/03-programs.script \
   $HOME/git/myConfigs/shell/scripts/03-completions.script \
   $HOME/git/myConfigs/shell/scripts/04-keybindings.script \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  $HOME/git/myConfigs/shell/scripts/05-themes.script \
   $HOME/git/myConfigs/shell/scripts/06-aliases.script \
   $HOME/git/myConfigs/shell/scripts/99-customize.script
 
