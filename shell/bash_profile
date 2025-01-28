@@ -1,6 +1,26 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+load_my_scripts() {
+  if [ -d "$HOME"/git/myConfigs/shell/scripts ]; then
+    # shellcheck source=/dev/null
+    source "$HOME/myConfigs/shell/scripts/00-environment.script"
+    # shellcheck source=/dev/null
+    source "$HOME/myConfigs/shell/scripts/01-colors.script"
+    # shellcheck source=/dev/null
+    source "$HOME/myConfigs/shell/scripts/02-functions.script"
+    # shellcheck source=/dev/null
+    source "$HOME/myConfigs/shell/scripts/03-programs.script"
+    # shellcheck source=/dev/null
+    source "$HOME/myConfigs/shell/scripts/06-aliases.script"
+    # shellcheck source=/dev/null
+    source "$HOME/myConfigs/shell/scripts/99-customize.script"
+  fi
+}
+
+load_my_scripts
 
 if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
   # shellcheck source=/dev/null
   . "$HOME/.config/broot/launcher/bash/br"
 fi
+
