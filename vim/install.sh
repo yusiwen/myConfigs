@@ -16,14 +16,12 @@ function _install_vim() { # {{{
       local download_url
 
       if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
-        latest_version=$(get_latest_release_from_github 'matsuu/neovim-aarch64-appimage')
-        installation_target="$HOME/.local/bin/nvim-v${latest_version}-aarch64.appimage"
-        download_url="https://github.com/matsuu/neovim-aarch64-appimage/releases/download/v${latest_version}/nvim-v${latest_version}-aarch64.appimage"
+        download_url="https://github.com/neovim/neovim/releases/download/stable/nvim-linux-arm64.appimage"
       else
-        latest_version=$(curl -sL 'https://api.github.com/repos/neovim/neovim/releases/tags/stable' | jq --raw-output '.created_at')
-        installation_target="$HOME/.local/bin/neovim.${latest_version}.appimage"
-        download_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
+        download_url="https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.appimage"
       fi
+      latest_version=$(curl -sL 'https://api.github.com/repos/neovim/neovim/releases/tags/stable' | jq --raw-output '.created_at')
+      installation_target="$HOME/.local/bin/nvim-${latest_version}.appimage"
 
       if ! check_command nvim; then
         echo -e "${COLOR1}NeoVim${COLOR} is not found.${NC}"
