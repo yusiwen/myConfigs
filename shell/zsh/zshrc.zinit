@@ -124,7 +124,7 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zsh-users/zsh-completions \
     run-atpull \
-    atpull'if [ -f $HOME/.fzf/install ]; then $HOME/.fzf/install --bin; fi' \
+    atpull'if [ -f $HOME/.fzf/install ]; then git -C $HOME/.fzf pull && $HOME/.fzf/install --bin; fi' \
   unixorn/fzf-zsh-plugin \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   djui/alias-tips \
