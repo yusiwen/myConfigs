@@ -24,3 +24,11 @@ if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
   . "$HOME/.config/broot/launcher/bash/br"
 fi
 
+# shellcheck source=/dev/null
+[ -f ~/.fzf.bash ] && source "$HOME/.fzf.bash"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+# shellcheck source=/dev/null
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
