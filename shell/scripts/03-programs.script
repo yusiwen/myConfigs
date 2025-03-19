@@ -71,58 +71,6 @@ fi
 #}}}
 
 # {{{ Java
-if [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
-  if [ "$OS" = 'Darwin' ]; then
-    # MacOS
-    JAVA_HOME=$(/usr/libexec/java_home)
-  else
-    # Linux
-    # find newest Java SDK version under /opt/java
-    JDK_INSTALLATION_PATH='/opt/java'
-    if [ -d "$JDK_INSTALLATION_PATH" ]; then
-      # select the newest version of JDK to be JAVA_HOME
-      JAVA_NAME=$(/bin/ls -dr $JDK_INSTALLATION_PATH/jdk*/ 2>/dev/null| head -1)
-      # set JAVA_HOME (truncated trailing '/')
-      JAVA_HOME=$(printf '%s' "${JAVA_NAME%/}")
-    else
-      JAVA_HOME=
-    fi
-  fi
-
-  if [ -n "$JAVA_HOME" ]; then
-    export JAVA_HOME
-    export JDK_HOME=$JAVA_HOME
-    export PATH=$JAVA_HOME/bin:$PATH
-  fi
-fi
-
-if [ -z "$M2_HOME" ] || [ ! -d "$M2_HOME" ]; then
-  MVN_INSTALLATION_PATH="/opt/maven"
-  if [ ! -d "$MVN_INSTALLATION_PATH" ]; then
-    MVN_INSTALLATION_PATH="$HOME/maven"
-  fi
-  if [ -d "$MVN_INSTALLATION_PATH" ]; then
-    MVN_NAME=$(/bin/ls -dr "$MVN_INSTALLATION_PATH"/*-maven-*/ 2>/dev/null | head -1)
-    # set M2_HOME (truncated trailing '/')
-    M2_HOME=$(printf '%s' "${MVN_NAME%/}")
-    if [ -n "$M2_HOME" ]; then
-      export M2_HOME
-      export M2=$M2_HOME/bin
-      export MAVEN_OPTS="-Xms64m -Xmx256m"
-      export PATH=$PATH:$M2
-    fi
-
-    if [ -d "$MVN_INSTALLATION_PATH/repository" ]; then
-      export M2_REPO=$MVN_INSTALLATION_PATH/repository
-    fi
-  fi
-else
-  MAVEN_OPTS="-Xms64m -Xmx256m"
-  MAVEN_ARGS="-B"
-  export MAVEN_OPTS
-  export MAVEN_ARGS
-fi
-
 if [ -z "$CONFLUENT_HOME" ] || [ ! -d "$CONFLUENT_HOME" ]; then
   if [ -d /opt/confluent ]; then
     export CONFLUENT_HOME=/opt/confluent
@@ -176,15 +124,6 @@ if [ -e /usr/local/go/bin/go ] || [ -e /opt/go/bin/go ] || [ -e "$HOME"/.local/g
   export PATH
 fi
 #}}}
-
-# {{{ Node.js with th/n
-if [ -d "$HOME"/.n ] && [ -z "$N_PREFIX" ]; then
-  N_PREFIX="$HOME/.n"
-  export N_PREFIX
-  PATH="$PATH:$N_PREFIX/bin"
-  export PATH
-fi
-# }}}
 
 # {{{ Ansible
 if command -v ansible &>/dev/null; then
