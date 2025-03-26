@@ -22,6 +22,10 @@ load_my_scripts
 # shellcheck source=/dev/null
 [ -f ~/.fzf.bash ] && source "$HOME/.fzf.bash"
 
+if check_command zoxide; then
+  eval "$(zoxide init bash)"
+fi
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 # shellcheck source=/dev/null
