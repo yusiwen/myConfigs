@@ -248,13 +248,18 @@ function init_env() { # {{{
       else
         pkg_pstack=()
       fi
+
+      local pkg_btop=()
+      if apt-cache search btop | grep -q '^btop'; then
+        pkg_btop=( btop )
+      fi
       
       local pkg_core=( gdebi-core software-properties-common apt-transport-https )
       local pkg_zip=( p7zip-full pigz zip unzip )
       local pkg_network=( curl wget net-tools iputils-ping iputils-arping hping3 nmap ethtool )
       local pkg_build=( build-essential cmake "${pkg_pstack[@]}" )
       local pkg_fs=( cifs-utils nfs-common )
-      local pkg_monitor=( htop atop btop iotop iftop nethogs nload sysstat )
+      local pkg_monitor=( htop atop "${pkg_btop[@]}" iotop iftop nethogs nload sysstat )
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found )
 
       if [ $minimal -eq 1 ]; then
