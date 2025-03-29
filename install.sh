@@ -262,23 +262,15 @@ function init_env() { # {{{
       local pkg_monitor=( htop atop "${pkg_btop[@]}" iotop iftop nethogs nload sysstat )
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found )
 
-      if [ $minimal -eq 1 ]; then
-        $SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y \
-          "${pkg_core[@]}" \
-          "${pkg_zip[@]}" \
-          "${pkg_network[@]}" \
-          "${pkg_fs[@]}" \
-          "${pkg_monitor[@]}" \
-          "${pkg_misc[@]}"
-      else
-        $SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y \
-          "${pkg_core[@]}" \
-          "${pkg_zip[@]}" \
-          "${pkg_network[@]}" \
-          "${pkg_fs[@]}" \
-          "${pkg_monitor[@]}" \
-          "${pkg_misc[@]}" \
-          "${pkg_build[@]}"
+      gum spin --spinner dot --title "Installing core packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_core[*]}" 
+      gum spin --spinner dot --title "Installint zip packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_zip[*]}"
+      gum spin --spinner dot --title "Installint network packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_network[*]}"
+      gum spin --spinner dot --title "Installint filesystem packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_fs[*]}"
+      gum spin --spinner dot --title "Installint monitor packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_monitor[*]}"
+      gum spin --spinner dot --title "Installint misc packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_misc[*]}"
+
+      if [ $minimal -eq 2 ]; then
+        gum spin --spinner dot --title "Installint misc packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_build[*]}"
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       yay -S base-devel the_silver_searcher tmux byobu
