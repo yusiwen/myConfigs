@@ -241,7 +241,7 @@ function init_env() { # {{{
         fi
       fi
 
-      gum spin --spinner dot --title "Update apt-get index..." -- bash -c "$SUDO apt-get update"
+      gum spin --spinner dot --title "Updating apt-get index..." -- bash -c "$SUDO apt-get update"
       local pkg_pstack=()
       if [ "$ARCH" = 'amd64' ] && [ "$DISTRO" = 'Ubuntu' ]; then
         pkg_pstack=( pstack ltrace )
@@ -263,14 +263,14 @@ function init_env() { # {{{
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found )
 
       gum spin --spinner dot --title "Installing core packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_core[*]}" 
-      gum spin --spinner dot --title "Installint zip packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_zip[*]}"
-      gum spin --spinner dot --title "Installint network packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_network[*]}"
-      gum spin --spinner dot --title "Installint filesystem packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_fs[*]}"
-      gum spin --spinner dot --title "Installint monitor packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_monitor[*]}"
-      gum spin --spinner dot --title "Installint misc packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_misc[*]}"
+      gum spin --spinner dot --title "Installing zip packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_zip[*]}"
+      gum spin --spinner dot --title "Installing network packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_network[*]}"
+      gum spin --spinner dot --title "Installing filesystem packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_fs[*]}"
+      gum spin --spinner dot --title "Installing monitor packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_monitor[*]}"
+      gum spin --spinner dot --title "Installing misc packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_misc[*]}"
 
       if [ $minimal -eq 2 ]; then
-        gum spin --spinner dot --title "Installint development packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_build[*]}"
+        gum spin --spinner dot --title "Installing development packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_build[*]}"
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       yay -S base-devel the_silver_searcher tmux byobu
