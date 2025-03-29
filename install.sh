@@ -338,7 +338,6 @@ function fetch_myConfigs() { # {{{
   fi
 
   if ! check_command git; then
-    install_git
     curl -L "https://codeload.github.com/yusiwen/myConfigs/zip/refs/heads/master" -o /tmp/myConfigs.zip
     unzip /tmp/myConfigs.zip -d "$HOME"/git
     mv "$HOME"/git/myConfigs-master "$HOME"/git/myConfigs
