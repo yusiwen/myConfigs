@@ -17,7 +17,7 @@ function _install_lua() { # {{{
       wget https://luarocks.org/releases/luarocks-3.9.1.tar.gz -O /tmp/luarocks-3.9.1.tar.gz
       tar zxpf /tmp/luarocks-3.9.1.tar.gz -C /tmp
       pushd /tmp/luarocks-3.9.1 || exit
-      ./configure && make && sudo make install
+      ./configure && make && $SUDO make install
       popd || exit
       rm -f /tmp/luarocks-3.9.1.tar.gz
       rm -rf /tmp/luarocks-3.9.1

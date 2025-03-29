@@ -263,7 +263,7 @@ function init_env() { # {{{
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found )
 
       if [ $minimal -eq 1 ]; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y \
+        $SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y \
           "${pkg_core[@]}" \
           "${pkg_zip[@]}" \
           "${pkg_network[@]}" \
@@ -271,7 +271,7 @@ function init_env() { # {{{
           "${pkg_monitor[@]}" \
           "${pkg_misc[@]}"
       else
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y \
+        $SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y \
           "${pkg_core[@]}" \
           "${pkg_zip[@]}" \
           "${pkg_network[@]}" \
