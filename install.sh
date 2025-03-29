@@ -71,9 +71,6 @@ if [ "$OS" = 'Linux' ]; then
 fi
 
 SPINNER=
-if type gum >/dev/null 2>&1; then
-  SPINNER=
-fi
 
 OPT_PATH=/opt
 # Mount /opt on Windows
@@ -224,6 +221,19 @@ function enable_FUSE() { # {{{
   fi
 } # }}}
 
+function install_gum() { # {{{
+  local package_name="gum_0.16.0_${OS}_${OS_ARCH}"
+  if [ "$OS" == 'Windows_NT' ]; then
+    package_name="gum_0.16.0_Windows_${OS_ARCH}"
+  fi
+  local target_file="gum.tar.gz"
+
+  cd /tmp
+  curl -s -L "https://github.com/charmbracelet/gum/releases/download/v0.16.0/gum_0.16.0_${OS}_${OS_ARCH}${ext}" -o ${target_file}
+  tar xvf ${target_file} "$package_name"/gum --strip-components=1
+  $SUDO mv ./gum /usr/local/bin 
+} # }}}
+
 # Initialize apt and install prerequisite packages
 function init_env() { # {{{
   local minimal=0
@@ -232,6 +242,8 @@ function init_env() { # {{{
   elif [ "$1" = '-b' ]; then
     minimal=2
   fi
+
+  echo -e "${COLOR}Initializing system...${NC}"
 
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
