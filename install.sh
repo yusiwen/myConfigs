@@ -301,11 +301,11 @@ function init_env() { # {{{
       fetch_myConfigs
       install_git
     else
+      fetch_myConfigs
       install_perl
       install_lua
       install_rust
       install_git
-      fetch_myConfigs
       install_ruby
       install_python
       # Install gittyleaks after python is initialized
@@ -362,7 +362,8 @@ function fetch_myConfigs() { # {{{
 } # }}}
 
 function install_python() { # {{{
-  source $HOME/myConfigs/python/install.sh
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/python/install.sh
   _install_python 
 } # }}}
 
@@ -517,30 +518,9 @@ function install_sdkman() { # {{{
 } # }}}
 
 function init_byobu() { # {{{
-  if [ ! -d "$HOME/git/myConfigs" ]; then
-    fetch_myConfigs
-  fi
-
-  rm -rf "$HOME"/.config/tmux "$HOME"/.tmux "$HOME"/.tmux.conf
-
-  if [ "$OS" = 'Linux' ]; then
-    mkdir -p "$HOME"/.config/mytmux
-    check_link "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.config/mytmux/tmux.conf
-
-    if [ ! -d ~/.config/mytmux/plugins/tpm ]; then
-      echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR} for tmux...${NC}"
-      git clone https://github.com/tmux-plugins/tpm ~/.config/mytmux/plugins/tpm
-    fi
-
-    mkdir -p "$HOME"/.config
-    check_link "$HOME"/git/myConfigs/shell/byobu "$HOME"/.config/byobu
-
-    if [ ! -d ~/.config/byobu/plugins/tpm ]; then
-      echo -e "${COLOR}Installing ${COLOR1}tpm${COLOR} for byobu...${NC}"
-      git clone https://github.com/tmux-plugins/tpm ~/.config/byobu/plugins/tpm
-    fi
-    echo -e "${COLOR}Restart byobu session and install plugins using '${COLOR1}ctrl+a I${COLOR}'${NC}"
-  fi
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/byobu/install.sh
+  _install_byobu
 } # }}}
 
 function install_ansible() { # {{{

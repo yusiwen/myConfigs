@@ -186,4 +186,13 @@ EOF
   fi
 
   echo -e "${COLOR}You may need 'commitizen', 'cz-customizable' to run git commit conventions, run './install.sh node' to setup.${NC}"
+
+  if [ ! -d "$HOME/myConfigs/.git" ]; then
+    cd "$HOME"/myConfigs || exit
+    git init
+    git remote add origin "https://github.com/yusiwen/myConfigs.git"
+    git add .
+    git remote update
+    git checkout master
+  fi
 } # }}}
