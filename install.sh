@@ -298,8 +298,8 @@ function init_env() { # {{{
     enable_FUSE
 
     if [ $minimal -eq 1 ] || [ $minimal -eq 2 ]; then
-      install_git
       fetch_myConfigs
+      install_git
     else
       install_perl
       install_lua
@@ -329,125 +329,26 @@ function init_env() { # {{{
   fi
 } # }}}
 
-# Universal Ctags
-function install_universal_ctags() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      set +e
-      PACKAGE=$(dpkg -l | grep exuberant-ctags | cut -d ' ' -f 3 | grep -c ^exuberant-ctags$)
-      set -e
-      if [ "$PACKAGE" -eq 1 ]; then
-        echo -e "${COLOR}Finding exuberant-ctags, it's very old, uninstalling it..${NC}"
-        $SUDO apt purge exuberant-ctags
-      fi
-      $SUDO env NEEDRESTART_MODE=a apt-get install -y autoconf pkg-config
-    elif [ "$DISTRO" = 'CentOS' ]; then
-      if [ "$OS_VERSION" = '"7"' ]; then
-        $SUDO yum install -y pkgconfig autoconf automake python36-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
-      else
-        $SUDO yum install -y pkgconfig autoconf automake python3-docutils libseccomp-devel jansson-devel libyaml-devel libxml2-devel
-      fi
-    fi
-
-    if [ ! -d ~/git/universal-ctags ]; then
-      mkdir -p ~/git
-      if ! check_command git; then
-        install_git
-      fi
-      pushd ~/git
-      git clone https://github.com/universal-ctags/ctags.git universal-ctags
-      cd ~/git/universal-ctags
-      ./autogen.sh
-      ./configure --prefix=/usr/local
-      make -j4
-      $SUDO make install
-      popd && popd
-    fi
-  elif [ "$OS" = 'Darwin' ]; then
-    brew install --HEAD universal-ctags/universal-ctags/universal-ctags
-  fi
-} # }}}
-
-# Git
-function install_git() { # {{{
-  source $HOME/myConfigs/git/install.sh
-  _install_git 
-} # }}}
-
-function install_ruby() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      if ! check_command ruby; then
-        echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
-        echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
-      else
-        echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
-        set +e
-        PACKAGE=$(dpkg -l | grep -c ruby-full)
-        set -e
-        if [ "$PACKAGE" -eq 0 ]; then
-          echo -e "${COLOR}Installing ${COLOR1}ruby-full${COLOR}...${NC}"
-          $SUDO env NEEDRESTART_MODE=a apt-get install -y ruby-full
-        fi
-      fi
-    elif [ "$DISTRO" = 'Manjaro' ]; then
-      if ! check_command ruby; then
-        echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...${NC}"
-        yay -S ruby
-        echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
-      else
-        echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
-      fi
-    else
-      echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
-      return
-    fi
-  elif [ "$OS" = 'Darwin' ]; then
-    if ! check_command ruby; then
-      brew install ruby
-    else
-      echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
-    fi
-  else
-    echo -e "${COLOR}OS not supported${NC}"
-    return
-  fi
-
-  echo -e "${COLOR}Replace official repo with Ruby-China mirror...${NC}"
-  gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/
-  gem sources -l
-  echo -e "${COLOR}Replace official repo with Ruby-China mirror...OK${NC}"
-
-  PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
-  export PATH
-  if ! check_command bundle; then
-    echo -e "${COLOR}Installing bundler...${NC}"
-    gem install --user-install bundler
-    echo -e "${COLOR}Installing bundler...OK${NC}"
-  else
-    echo -e "${COLOR1}bundler${COLOR} was found.${NC}"
-  fi
-
-  echo -e "${COLOR}Configurate bundler to use Ruby-China mirror...${NC}"
-  bundle config mirror.https://rubygems.org https://gems.ruby-china.com
-  echo -e "${COLOR}Configurate bundler to use Ruby-China mirror...OK${NC}"
-} # }}}
-
 # Initialize myConfigs repo
 function fetch_myConfigs() { # {{{
-  if ! check_command git; then
-    install_git
-  fi
-
   mkdir -p "$HOME"/git
   if [ -d "$HOME"/git/myConfigs ]; then
     echo -e "${COLOR1}git/myConfigs${COLOR} already exists.${NC}"
+    return
+  fi
+
+  if ! check_command git; then
+    install_git
+    curl -L "https://codeload.github.com/yusiwen/myConfigs/zip/refs/heads/master" -o /tmp/myConfigs.zip
+    unzip /tmp/myConfigs.zip -d "$HOME"/git
+    mv "$HOME"/git/myConfigs-master "$HOME"/git/myConfigs
+    rm -f /tmp/myConfigs.zip
   else
     echo -e "${COLOR}Fetch myConfigs...${NC}"
     git clone https://github.com/yusiwen/myConfigs.git "$HOME"/git/myConfigs
     git -C "$HOME"/git/myConfigs submodule update --init
   fi
+
   ln -sfnv "$HOME"/git/myConfigs "$HOME"/myConfigs
 
   if [ "$OS" = 'Linux' ] || [ "$OS" = 'Darwin' ]; then
@@ -466,59 +367,48 @@ function install_python() { # {{{
 } # }}}
 
 function install_node() { # {{{
-  if [ ! -d "$HOME"/myConfigs ]; then
-    fetch_myConfigs
-  fi
-
-  if [ "$OS" = 'Windows_NT' ]; then
-    echo -e "${COLOR}Pleasae installing ${COLOR1}nvm-windows${COLOR} manually${NC}"
-  else
-    if [ -z "$N_PREFIX" ]; then
-      echo -e "${COLOR}Installing ${COLOR1}tj/n ${COLOR}...${NC}"
-      export N_PREFIX="$HOME/.n"
-      curl -L "https://bit.ly/n-install" | bash -s -- -n -y lts
-      export PATH="$PATH:$N_PREFIX/bin"
-
-      n stable
-    else
-      echo -e "${COLOR}Found ${COLOR1}tj/n${COLOR} in ${COLOR1}\"$N_PREFIX\"${COLOR}...skip${NC}"
-      if ! check_command npm; then
-        n stable
-      fi
-    fi
-  fi
-
-  echo -e "${COLOR1}Installing yarn, eslint...${NC}"
-  npm install -g yarn eslint npm-check npm-check-updates nrm pnpm
-  # Install cli tools for git commit conventions
-  echo -e "${COLOR1}Installing conventional-changelog-cli, Commitizen, cz-customizable, standard-version...${NC}"
-  npm install -g conventional-changelog-cli commitizen cz-customizable standard-version diff-so-fancy
-
-  echo -e "${COLOR1}Installing tldr...${NC}"
-  npm install -g tldr
-
-  echo -e "${COLOR1}Installing sonar-scanner...${NC}"
-  npm install -g sonar-scanner
-
-  if check_command git; then
-    git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
-  fi
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/node/install.sh
+  _install_node
 } # }}}
 
 function install_fish() {
-  source $HOME/myConfigs/shell/fish/install.sh
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/shell/fish/install.sh
   _install_fish
 }
 
 function install_zsh() { # {{{
-  source $HOME/myConfigs/shell/zsh/install.sh
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/shell/zsh/install.sh
   _install_zsh
 } # }}}
 
 function install_vim() { # {{{
-  source $HOME/myConfigs/vim/install.sh
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/vim/install.sh
   _install_vim
 } #}}}
+
+# Universal Ctags
+function install_universal_ctags() { # {{{
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/ctags/install.sh
+  _install_ctags
+} # }}}
+
+# Git
+function install_git() { # {{{
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/git/install.sh
+  _install_git 
+} # }}}
+
+function install_ruby() { # {{{
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/ruby/install.sh
+  _install_ruby
+} # }}}
 
 function install_rxvt() { # {{{
   if [ "$OS" = 'Linux' ]; then
@@ -546,12 +436,14 @@ function install_rxvt() { # {{{
 } # }}}
 
 function install_docker() { # {{{
-  source $HOME/myConfigs/docker/install.sh
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/docker/install.sh
   _install_docker
 } # }}}
 
 function install_containerd() { # {{{
-  source $HOME/myConfigs/docker/install.sh
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/docker/install.sh
   _install_containerd
 }
 # }}}
@@ -575,36 +467,6 @@ function install_llvm() { # {{{
   fi
 } # }}}
 
-function install_mysql() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ]; then
-      echo 'Not implemented yet, waiting for my update'
-    elif [ "$DISTRO" = 'CentOS' ]; then
-      set +e
-      PACKAGE=$(yum list installed | grep -c ^mysql57-community-release)
-      set -e
-      if [ "$PACKAGE" -eq 0 ]; then
-        echo -e "${COLOR}Add repo ${COLOR1}mysql57-community-release${COLOR}...${NC}"
-        $SUDO yum install -y https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
-        echo -e "${COLOR}Add repo ${COLOR1}mysql57-community-release${COLOR}...OK${NC}"
-      fi
-
-      $SUDO yum install -y mysql-community-server
-      echo -e "${COLOR}Open port for mysql server in firewalld...${NC}"
-      $SUDO firewall-cmd --zone=public --add-service=mysql --permanent
-      $SUDO firewall-cmd --reload
-      echo -e "${COLOR}Open port for mysql server in firewalld...OK${NC}"
-      echo -e "${COLOR}Your temporary root password will be in ${COLOR1}/var/log/mysqld.log${COLOR} when you start mysqld for the first time${NC}"
-      echo -e "${COLOR}Please login with this temporary password, and change it immediately using:${NC}"
-      echo -e "${COLOR1}ALTER USER 'root'@'localhost' IDENTIFIED BY '<new-password>'${NC}"
-      echo -e "${COLOR}And add this configurations in ${COLOR1}/etc/my.cnf${COLOR} for better encoding process${NC}"
-      printf "#----------\n[client]\ndefault-character-set=utf8\n\n[mysqld]\ndefault-storage-engine=INNODB\ncharacter-set-server=utf8\ncollation-server=utf8_general_ci\ncollation-server=utf8_bin\ncollation-server=utf8_unicode_ci\n#----------\n"
-    fi
-  else
-    echo -e "${COLOR}OS not supported.${NC}"
-  fi
-} # }}}
-
 function install_samba() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
@@ -618,120 +480,15 @@ function install_samba() { # {{{
 } # }}}
 
 function install_rust() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    if ! check_command rustc && [ ! -e "$HOME"/.cargo/bin/rustc ]; then
-      echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
-      if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-        RUSTUP_DIST_SERVER="https://rsproxy.cn" RUSTUP_UPDATE_ROOT="https://rsproxy.cn/rustup" bash -c "curl --proto '=https' --tlsv1.2 -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y"
-      else
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-      fi
-
-      if [ -e "$HOME/.cargo/env" ]; then
-        source "$HOME/.cargo/env"
-      else
-        echo -e "${COLOR2}Installation is failed, please check manually.${NC}"
-        exit 1
-      fi
-
-      if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-        cat << EOF | tee -a "${CARGO_HOME:-$HOME/.cargo}/config"
-[source.crates-io]
-replace-with = 'rsproxy-sparse'
-[source.rsproxy]
-registry = "https://rsproxy.cn/crates.io-index"
-[source.rsproxy-sparse]
-registry = "sparse+https://rsproxy.cn/index/"
-[registries.rsproxy]
-index = "https://rsproxy.cn/crates.io-index"
-[net]
-git-fetch-with-cli = true
-EOF
-      fi
-    else
-      echo -e "${COLOR}${COLOR1}$($HOME/.cargo/bin/rustc --version)${COLOR} is found.${NC}"
-      if check_command rustup; then
-        rustup update
-      fi
-    fi
-
-    # Make sure cargo can be built when installing
-    if ! check_command cc; then
-      if [ "$DISTRO" = 'CentOS' ]; then
-        $SUDO yum groupinstall 'Development Tools'
-      else
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y build-essential pkg-config
-      fi
-    fi
-
-    if ! check_command pkg-config; then
-      if [ "$DISTRO" = 'CentOS' ]; then
-        $SUDO yum install pkgconfig
-      else
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y pkg-config
-      fi
-    fi
-
-    if ! check_command cargo; then
-      if [ -e "$HOME/.cargo/env" ]; then
-        source "$HOME/.cargo/env"
-      else
-        echo -e "${COLOR2}Installation is failed, please check manually.${NC}"
-        exit 1
-      fi
-    fi
-
-    if ! check_command btm; then
-      echo -e "${COLOR}Installing ${COLOR1}bottom${COLOR}...${NC}"
-      cargo install bottom
-    else
-      echo -e "${COLOR}${COLOR1}bottom${COLOR} is found.${NC}"
-    fi
-
-    if ! check_command cargo-install-update; then
-      echo -e "${COLOR}Installing ${COLOR1}cargo-update${COLOR}...${NC}"
-      $SUDO env NEEDRESTART_MODE=a apt-get install -y libssl-dev
-      cargo install cargo-update
-      cargo install-update  -a
-    else
-      echo -e "${COLOR}${COLOR1}cargo-update${COLOR} is found.${NC}"
-      cargo install-update  -a
-    fi
-
-    if ! check_command cargo-cache; then
-      echo -e "${COLOR}Installing ${COLOR1}cargo-cache${COLOR}...${NC}"
-      cargo install cargo-cache
-    else
-      echo -e "${COLOR}${COLOR1}cargo-cache${COLOR} is found.${NC}"
-    fi
-  elif [ "$OS" = "Windows_NT" ]; then
-    echo -e "Please download and run installer from: https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe"
-  fi
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/rust/install.sh
+  _install_rust
 } # }}}
 
 function install_lua() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      if ! check_command lua; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y lua5.3 liblua5.3-dev
-      fi
-    elif [ "$DISTRO" = 'CentOS' ]; then
-      # TODO: fix repo, need further checks
-      $SUDO yum install -y lua53u
-    fi
-
-    # LuaRocks
-    if ! check_command luarocks; then
-      $SUDO env NEEDRESTART_MODE=a apt-get install -y liblua5.3-dev
-      wget https://luarocks.org/releases/luarocks-3.9.1.tar.gz -O /tmp/luarocks-3.9.1.tar.gz
-      tar zxpf /tmp/luarocks-3.9.1.tar.gz -C /tmp
-      pushd /tmp/luarocks-3.9.1
-      ./configure && make && sudo make install
-      popd
-      rm -f /tmp/luarocks-3.9.1.tar.gz
-      rm -rf /tmp/luarocks-3.9.1
-    fi
-  fi
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/lua/install.sh
+  _install_lua
 } # }}}
 
 function install_perl() { # {{{
@@ -745,83 +502,10 @@ function install_perl() { # {{{
 } # }}}
 
 function install_golang() { # {{{
-  local version="$1"
-  if [ -z "$version" ]; then
-    # Get latest stable from official site
-    local resp_str
-    resp_str=$(curl -sL "https://golang.org/VERSION?m=text")
-    version=$(echo "${resp_str}" | head -1)
-    echo -e "${COLOR}The latest stable version is ${COLOR1}$version${COLOR}${NC}"
-  elif ! (echo "$version" | grep -Eq ^go); then
-    version="go$version"
-  fi
-
-  if [ "$OS" = 'Linux' ]; then
-    if [ -z "$ARCH" ]; then
-      echo -e "${COLOR2}Unknown archetecture ${COLOR1}$ARCH${NC}"
-      exit 1
-    fi
-
-    local installation_path=$OPT_PATH
-    local sudo_cmd=sudo
-    if [ "$2" = '--user' ] || [ "$2" = '-u' ]; then
-      installation_path="$HOME"/.local
-      sudo_cmd=
-    fi
-
-    local target_path="$installation_path/$version.linux-$ARCH"
-    if [ -d "$target_path" ]; then
-      echo -e "${COLOR1}$target_path${COLOR} exists, skip${NC}"
-      return
-    fi
-
-    echo -e "${COLOR}Downloading ${COLOR1}$version.linux-$ARCH.tar.gz${COLOR}${NC}"
-    $sudo_cmd wget -P "$installation_path" "https://dl.google.com/go/$version.linux-$ARCH.tar.gz"
-
-    $sudo_cmd mkdir -p "$target_path"
-    $sudo_cmd tar xvvzf "$installation_path/$version.linux-$ARCH.tar.gz" -C "$target_path" --strip-components 1
-    $sudo_cmd ln -sfnv "$target_path" "$installation_path"/go
-    $sudo_cmd rm -rf "$installation_path/$version.linux-$ARCH.tar.gz"
-
-    echo -e "${COLOR1}$version.linux-$ARCH${COLOR} is installed, re-login to take effect${NC}"
-  elif [ "$OS" = 'Windows_NT' ]; then
-    local target_path
-    local installation_path
-    target_path="$HOME"/.local
-    mkdir -p "$target_path"
-    if [ -d "$OPT_PATH" ]; then
-      installation_path=$OPT_PATH/runtimes
-    else
-      installation_path="$target_path"
-    fi
-
-    if [ -d "$installation_path/$version" ]; then
-      echo -e "${COLOR1}$version${COLOR} is already installed${NC}"
-    else
-      curl -L "https://dl.google.com/go/$version.windows-amd64.zip" -o "$installation_path/$version".windows-amd64.zip
-      unzip -d "$installation_path/$version" "$installation_path/$version".windows-amd64.zip
-
-      if [ -d "$installation_path/$version"/go ]; then
-        mv "$installation_path/$version"/go/* "$installation_path/$version" && rm -rf "$installation_path/$version/go"
-      fi
-    fi
-
-    if [ -d "$installation_path/go" ]; then
-      rm -f "$installation_path/go"
-    fi
-
-    ln -sfnv "$installation_path/$version" "$installation_path"/go
-
-    if [ -d "$target_path/go" ]; then
-      rm -f "$target_path/go"
-    fi
-
-    ln -sfnv "$installation_path/$version" "$target_path"/go
-
-    echo -e "${COLOR1}$version${COLOR} is installed, please set the correct environment variables in System Settings${NC}"
-  fi
-}
-# }}}
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/golang/install.sh
+  _install_golang "$@"
+} # }}}
 
 function install_sdkman() { # {{{
   # https://sdkman.io/install
@@ -891,94 +575,9 @@ function init_k8s() { # {{{
 } # }}}
 
 function init_cilium() { # {{{
-  if [ "$OS" = 'Linux' ] || [ "$OS" = 'Darwin' ]; then
-    local os_name
-    os_name=$(echo "$OS" | tr '[:upper:]' '[:lower:]')
-
-    # Cilium CLI
-    local cilium_cli_latest_version
-    echo -e "${COLOR}Checking latest ${COLOR1}Cilium CLI${COLOR} version ...${NC}"
-    cilium_cli_latest_version=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/master/stable.txt)
-    echo -e "${COLOR}Latest ${COLOR1}Cilium CLI${COLOR} version is ${COLOR1}${cilium_cli_latest_version}${NC}"
-
-    local cilium_cli_current_version
-    local cilium_cli_version
-    if ! check_command cilium; then
-      echo -e "${COLOR1}Cilium CLI${COLOR} not found.${NC}"
-      cilium_cli_version="$cilium_cli_latest_version"
-    else
-      set +e
-      cilium_cli_current_version="$(cilium version | head -n 1 | cut -d ' ' -f 2)"
-      set -e
-      echo -e "${COLOR}Current ${COLOR1}Cilium CLI${COLOR} version is ${COLOR1}${cilium_cli_current_version}${NC}"
-      if [ "$cilium_cli_current_version" != "$cilium_cli_latest_version" ]; then
-        cilium_cli_version="$cilium_cli_latest_version"
-      else
-        cilium_cli_version=
-        cilium_cli_current_version=
-      fi
-    fi
-
-    if [ -n "$cilium_cli_version" ]; then
-      if [ -n "$cilium_cli_current_version" ]; then
-        echo -e "${COLOR}Upgrading ${COLOR1}Cilium CLI${COLOR} from ${COLOR1}${cilium_cli_current_version}${COLOR} to ${COLOR1}${cilium_cli_version}${COLOR} ...${NC}"
-      else
-        echo -e "${COLOR}Installing ${COLOR1}Cilium CLI ${cilium_cli_version}${COLOR} ...${NC}"
-      fi
-
-      curl -L --fail --remote-name-all "https://github.com/cilium/cilium-cli/releases/download/${cilium_cli_version}/cilium-${os_name}-${ARCH}.tar.gz{,.sha256sum}"
-      sha256sum --check cilium-"${os_name}"-${ARCH}.tar.gz.sha256sum
-      $SUDO tar xzvfC cilium-"${os_name}"-${ARCH}.tar.gz /usr/local/bin
-      rm cilium-"${os_name}"-${ARCH}.tar.gz{,.sha256sum}
-    fi
-  else
-    echo -e "${COLOR}Please manually download ${COLOR1}Cilium CLI${COLOR} from https://github.com/cilium/cilium-cli/releases/latest${NC}"
-  fi
-
-  # Hubble CLI
-  if [ "$OS" = 'Linux' ] || [ "$OS" = 'Darwin' ]; then
-    local os_name
-    os_name=$(echo "$OS" | tr '[:upper:]' '[:lower:]')
-
-    local hubble_cli_latest_version
-    echo -e "${COLOR}Checking latest ${COLOR1}Hubble CLI${COLOR} version ...${NC}"
-    hubble_cli_latest_version=$(curl -s https://raw.githubusercontent.com/cilium/hubble/master/stable.txt)
-    echo -e "${COLOR}Latest ${COLOR1}Hubble CLI${COLOR} version is ${COLOR1}${hubble_cli_latest_version}${NC}"
-
-    local hubble_cli_current_version
-    local hubble_cli_version
-    if ! check_command cilium; then
-      echo -e "${COLOR1}Hubble CLI${COLOR} not found.${NC}"
-      hubble_cli_version="$hubble_cli_latest_version"
-    else
-      set +e
-      hubble_cli_current_version=v"$(hubble version | head -n 1 | awk '{ print $2 }')"
-      set -e
-      echo -e "${COLOR}Current ${COLOR1}Hubble CLI${COLOR} version is ${COLOR1}${hubble_cli_current_version}${NC}"
-
-      if [ "$hubble_cli_current_version" != "$hubble_cli_latest_version" ]; then
-        hubble_cli_version="$hubble_cli_latest_version"
-      else
-        hubble_cli_version=
-        hubble_cli_current_version=
-      fi
-    fi
-
-    if [ -n "$hubble_cli_version" ]; then
-      if [ -n "$hubble_cli_current_version" ]; then
-        echo -e "${COLOR}Upgrading ${COLOR1}Hubble CLI${COLOR} from ${COLOR1}${hubble_cli_current_version}${COLOR} to ${COLOR1}${hubble_cli_version}${COLOR} ...${NC}"
-      else
-        echo -e "${COLOR}Installing ${COLOR1}Hubble CLI ${hubble_cli_version}${COLOR} ...${NC}"
-      fi
-
-      curl -L --fail --remote-name-all "https://github.com/cilium/hubble/releases/download/$hubble_cli_version/hubble-${os_name}-${ARCH}.tar.gz{,.sha256sum}"
-      sha256sum --check hubble-"${os_name}"-${ARCH}.tar.gz.sha256sum
-      $SUDO tar xzvfC hubble-"${os_name}"-${ARCH}.tar.gz /usr/local/bin
-      rm hubble-"${os_name}"-${ARCH}.tar.gz{,.sha256sum}
-    fi
-  else
-    echo -e "${COLOR}Please manually download ${COLOR1}Hubble CLI${COLOR} from https://github.com/cilium/hubble/releases${NC}"
-  fi
+  # shellcheck disable=SC1091
+  source "$HOME"/myConfigs/k8s/cilium/install.sh
+  _install_cilium
 } #}}}
 
 function init_bpf() { # {{{ # Initialization of BPF development environment
@@ -1044,7 +643,6 @@ function print_info() { # {{{
   echo -e "\tllvm \t\tInstall llvm"
   echo -e "\tdocker \t\tInstall docker"
   echo -e "\tcontainerd \tInstall containerd"
-  echo -e "\tmysql \t\tInstall mysql"
   echo -e "\tsamba \t\tInstall samba"
   echo -e "\tctags \t\tInstall universal ctags"
   echo -e "\trust \t\tInstall Rust"
@@ -1080,7 +678,6 @@ rxvt) install_rxvt ;;
 llvm) install_llvm ;;
 docker) install_docker ;;
 containerd) install_containerd ;;
-mysql) install_mysql ;;
 samba) install_samba ;;
 ctags) install_universal_ctags ;;
 rust) install_rust ;;
