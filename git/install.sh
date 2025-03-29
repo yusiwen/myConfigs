@@ -9,7 +9,8 @@ function _install_git() { # {{{
           GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
           if [ ! -e "$GIT_PPA" ]; then
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
-            $SUDO apt-add-repository -y ppa:git-core/ppa
+            gum spin --show-error --spinner dot --title "Adding ppa:git-core/ppa..." -- \
+              bash -c "$SUDO apt-add-repository -y ppa:git-core/ppa"
 
             if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
               # Replace official launchpad address with reverse proxy from USTC
@@ -17,14 +18,17 @@ function _install_git() { # {{{
             fi
 
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
-            $SUDO apt-get update
-            $SUDO env NEEDRESTART_MODE=a apt-get full-upgrade -y
+            gum spin --show-error --spinner dot --title "Updating apt repository..." -- \
+              bash -c "$SUDO apt-get -qq update"
+            gum spin --show-error --spinner dot --title "Upgrading system..." -- \
+              bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq full-upgrade -y"
           else
             echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
           fi
         fi
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y git
+        gum spin --show-error --spinner dot --title "Installing git-core..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y git"
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}git${COLOR} was found at '$(which git)'.${NC}"

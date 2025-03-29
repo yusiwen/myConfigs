@@ -49,7 +49,7 @@ function _install_ruby() { # {{{
   export PATH
   if ! check_command bundle; then
     echo -e "${COLOR}Installing bundler...${NC}"
-    gem install --user-install bundler
+    gem install --user-install bundler -v 2.4.22
     echo -e "${COLOR}Installing bundler...OK${NC}"
   else
     echo -e "${COLOR1}bundler${COLOR} was found.${NC}"

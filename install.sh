@@ -70,6 +70,11 @@ if [ "$OS" = 'Linux' ]; then
   fi
 fi
 
+SPINNER=
+if type gum >/dev/null 2>&1; then
+  SPINNER=
+fi
+
 OPT_PATH=/opt
 # Mount /opt on Windows
 if [ "$OS" = 'Windows_NT' ] && [ "$(uname -o)" = 'Msys' ] && [ ! -d "$OPT_PATH" ]; then
@@ -202,8 +207,10 @@ function vercomp() { # {{{
 function enable_FUSE() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      $SUDO add-apt-repository -y universe
-      $SUDO env NEEDRESTART_MODE=a apt-get install libfuse2
+      gum spin --show-error --spinner dot --title "Adding universe repository..." -- \
+        bash -c "$SUDO add-apt-repository -y universe"
+      gum spin --show-error --spinner dot --title "Installing libfuse2..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y libfuse2"
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
         $SUDO yum --enablerepo=epel -y install fuse-sshfs # install from EPEL
@@ -262,15 +269,22 @@ function init_env() { # {{{
       local pkg_monitor=( htop atop "${pkg_btop[@]}" iotop iftop nethogs nload sysstat )
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found )
 
-      gum spin --spinner dot --title "Installing core packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_core[*]}" 
-      gum spin --spinner dot --title "Installing zip packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_zip[*]}"
-      gum spin --spinner dot --title "Installing network packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_network[*]}"
-      gum spin --spinner dot --title "Installing filesystem packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_fs[*]}"
-      gum spin --spinner dot --title "Installing monitor packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_monitor[*]}"
-      gum spin --spinner dot --title "Installing misc packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_misc[*]}"
+      gum spin --show-error --spinner dot --title "Installing core packages..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_core[*]}" 
+      gum spin --show-error --spinner dot --title "Installing zip packages..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_zip[*]}"
+      gum spin --show-error --spinner dot --title "Installing network packages..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_network[*]}"
+      gum spin --show-error --spinner dot --title "Installing filesystem packages..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_fs[*]}"
+      gum spin --show-error --spinner dot --title "Installing monitor packages..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_monitor[*]}"
+      gum spin --show-error --spinner dot --title "Installing misc packages..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_misc[*]}"
 
       if [ $minimal -eq 2 ]; then
-        gum spin --spinner dot --title "Installing development packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_build[*]}"
+        gum spin --show-error --spinner dot --title "Installing development packages..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_build[*]}"
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       yay -S base-devel the_silver_searcher tmux byobu
