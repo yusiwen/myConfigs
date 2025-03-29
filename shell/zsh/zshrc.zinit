@@ -260,6 +260,10 @@ zinit wait lucid light-mode for \
     mv'media-get*.exe -> media-get.exe' pick'media-get.exe' bpick'*win.exe*' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   foamzou/media-get \
+    from'gh-r' as'program' id-as'gum' \
+    pick'gum' bpick'gum' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  charmbracelet/gum \
     as'program' id-as'micromamba' pick"$HOME/.micromamba/bin" run-atpull \
     atclone'curl -sL https://raw.githubusercontent.com/mamba-org/micromamba-releases/main/install.sh | PREFIX_LOCATION="$HOME/.micromamba" INIT_YES="no" bash -s' \
     atpull'if type micromamba >/dev/null 2>&1; then micromamba self-update; fi' \
