@@ -241,7 +241,7 @@ function init_env() { # {{{
         fi
       fi
 
-      $SUDO apt-get update
+      gum spin --spinner dot --title "Update apt-get index..." -- bash -c "$SUDO apt-get update"
       local pkg_pstack=()
       if [ "$ARCH" = 'amd64' ] && [ "$DISTRO" = 'Ubuntu' ]; then
         pkg_pstack=( pstack ltrace )
@@ -270,7 +270,7 @@ function init_env() { # {{{
       gum spin --spinner dot --title "Installint misc packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_misc[*]}"
 
       if [ $minimal -eq 2 ]; then
-        gum spin --spinner dot --title "Installint misc packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_build[*]}"
+        gum spin --spinner dot --title "Installint development packages..." -- bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_build[*]}"
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       yay -S base-devel the_silver_searcher tmux byobu
