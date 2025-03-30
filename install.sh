@@ -333,10 +333,10 @@ function init_env() { # {{{
       install_git
     else
       fetch_myConfigs
+      install_git
       install_perl
       install_lua
       install_rust
-      install_git
       install_ruby
       install_python
       # Install gittyleaks after python is initialized
