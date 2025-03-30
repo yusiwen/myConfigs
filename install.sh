@@ -230,6 +230,7 @@ function install_mu() {
   fi
 
   $SUDO curl -s -L "https://share.yusiwen.cn/public/mu/$path" -o /usr/local/bin/mu
+  $SUDO chmod +x /usr/local/bin/mu
 }
 
 function install_gum() { # {{{
