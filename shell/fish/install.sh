@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 function _install_pacman() {
-  if ! check_command pacman; then
-    if ! check_command zstd; then
-      if ! check_command unzip; then
+  if ! type pacman >/dev/null 2>&1; then
+    if ! type zstd >/dev/null 2>&1; then
+      if ! type unzip >/dev/null 2>&1; then
         echo -e "${COLOR}No ${COLOR1}unzip${COLOR} found, install it manually first${NC}"
         return
       fi
@@ -64,7 +64,7 @@ function _install_pacman() {
 }
 
 function _install_fzf() {
-  if ! check_command fzf; then
+  if ! type fzf >/dev/null 2>&1; then
     echo -e "${COLOR}Installing ${COLOR1}fzf${COLOR}...${NC}"
     local latest_fzf_version
     latest_fzf_version=$(get_latest_release_from_github junegunn/fzf)
@@ -82,7 +82,7 @@ function _install_fzf() {
 function _install_fish() {
   if [ "$OS" = 'Windows_NT' ]; then
     _install_pacman
-    if ! check_command pacman; then
+    if ! type pacman >/dev/null 2>&1; then
       echo -e "${COLOR}Cannot find ${COLOR1}pacman${COLOR}, please install it first${NC}"
       return
     fi

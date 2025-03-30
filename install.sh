@@ -223,15 +223,23 @@ function enable_FUSE() { # {{{
 
 function install_gum() { # {{{
   local package_name="gum_0.16.0_${OS}_${OS_ARCH}"
+  local target_file="gum.tar.gz"
   if [ "$OS" == 'Windows_NT' ]; then
     package_name="gum_0.16.0_Windows_${OS_ARCH}"
+    target_file="gum.zip"
   fi
-  local target_file="gum.tar.gz"
 
   cd /tmp
   curl -s -L "https://github.com/charmbracelet/gum/releases/download/v0.16.0/gum_0.16.0_${OS}_${OS_ARCH}${ext}" -o ${target_file}
-  tar xvf ${target_file} "$package_name"/gum --strip-components=1
-  $SUDO mv ./gum /usr/local/bin 
+  if [ "$OS" == 'Windows_NT' ]; then
+    unzip "${target_file}"
+    mv "${package_name}"/gum /usr/local/bin
+    rm -rf "${package_name}"
+  else
+    tar xvf "${target_file}" "$package_name"/gum --strip-components=1
+    $SUDO mv ./gum /usr/local/bin 
+  fi
+  rm -rf "${target_file}"
 } # }}}
 
 # Initialize apt and install prerequisite packages
@@ -627,6 +635,7 @@ function print_info() { # {{{
   echo -e "\nUsage:\n${COLOR}install.sh [COMMAND]${NC}"
   echo -e "\nCommands:"
   echo -e "\tinfo \t\tShow system information"
+  echo -e "\tgum \t\tInstall charmbracelet/gum"
   echo -e "\tinit \t\tInitialize environment, '-m' for minimal setup"
   echo -e "\tgit \t\tInstall git"
   echo -e "\truby \t\tInstall ruby"
@@ -659,6 +668,7 @@ function print_info() { # {{{
 
 case $1 in
 info) show_sysinfo ;;
+gum) install_gum ;;
 init)
   shift
   init_env "$@"
