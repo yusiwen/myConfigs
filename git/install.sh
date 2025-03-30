@@ -38,8 +38,9 @@ function _install_git() { # {{{
         echo -e "${COLOR}Installing ${COLOR1}git-credential-manager${COLOR}...${NC}"
         local gcm_latest_version
         gcm_latest_version=$(get_latest_release_from_github 'git-ecosystem/git-credential-manager')
-        curl -L "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux_amd64.$gcm_latest_version.deb" -o /tmp/gcm.deb
-        $SUDO dpkg --install /tmp/gcm.deb && rm -f /tmp/gcm.deb
+        curl -sL "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux_amd64.$gcm_latest_version.deb" -o /tmp/gcm.deb
+        gum spin --show-error --spinner dot --title "Installing git-credential-manager..." -- \
+          "$SUDO" dpkg --install /tmp/gcm.deb && rm -f /tmp/gcm.deb
       else
         echo -e "${COLOR1}git-credential-manager${COLOR} was found at '/usr/local/bin/git-credential-manager'.${NC}"
       fi
@@ -49,7 +50,8 @@ function _install_git() { # {{{
 
       if ! check_command tig; then
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y tig
+        gum spin --show-error --spinner dot --title "Installing tig..." -- \
+          "$SUDO" env NEEDRESTART_MODE=a apt-get -qq install -y tig
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}tig${COLOR} was found at '$(which tig)'.${NC}"
