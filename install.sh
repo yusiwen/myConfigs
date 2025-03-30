@@ -223,11 +223,12 @@ function enable_FUSE() { # {{{
 
 function install_gum() { # {{{
   local package_name="gum_0.16.0_${OS}_${OS_ARCH}"
-  local target_file="gum.tar.gz"
+  local ext=".tar.gz"
   if [ "$OS" == 'Windows_NT' ]; then
     package_name="gum_0.16.0_Windows_${OS_ARCH}"
-    target_file="gum.zip"
+    ext=".zip"
   fi
+  local target_file="gum${ext}"
 
   cd /tmp
   curl -s -L "https://github.com/charmbracelet/gum/releases/download/v0.16.0/gum_0.16.0_${OS}_${OS_ARCH}${ext}" -o ${target_file}
