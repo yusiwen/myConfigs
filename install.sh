@@ -252,6 +252,10 @@ function init_env() { # {{{
     minimal=2
   fi
 
+  if ! check_command gum; then
+    install_gum
+  fi
+
   echo -e "${COLOR}Initializing system...${NC}"
 
   if [ "$OS" = 'Linux' ]; then
