@@ -9,7 +9,7 @@ function _install_git() { # {{{
           GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
           if [ ! -e "$GIT_PPA" ]; then
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
-            gum spin --show-error --spinner dot --title "Adding ppa:git-core/ppa..." -- \
+            gum spin --show-error --title "Adding ppa:git-core/ppa..." -- \
               bash -c "$SUDO apt-add-repository -y ppa:git-core/ppa"
 
             if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
@@ -18,16 +18,16 @@ function _install_git() { # {{{
             fi
 
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
-            gum spin --show-error --spinner dot --title "Updating apt repository..." -- \
+            gum spin --show-error --title "Updating apt repository..." -- \
               bash -c "$SUDO apt-get -qq update"
-            gum spin --show-error --spinner dot --title "Upgrading system..." -- \
+            gum spin --show-error --title "Upgrading system..." -- \
               bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq full-upgrade -y"
           else
             echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
           fi
         fi
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
-        gum spin --show-error --spinner dot --title "Installing git-core..." -- \
+        gum spin --show-error --title "Installing git-core..." -- \
           bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y git"
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
       else
@@ -39,7 +39,7 @@ function _install_git() { # {{{
         local gcm_latest_version
         gcm_latest_version=$(get_latest_release_from_github 'git-ecosystem/git-credential-manager')
         curl -sL "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux_amd64.$gcm_latest_version.deb" -o /tmp/gcm.deb
-        gum spin --show-error --spinner dot --title "Installing git-credential-manager..." -- \
+        gum spin --show-error --title "Installing git-credential-manager..." -- \
           "$SUDO" dpkg --install /tmp/gcm.deb && rm -f /tmp/gcm.deb
       else
         echo -e "${COLOR1}git-credential-manager${COLOR} was found at '/usr/local/bin/git-credential-manager'.${NC}"
@@ -50,7 +50,7 @@ function _install_git() { # {{{
 
       if ! check_command tig; then
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
-        gum spin --show-error --spinner dot --title "Installing tig..." -- \
+        gum spin --show-error --title "Installing tig..." -- \
           "$SUDO" env NEEDRESTART_MODE=a apt-get -qq install -y tig
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
       else

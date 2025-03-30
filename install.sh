@@ -204,9 +204,9 @@ function vercomp() { # {{{
 function enable_FUSE() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      gum spin --show-error --spinner dot --title "Adding universe repository..." -- \
+      gum spin --show-error --title "Adding universe repository..." -- \
         bash -c "$SUDO add-apt-repository -y universe"
-      gum spin --show-error --spinner dot --title "Installing libfuse2..." -- \
+      gum spin --show-error --title "Installing libfuse2..." -- \
         bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y libfuse2"
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
@@ -221,26 +221,23 @@ function enable_FUSE() { # {{{
   fi
 } # }}}
 
-function install_gum() { # {{{
-  local package_name="gum_0.16.0_${OS}_${OS_ARCH}"
-  local ext=".tar.gz"
+function install_mu() {
+  local path=""
   if [ "$OS" == 'Windows_NT' ]; then
-    package_name="gum_0.16.0_Windows_${OS_ARCH}"
-    ext=".zip"
+    path="windows/amd64/mu.exe"
+  elif [ "$OS" == 'Linux' ]; then
+    path="linux/$OS_ARCH/mu"
   fi
-  local target_file="gum${ext}"
 
-  cd /tmp
-  curl -s -L "https://github.com/charmbracelet/gum/releases/download/v0.16.0/gum_0.16.0_${OS}_${OS_ARCH}${ext}" -o ${target_file}
-  if [ "$OS" == 'Windows_NT' ]; then
-    unzip "${target_file}"
-    mv "${package_name}"/gum /usr/local/bin
-    rm -rf "${package_name}"
-  else
-    tar xvf "${target_file}" "$package_name"/gum --strip-components=1
-    $SUDO mv ./gum /usr/local/bin 
+  $SUDO curl -s -L "https://share.yusiwen.cn/public/mu/$path" -o /usr/local/bin/mu
+}
+
+function install_gum() { # {{{
+  if ! check_command mu; then
+    install_mu
   fi
-  rm -rf "${target_file}"
+
+  mu install --move charmbracelet/gum
 } # }}}
 
 # Initialize apt and install prerequisite packages
@@ -269,7 +266,7 @@ function init_env() { # {{{
         fi
       fi
 
-      gum spin --spinner dot --title "Updating apt-get index..." -- bash -c "$SUDO apt-get update"
+      gum spin --title "Updating apt-get index..." -- bash -c "$SUDO apt-get update"
       local pkg_pstack=()
       if [ "$ARCH" = 'amd64' ] && [ "$DISTRO" = 'Ubuntu' ]; then
         pkg_pstack=( pstack ltrace )
@@ -290,21 +287,21 @@ function init_env() { # {{{
       local pkg_monitor=( htop atop "${pkg_btop[@]}" iotop iftop nethogs nload sysstat )
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found )
 
-      gum spin --show-error --spinner dot --title "Installing core packages..." -- \
+      gum spin --show-error --title "Installing core packages..." -- \
         bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_core[*]}" 
-      gum spin --show-error --spinner dot --title "Installing zip packages..." -- \
+      gum spin --show-error --title "Installing zip packages..." -- \
         bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_zip[*]}"
-      gum spin --show-error --spinner dot --title "Installing network packages..." -- \
+      gum spin --show-error --title "Installing network packages..." -- \
         bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_network[*]}"
-      gum spin --show-error --spinner dot --title "Installing filesystem packages..." -- \
+      gum spin --show-error --title "Installing filesystem packages..." -- \
         bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_fs[*]}"
-      gum spin --show-error --spinner dot --title "Installing monitor packages..." -- \
+      gum spin --show-error --title "Installing monitor packages..." -- \
         bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_monitor[*]}"
-      gum spin --show-error --spinner dot --title "Installing misc packages..." -- \
+      gum spin --show-error --title "Installing misc packages..." -- \
         bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_misc[*]}"
 
       if [ $minimal -eq 2 ]; then
-        gum spin --show-error --spinner dot --title "Installing development packages..." -- \
+        gum spin --show-error --title "Installing development packages..." -- \
           bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_build[*]}"
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
