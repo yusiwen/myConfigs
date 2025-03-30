@@ -64,9 +64,11 @@ echo -e "${COLOR}Operating System: ${COLOR1}$OS${COLOR} found...${NC}"
 echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} found...${NC}"
 
 SUDO=
+SUDOE=
 if [ "$OS" = 'Linux' ]; then
   if [ $EUID -ne 0 ]; then
     SUDO=sudo
+    SUDOE="sudo -E"
   fi
 fi
 
@@ -238,7 +240,7 @@ function install_gum() { # {{{
     install_mu
   fi
 
-  mu install --move charmbracelet/gum
+  mu install --move charmbracelet/gum | $SUDOE bash -
 } # }}}
 
 # Initialize apt and install prerequisite packages
