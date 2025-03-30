@@ -226,7 +226,7 @@ function install_mu() {
   if [ "$OS" == 'Windows_NT' ]; then
     path="windows/amd64/mu.exe"
   elif [ "$OS" == 'Linux' ]; then
-    path="linux/$OS_ARCH/mu"
+    path="linux/$ARCH/mu"
   fi
 
   $SUDO curl -s -L "https://share.yusiwen.cn/public/mu/$path" -o /usr/local/bin/mu
