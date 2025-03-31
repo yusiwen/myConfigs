@@ -231,6 +231,7 @@ function install_mu() {
     path="linux/$ARCH/mu"
   fi
 
+  echo -e "${COLOR}Downloading myUtilities...${NC}"
   $SUDO curl -s -L "https://share.yusiwen.cn/public/mu/$path" -o /usr/local/bin/mu
   $SUDO chmod +x /usr/local/bin/mu
 }
@@ -374,9 +375,8 @@ function fetch_myConfigs() { # {{{
     mv "$HOME"/git/myConfigs-master "$HOME"/git/myConfigs
     rm -f /tmp/myConfigs.zip
   else
-    echo -e "${COLOR}Fetch myConfigs...${NC}"
-    git clone https://github.com/yusiwen/myConfigs.git "$HOME"/git/myConfigs
-    git -C "$HOME"/git/myConfigs submodule update --init
+    gum spin --show-error --title "Fetch yusiwen/myConfigs..." -- \
+      bash -c "git clone -q https://github.com/yusiwen/myConfigs.git $HOME/git/myConfigs && git -C $HOME/git/myConfigs submodule update -q --init"
   fi
 
   ln -sfnv "$HOME"/git/myConfigs "$HOME"/myConfigs
@@ -457,8 +457,8 @@ function install_rxvt() { # {{{
 
     if [ "$DISTRO" = 'Ubuntu' ]; then
       if ! check_command rxvt; then
-        echo -e "${COLOR}Installing ${COLOR1}rxvt-unicode-256color${COLOR}...${NC}"
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y rxvt-unicode-256color
+        gum spin --show-error --title "Installing rxvt-unicode-256color..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y rxvt-unicode-256color"
       fi
     fi
   else
@@ -482,7 +482,8 @@ function install_containerd() { # {{{
 function install_llvm() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      $SUDO env NEEDRESTART_MODE=a apt-get install -y llvm clang clang-format clang-tidy clang-tools lldb lld
+      gum spin --show-error --title "Installing llvm..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y llvm clang clang-format clang-tidy clang-tools lldb lld"
     elif [ "$DISTRO" = 'CentOS' ]; then
       set +e
       PACKAGE=$(yum list installed | grep -c ^centos-release-scl)
@@ -501,7 +502,8 @@ function install_llvm() { # {{{
 function install_samba() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      $SUDO env NEEDRESTART_MODE=a apt-get install -y samba samba-common
+      gum spin --show-error --title "Installing samba..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y samba samba-common"
       $SUDO cp "$HOME"/git/myConfigs/samba/smb.conf /etc/samba/smb.conf
       $SUDO smbpasswd -a yusiwen
       $SUDO systemctl restart smbd
@@ -526,7 +528,8 @@ function install_perl() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! check_command perl; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install perl cpanminus
+        gum spin --show-error --title "Installing perl..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y perl cpanminus"
       fi
     fi
   fi
@@ -593,9 +596,8 @@ function init_cilium() { # {{{
 function init_bpf() { # {{{ # Initialization of BPF development environment
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      $SUDO env NEEDRESTART_MODE=a apt-get install build-essential git make libelf-dev libelf1 \
-        clang llvm strace tar make bpfcc-tools \
-        linux-headers-"$(uname -r)" gcc-multilib
+      gum spin --show-error --title "Installing perl..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install build-essential git make libelf-dev libelf1 clang llvm strace tar make bpfcc-tools linux-headers-$(uname -r) gcc-multilib"
 
       git clone --depth 1 git://kernel.ubuntu.com/ubuntu-stable/ubuntu-stable-"$(lsb_release -c -s)".git /tmp/kernel_src &&
         $SUDO mv /tmp/kernel_src /opt/kernel-src &&
