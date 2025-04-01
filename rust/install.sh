@@ -5,9 +5,11 @@ function _install_rust() { # {{{
     if ! check_command rustc && [ ! -e "$HOME"/.cargo/bin/rustc ]; then
       echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
       if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-        RUSTUP_DIST_SERVER="https://rsproxy.cn" RUSTUP_UPDATE_ROOT="https://rsproxy.cn/rustup" bash -c "curl --proto '=https' --tlsv1.2 -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y"
+        gum spin --show-error --title "Installing liblua5.3-dev..." -- \
+          bash -c "env RUSTUP_DIST_SERVER='https://rsproxy.cn' RUSTUP_UPDATE_ROOT='https://rsproxy.cn/rustup' bash -c \"curl --proto '=https' --tlsv1.2 -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y\""
       else
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        gum spin --show-error --title "Installing liblua5.3-dev..." -- \
+          bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
       fi
 
       if [ -e "$HOME/.cargo/env" ]; then
@@ -43,7 +45,8 @@ EOF
       if [ "$DISTRO" = 'CentOS' ]; then
         $SUDO yum groupinstall 'Development Tools'
       else
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y build-essential pkg-config
+        gum spin --show-error --title "Installing build-essential..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y build-essential"
       fi
     fi
 
@@ -51,7 +54,8 @@ EOF
       if [ "$DISTRO" = 'CentOS' ]; then
         $SUDO yum install pkgconfig
       else
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y pkg-config
+        gum spin --show-error --title "Installing pkg-config..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y pkg-config"
       fi
     fi
 
@@ -65,25 +69,26 @@ EOF
     fi
 
     if ! check_command btm; then
-      echo -e "${COLOR}Installing ${COLOR1}bottom${COLOR}...${NC}"
-      cargo install bottom
+      gum spin --show-error --title "Installing bottom..." -- \
+        bash -c "cargo install bottom"
     else
       echo -e "${COLOR}${COLOR1}bottom${COLOR} is found.${NC}"
     fi
 
     if ! check_command cargo-install-update; then
       echo -e "${COLOR}Installing ${COLOR1}cargo-update${COLOR}...${NC}"
-      $SUDO env NEEDRESTART_MODE=a apt-get install -y libssl-dev
-      cargo install cargo-update
-      cargo install-update  -a
+      gum spin --show-error --title "Installing cargo-update..." -- \
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y libssl-dev && cargo install cargo-update && cargo install-update -a"
     else
       echo -e "${COLOR}${COLOR1}cargo-update${COLOR} is found.${NC}"
-      cargo install-update  -a
+      gum spin --show-error --title "Executing cargo install-update -a..." -- \
+        bash -c "cargo install-update -a"
     fi
 
     if ! check_command cargo-cache; then
       echo -e "${COLOR}Installing ${COLOR1}cargo-cache${COLOR}...${NC}"
-      cargo install cargo-cache
+      gum spin --show-error --title "Installing cargo-cache..." -- \
+        baseh -c "cargo install cargo-cache"
     else
       echo -e "${COLOR}${COLOR1}cargo-cache${COLOR} is found.${NC}"
     fi

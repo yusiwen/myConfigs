@@ -529,7 +529,7 @@ function install_perl() { # {{{
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! check_command perl; then
         gum spin --show-error --title "Installing perl..." -- \
-          bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y perl cpanminus"
+          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y perl cpanminus"
       fi
     fi
   fi
@@ -597,7 +597,7 @@ function init_bpf() { # {{{ # Initialization of BPF development environment
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
       gum spin --show-error --title "Installing perl..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install build-essential git make libelf-dev libelf1 clang llvm strace tar make bpfcc-tools linux-headers-$(uname -r) gcc-multilib"
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install build-essential git make libelf-dev libelf1 clang llvm strace tar make bpfcc-tools linux-headers-$(uname -r) gcc-multilib"
 
       git clone --depth 1 git://kernel.ubuntu.com/ubuntu-stable/ubuntu-stable-"$(lsb_release -c -s)".git /tmp/kernel_src &&
         $SUDO mv /tmp/kernel_src /opt/kernel-src &&
