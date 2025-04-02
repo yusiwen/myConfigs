@@ -97,7 +97,7 @@ if check_command lazygit; then
   alias lg='lazygit'
 fi
 
-if [ "$OS" == 'Windows_NT' ]; then
+if [ "$OS" = 'Windows_NT' ]; then
   alias g=git
   alias ga='git add'
   alias gaa='git add --all'
