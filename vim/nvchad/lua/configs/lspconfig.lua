@@ -90,10 +90,3 @@ lspconfig.yamlls.setup {
 }
 
 lspconfig.clangd.setup {}
-
-require("java").setup({
-  jdk = {
-    auto_install = false,
-  },
-})
-lspconfig.jdtls.setup({})

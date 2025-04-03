@@ -28,11 +28,6 @@ return {
   { "williamboman/mason-lspconfig.nvim" },
 
   {
-    "nvim-java/nvim-java",
-    config = false,
-  },
-
-  {
     "neovim/nvim-lspconfig",
     config = function()
       require("nvchad.configs.lspconfig").defaults()
