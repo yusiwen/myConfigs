@@ -547,7 +547,7 @@ function _docker_images_group_by_name() { # {{{
   done
 } # }}}
 
-function _docker_search_tags() {
+function _docker_search_tags() { # {{{
   if ! check_command jq; then
     echo 'jq is not found, please install jq first.'
     return
@@ -574,16 +574,25 @@ function _docker_search_tags() {
   fi
 
   wget -q -O - "https://hub.docker.com/v2/namespaces/$namespace/repositories/$repo/tags"|jq -r '.results[].name' 
-}
+} # }}}
 
-function _docker_pull_tags() {
+function _docker_pull_tags() { # {{{
   if ! check_command fzf; then
     echo 'fzf is not found, please install fzf first.'
     return
   fi
 
   _docker_search_tags "$1" | fzf | xargs -I{} docker pull "$1:{}"
-}
+} # }}}
+
+function _docker_run_in_shell() { # {{{
+  if ! check_command fzf; then
+    echo 'fzf is not found, please install fzf first.'
+    return
+  fi
+
+  docker images --format '{{.Repository}}:{{.Tag}}' | fzf | xargs docker run --rm -i -t --entrypoint=sh
+} # }}}
 
 function _mvn_setting_switch() { # {{{
   if [ ! -d "$HOME"/.m2 ]; then
