@@ -2,7 +2,7 @@
 
 function _install_golang() { # {{{
   local version="$1"
-  if [ -z "$version" ]; then
+  if [ -z "$version" ] || [ "$version" = 'latest' ]; then
     # Get latest stable from official site
     local resp_str
     resp_str=$(curl -sL "https://golang.org/VERSION?m=text")
@@ -32,7 +32,7 @@ function _install_golang() { # {{{
     fi
 
     echo -e "${COLOR}Downloading ${COLOR1}$version.linux-$ARCH.tar.gz${COLOR}${NC}"
-    $sudo_cmd wget -P "$installation_path" "https://dl.google.com/go/$version.linux-$ARCH.tar.gz"
+    $sudo_cmd curl -sL "https://dl.google.com/go/$version.linux-$ARCH.tar.gz" -o "$installation_path/$version.linux-$ARCH.tar.gz"
 
     $sudo_cmd mkdir -p "$target_path"
     $sudo_cmd tar xvvzf "$installation_path/$version.linux-$ARCH.tar.gz" -C "$target_path" --strip-components 1
@@ -54,7 +54,7 @@ function _install_golang() { # {{{
     if [ -d "$installation_path/$version" ]; then
       echo -e "${COLOR1}$version${COLOR} is already installed${NC}"
     else
-      curl -L "https://dl.google.com/go/$version.windows-amd64.zip" -o "$installation_path/$version".windows-amd64.zip
+      curl -sL "https://dl.google.com/go/$version.windows-amd64.zip" -o "$installation_path/$version".windows-amd64.zip
       unzip -d "$installation_path/$version" "$installation_path/$version".windows-amd64.zip
 
       if [ -d "$installation_path/$version"/go ]; then
