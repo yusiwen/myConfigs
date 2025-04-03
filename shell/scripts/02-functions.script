@@ -591,7 +591,8 @@ function _docker_run_in_shell() { # {{{
     return
   fi
 
-  docker images --format '{{.Repository}}:{{.Tag}}' | fzf | xargs docker run --rm -i -t --entrypoint=sh
+  repo=$(docker images --format '{{.Repository}}:{{.Tag}}' | fzf)
+  docker run --rm -i -t --entrypoint=sh "$repo"
 } # }}}
 
 function _mvn_setting_switch() { # {{{
