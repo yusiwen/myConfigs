@@ -30,7 +30,7 @@ function _install_vim() { # {{{
         echo -e "${COLOR}Install latest stable ${COLOR1}NeoVim${COLOR} created at $latest_version...${NC}"
 
         local link_target="$HOME/.local/bin/nvim"
-        curl -L "$download_url" -o "$installation_target"
+        curl -sL "$download_url" -o "$installation_target"
         chmod +x "$installation_target"
         check_link "$installation_target" "$link_target"
       else
@@ -40,7 +40,7 @@ function _install_vim() { # {{{
           echo -e "${COLOR}Upgrade to latest stable ${COLOR1}NeoVim${COLOR} created at $latest_version...${NC}"
 
           local link_target="$HOME/.local/bin/nvim"
-          curl -L "$download_url" -o "$installation_target"
+          curl -sL "$download_url" -o "$installation_target"
           chmod +x "$installation_target"
           if [ -e  "$(readlink "$link_target")" ]; then
             rm -f "$(readlink "$link_target")"
