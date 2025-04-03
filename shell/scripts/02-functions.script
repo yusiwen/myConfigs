@@ -585,7 +585,7 @@ function _docker_pull_tags() { # {{{
   _docker_search_tags "$1" | fzf | xargs -I{} docker pull "$1:{}"
 } # }}}
 
-function _docker_run_in_shell() { # {{{
+function _docker_run_into_shell() { # {{{
   if ! check_command fzf; then
     echo 'fzf is not found, please install fzf first.'
     return

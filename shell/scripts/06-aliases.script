@@ -379,6 +379,8 @@ if check_command docker; then
   alias dst='_docker_search_tags' 
   alias dpt='_docker_pull_tags'
 
+  alias dris='_docker_run_into_shell'
+
   alias lzd='lazydocker'
 fi
 # }}}
