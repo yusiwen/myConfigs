@@ -287,7 +287,7 @@ zinit wait lucid light-mode for \
     atclone'curl -sL https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | N_PREFIX="$HOME/.n" bash -s -- -y -n' \
     atpull'curl -sL https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-update | N_PREFIX="$HOME/.n" bash -s -- -y' \
     atinit'export N_PREFIX="$HOME/.n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' \
-    if'[[ "$(uname -o)" != 'Msys' ]] && ! grep -q 'microsoft' <<< $(uname -o)' \
+    if'[[ "$(uname -o)" != 'Msys' ]] && ! grep -q 'microsoft' <<< $(uname -r)' \
   zdharma-continuum/null \
     as"program" pick"$HOME/.sdkman" id-as'sdkman' run-atpull \
     atclone"wget 'https://get.sdkman.io/?rcupdate=false' -O scr.sh; SDKMAN_DIR=$HOME/.sdkman bash scr.sh" \
