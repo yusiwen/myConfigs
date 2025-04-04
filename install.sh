@@ -399,7 +399,7 @@ function install_python() { # {{{
 
 function install_node() { # {{{
   # shellcheck disable=SC1091
-  source "$HOME"/myConfigs/node/install.sh
+  source "$HOME"/myConfigs/node.js/install.sh
   _install_node
 } # }}}
 

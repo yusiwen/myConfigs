@@ -28,8 +28,6 @@ function _install_node() { # {{{
   echo -e "${COLOR1}Installing conventional-changelog-cli, Commitizen, cz-customizable, standard-version...${NC}"
   npm install -g conventional-changelog-cli commitizen cz-customizable standard-version diff-so-fancy
 
-
-
   echo -e "${COLOR1}Installing tldr...${NC}"
   npm install -g tldr
 
@@ -37,6 +35,8 @@ function _install_node() { # {{{
   npm install -g sonar-scanner
 
   if check_command git; then
-    git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+    if ! check_command delta; then
+      git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+    fi
   fi
 } # }}}
