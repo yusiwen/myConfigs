@@ -88,7 +88,7 @@ EOF
     if ! check_command cargo-cache; then
       echo -e "${COLOR}Installing ${COLOR1}cargo-cache${COLOR}...${NC}"
       gum spin --show-error --title "Installing cargo-cache..." -- \
-        baseh -c "cargo install cargo-cache"
+        bash -c "cargo install cargo-cache"
     else
       echo -e "${COLOR}${COLOR1}cargo-cache${COLOR} is found.${NC}"
     fi
