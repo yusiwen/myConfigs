@@ -329,7 +329,7 @@ function init_env() { # {{{
     
     enable_FUSE
 
-    if [ $minimal -eq 1 ] || [ $minimal -eq 2 ]; then
+    if [ $minimal -eq 0 ] || [ $minimal -eq 1 ]; then
       fetch_myConfigs
       install_git
     else
