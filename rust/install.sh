@@ -5,10 +5,10 @@ function _install_rust() { # {{{
     if ! check_command rustc && [ ! -e "$HOME"/.cargo/bin/rustc ]; then
       echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
       if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-        gum spin --show-error --title "Installing liblua5.3-dev..." -- \
+        gum spin --show-error --title "Installing rust using CN repoistory..." -- \
           bash -c "env RUSTUP_DIST_SERVER='https://rsproxy.cn' RUSTUP_UPDATE_ROOT='https://rsproxy.cn/rustup' bash -c \"curl --proto '=https' --tlsv1.2 -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y\""
       else
-        gum spin --show-error --title "Installing liblua5.3-dev..." -- \
+        gum spin --show-error --title "Installing rust..." -- \
           bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
       fi
 
