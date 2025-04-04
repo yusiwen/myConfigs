@@ -22,7 +22,8 @@ function _install_python() { # {{{
 
     if ! check_command python3; then
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y python3
+        gum spin --show-error --title "Installing python3..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y python3"
       elif [ "$DISTRO" = 'CentOS' ]; then
         local target_version
         if [ "$OS_VERSION" = '7' ]; then
@@ -48,7 +49,8 @@ function _install_python() { # {{{
     if ! check_command pip3; then
       echo -e "${COLOR}Installing ${COLOR1}pip3${COLOR}...${NC}"
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y python3-pip
+        gum spin --show-error --title "Installing python3-pip..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y python3-pip"
         $SUDO update-alternatives --install /usr/bin/python python /usr/bin/python3 20
       elif [ "$DISTRO" = 'Manjaro' ]; then
         yay -S python-pip
@@ -58,7 +60,8 @@ function _install_python() { # {{{
     if ! check_command pipx; then
       echo -e "${COLOR}Installing ${COLOR1}pipx${COLOR}...${NC}"
       if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-        $SUDO env NEEDRESTART_MODE=a apt-get install -y pipx
+        gum spin --show-error --title "Installing pipx..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y pipx"
       else
         python3 -m pip install --user pipx
       fi
@@ -84,7 +87,7 @@ function _install_python() { # {{{
     pipx install pip_search bpytop
 
     # Install Miniconda3
-    install_miniconda3
+    _install_miniconda3
     
   elif [ "$OS" = 'Darwin' ]; then
     if ! check_command brew; then
