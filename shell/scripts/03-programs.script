@@ -199,10 +199,10 @@ fi
 
 # {{{ Montiors
 # Set $DISPLAY on WSL, needed by VcXsrv
-if uname -a | grep -q 'microsoft'; then
-  DISPLAY="$(sed -n 's/nameserver //p' /etc/resolv.conf):0"
-  export DISPLAY
-fi
+#if uname -a | grep -q 'microsoft'; then
+#  DISPLAY="$(sed -n 's/nameserver //p' /etc/resolv.conf):0"
+#  export DISPLAY
+#fi
 
 if [ -n "$DISPLAY" ]; then
   MONITOR=
