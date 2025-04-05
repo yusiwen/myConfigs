@@ -265,6 +265,14 @@ zinit wait lucid light-mode for \
   charmbracelet/gum \
     from'gh-r' as'program' id-as'drone-cli' pick'**/drone' \
   harness/drone-cli \
+    from'gh-r' as'program' id-as'gotify-cli' \
+    mv'gotify-cli* -> gotify-cli' pick'gotify-cli'  \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  gotify/cli \
+    from'gh-r' as'program' id-as'gotify-cli' \
+    mv'gotify-cli*.exe -> gotify-cli.exe' pick'gotify-cli.exe'  \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  gotify/cli \
     as'program' id-as'micromamba' pick"$HOME/.micromamba/bin" run-atpull \
     atclone'curl -sL https://raw.githubusercontent.com/mamba-org/micromamba-releases/main/install.sh | PREFIX_LOCATION="$HOME/.micromamba" INIT_YES="no" bash -s' \
     atpull'if type micromamba >/dev/null 2>&1; then micromamba self-update; fi' \
