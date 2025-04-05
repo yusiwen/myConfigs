@@ -431,4 +431,7 @@ if [ -e "$HOME/.config/mytmux/tmux.conf" ]; then
   alias tmux='tmux -f $HOME/.config/mytmux/tmux.conf'
 fi
 
+if check_command drone && check_command pass; then
+  alias drone='drone --server https://ci.yusiwen.cn --token $(pass ci.yusiwen.cn/token)'
+fi
 # vim: foldmethod=marker :
