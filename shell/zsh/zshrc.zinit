@@ -273,6 +273,9 @@ zinit wait lucid light-mode for \
     mv'gotify-cli*.exe -> gotify-cli.exe' pick'gotify-cli.exe'  \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   gotify/cli \
+    from'gh-r' as'program' id-as'gitui' pick'gitui'  \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  gitui-org/gitui\
     as'program' id-as'micromamba' pick"$HOME/.micromamba/bin" run-atpull \
     atclone'curl -sL https://raw.githubusercontent.com/mamba-org/micromamba-releases/main/install.sh | PREFIX_LOCATION="$HOME/.micromamba" INIT_YES="no" bash -s' \
     atpull'if type micromamba >/dev/null 2>&1; then micromamba self-update; fi' \
