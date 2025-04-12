@@ -347,8 +347,7 @@ function init_env() { # {{{
   elif [ "$OS" = 'Darwin' ]; then
     if ! check_command brew; then
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
-      # On MacOS ruby is pre-installed already
-      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
     install_rust
   elif [ "$OS" = 'Windows_NT' ]; then

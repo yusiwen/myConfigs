@@ -27,7 +27,7 @@ function _install_zsh() { # {{{
   elif [ "$OS" = 'Darwin' ]; then
     if [ ! "$SHELL" = "/usr/local/bin/zsh" ]; then
       echo -e "${COLOR}Current SHELL is not latest ${COLOR1}Zsh${NC}"
-      if [ ! -e /usr/local/bin/zsh ]; then
+      if [ ! -e /usr/local/bin/zsh ] || [ ! -e /bin/zsh ]; then
         echo -e "${COLOR}Installing ${COLOR1}Zsh${COLOR}...${NC}"
         brew install zsh
         echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
