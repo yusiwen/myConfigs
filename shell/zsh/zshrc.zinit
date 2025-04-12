@@ -170,12 +170,13 @@ zinit wait lucid light-mode for \
     has'git' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   @gitleaks/gitleaks \
-    from'gh-r' as'program' ver'v0.18.17' id-as'eza' pick'eza' \
+    from'gh-r' as'program' id-as'eza' pick'eza' \
     atload"
       alias la='eza --all --git --color=auto'
       alias ls='eza --git --color=auto'
       alias ll='eza --long --all --git --color=auto'
     " \
+    if'[[ "$(uname -o)" != "Darwin" ]]' \
   eza-community/eza \
     from'gh-r' as'program' id-as'delta' pick'**/delta' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
