@@ -308,7 +308,7 @@ zinit wait lucid light-mode for \
     atinit"export SDKMAN_DIR=$HOME/.sdkman; source $HOME/.sdkman/bin/sdkman-init.sh" \
   zdharma-continuum/null \
     as"program" id-as'homebrew' run-atpull \
-    atclone"/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" \
+    atclone"/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""\
     atpull"/opt/homebrew/bin/brew update" \
     atinit"eval $(/opt/homebrew/bin/brew shellenv)" \
     if'[[ "$(uname -o)" = "Darwin" ]]' \
