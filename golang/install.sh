@@ -40,6 +40,34 @@ function _install_golang() { # {{{
     $sudo_cmd rm -rf "$installation_path/$version.linux-$ARCH.tar.gz"
 
     echo -e "${COLOR1}$version.linux-$ARCH${COLOR} is installed, re-login to take effect${NC}"
+  elif [ "$OS" = 'Darwin' ]; then
+    if [ -z "$ARCH" ]; then
+      echo -e "${COLOR2}Unknown archetecture ${COLOR1}$ARCH${NC}"
+      exit 1
+    fi
+
+    local installation_path=$OPT_PATH
+    local sudo_cmd=sudo
+    if [ "$2" = '--user' ] || [ "$2" = '-u' ]; then
+      installation_path="$HOME"/.local
+      sudo_cmd=
+    fi
+
+    local target_path="$installation_path/$version.linux-$ARCH"
+    if [ -d "$target_path" ]; then
+      echo -e "${COLOR1}$target_path${COLOR} exists, skip${NC}"
+      return
+    fi
+
+    echo -e "${COLOR}Downloading ${COLOR1}$version.darwin-$ARCH.tar.gz${COLOR}${NC}"
+    $sudo_cmd curl -sL "https://dl.google.com/go/$version.darwin-$ARCH.tar.gz" -o "$installation_path/$version.darwin-$ARCH.tar.gz"
+
+    $sudo_cmd mkdir -p "$target_path"
+    $sudo_cmd tar xvvzf "$installation_path/$version.darwin-$ARCH.tar.gz" -C "$target_path" --strip-components 1
+    $sudo_cmd ln -sfnv "$target_path" "$installation_path"/go
+    $sudo_cmd rm -rf "$installation_path/$version.darwin-$ARCH.tar.gz"
+
+    echo -e "${COLOR1}$version.linux-$ARCH${COLOR} is installed, re-login to take effect${NC}"
   elif [ "$OS" = 'Windows_NT' ]; then
     local target_path
     local installation_path
