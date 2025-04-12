@@ -22,7 +22,7 @@ OS_ARCH=$(uname -m)
 ARCH=
 if [ "$OS_ARCH" = 'x86_64' ]; then
   ARCH='amd64'
-elif [ "$OS_ARCH" = 'aarch64' ]; then
+elif [ "$OS_ARCH" = 'aarch64' ] || [ "$OS_ARCH" = 'arm64' ]; then
   ARCH='arm64'
 else
   ARCH=
