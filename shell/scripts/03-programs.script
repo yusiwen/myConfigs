@@ -99,22 +99,17 @@ fi
 
 # {{{ GoLang
 if [ -e /usr/local/go/bin/go ] || [ -e /opt/go/bin/go ] || [ -e "$HOME"/.local/go/bin/go ]; then
-  if [ "$OS" = 'Darwin' ]; then
-    GOROOT=$(brew --prefix golang)/libexec
-    export GOROOT
-  else
-    GOROOT=/usr/local/go
-    if [ ! -e "$GOROOT" ]; then
-      if [ -e "/opt/go/bin/go" ]; then
-        GOROOT=/opt/go
-      elif [ -e "$HOME"/.local/go/bin/go ]; then
-        GOROOT="$HOME"/.local/go
-      fi
-    else
-      GOROOT=
+  GOROOT=/usr/local/go
+  if [ ! -e "$GOROOT" ]; then
+    if [ -e "/opt/go/bin/go" ]; then
+      GOROOT=/opt/go
+    elif [ -e "$HOME"/.local/go/bin/go ]; then
+      GOROOT="$HOME"/.local/go
     fi
-    export GOROOT
+  else
+    GOROOT=
   fi
+  export GOROOT
   export GOPATH=$HOME/.gopackages
   mkdir -p "$GOPATH"
   export GO111MODULE=on
