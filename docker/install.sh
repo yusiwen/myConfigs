@@ -38,11 +38,17 @@ function _install_docker() { # {{{
 
         echo -e "${COLOR}Installing docker-ce...${NC}"
         $SUDO env NEEDRESTART_MODE=a apt-get -y install docker-ce
-
-        echo -e "${COLOR}Add user ${COLOR1}${USER}${COLOR} to group 'docker'...${NC}"
-        $SUDO usermod -aG docker "$USER"
       else
         echo -e "${COLOR1}$(docker -v)${COLOR} is found...${NC}"
+      fi
+
+      # User and group 
+      $SUDO groupadd -f docker
+      if [ "$USER" != 'root' ]; then
+        if ! grep -q "^docker.*:$USER.*" /etc/group; then
+          echo -e "${COLOR}Add user ${COLOR1}${USER}${COLOR} to group 'docker'...${NC}"
+          $SUDO usermod -aG docker "$USER"
+        fi
       fi
 
       if [ ! -e /etc/docker/daemon.json ]; then
