@@ -89,6 +89,7 @@ function _install_git() { # {{{
     fi
   elif [ "$OS" = 'Darwin' ]; then
     brew install git
+    brew install --cask git-credential-manager
   elif [ "$OS" = 'Windows_NT' ]; then
     if ! check_command git; then
       echo -e "${COLOR}Please download git-for-windows from https://git-scm.com/ and install it manually${NC}"
