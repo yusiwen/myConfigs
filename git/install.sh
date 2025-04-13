@@ -44,7 +44,7 @@ function _install_git() { # {{{
       else
         echo -e "${COLOR1}git-credential-manager${COLOR} was found at '/usr/local/bin/git-credential-manager'.${NC}"
       fi
-      if [ "$(git config --global --get credential.helper)" != '/usr/local/bin/git-credential-manager' ]; then
+      if [ "$(git config --global --get credential.helper)" != '/usr/local/bin/git-credential-manager' ] && [ "$ARCH" = 'amd64' ]; then
         /usr/local/bin/git-credential-manager configure
       fi
 
