@@ -264,7 +264,7 @@ function init_env() { # {{{
       if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
         echo -e "${COLOR}Setting Ubuntu apt source to aliyun...${NC}"
         $SUDO cp /etc/apt/sources.list /etc/apt/sources.list.backup
-        if [ "$OS_ARCH" = 'aarch64' ]; then
+        if [ "$OS_ARCH" = 'aarch64' ] || [ "$OS_ARCH" = 'arm64' ]; then
           $SUDO sed -i "s/ports\.ubuntu\.com/mirrors\.ustc\.edu\.cn/g" /etc/apt/sources.list
         else
           $SUDO sed -i "s/^deb http:\/\/.*archive\.ubuntu\.com/deb http:\/\/mirrors\.aliyun\.com/g" /etc/apt/sources.list

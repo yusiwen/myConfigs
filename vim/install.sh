@@ -15,7 +15,7 @@ function _install_vim() { # {{{
       local installation_target
       local download_url
 
-      if [ "$OS_ARCH" = 'aarch64' ]; then # for Raspberry Pi
+      if [ "$OS_ARCH" = 'aarch64' ] || [ "$OS_ARCH" = 'arm64' ]; then # for Raspberry Pi
         download_url="https://github.com/neovim/neovim/releases/download/stable/nvim-linux-arm64.appimage"
       else
         download_url="https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.appimage"

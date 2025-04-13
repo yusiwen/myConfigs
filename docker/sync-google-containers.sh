@@ -29,7 +29,7 @@ function sync() {
   PACKAGE_NAME="$(echo -n ${1#*/} | cut -d ':' -f1)"
   VERSION_NAME=$(echo -n "$1" | cut -d ':' -f2)
   ARCH_NAME='amd64'
-  if [ "$OS_ARCH" = 'aarch64' ]; then
+  if [ "$OS_ARCH" = 'aarch64' ] || [ "$OS_ARCH" = 'arm64' ]; then
     ARCH_NAME='arm64'
   fi
   
