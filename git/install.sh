@@ -34,18 +34,20 @@ function _install_git() { # {{{
         echo -e "${COLOR1}git${COLOR} was found at '$(which git)'.${NC}"
       fi
 
-      if ! check_command git-credential-manager && [ ! -e /usr/local/bin/git-credential-manager ] && [ "$ARCH" = 'amd64' ]; then
-        echo -e "${COLOR}Installing ${COLOR1}git-credential-manager${COLOR}...${NC}"
-        local gcm_latest_version
-        gcm_latest_version=$(get_latest_release_from_github 'git-ecosystem/git-credential-manager')
-        curl -sL "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux_$ARCH.$gcm_latest_version.deb" -o /tmp/gcm.deb
-        gum spin --show-error --title "Installing git-credential-manager..." -- \
-          bash -c "$SUDO dpkg --install /tmp/gcm.deb && rm -f /tmp/gcm.deb"
-      else
-        echo -e "${COLOR1}git-credential-manager${COLOR} was found at '/usr/local/bin/git-credential-manager'.${NC}"
-      fi
-      if [ "$(git config --global --get credential.helper)" != '/usr/local/bin/git-credential-manager' ] && [ "$ARCH" = 'amd64' ]; then
-        /usr/local/bin/git-credential-manager configure
+      if [ "$ARCH" = 'amd64' ]; then
+        if ! check_command git-credential-manager && [ ! -e /usr/local/bin/git-credential-manager ]; then
+          echo -e "${COLOR}Installing ${COLOR1}git-credential-manager${COLOR}...${NC}"
+          local gcm_latest_version
+          gcm_latest_version=$(get_latest_release_from_github 'git-ecosystem/git-credential-manager')
+          curl -sL "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux_$ARCH.$gcm_latest_version.deb" -o /tmp/gcm.deb
+          gum spin --show-error --title "Installing git-credential-manager..." -- \
+            bash -c "$SUDO dpkg --install /tmp/gcm.deb && rm -f /tmp/gcm.deb"
+        else
+          echo -e "${COLOR1}git-credential-manager${COLOR} was found at '/usr/local/bin/git-credential-manager'.${NC}"
+        fi
+        if [ "$(git config --global --get credential.helper)" != '/usr/local/bin/git-credential-manager' ]; then
+          /usr/local/bin/git-credential-manager configure
+        fi
       fi
 
       if ! check_command tig; then
