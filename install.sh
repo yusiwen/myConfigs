@@ -287,7 +287,7 @@ function init_env() { # {{{
         pkg_btop=( btop )
       fi
       
-      local pkg_core=( gdebi-core software-properties-common apt-transport-https )
+      local pkg_core=( gdebi-core software-properties-common apt-transport-https make )
       local pkg_zip=( p7zip-full pigz zip unzip )
       local pkg_network=( curl wget net-tools iputils-ping iputils-arping hping3 nmap ethtool )
       local pkg_build=( build-essential cmake "${pkg_pstack[@]}" )
