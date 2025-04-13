@@ -34,6 +34,7 @@ function _install_git() { # {{{
         echo -e "${COLOR1}git${COLOR} was found at '$(which git)'.${NC}"
       fi
 
+      # gcm is only available on amd64 currently
       if [ "$ARCH" = 'amd64' ]; then
         if ! check_command git-credential-manager && [ ! -e /usr/local/bin/git-credential-manager ]; then
           echo -e "${COLOR}Installing ${COLOR1}git-credential-manager${COLOR}...${NC}"
