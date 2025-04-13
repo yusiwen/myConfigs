@@ -46,6 +46,7 @@ function _install_docker() { # {{{
       fi
 
       if [ ! -e /etc/docker/daemon.json ]; then
+        $SUDO mkdir -p /etc/docker
         $SUDO cp "$HOME"/myConfigs/docker/daemon.json /etc/docker/daemon.json
       fi
 
