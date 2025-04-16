@@ -12,4 +12,5 @@ if check_command lazyload; then
   lazyload containerlab -- 'source <(containerlab completion zsh)'
   lazyload gitleaks -- 'source <(gitleaks completion zsh)'
   lazyload pipx -- 'source <(register-python-argcomplete pipx)'
+  lazyload yq -- 'source <(yq completion zsh)'
 fi
