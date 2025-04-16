@@ -88,6 +88,9 @@ zinit wait lucid for \
   OMZP::z \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   OMZP::command-not-found \
+    if'type yarn>/dev/null 2>&1' \
+    as"completion" \
+  OMZP::yarn/_yarn \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
     as"completion" \
