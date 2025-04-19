@@ -276,12 +276,12 @@ zinit wait lucid light-mode for \
   zdharma-continuum/null \
     as"program" id-as'helm' run-atpull \
     atclone"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
-    atpull"curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s" \
+    atpull"%atclone" \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zdharma-continuum/null \
     as"program" id-as'helm' run-atpull \
     atclone"export HELM_INSTALL_DIR=$HOME/.local/bin && curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s -- --no-sudo" \
-    atpull"export HELM_INSTALL_DIR=$HOME/.local/bin && curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s -- --no-sudo" \
+    atpull"%atclone" \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   zdharma-continuum/null
 
