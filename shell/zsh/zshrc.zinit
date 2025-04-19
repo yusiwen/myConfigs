@@ -141,11 +141,8 @@ zinit wait lucid light-mode for \
 #####################
 # PROGRAMS          #
 #####################
+# Common utilities 
 zinit wait lucid light-mode for \
-    from'gh-r' as'program' id-as'yarn' \
-    mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
-    atinit'export PATH="$HOME/.yarn/bin:$PATH"' \
-  yarnpkg/yarn \
     from'gh-r' as'program' id-as'fd' \
     pick'**/fd' \
   @sharkdp/fd \
@@ -153,26 +150,6 @@ zinit wait lucid light-mode for \
     mv'bat* -> bat' pick'bat/bat' \
     atinit"export MANROFFOPT='-c'" \
   @sharkdp/bat \
-    from'gh-r' as'program' id-as'lazygit' \
-    mv'lazygit* -> lazygit' \
-    has'git' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  jesseduffield/lazygit \
-    from'gh-r' as'program' id-as'lazygit' \
-    mv'lazygit* -> lazygit' bpick'*Windows*' \
-    has'git' \
-    if'[[ "$(uname -o)" = "Msys" ]]' \
-  jesseduffield/lazygit \
-    from'gh-r' as'program' id-as'gitleaks' \
-    pick'gitleaks' \
-    has'git' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  @gitleaks/gitleaks \
-    from'gh-r' as'program' id-as'gitleaks' \
-    pick'gitleaks.exe' bpick'*windows*' \
-    has'git' \
-    if'[[ "$(uname -o)" = "Msys" ]]' \
-  @gitleaks/gitleaks \
     from'gh-r' as'program' id-as'eza' pick'eza' \
     atload"
       alias la='eza --all --git --color=auto'
@@ -190,15 +167,6 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' id-as'zellij' pick'zellij' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zellij-org/zellij \
-    from'gh-r' as'program' id-as'k9s' pick'k9s' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  derailed/k9s \
-    from'gh-r' as'program' id-as'stern' pick'stern' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  stern/stern \
-    from'gh-r' as'program' id-as'flux' pick'flux' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  fluxcd/flux2 \
     from'gh-r' as'program' id-as'gdu' \
     mv'gdu* -> gdu' pick'gdu' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
@@ -219,6 +187,68 @@ zinit wait lucid light-mode for \
   mikefarah/yq \
     from'gh-r' as'program' id-as'dust' pick'**/dust' \
   bootandy/dust \
+    from'gh-r' as'program' id-as'rg' pick'**/rg' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  BurntSushi/ripgrep \
+    from'gh-r' as'program' id-as'rg' pick'**/rg' bpick'*windows-msvc*' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  BurntSushi/ripgrep \
+    from'gh-r' as'program' id-as'media-get' \
+    mv'media-get* -> media-get' pick'media-get' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  foamzou/media-get \
+    from'gh-r' as'program' id-as'media-get' \
+    mv'media-get*.exe -> media-get.exe' pick'media-get.exe' bpick'*win.exe*' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  foamzou/media-get \
+    from'gh-r' as'program' id-as'gum' pick'**/gum' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  charmbracelet/gum \
+    from'gh-r' as'program' id-as'gotify-cli' \
+    mv'gotify-cli* -> gotify-cli' pick'gotify-cli'  \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  gotify/cli \
+    from'gh-r' as'program' id-as'gotify-cli' \
+    mv'gotify-cli*.exe -> gotify-cli.exe' pick'gotify-cli.exe' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  gotify/cli
+
+# Git stuffs
+zinit wait lucid light-mode for \
+    from'gh-r' as'program' id-as'lazygit' \
+    mv'lazygit* -> lazygit' \
+    has'git' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  jesseduffield/lazygit \
+    from'gh-r' as'program' id-as'lazygit' \
+    mv'lazygit* -> lazygit' bpick'*Windows*' \
+    has'git' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  jesseduffield/lazygit \
+    from'gh-r' as'program' id-as'gitleaks' \
+    pick'gitleaks' \
+    has'git' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  @gitleaks/gitleaks \
+    from'gh-r' as'program' id-as'gitleaks' \
+    pick'gitleaks.exe' bpick'*windows*' \
+    has'git' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  @gitleaks/gitleaks \
+    from'gh-r' as'program' id-as'gitui' pick'gitui' \
+  @gitui-org/gitui
+
+# Docker and Kubernetes
+zinit wait lucid light-mode for \
+    from'gh-r' as'program' id-as'k9s' pick'k9s' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  derailed/k9s \
+    from'gh-r' as'program' id-as'stern' pick'stern' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  stern/stern \
+    from'gh-r' as'program' id-as'flux' pick'flux' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  fluxcd/flux2 \
     from'gh-r' as'program' id-as'docker-compose' \
     mv'docker-compose* -> docker-compose' pick'docker-compose' \
     has'docker' \
@@ -240,56 +270,6 @@ zinit wait lucid light-mode for \
     mv'k0sctl* -> k0sctl' pick'k0sctl' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   k0sproject/k0sctl \
-    from'gh-r' as'program' id-as'rg' pick'**/rg' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  BurntSushi/ripgrep \
-    from'gh-r' as'program' id-as'rg' pick'**/rg' bpick'*windows-msvc*' \
-    if'[[ "$(uname -o)" = "Msys" ]]' \
-  BurntSushi/ripgrep \
-    from'gh-r' as'program' id-as'codegpt' \
-    mv'codegpt* -> codegpt' pick'codegpt' \
-    has'git' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  appleboy/CodeGPT \
-    from'gh-r' as'program' id-as'codegpt' \
-    mv'codegpt* -> codegpt' pick'codegpt' bpick'*windows*' \
-    has'git' \
-    if'[[ "$(uname -o)" = "Msys" ]]' \
-  appleboy/CodeGPT \
-    from'gh-r' as'program' id-as'media-get' \
-    mv'media-get* -> media-get' pick'media-get' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  foamzou/media-get \
-    from'gh-r' as'program' id-as'media-get' \
-    mv'media-get*.exe -> media-get.exe' pick'media-get.exe' bpick'*win.exe*' \
-    if'[[ "$(uname -o)" = "Msys" ]]' \
-  foamzou/media-get \
-    from'gh-r' as'program' id-as'gum' pick'**/gum' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  charmbracelet/gum \
-    from'gh-r' as'program' id-as'drone-cli' pick'**/drone' \
-  harness/drone-cli \
-    from'gh-r' as'program' id-as'gitui' pick'gitui' \
-  @gitui-org/gitui \
-    from'gh-r' as'program' id-as'gotify-cli' \
-    mv'gotify-cli* -> gotify-cli' pick'gotify-cli'  \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  gotify/cli \
-    from'gh-r' as'program' id-as'gotify-cli' \
-    mv'gotify-cli*.exe -> gotify-cli.exe' pick'gotify-cli.exe' \
-    if'[[ "$(uname -o)" = "Msys" ]]' \
-  gotify/cli \
-    from'gh-r' as'program' id-as'asdf' \
-    pick'asdf' \
-    atload'export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  @asdf-vm/asdf \
-    as'program' id-as'micromamba' pick"$HOME/.micromamba/bin" run-atpull \
-    atclone'curl -sL https://raw.githubusercontent.com/mamba-org/micromamba-releases/main/install.sh | PREFIX_LOCATION="$HOME/.micromamba" INIT_YES="no" bash -s' \
-    atpull'if type micromamba >/dev/null 2>&1; then micromamba self-update; fi' \
-    atinit'export MAMBA_ROOT_PREFIX="$HOME/.micromamba"; [[ :$PATH: == *":$HOME/.local/bin:"* ]] || PATH+=":$HOME/.local/bin"' \
-    atload'export MAMBA_ROOT_PREFIX="$HOME/.micromamba"; [[ -e $HOME/.local/bin/micromamba ]] && eval "$($HOME/.local/bin/micromamba shell hook --shell zsh --root-prefix $MAMBA_ROOT_PREFIX)"' \
-  zdharma-continuum/null \
     as"program" id-as'kubectl' run-atpull \
     atclone"curl -sLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- install" \
     atpull"curl -sLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- update" \
@@ -303,6 +283,34 @@ zinit wait lucid light-mode for \
     atclone"export HELM_INSTALL_DIR=$HOME/.local/bin && curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s -- --no-sudo" \
     atpull"export HELM_INSTALL_DIR=$HOME/.local/bin && curl -sLo- 'https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3' | bash -s -- --no-sudo" \
     if'[[ "$(uname -o)" = "Msys" ]]' \
+  zdharma-continuum/null
+
+# Development tools
+zinit wait lucid light-mode for \
+    from'gh-r' as'program' id-as'yarn' \
+    mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
+    atinit'export PATH="$HOME/.yarn/bin:$PATH"' \
+  yarnpkg/yarn \
+    from'gh-r' as'program' id-as'codegpt' \
+    mv'codegpt* -> codegpt' pick'codegpt' \
+    has'git' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  appleboy/CodeGPT \
+    from'gh-r' as'program' id-as'codegpt' \
+    mv'codegpt* -> codegpt' pick'codegpt' bpick'*windows*' \
+    has'git' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+  appleboy/CodeGPT \
+    from'gh-r' as'program' id-as'asdf' \
+    pick'asdf' \
+    atload'export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  @asdf-vm/asdf \
+    as'program' id-as'micromamba' pick"$HOME/.micromamba/bin" run-atpull \
+    atclone'curl -sL https://raw.githubusercontent.com/mamba-org/micromamba-releases/main/install.sh | PREFIX_LOCATION="$HOME/.micromamba" INIT_YES="no" bash -s' \
+    atpull'if type micromamba >/dev/null 2>&1; then micromamba self-update; fi' \
+    atinit'export MAMBA_ROOT_PREFIX="$HOME/.micromamba"; [[ :$PATH: == *":$HOME/.local/bin:"* ]] || PATH+=":$HOME/.local/bin"' \
+    atload'export MAMBA_ROOT_PREFIX="$HOME/.micromamba"; [[ -e $HOME/.local/bin/micromamba ]] && eval "$($HOME/.local/bin/micromamba shell hook --shell zsh --root-prefix $MAMBA_ROOT_PREFIX)"' \
   zdharma-continuum/null \
     as'program' id-as'n' pick"$HOME/.n/bin/n" run-atpull \
     atclone'source $HOME/git/myConfigs/shell/removepath.sh && curl -sL https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | N_PREFIX="$HOME/.n" bash -s -- -y -n' \
