@@ -6,8 +6,8 @@ function _install_docker() { # {{{
       echo -e "${COLOR}Ubuntu is found, checking ${COLOR1}docker${COLOR}...${NC}"
       if ! check_command docker; then
         echo -e "${COLOR1}docker${COLOR} is not found, installing...${NC}"
-        echo -e "${COLOR}Installing prerequisite packages...${NC}"
-        $SUDO env NEEDRESTART_MODE=a apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+        gum spin --show-error --title "Installing prerequisite packages..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -y install apt-transport-https ca-certificates curl software-properties-common"
 
         if [ ! -e /etc/apt/trusted.gpg.d/aliyun-docker-ce.gpg ]; then
           echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce public key...${NC}"
@@ -27,17 +27,18 @@ function _install_docker() { # {{{
         fi
 
         if [ $add_docker_repo -eq 1 ]; then
-          echo -e "${COLOR}Add mirrors.aliyun.com/docker-ce apt source...${NC}"
           if [ "$OS_ARCH" = 'aarch64' ] || [ "$OS_ARCH" = 'arm64' ]; then # for Raspberry Pi
-            $SUDO add-apt-repository -y "deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+            gum spin --show-error --title "Adding apt repository[mirrors.aliyun.com/docker-ce]..." -- \
+              bash -c "$SUDO add-apt-repository -y \"deb [arch=arm64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable\""
           else
-            $SUDO add-apt-repository -y "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+            gum spin --show-error --title "Adding apt repository[mirrors.aliyun.com/docker-ce]..." -- \
+              bash -c "$SUDO add-apt-repository -y \"deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable\""
           fi
           $SUDO apt-get -y update
         fi
 
-        echo -e "${COLOR}Installing docker-ce...${NC}"
-        $SUDO env NEEDRESTART_MODE=a apt-get -y install docker-ce
+        gum spin --show-error --title "Installing docker-ce..." -- \
+          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -y install docker-ce"
       else
         echo -e "${COLOR1}$(docker -v)${COLOR} is found...${NC}"
       fi
