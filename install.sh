@@ -219,6 +219,8 @@ function enable_FUSE() { # {{{
         $SUDO yum install -y fuse-sshfs
       fi
       $SUDO usermod -a -G fuse "$(whoami)"
+    elif [ "$DISTRO" = 'openEuler' ]; then
+      $SUDO dnf -y install fuse-sshfs
     fi
   fi
 } # }}}
@@ -325,6 +327,8 @@ function init_env() { # {{{
         $SUDO yum update -y
         $SUDO yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
       fi
+    elif [ "$DISTRO" = 'openEuler' ]; then
+      $SUDO dnf -y install net-tools telnet ftp lftp lsof tmux
     fi
     
     enable_FUSE

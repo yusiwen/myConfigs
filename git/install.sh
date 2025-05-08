@@ -83,6 +83,8 @@ function _install_git() { # {{{
       if ! check_command git; then
         $SUDO opkg update && opkg install git
       fi
+    elif [ "$DISTRO" = 'openEuler' ]; then
+      $SUDO dnf -y install git
     else
       echo -e "${COLOR}Distro ${COLOR1}$DISTRO${COLOR} not supported yet${NC}"
       return
