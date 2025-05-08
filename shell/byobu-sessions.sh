@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if ! type byobu >/dev/null 2>&1; then
+  exit 0
+fi
+
 session_name=$1
 if [ -z "$session_name" ]; then
   session_name='remote'
