@@ -19,6 +19,8 @@ function _install_zsh() { # {{{
         elif [ "$DISTRO" = 'CentOS' ]; then
           $SUDO yum install -y zsh zip
           which zsh | $SUDO tee -a /etc/shells >/dev/null
+        elif [ "$DISTRO" = 'openEuler' ]; then
+          $SUDO dnf -y install zsh
         fi
       fi
       echo -e "${COLOR}Change SHELL to ${COLOR1}Zsh${COLOR}, take effect on next login${NC}"
