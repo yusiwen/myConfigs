@@ -91,6 +91,9 @@ zinit wait lucid for \
     if'type yarn>/dev/null 2>&1' \
     as"completion" \
   OMZP::yarn/_yarn \
+    if'type pass>/dev/null 2>&1' \
+    as"completion" \
+  OMZP::pass/_pass \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1' \
     as"completion" \
