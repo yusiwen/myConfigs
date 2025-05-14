@@ -7,7 +7,7 @@ function _install_byobu() { # {{{
 
   rm -rf "$HOME"/.config/tmux "$HOME"/.tmux "$HOME"/.tmux.conf
 
-  if [ "$OS" = 'Linux' ]; then
+  if [ "$OS" = 'Linux' ] || [ "$OS" = 'Darwin' ]; then
     mkdir -p "$HOME"/.config/mytmux
     check_link "$HOME"/git/myConfigs/shell/tmux/tmux.conf ~/.config/mytmux/tmux.conf
 
