@@ -190,6 +190,8 @@ zinit wait lucid light-mode for \
   mikefarah/yq \
     from'gh-r' as'program' id-as'dust' pick'**/dust' \
   bootandy/dust \
+    from'gh-r' as'program' id-as'tre' pick'**/tre' \
+  dduan/tre \
     from'gh-r' as'program' id-as'rg' pick'**/rg' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   BurntSushi/ripgrep \
