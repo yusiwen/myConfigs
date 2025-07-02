@@ -321,7 +321,7 @@ zinit wait lucid light-mode for \
     atclone'curl -LsSf https://astral.sh/uv/install.sh | env INSTALLER_NO_MODIFY_PATH=1 sh' \
     atpull'if type uv>/dev/null 2>&1; then uv self update; fi' \
     atinit'[[ :$PATH: == *":$HOME/.local/bin:"* ]] || PATH+=":$HOME/.local/bin"' \
-    atload'[[ -e $HOME/.local/bin/uv ]] && eval "$($HOME/.local/bin/uv generate-shell-completion zsh)"' \
+    atload'[[ -e $HOME/.local/bin/uv ]] && eval "$($HOME/.local/bin/uv generate-shell-completion zsh)" && [[ -e $HOME/.local/bin/uvx ]] && eval "$($HOME/.local/bin/uvx --generate-shell-completion zsh)"' \
   zdharma-continuum/null \
     as'program' id-as'n' pick"$HOME/.n/bin/n" run-atpull \
     atclone'source $HOME/git/myConfigs/shell/removepath.sh && curl -sL https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | N_PREFIX="$HOME/.n" bash -s -- -y -n' \
