@@ -112,8 +112,8 @@ zinit wait lucid light-mode for \
     atinit"
       zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
       zstyle ':fzf-tab:complete:cd:*' fzf-preview 'if type eza>/dev/null 2>&1; then eza -1 --color=always $realpath; else ls -1 $realpath; fi'
-      zstyle ':fzf-tab:*' switch-group '<' '>'" \
-      zstyle ':fzf-tab:*' popup-min-size 60 8 \
+      zstyle ':fzf-tab:*' switch-group '<' '>' \
+      zstyle ':fzf-tab:*' popup-min-size 60 8" \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   Aloxaf/fzf-tab \
     atinit"
