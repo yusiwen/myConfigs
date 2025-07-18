@@ -20,7 +20,7 @@ function _install_rust() { # {{{
       fi
 
       if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
-        cat << EOF | tee -a "${CARGO_HOME:-$HOME/.cargo}/config"
+        cat << EOF | tee -a "${CARGO_HOME:-$HOME/.cargo}/config.toml"
 [source.crates-io]
 replace-with = 'rsproxy-sparse'
 [source.rsproxy]
