@@ -674,9 +674,9 @@ function link_jdk_version_to_latest_installed_dir() {
   local jdk_version="$1"
   local jdk_installed
   if [ "$OS" = 'Darwin' ]; then
-    dk_installed="$(/usr/ls -d "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"*zulu 2>/dev/null|sort -r|head -1)"
+    jdk_installed="$(/usr/ls -d "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"*zulu 2>/dev/null|sort -r|head -1)"
   else
-    dk_installed="$(/usr/bin/ls -d "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"*tem 2>/dev/null|sort -r|head -1)"
+    jdk_installed="$(/usr/bin/ls -d "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"*tem 2>/dev/null|sort -r|head -1)"
   fi
 
   if [ -n "$jdk_installed" ] && [ -n "$jdk_version" ]; then
