@@ -622,14 +622,14 @@ function install_talosctl { # {{{ Install talosctl, see https://www.talos.dev
     local latest_release
     local local_release
     local_release=$(talosctl version --client --short | awk '/^Talos/ {print $2}')
-    latest_release=$(get_latest_release_from_github 'siderolabs/talosctl')
     echo "local_release=$local_release"
-    echo "latest_release=$latest_release"
+    latest_release=$(get_latest_release_from_github 'siderolabs/talos')
+    echo "latest_release=v$latest_release"
     if [ -z "$latest_release" ] || [ -z "$local_release" ]; then
       echo 'fail to get release info, bail out...'
       return
     fi
-    if [ "$latest_release" != "$local_release" ]; then
+    if [ "v$latest_release" != "$local_release" ]; then
       $SUDO rm -f $(which talosctl)
       curl -sL https://talos.dev/install | sh
     else
