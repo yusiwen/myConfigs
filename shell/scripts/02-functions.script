@@ -306,7 +306,6 @@ function _pip() {
   else
     pip "$@"
   fi
-
 }
 
 function _pip3() {
@@ -319,7 +318,14 @@ function _pip3() {
   else
     pip3 "$@"
   fi
+}
 
+function _pip_is_pip3() {
+  _pip3 "$@"
+}
+
+function _python_is_python3() {
+  python3 "$@"
 }
 #}}}
 

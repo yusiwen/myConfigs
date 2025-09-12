@@ -295,6 +295,13 @@ fi
 alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v'
 
 # Python {{{
+alias python='_python_is_python3'
+
+# Use 'pip_search' to replace the disabled search functionality of pip.
+# See '_pip()' in 'shell/scripts/02-functions.script'
+alias pip='_pip_is_pip3'
+alias pip3='_pip3'
+
 alias pipi='pip install --user'
 alias pipiu='pip --user --upgrade'
 
@@ -307,11 +314,6 @@ else
 fi
 
 alias venv='python3 -m venv'
-
-# Use 'pip_search' to replace the disabled search functionality of pip.
-# See '_pip()' in 'shell/scripts/02-functions.script'
-alias pip='_pip'
-alias pip3='_pip3'
 # }}}
 
 # Vim
