@@ -27,6 +27,8 @@ function _install_lua() { # {{{
       rm -f /tmp/luarocks-3.9.1.tar.gz
       rm -rf /tmp/luarocks-3.9.1
     fi
+  elif [ "$OS" = 'Darwin' ]; then
+    brew install luarocks
   fi
 
 } # }}}
