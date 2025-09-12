@@ -106,7 +106,7 @@ function _install_python() { # {{{
       brew install pipx
     fi
 
-    pipx install --user pip_search bpytop
+    pipx install pip_search bpytop isort black
   elif [ "$OS" = 'Windows_NT' ]; then
     echo -e "${COLOR}Please install Pyhton runtime manually or from Microsoft Store.${NC}"
     echo -e "${COLOR}Please install Conda environment manually from:${NC}"
