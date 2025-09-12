@@ -295,7 +295,7 @@ function init_env() { # {{{
       local pkg_build=( build-essential cmake "${pkg_pstack[@]}" )
       local pkg_fs=( cifs-utils nfs-common )
       local pkg_monitor=( htop atop "${pkg_btop[@]}" iotop iftop nethogs nload sysstat )
-      local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found )
+      local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found psmisc )
 
       gum spin --show-error --title "Installing core packages..." -- \
         bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_core[*]}" 
@@ -353,7 +353,7 @@ function init_env() { # {{{
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     else
-      brew update && brew install eza tmux gnupg pass
+      brew update && brew install eza tmux gnupg pass pstree
     fi
     install_rust
   elif [ "$OS" = 'Windows_NT' ]; then
