@@ -6,33 +6,26 @@ return {
       require "configs.conform"
     end,
   },
+
   {
-    "williamboman/mason.nvim",
-    opts = function() 
-      return {
-        pkgs = {
-          "lua-language-server", "stylua", "gopls", "delve",
-          "html-lsp", "css-lsp" , "prettier",
-          "json-lsp", "dockerfile-language-server", "docker-compose-language-service",
-          "yaml-language-server", "sqls", "rust-analyzer", "typescript-language-server", "pyright",
-          "bash-language-server", "clangd", "cmake-language-server"
-        },
-        registries = {
-          'github:nvim-java/mason-registry',
-          'github:mason-org/mason-registry',
-        },
+    "williamboman/mason-lspconfig.nvim",
+    opts = {
+      ensure_installed = { 
+        "lus_ls", "ts_ls", "bashls", "gopls", "delve", "rust-analyzer",
+        "clangd", "pyright", "yamlls", "jsonls", "sqlls", "html",
+        "docker_language_server", "docker_compose_language_server",
+      },
+    },
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      {
+        "neovim/nvim-lspconfig",
+        config = function()
+          require("nvchad.configs.lspconfig").defaults()
+          require "configs.lspconfig"
+        end,
       }
-    end
-  },
-
-  { "williamboman/mason-lspconfig.nvim" },
-
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require("nvchad.configs.lspconfig").defaults()
-      require "configs.lspconfig"
-    end,
+    },
   },
 
   {
