@@ -44,7 +44,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 --- LSP
-local servers = { "html", "cssls", }
+local servers = { "html", "cssls", "ts_ls", "bashls", }
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -54,13 +54,6 @@ for _, lsp in ipairs(servers) do
     capabilities = capabilities,
   }
 end
-
--- typescript
-lspconfig.ts_ls.setup {
-  on_attach = on_attach,
-  on_init = on_init,
-  capabilities = capabilities,
-}
 
 lspconfig.gopls.setup {
   on_attach = attach,
