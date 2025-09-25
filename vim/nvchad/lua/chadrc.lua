@@ -20,8 +20,4 @@ M.ui = {
   }
 }
 
-M.themes = {
-	style = "compact"
-}
-
 return M

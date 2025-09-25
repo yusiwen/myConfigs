@@ -35,7 +35,7 @@ local path_join = function(...)
   end
 
   for _, arg in ipairs(args) do
-    arg_parts = split(arg, path_separator)
+    local arg_parts = split(arg, path_separator)
     vim.list_extend(all_parts, arg_parts)
   end
   return table.concat(all_parts, path_separator)
