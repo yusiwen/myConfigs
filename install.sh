@@ -388,7 +388,6 @@ function fetch_myConfigs() { # {{{
 
   if [ "$OS" = 'Linux' ] || [ "$OS" = 'Darwin' ]; then
     mkdir -p "$HOME"/.ssh
-    ln -sfnv "$HOME"/myConfigs/ssh/config "$HOME"/.ssh/config
     mkdir -p "$HOME"/.local/bin
     ln -sfnv "$HOME"/myConfigs/git/git-migrate "$HOME"/.local/bin/git-migrate
     ln -sfnv "$HOME"/myConfigs/git/git-new-workdir "$HOME"/.local/bin/git-new-workdir
