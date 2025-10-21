@@ -314,6 +314,10 @@ else
 fi
 
 alias venv='python3 -m venv'
+
+if check_command micromamba && ! check_command mamba; then
+  alias mamba='micromamba'
+fi
 # }}}
 
 # Vim
