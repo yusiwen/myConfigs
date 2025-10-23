@@ -38,9 +38,6 @@ return {
     opts = {
       -- Your setup opts here
     },
-    config = function()
-      require('outline').setup(opts)
-    end,
   },
 
   {
