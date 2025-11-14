@@ -314,10 +314,6 @@ else
 fi
 
 alias venv='python3 -m venv'
-
-if check_command micromamba && ! check_command mamba; then
-  alias mamba='micromamba'
-fi
 # }}}
 
 # Vim
@@ -367,7 +363,7 @@ if check_command docker; then
   alias dilsg='_docker_images_group_by_name'
   alias dilsgi='_docker_images_group_by_id'
 
-  alias dst='_docker_search_tags' 
+  alias dst='_docker_search_tags'
   alias dpt='_docker_pull_tags'
 
   alias dris='_docker_run_into_shell'
