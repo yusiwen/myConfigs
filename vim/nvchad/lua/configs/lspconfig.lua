@@ -39,7 +39,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- lsps with default config
-local servers = { "html", "cssls", "ts_ls", "bashls", "pyright", "rust_analyzer", "clangd", }
+local servers = { "html", "cssls", "ts_ls", "bashls", "pyright", "rust_analyzer", "clangd", "gopls", "yamlls" }
 vim.lsp.enable(servers)
 
 vim.lsp.config('gopls', {
