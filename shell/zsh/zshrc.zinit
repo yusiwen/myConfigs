@@ -101,7 +101,13 @@ zinit wait lucid for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     if'type docker >/dev/null 2>&1 || type docker-compose >/dev/null 2>&1' \
     as"completion" \
-  OMZP::docker-compose/_docker-compose
+  OMZP::docker-compose/_docker-compose \
+    if'type yt-dlp >/dev/null 2>&1' \
+    as"completion" pick"completions/zsh/_yt-dlp" run-atpull \
+    atclone"make completions/zsh/_yt-dlp" \
+    nocompile \
+    atpull"%atclone" \
+  yt-dlp/yt-dlp
 #####################
 # PLUGINS           #
 #####################
@@ -144,7 +150,7 @@ zinit wait lucid light-mode for \
 #####################
 # PROGRAMS          #
 #####################
-# Common utilities 
+# Common utilities
 zinit wait lucid light-mode for \
     from'gh-r' as'program' id-as'fd' \
     pick'**/fd' \
