@@ -339,6 +339,10 @@ zinit wait lucid light-mode for \
     atclone"curl -s "https://get.sdkman.io" | bash" \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate && ! type link_jdks>/dev/null 2>&1 || link_jdks" \
     atinit"export SDKMAN_DIR=$HOME/.sdkman; source $HOME/.sdkman/bin/sdkman-init.sh" \
+  zdharma-continuum/null \
+    as"program" id-as'uv' run-atpull \
+    atclone"export UV_NO_MODIFY_PATH=1 && curl -LsSf https://astral.sh/uv/install.sh | sh" \
+    atpull"[[ -f $HOME/.local/bin/uv ]] && $HOME/.local/bin/uv self update" \
   zdharma-continuum/null
 
 zinit wait light-mode lucid is-snippet for \
