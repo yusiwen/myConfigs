@@ -234,7 +234,14 @@ function install_mu() {
   fi
 
   echo -e "${COLOR}Downloading myUtilities...${NC}"
-  $SUDO curl -s -L "https://share.yusiwen.cn/public/mu/$path" -o /usr/local/bin/mu
+  if check_command curl >/dev/null 2>&1; then
+    $SUDO curl -s -L "https://share.yusiwen.cn/public/mu/$path" -o /usr/local/bin/mu
+  elif check_command wget >/dev/null 2>&1; then
+    $SUDO wget -qO /usr/local/bin/mu "https://share.yusiwen.cn/public/mu/$path"
+  else
+    echo -e "${COLOR}Error: Neither curl nor wget is installed. Please install one of them manually.${NC}"
+    exit 1
+  fi
   $SUDO chmod +x /usr/local/bin/mu
 }
 
@@ -288,7 +295,7 @@ function init_env() { # {{{
       if apt-cache search btop | grep -q '^btop'; then
         pkg_btop=( btop )
       fi
-      
+
       local pkg_core=( gdebi-core software-properties-common apt-transport-https make )
       local pkg_zip=( p7zip-full pigz zip unzip )
       local pkg_network=( curl wget net-tools iputils-ping iputils-arping hping3 nmap ethtool )
@@ -298,7 +305,7 @@ function init_env() { # {{{
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found psmisc )
 
       gum spin --show-error --title "Installing core packages..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_core[*]}" 
+        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_core[*]}"
       gum spin --show-error --title "Installing zip packages..." -- \
         bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_zip[*]}"
       gum spin --show-error --title "Installing network packages..." -- \
@@ -330,7 +337,7 @@ function init_env() { # {{{
     elif [ "$DISTRO" = 'openEuler' ]; then
       $SUDO dnf -y install net-tools telnet ftp lftp lsof tmux util-linux-user
     fi
-    
+
     enable_FUSE
 
     if [ $minimal -eq 0 ] || [ $minimal -eq 1 ]; then
@@ -398,7 +405,7 @@ function fetch_myConfigs() { # {{{
 function install_python() { # {{{
   # shellcheck disable=SC1091
   source "$HOME"/myConfigs/python/install.sh
-  _install_python 
+  _install_python
 } # }}}
 
 function install_node() { # {{{
@@ -436,7 +443,7 @@ function install_universal_ctags() { # {{{
 function install_git() { # {{{
   # shellcheck disable=SC1091
   source "$HOME"/myConfigs/git/install.sh
-  _install_git 
+  _install_git
 } # }}}
 
 function install_ruby() { # {{{
@@ -687,7 +694,7 @@ function print_info() { # {{{
   echo -e "\tsdkman \t\tInstall sdkman"
   echo -e "\tbyobu \t\tInstall byobu"
   echo -e "\tansible \tInstall ansible"
-  echo -e "\tmc \t\tInstall Minio client" 
+  echo -e "\tmc \t\tInstall Minio client"
   echo -e "\tk8s \t\tInitialize Kubernetes"
   echo -e "\tcilium \t\tInitialize Cilium"
   echo -e "\tbpf \t\tInitialize BPF development environment"
