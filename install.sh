@@ -65,7 +65,7 @@ echo -e "${COLOR}Distribution: ${COLOR1}$DISTRO ($OS_NAME $OS_VERSION)${COLOR} f
 
 SUDO=
 SUDOE=
-if [ "$OS" = 'Linux' ]; then
+if [ "$OS" = 'Linux' ] || [ "$OS" = 'Darwin' ]; then
   if [ $EUID -ne 0 ]; then
     SUDO=sudo
     SUDOE="sudo -E"
