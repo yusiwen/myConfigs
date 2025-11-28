@@ -36,6 +36,7 @@ EOF
     else
       echo -e "${COLOR}${COLOR1}$($HOME/.cargo/bin/rustc --version)${COLOR} is found.${NC}"
       if check_command rustup; then
+        rustup self update
         rustup update
       fi
     fi
