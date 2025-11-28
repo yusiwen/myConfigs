@@ -2,7 +2,7 @@
 
 function _install_rust() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    if ! check_command rustc && [ ! -e "$HOME"/.cargo/bin/rustc ]; then
+    if ! check_command rustup && [ ! -e "$HOME"/.cargo/bin/rustc ]; then
       echo -e "${COLOR}Installing ${COLOR1}Rust${COLOR} using official script...${NC}"
       if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
         gum spin --show-error --title "Installing rust using CN repoistory..." -- \
