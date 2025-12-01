@@ -336,6 +336,8 @@ alias mvn-no-javadoc='mvn -Dmaven.javadoc.skip=true'
 alias mvn-no-test='mvn -Dmaven.test.skip=true'
 alias mvns='_mvn_setting_switch'
 alias mvnds='_mvnd_setting_switch'
+alias mvnqs='mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.5'
+alias mvnwpr='mvn wrapper:wrapper'
 
 # youtube-dl
 alias ytd='youtube-dl --proxy socks5://127.0.0.1:1088 -r 500K'
@@ -350,7 +352,7 @@ alias k9='k9s'
 if check_command docker; then
   alias dilsa='docker image inspect --format "{{.Architecture}}"'
   alias dps='docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}"'
-  alias dcpid='docker container inspect --format "{{.State.Pid}}"'
+  alias dcipid='docker container inspect --format "{{.State.Pid}}"'
   alias dcfls='docker-fuzzy-container-ls'
   alias difls='docker-fuzzy-image-ls'
   alias dnfls='docker-fuzzy-network-ls'
