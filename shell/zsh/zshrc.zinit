@@ -260,11 +260,6 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' id-as'flux' pick'flux' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   fluxcd/flux2 \
-    from'gh-r' as'program' id-as'docker-compose' \
-    mv'docker-compose* -> docker-compose' pick'docker-compose' \
-    has'docker' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  docker/compose \
     from'gh-r' as'program' id-as'dive' pick'dive' \
     has'docker' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
