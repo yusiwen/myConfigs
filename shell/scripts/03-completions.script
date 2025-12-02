@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if check_command lazyload; then
-  lazyload asdf -- 'mkdir -p "${ASDF_DATA_DIR:-$HOME/.asdf}/completions" && asdf completion zsh > "${ASDF_DATA_DIR:-$HOME/.asdf}/completions/_asdf" && fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath) && autoload -Uz compinit && compinit'
+  lazyload asdf -- "mkdir -p ${ASDF_DATA_DIR:-$HOME/.asdf}/completions && asdf completion zsh > ${ASDF_DATA_DIR:-$HOME/.asdf}/completions/_asdf && fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath) && autoload -Uz compinit && compinit"
   lazyload kubectl -- 'source <(kubectl completion zsh)'
   lazyload stern -- 'source <(stern --completion=zsh)'
   lazyload clusterctl -- 'source <(clusterctl completion zsh 2>/dev/null)'
@@ -13,4 +13,5 @@ if check_command lazyload; then
   lazyload gitleaks -- 'source <(gitleaks completion zsh)'
   lazyload pipx -- 'source <(register-python-argcomplete pipx)'
   lazyload yq -- 'source <(yq completion zsh)'
+  lazyload mc -- "autoload -U +X bashcompinit && bashcompinit && complete -o nospace -C $(which mc) mc"
 fi
