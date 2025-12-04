@@ -15,3 +15,15 @@ if check_command lazyload; then
   lazyload yq -- 'source <(yq completion zsh)'
   lazyload mc -- "autoload -U +X bashcompinit && bashcompinit && complete -o nospace -C $(which mc) mc"
 fi
+
+if check_command mc; then
+  autoload -U +X bashcompinit
+  bashcompinit
+  complete -o nospace -C "$(which mc)" mc
+fi
+
+if check_command aliyun; then
+  autoload -U +X compinit && compinit -i
+  autoload -U +X bashcompinit &&  bashcompinit -i
+  complete -o nospace -F "$(which aliyun)" aliyun
+fi
