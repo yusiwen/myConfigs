@@ -429,35 +429,6 @@ function _drmi() { # {{{
   [ -n "$cid" ] && docker rmi "$cid"
 } # }}}
 
-function _docker_compose_project() { # {{{
-  local cli_project_name
-  local project_name
-  local docker_compose_command
-
-  cli_project_name=$(printf "%s\n" "$@" | grep -n '\-p\|--project-name')
-  if [ -z "$cli_project_name" ]; then
-    if [ -e .compose_project ]; then
-      project_name=$(grep 'COMPOSE_PROJECT_NAME' .compose_project|cut -d'=' -f2) 
-    fi
-  fi
-
-  docker_compose_command='docker compose'
-  if docker compose version >/dev/null 2>&1  && check_command docker-compose; then
-    if check_command docker-compose; then
-      docker_compose_command='docker-compose'
-    else
-      echo 'docker compose must be installed.'
-      return 1
-    fi
-  fi
-
-  if [ -n "$project_name" ] && [ -z "$cli_project_name" ]; then
-    "$docker_compose_command" --project-name "$project_name" "$@"
-  else
-    "$docker_compose_command" "$@"
-  fi
-} # }}}
-
 function _docker_compose_project_dir() { # {{{
   if ! check_command docker; then
     echo 'docker is not found, please install docker first.'

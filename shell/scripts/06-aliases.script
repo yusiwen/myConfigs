@@ -358,7 +358,7 @@ if check_command docker; then
   alias dcpid='docker-get-pid-by-container-id'
   alias drm='_drm'
   alias drmi='_drmi'
-  alias dco='_docker_compose_project'
+  alias dco='docker compose'
   alias dcpd='_docker_compose_project_dir'
   alias dcpcd='_docker_compose_change_dir_to_project'
   alias dilsg='_docker_images_group_by_name'
