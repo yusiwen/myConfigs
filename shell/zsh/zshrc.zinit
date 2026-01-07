@@ -306,6 +306,11 @@ zinit wait lucid light-mode for \
     mv'codegpt* -> codegpt' pick'codegpt' \
     has'git' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
+    atload="
+      alias cg='codegpt'
+      alias cgc='codegpt commit'
+      alias cgcp='codegpt commit --preview'
+    " \
   appleboy/CodeGPT \
     from'gh-r' as'program' id-as'codegpt' \
     mv'codegpt* -> codegpt' pick'codegpt' bpick'*windows*' \
