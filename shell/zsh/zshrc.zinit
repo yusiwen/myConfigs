@@ -297,6 +297,9 @@ zinit wait lucid light-mode for \
     mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
     atinit'export PATH="$HOME/.yarn/bin:$PATH"' \
   yarnpkg/yarn \
+    from'gh-r' as'program' id-as'git-sizer' \
+    pick"git-sizer" bpick'*.zip' \
+  @github/git-sizer \
     from'gh-r' as'program' id-as'codegpt' \
     mv'codegpt* -> codegpt' pick'codegpt' \
     has'git' \
