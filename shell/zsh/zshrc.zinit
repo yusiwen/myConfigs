@@ -310,6 +310,7 @@ zinit wait lucid light-mode for \
       alias cg='codegpt'
       alias cgc='codegpt commit'
       alias cgcp='codegpt commit --preview'
+      alias cgr='codegpt review'
     " \
   appleboy/CodeGPT \
     from'gh-r' as'program' id-as'codegpt' \
