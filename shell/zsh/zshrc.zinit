@@ -299,6 +299,8 @@ zinit wait lucid light-mode for \
   yarnpkg/yarn \
     from'gh-r' as'program' id-as'git-sizer' \
     pick"git-sizer" bpick'*.zip' \
+    has'git' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
   @github/git-sizer \
     from'gh-r' as'program' id-as'codegpt' \
     mv'codegpt* -> codegpt' pick'codegpt' \
