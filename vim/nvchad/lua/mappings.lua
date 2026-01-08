@@ -11,14 +11,8 @@ map("n", "<leader>W", ":SudaWrite <CR>", { desc = "save file with sudo" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
-map("n", "<leader><leader>w", "<cmd> HopWord <CR>", { desc = "hint all words" })
-map("n", "<leader><leader>b", "<cmd> HopWord <CR>", { desc = "hint all words" })
-map("n", "<leader><leader>j", "<cmd> HopLine <CR>", { desc = "hint line" })
-map("n", "<leader><leader>k", "<cmd> HopLine <CR>", { desc = "hint line" })
-
 map("n", "<leader>fr", "<cmd>Telescope resume<CR>", { desc = "telescope resume" })
 
 map("n", "<leader>G", "<cmd>Git<CR>", { desc = "fugitive" })
 
 map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle nvimtree" })
-
