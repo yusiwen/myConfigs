@@ -4,13 +4,18 @@ if not present then
   return
 end
 
-illuminate.configure {
+illuminate.configure({
+  delay = 200,
+  under_cursor = true,
+  large_file_cutoff = 2000,
+  large_file_overrides = {
+    providers = { "lsp" },
+  },
   providers = {
     "lsp",
     "treesitter",
     "regex",
   },
-  delay = 100,
   filetypes_denylist = {
     "alpha",
     "dashboard",
@@ -23,6 +28,5 @@ illuminate.configure {
     "packer",
     "toggleterm",
   },
-  under_cursor = false,
-}
+})
 
