@@ -335,7 +335,8 @@ function init_env() { # {{{
         $SUDO yum install -y net-tools telnet ftp lftp libaio libaio-devel bc man lsof wget tmux
       fi
     elif [ "$DISTRO" = 'openEuler' ]; then
-      $SUDO dnf -y install net-tools telnet ftp lftp lsof tmux util-linux-user
+      $SUDO dnf -y group install "Development Tools"
+      $SUDO dnf -y install net-tools telnet ftp lftp lsof tmux byobu util-linux-user
     fi
 
     enable_FUSE
