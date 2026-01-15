@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+BIN=
 if ! type byobu >/dev/null 2>&1; then
-  exit 0
+  BIN=tmux
+else
+  BIN=byobu
 fi
 
 session_name=$1
@@ -10,9 +13,9 @@ if [ -z "$session_name" ]; then
 fi
 
 # Test if there's a session already set up
-if ! byobu list-sessions 2>&1 | grep -q "$session_name"; then
+if ! $BIN list-sessions 2>&1 | grep -q "$session_name"; then
     # Create a new detached session named 'jupyter'
-    byobu new-session -d -s "$session_name"
+    $BIN new-session -d -s "$session_name"
 fi
 # Attach to the session
-byobu attach-session -t "$session_name"
+$BIN attach-session -t "$session_name"
