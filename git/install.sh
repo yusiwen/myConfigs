@@ -44,7 +44,7 @@ function _install_git() { # {{{
         if [ "$ARCH" = 'amd64' ]; then
           gcm_arch='x64'
         fi
-        curl -sL "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux_$gcm_arch.$gcm_latest_version.deb" -o /tmp/gcm.deb
+        curl -sL "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux-$gcm_arch-$gcm_latest_version.deb" -o /tmp/gcm.deb
         gum spin --show-error --title "Installing git-credential-manager..." -- \
           bash -c "$SUDO dpkg --install /tmp/gcm.deb && rm -f /tmp/gcm.deb"
       else
