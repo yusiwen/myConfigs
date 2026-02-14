@@ -43,6 +43,7 @@ return {
     {
         "nvim-treesitter/nvim-treesitter",
         --opts = overrides.treesitter,
+        branch = 'main',
         build = ":TSUpdate",
         config = function()
             require "configs.treesitter"
