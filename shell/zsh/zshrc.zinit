@@ -221,6 +221,7 @@ zinit wait lucid light-mode for \
   gotify/cli \
     from'gh-r' as'program' id-as'gotify-cli' \
     mv'gotify-cli*.exe -> gotify-cli.exe' pick'gotify-cli.exe' \
+    bpick'*windows-amd64.exe' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   gotify/cli
 
