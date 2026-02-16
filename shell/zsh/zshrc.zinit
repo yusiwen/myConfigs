@@ -312,12 +312,20 @@ zinit wait lucid light-mode for \
       alias cgc='codegpt commit'
       alias cgcp='codegpt commit --preview'
       alias cgr='codegpt review'
+      mkdir -p $HOME/.config/codegpt/prompt
     " \
   appleboy/CodeGPT \
     from'gh-r' as'program' id-as'codegpt' \
     mv'codegpt* -> codegpt' pick'codegpt' bpick'*windows*' \
     has'git' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
+    atload="
+      alias cg='codegpt'
+      alias cgc='codegpt commit'
+      alias cgcp='codegpt commit --preview'
+      alias cgr='codegpt review'
+      mkdir -p $HOME/.config/codegpt/prompt
+    " \
   appleboy/CodeGPT \
     from'gh-r' as'program' id-as'asdf' \
     pick'asdf' \
