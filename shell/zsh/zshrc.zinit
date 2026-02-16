@@ -300,10 +300,6 @@ zinit wait lucid light-mode for \
 
 # Development tools
 zinit wait lucid light-mode for \
-    from'gh-r' as'program' id-as'yarn' \
-    mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
-    atinit'export PATH="$HOME/.yarn/bin:$PATH"' \
-  yarnpkg/yarn \
     from'gh-r' as'program' id-as'git-sizer' \
     pick"git-sizer" bpick'*.zip' \
     has'git' \
