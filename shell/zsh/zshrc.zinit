@@ -158,6 +158,12 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' id-as'bat' \
     mv'bat* -> bat' pick'bat/bat' \
     atinit"export MANROFFOPT='-c'" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  @sharkdp/bat \
+    from'gh-r' as'program' id-as'bat' \
+    pick'**/bat.exe' bpick'*windows*' \
+    atinit"export MANROFFOPT='-c'" \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
   @sharkdp/bat \
     from'gh-r' as'program' id-as'eza' pick'eza' \
     atload"
@@ -367,8 +373,6 @@ zinit wait light-mode lucid is-snippet for \
   $HOME/git/myConfigs/shell/scripts/03-programs.script \
   $HOME/git/myConfigs/shell/scripts/03-completions.script \
   $HOME/git/myConfigs/shell/scripts/04-keybindings.script \
-    if'[[ "$(uname -o)" = "Msys" ]]' \
-  $HOME/git/myConfigs/shell/scripts/05-themes.script \
   $HOME/git/myConfigs/shell/scripts/06-aliases.script \
   $HOME/git/myConfigs/shell/scripts/99-customize.script
 
