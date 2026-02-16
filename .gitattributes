@@ -5,5 +5,5 @@ shell/profile eol=lf
 shell/bash/bashrc eol=lf
 shell/bash/bash_profile eol=lf
 shell/bash/bash_aliases eol=lf
-shell/zshrc eol=lf
-shell/zshrc.zinit eol=lf
+shell/zsh/zshrc.* eol=lf
+shell/zsh/zshrc.zinit.* eol=lf
