@@ -102,6 +102,7 @@ zinit wait lucid for \
     if'type docker >/dev/null 2>&1 || type docker-compose >/dev/null 2>&1' \
     as"completion" \
   OMZP::docker-compose/_docker-compose \
+    if'[[ "$(uname -o)" != "Darwin" ]]' \
     if'type yt-dlp >/dev/null 2>&1' \
     as"completion" pick"completions/zsh/_yt-dlp" run-atpull \
     atclone"make completions/zsh/_yt-dlp" \
