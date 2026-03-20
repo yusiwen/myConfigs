@@ -1,4 +1,4 @@
-local configs = require("nvim-treesitter")
+local configs = require("nvim-treesitter.config")
 
 configs.setup({
     ensure_installed = {

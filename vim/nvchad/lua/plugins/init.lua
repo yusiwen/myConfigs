@@ -49,7 +49,10 @@ return {
             require "configs.treesitter"
         end,
         dependencies = {
-            "nvim-treesitter/nvim-treesitter-textobjects",
+            {
+                "nvim-treesitter/nvim-treesitter-textobjects",
+                branch = "main",
+            },
             {
                 "nvim-treesitter/nvim-treesitter-context",
                 config = function()
