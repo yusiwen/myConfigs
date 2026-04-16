@@ -380,7 +380,5 @@ fi
 
 unset TMUX
 
-## [Completion]
-## Completion scripts setup. Remove the following line to uninstall
 [[ -f "$HOME"/.config/.dart-cli-completion/zsh-config.zsh ]] && . "$HOME"/.config/.dart-cli-completion/zsh-config.zsh || true
-## [/Completion]
+[[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]] && . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh || true
