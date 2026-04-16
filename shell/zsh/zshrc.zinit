@@ -306,7 +306,7 @@ zinit wait lucid light-mode for \
     has'git' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   @github/git-sizer \
-    from'gh-r' as'program' id-as'codegpt' \
+    from'gh-r' as'program' id-as'codegpt' extract"!" \
     mv'codegpt* -> codegpt' pick'codegpt' \
     has'git' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
@@ -318,8 +318,8 @@ zinit wait lucid light-mode for \
       mkdir -p $HOME/.config/codegpt/prompt
     " \
   appleboy/CodeGPT \
-    from'gh-r' as'program' id-as'codegpt' \
-    mv'codegpt* -> codegpt' pick'codegpt' bpick'*windows*' \
+    from'gh-r' as'program' id-as'codegpt' extract"!" \
+    mv'codegpt*.exe -> codegpt.exe' pick'codegpt.exe' bpick'*windows*' \
     has'git' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
     atload="
