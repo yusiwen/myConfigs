@@ -382,7 +382,6 @@ zinit wait light-mode lucid is-snippet for \
   $HOME/.config/.dart-cli-completion/zsh-config.zsh \
     if'[[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]' \
   /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 if [ "$PROMPT_TYPE" = 'p10k' ]; then
