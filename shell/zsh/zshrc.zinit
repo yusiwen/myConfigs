@@ -345,10 +345,10 @@ zinit wait lucid light-mode for \
     pick'aliyun' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   aliyun/aliyun-cli \
-    from'gh-r' as'program' id-as'tree-sitter-cli' \
-    pick'tree-sitter-cli' bpick'tree-sitter-cli*.zip' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  tree-sitter/tree-sitter \
+    as'program' id-as'tree-sitter-cli' \
+    atclone'cargo install tree-sitter-cli' \
+    has'cargo' \
+  zdharma-continuum/null \
     as'program' id-as'micromamba' pick"$HOME/.micromamba/bin" run-atpull \
     atclone'curl -sL https://raw.githubusercontent.com/mamba-org/micromamba-releases/main/install.sh | PREFIX_LOCATION="$HOME/.micromamba" INIT_YES="no" bash -s' \
     atpull'if type micromamba >/dev/null 2>&1; then micromamba self-update; fi' \
