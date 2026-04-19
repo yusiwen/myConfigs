@@ -376,7 +376,7 @@ zinit wait lucid light-mode for \
     " \
   appleboy/CodeGPT \
     as"program" id-as'opencode' run-atpull \
-    atclone"curl -fsSL https://opencode.ai/install | bash" \
+    atclone"curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path" \
   zdharma-continuum/null \
     as"program" id-as'qoder' run-atpull \
     atclone"curl -fsSL https://qoder.com/install | bash" \
