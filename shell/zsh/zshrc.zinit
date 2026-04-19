@@ -312,30 +312,6 @@ zinit wait lucid light-mode for \
     has'git' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   @github/git-sizer \
-    from'gh-r' as'program' id-as'codegpt' extract"!" \
-    mv'codegpt* -> codegpt' pick'codegpt' \
-    has'git' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-    atload="
-      alias cg='codegpt'
-      alias cgc='codegpt commit'
-      alias cgcp='codegpt commit --preview'
-      alias cgr='codegpt review'
-      mkdir -p $HOME/.config/codegpt/prompt
-    " \
-  appleboy/CodeGPT \
-    from'gh-r' as'program' id-as'codegpt' extract"!" \
-    mv'codegpt*.exe -> codegpt.exe' pick'codegpt.exe' bpick'*windows*' \
-    has'git' \
-    if'[[ "$(uname -o)" = "Msys" ]]' \
-    atload="
-      alias cg='codegpt'
-      alias cgc='codegpt commit'
-      alias cgcp='codegpt commit --preview'
-      alias cgr='codegpt review'
-      mkdir -p $HOME/.config/codegpt/prompt
-    " \
-  appleboy/CodeGPT \
     from'gh-r' as'program' id-as'asdf' \
     pick'asdf' \
     atload'export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' \
@@ -372,6 +348,41 @@ zinit wait lucid light-mode for \
     atpull"SDKMAN_DIR=$HOME/.sdkman sdk selfupdate && ! type link_jdks>/dev/null 2>&1 || link_jdks" \
     atinit"export SDKMAN_DIR=$HOME/.sdkman; source $HOME/.sdkman/bin/sdkman-init.sh" \
   zdharma-continuum/null
+
+# AI Agent
+zinit wait lucid light-mode for \
+    from'gh-r' as'program' id-as'codegpt' extract"!" \
+    mv'codegpt* -> codegpt' pick'codegpt' \
+    has'git' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+    atload="
+      alias cg='codegpt'
+      alias cgc='codegpt commit'
+      alias cgcp='codegpt commit --preview'
+      alias cgr='codegpt review'
+      mkdir -p $HOME/.config/codegpt/prompt
+    " \
+  appleboy/CodeGPT \
+    from'gh-r' as'program' id-as'codegpt' extract"!" \
+    mv'codegpt*.exe -> codegpt.exe' pick'codegpt.exe' bpick'*windows*' \
+    has'git' \
+    if'[[ "$(uname -o)" = "Msys" ]]' \
+    atload="
+      alias cg='codegpt'
+      alias cgc='codegpt commit'
+      alias cgcp='codegpt commit --preview'
+      alias cgr='codegpt review'
+      mkdir -p $HOME/.config/codegpt/prompt
+    " \
+  appleboy/CodeGPT \
+    as"program" id-as'opencode' run-atpull \
+    atclone"curl -fsSL https://opencode.ai/install | bash" \
+  zdharma-continuum/null \
+    as"program" id-as'qoder' run-atpull \
+    atclone"curl -fsSL https://qoder.com/install | bash" \
+  zdharma-continuum/null
+
+
 
 zinit wait light-mode lucid is-snippet for \
   $HOME/git/myConfigs/shell/scripts/00-environment.script \
