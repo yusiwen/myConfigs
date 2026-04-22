@@ -162,6 +162,8 @@ EOF
     git config --global interactive.diffFilter "delta --color-only --line-numbers"
     git config --global delta.navigate true
     git config --global delta.features decorations
+    git config --global delta.syntax-theme Nord
+    git config --global delta.dark true
     git config --global delta.interactive.keep-plus-minus-markers false
     git config --global delta.decorations.commit-decoration-style "blue ol"
     git config --global delta.decorations.commit-style raw
