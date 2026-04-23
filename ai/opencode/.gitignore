@@ -1,0 +1,6 @@
+node_modules
+plans
+package.json
+bun.lock
+package-lock.json
+references/
