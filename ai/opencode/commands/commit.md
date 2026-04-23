@@ -1,20 +1,25 @@
 ---
 description: git commit and push
-model: opencode/kimi-k2.5
+model: opencode/minimax-m2.5-free
 subtask: true
 ---
 
-commit and push
+git commit and push
 
-make sure it includes a prefix like
-docs:
-tui:
-core:
-ci:
-ignore:
-wip:
+make sure it includes a prefix at the beginning of the first line in the message
 
-For anything in the packages/web use the docs: prefix.
+Here are the prefixes you can choose from:
+
+- build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+- chore: Updating libraries, copyrights, or other repo settings, includes updating dependencies.
+- ci: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, GitHub Actions)
+- docs: Non-code changes, such as fixing typos or adding new documentation (example scopes: Markdown files)
+- feat: A commit of the type feat introduces a new feature to the codebase
+- fix: A commit of the type fix patches a bug in your codebase
+- perf: A code change that improves performance
+- refactor: A code change that neither fixes a bug nor adds a feature
+- style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc.)
+- test: Adding missing tests or correcting existing tests
 
 prefer to explain WHY something was done from an end user perspective instead of
 WHAT was done.
