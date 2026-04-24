@@ -6,9 +6,17 @@ subtask: true
 
 git commit and push
 
-make sure it includes a prefix at the beginning of the first line in the message
+the whole commit message looks like below:
 
-Here are the prefixes you can choose from:
+```
+<prefix>(<scope>): summary
+
+<detailed messages>
+```
+
+make sure it includes a <prefix> at the beginning of the first line in the message
+
+here are the prefixes you can choose from:
 
 - build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
 - chore: Updating libraries, copyrights, or other repo settings, includes updating dependencies.
@@ -21,8 +29,10 @@ Here are the prefixes you can choose from:
 - style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc.)
 - test: Adding missing tests or correcting existing tests
 
+prefer to add a <scope> in the parentheses right after <prefix>, it can be concluded by the function of the changed codes or module names, keep it as short as possible. if it's hard to deduce, leave it empty.
+
 prefer to explain WHY something was done from an end user perspective instead of
-WHAT was done.
+WHAT was done in <detailed messages>.
 
 do not do generic messages like "improved agent experience" be very specific
 about what user facing changes were made
