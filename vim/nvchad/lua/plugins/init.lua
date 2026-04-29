@@ -1,5 +1,7 @@
 return {
   {
+    -- https://github.com/stevearc/conform.nvim
+    -- Lightweight yet powerful formatter plugin for Neovim
     "stevearc/conform.nvim",
     -- event = 'BufWritePre' -- uncomment for format on save
     config = function()
@@ -8,17 +10,27 @@ return {
   },
 
   {
-    "williamboman/mason-lspconfig.nvim",
+    -- https://github.com/mason-org/mason-lspconfig.nvim
+    -- Extension to mason.nvim that makes it easier to use lspconfig with mason.nvim.
+    "mason-org/mason-lspconfig.nvim",
     opts = {
+      automatic_enable = true,
       ensure_installed = {
-        "lus_ls", "ts_ls", "bashls", "gopls", "delve", "rust-analyzer",
+        "lus_ls", "ts_ls", "bashls", "gopls", "delve", "rust_analyzer",
         "clangd", "pyright", "yamlls", "jsonls", "sqlls", "html",
         "docker_language_server", "docker_compose_language_server",
       },
     },
     dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
+      { 
+        -- https://github.com/mason-org/mason.nvim
+        -- Portable package manager for Neovim that runs everywhere Neovim runs. Easily install and manage LSP servers, DAP servers, linters, and formatters.
+        "mason-org/mason.nvim",
+        opts = {}
+      },
       {
+        -- https://github.com/neovim/nvim-lspconfig
+        -- Quickstart configs for Nvim LSP.
         "neovim/nvim-lspconfig",
         config = function()
           require("nvchad.configs.lspconfig").defaults()
@@ -29,6 +41,8 @@ return {
   },
 
   {
+    -- https://github.com/hedyhli/outline.nvim
+    -- Fancy code outline sidebar to visualize and navigate code symbols in a tree hierarchy.
     "hedyhli/outline.nvim",
     lazy = true,
     cmd = { "Outline", "OutlineOpen" },
@@ -41,6 +55,8 @@ return {
   },
 
   {
+    -- https://github.com/nvim-treesitter/nvim-treesitter
+    -- Nvim Treesitter configurations and abstraction layer
     "nvim-treesitter/nvim-treesitter",
     --opts = overrides.treesitter,
     branch = 'main',
@@ -60,6 +76,8 @@ return {
         end,
       },
       {
+        -- https://github.com/abecodes/tabout.nvim
+        -- tabout plugin for neovim
         "abecodes/tabout.nvim",
         event = "InsertEnter",
         config = function()
@@ -85,6 +103,8 @@ return {
   },
 
   {
+    -- https://github.com/rrethy/vim-illuminate
+    -- automatically highlighting other uses of the word under the cursor using either LSP, Tree-sitter, or regex matching.
     "RRethy/vim-illuminate",
     event = "BufReadPost",
     config = function()
@@ -98,6 +118,8 @@ return {
   },
 
   {
+    -- https://github.com/max397574/better-escape.nvim
+    -- Map keys without delay when typing.
     "max397574/better-escape.nvim",
     event = "InsertEnter",
     config = function()
@@ -106,6 +128,8 @@ return {
   },
 
   {
+    -- https://github.com/folke/flash.nvim
+    -- Navigate your code with search labels, enhanced character motions and Treesitter integration.
     "folke/flash.nvim",
     event = "VeryLazy",
     ---@type Flash.Config
@@ -120,6 +144,8 @@ return {
   },
 
   {
+    -- https://github.com/mg979/vim-visual-multi
+    -- Multiple cursors plugin for vim/neovim
     "mg979/vim-visual-multi",
     event = "BufReadPost",
     init = function()
@@ -128,6 +154,8 @@ return {
   },
 
   {
+    -- https://github.com/folke/trouble.nvim
+    -- A pretty diagnostics, references, telescope results, quickfix and location list to help you solve all the trouble your code is causing.
     "folke/trouble.nvim",
     opts = {}, -- for default options, refer to the configuration section for custom setup.
     cmd = "Trouble",
@@ -166,6 +194,8 @@ return {
   },
 
   {
+    -- https://github.com/akinsho/toggleterm.nvim
+    -- A neovim lua plugin to help easily manage multiple terminal windows.
     'akinsho/toggleterm.nvim',
     version = "*",
     -- Trigger lazy loading on these commands
