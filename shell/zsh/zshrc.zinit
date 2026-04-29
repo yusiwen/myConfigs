@@ -228,6 +228,11 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' id-as'gum' pick'**/gum' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   charmbracelet/gum \
+    from'gh-r' as'program' id-as'direnv' \
+    mv'direnv.* -> direnv' pick'direnv' extract"!" \
+    atload'eval "$(direnv hook zsh)"' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  @direnv/direnv \
     from'gh-r' as'program' id-as'gotify-cli' \
     mv'gotify-cli* -> gotify-cli' pick'gotify-cli'  \
     if'[[ "$(uname -o)" != "Msys" ]]' \
@@ -385,8 +390,7 @@ zinit wait lucid light-mode for \
     atload"alias qd='qodercli'" \
   zdharma-continuum/null
 
-
-
+# My customized scripts
 zinit wait light-mode lucid is-snippet for \
   $HOME/git/myConfigs/shell/scripts/00-environment.script \
   $HOME/git/myConfigs/shell/scripts/01-colors.script \
