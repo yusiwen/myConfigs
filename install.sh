@@ -76,18 +76,24 @@ SPINNER=
 
 OPT_PATH=/opt
 # Mount /opt on Windows
-if [ "$OS" = 'Windows_NT' ] && [ "$(uname -o)" = 'Msys' ] && [ ! -d "$OPT_PATH" ]; then
-    OPT_WIN_PATH=
-    if [ -d "/d/opt" ]; then
-      OPT_WIN_PATH=D:/opt
-    elif [ -d "/e/opt" ]; then
-      OPT_WIN_PATH=E:/opt
-    fi
-    mkdir -p "$OPT_PATH"
+if [ "$OS" = 'Windows_NT' ] && [ "$(uname -o)" = 'Msys' ]; then
+    tmp_check_mount=$(mount | grep -E ".*\son\s$OPT_PATH")
+    if [ -n "$tmp_check_mount" ]; then
+      tmp_mount_source="$(echo $tmp_check_mount | grep -Po '^[^ ]+')"
+      echo "$OPT_PATH is already mounted by $tmp_mount_source" 
+    else
+      OPT_WIN_PATH=
+      if [ -d "/d/opt" ]; then
+        OPT_WIN_PATH=D:/opt
+      elif [ -d "/e/opt" ]; then
+        OPT_WIN_PATH=E:/opt
+      fi
+      mkdir -p "$OPT_PATH"
 
-    if [ -n "$OPT_WIN_PATH" ]; then
-      echo "Mounting $OPT_WIN_PATH to $OPT_PATH ..."
-      mount -fo binary,noacl,posix=0,user "$OPT_WIN_PATH" "$OPT_PATH"
+      if [ -n "$OPT_WIN_PATH" ]; then
+        echo "Mounting $OPT_WIN_PATH to $OPT_PATH ..."
+        mount -fo binary,noacl,posix=0,user "$OPT_WIN_PATH" "$OPT_PATH"
+      fi
     fi
 fi
 
