@@ -12,7 +12,7 @@ When making a new release:
 2. If $1 is null or blank
   - get the latest git tag starts with 'v' (must follow the semantic versioning patterns, e.g. `v1.0.7`) as current version, 
   - Increase current version (e.g. `v1.0.8`) , if you are not sure, ask user to confirm
-3. Update `VERSION` in `install.sh` (if exists), `<version>` in `pom.xml` (if exists) to the new tag (e.g. `v1.0.8`)
+3. Update `VERSION` in `install.sh` (if exists), `<version>` in `pom.xml` (if exists), or any other text files which are used in project build and contain current version (e.g. `v1.0.7`), to the new tag (e.g. `v1.0.8`)
 4. Update any version references in `README.md`
 5. Commit with message with new version, e.g. `chore: bump version to v1.0.8`
 6. Tag the commit with new version, e.g. `git tag v1.0.8`
