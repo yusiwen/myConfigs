@@ -382,8 +382,18 @@ zinit wait lucid light-mode for \
   appleboy/CodeGPT \
     as"program" id-as'opencode' run-atpull \
     atclone"curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path" \
-    atinit'[[ :$PATH: == *":$HOME/.opencode/bin:"* ]] || PATH+=":$HOME/.opencode/bin"' \
-    atload"alias opc='opencode'" \
+    atinit'
+      function load_opencode_keys() {
+        if command -v pass &>/dev/null; then
+          export HINDSIGHT_API_KEY=$(pass memory.yusiwen.cn/secret_api_key)
+        fi
+      }
+      [[ :$PATH: == *":$HOME/.opencode/bin:"* ]] || PATH+=":$HOME/.opencode/bin"
+    ' \
+    atload"
+      alias opc='[ -z $HINDSIGHT_API_KEY ] && load_opencode_keys; opencode'
+      alias opencode='[ -z $HINDSIGHT_API_KEY ] && load_opencode_keys; opencode'
+    " \
   zdharma-continuum/null \
     as"program" id-as'qoder' run-atpull \
     atclone"curl -fsSL https://qoder.com/install | bash" \
