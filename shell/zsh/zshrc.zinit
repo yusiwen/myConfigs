@@ -385,7 +385,7 @@ zinit wait lucid light-mode for \
     atinit'
       function load_opencode_keys() {
         if command -v pass &>/dev/null; then
-          export HINDSIGHT_API_KEY=$(pass memory.yusiwen.cn/secret_api_key)
+          export HINDSIGHT_API_KEY=$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null)
         fi
       }
       [[ :$PATH: == *":$HOME/.opencode/bin:"* ]] || PATH+=":$HOME/.opencode/bin"
