@@ -385,14 +385,14 @@ zinit wait lucid light-mode for \
     atinit'
       function load_opencode_keys() {
         if command -v pass &>/dev/null; then
-          export HINDSIGHT_API_KEY=$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null)
+          export HINDSIGHT_API_KEY="$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null)"
         fi
       }
       [[ :$PATH: == *":$HOME/.opencode/bin:"* ]] || PATH+=":$HOME/.opencode/bin"
     ' \
     atload"
-      alias opc='[ -z $HINDSIGHT_API_KEY ] && load_opencode_keys; opencode'
-      alias opencode='[ -z $HINDSIGHT_API_KEY ] && load_opencode_keys; opencode'
+      alias opc='[ -z \"\$HINDSIGHT_API_KEY\" ] && load_opencode_keys; opencode'
+      alias opencode='[ -z \"\$HINDSIGHT_API_KEY\" ] && load_opencode_keys; opencode'
     " \
   zdharma-continuum/null \
     as"program" id-as'qoder' run-atpull \
