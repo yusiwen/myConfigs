@@ -1,7 +1,7 @@
 ---
 name: llm-wiki
 description: "Karpathy's LLM Wiki: build/query interlinked markdown KB."
-version: 2.4.0
+version: 2.5.0
 author: Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -454,6 +454,9 @@ When a single source (article, paper, URL) generates 5-15 wiki pages, batch the 
 ### Importing Notebook/App Exports (ZIP, Notebook Export)
 
 When the user provides a ZIP export from a note-taking app (Obsidian, Notion, Bear, standard markdown hierarchy):
+
+> **First time importing an export?** → Follow the workflow below.
+> **Re-importing an updated export?** → Use the `wiki-reingest` skill instead, which compares by content hash and asks about new/updated/deleted files.
 
 1. **Estimate scope first:** Unzip to a temp dir, count markdown files, assess depth. If 50+ files, this warrants parallel subagents. If the user has a known preference for full-auto ingest (check memory/profile), skip asking and proceed. Otherwise, ask if they want full auto, selective sections, or a raw dump.
 

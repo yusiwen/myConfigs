@@ -26,22 +26,24 @@ When the user exports an updated zip file (e.g., `Network.zip`) from their note-
 
 ### ① Extract and Map
 
-```python
-import os, hashlib, shutil, tempfile
-from pathlib import Path
+Use Python's `zipfile.ZipFile` to extract, not `unzip` — zip filenames may contain `&` or other shell meta-characters that break the terminal tool.
 
-wiki = "/home/yusiwen/git/mine/wiki"
-export_name = "network-export"  # e.g., corresponds to raw/network-export/
+```python
+import os, hashlib, shutil, tempfile, zipfile
+
+wiki = "/home/yusiwen/git/mine/wiki"        # resolve from config or env
+export_name = "network-export"              # matches raw/<export-name>
 zip_path = os.path.expanduser("~/Network.zip")
 
-# Extract to temp dir
+# Extract via zipfile module (safe with any filename characters)
 tmp = tempfile.mkdtemp()
-os.system(f"unzip -o {zip_path} -d {tmp}")
+with zipfile.ZipFile(zip_path) as zf:
+    zf.extractall(tmp)
 
 # Find the notebook root (the random-ID dir inside the zip)
 notebook_root = None
 for item in os.listdir(tmp):
-    if os.path.isdir(os.path.join(tmp, item)):
+    if os.path.isdir(os.path.join(tmp, item)) and item != '__MACOSX':
         notebook_root = os.path.join(tmp, item)
         break
 ```
@@ -57,6 +59,7 @@ def sha256_file(path):
     return h.hexdigest()
 
 # Index existing raw files by content hash
+# Values are lists because content could appear under multiple paths (unlikely but safe)
 existing = {}  # sha256 -> [list of relative paths in raw/]
 raw_base = os.path.join(wiki, "raw", export_name)
 if os.path.exists(raw_base):
@@ -68,43 +71,46 @@ if os.path.exists(raw_base):
             existing.setdefault(h, []).append(rel)
 
 # Index new files from zip by content hash
-incoming = {}  # sha256 -> path in zip
-md_files = []
+incoming = {}  # sha256 -> path in zip (single path, content is unique per file)
 for root, dirs, files in os.walk(notebook_root):
     for f in files:
-        if f.endswith('.md'):
-            fp = os.path.join(root, f)
-            h = sha256_file(fp)
-            incoming[h] = fp
-            md_files.append(fp)
+        fp = os.path.join(root, f)
+        h = sha256_file(fp)
+        incoming[h] = fp
 ```
 
 ### ③ Classify Every File
 
 ```python
-new_files = []      # hash not in existing
-updated_files = []  # hash in existing, but old name/path differs
-unchanged_files = []  # hash matches exactly
-deleted_files = []  # in existing but not in incoming
+from collections import defaultdict
 
 existing_hashes = set(existing.keys())
 incoming_hashes = set(incoming.keys())
 
+new_files = []               # hash only in incoming
+updated = []                 # hash in both, but content-different (actually same sha = same content)
+renamed = []                 # hash in both, but path differs (source was renamed on disk)
+unchanged = []               # hash in both, path same
+deleted = []                 # hash only in existing
+
 for h in incoming_hashes:
+    new_path = incoming[h]
     if h not in existing_hashes:
-        new_files.append(incoming[h])
+        new_files.append(new_path)
     else:
-        unchanged_files.append(incoming[h])
-        # Check if the path has changed (renamed source)
+        # Content unchanged — check if path matches
         old_paths = existing[h]
-        for op in old_paths:
-            # Compare normalized paths
-            pass  # log if path differs
+        old_rel_filenames = {os.path.basename(p) for p in old_paths}
+        new_basename = os.path.basename(new_path)
+        if new_basename not in old_rel_filenames:
+            renamed.append((old_paths, new_path))
+        else:
+            unchanged.append(new_path)
 
 for h in existing_hashes:
     if h not in incoming_hashes:
         for rel_path in existing[h]:
-            deleted_files.append(os.path.join(raw_base, rel_path))
+            deleted.append(os.path.join(raw_base, rel_path))
 ```
 
 ### ④ Report to User
@@ -115,26 +121,31 @@ Print a clear summary:
 📥 Network.zip Re-Ingest Report
   ✅ Unchanged: 142 files
   🆕 New: 5 files
-  📝 Updated: 8 files
-  🗑️ Deleted from source: 3 files
+  📝 Renamed: 3 files
+  🗑️ Deleted from source (not in new export): 3 files
 ```
 
 Then ask:
 
 - **For new files:** "Create corresponding wiki pages?" (default: yes)
-- **For updated files:** "Update raw sources and flag wiki pages for review?" (default: yes)
-- **For deleted files:** "What should I do with the 3 wiki pages whose sources were deleted? Archive? Keep? Remove references?"
+- **For renamed files:** "Update source paths in wiki pages to match?" (default: yes)
+- **For deleted files:** "What should I do with the 3 wiki pages whose sources were deleted? Archive? Keep? Nothing?"
+
+**Note:** Since matching is by sha256, there is no "updated content" case — if sha256 matches, content is identical. If the user edited a note and re-exported, the sha256 will differ, so it will appear as a new file (old hash becomes "deleted", new hash becomes "new"). This is correct behavior.
 
 ### ⑤ Execute
 
-- **New files:** Copy to `raw/network-export/` with sanitized path, then run the ingest workflow from `llm-wiki` skill to create wiki pages.
-- **Updated files:** Overwrite raw files with new content. For each affected wiki page, append a note to the wiki page body or add to log.md: `## [YYYY-MM-DD] flag | Source updated — verify content still accurate`.
+- **New files:** Copy to `raw/<export-name>/` with sanitized path, then run the standard ingest workflow from `llm-wiki` (Importing Notebook/App Exports) to create wiki pages.
+- **Renamed files:** Update the raw source at the new path, then run the provenance reference update (replace old raw path with new raw path across all wiki pages).
 - **Deleted files:** Follow user's decision.
+- **Clean up:** `shutil.rmtree(tmp)`.
 
 ## Pitfalls
 
 - **Don't match by filename** — the zip has original names (`TCP.md`), on disk they're sanitized (`tcp.md`). Always match by sha256 content hash.
 - **Don't auto-delete wiki pages** — a source file being removed from the export doesn't mean the wiki page is wrong. The page may synthesize multiple sources.
 - **Don't re-ingest everything** — re-running the full auto-ingest would create duplicate pages. Only process truly new/updated files.
-- **SHA256 changes for formatting-only edits** — if the user just re-formatted a note, the hash changes but the semantic content is the same. Flag as "updated" but note this caveat.
-- **Raw files may have been sanitized** — filenames on disk differ from zip names (lowercase, hyphens). When copying new files, apply the same sanitization: `fix_name()` from the rename workflow.
+- **SHA256 changes after formatting-only edits** — if the user re-formatted a note, the hash changes but semantic content may be the same. Flag as "new" but note this caveat to the user.
+- **Raw filenames are sanitized on disk** — when copying new files, apply `fix_name()` from the llm-wiki reference `references/sanitize-raw-filenames.md`.
+- **Use zipfile.ZipFile, not unzip shell command** — filenames with `&` or shell meta-chars break the terminal tool. Python's zipfile module handles all filename characters correctly.
+- **Clean up temp dirs** — use `shutil.rmtree()` (not `rm -rf` via terminal) to avoid terminal timeout on large dirs.
