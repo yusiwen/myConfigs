@@ -6,10 +6,12 @@
 !skills/
 !hooks/
 !cron/
+!profiles/
 
 !skills/**
 !hooks/**
 !cron/**
+!profiles/**
 
 hermes-agent/
 auth.json
