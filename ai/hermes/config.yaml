@@ -467,3 +467,8 @@ platform_toolsets:
   - hermes-teams
   google_chat:
   - hermes-google_chat
+mcp_servers:
+  wolai:
+    url: "https://api.wolai.com/v1/mcp"
+    headers:
+      Authorization: "Bearer ${WOLAI_MCP_API_TOKEN}"
