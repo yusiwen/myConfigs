@@ -145,7 +145,8 @@ Then ask:
 - **Don't match by filename** — the zip has original names (`TCP.md`), on disk they're sanitized (`tcp.md`). Always match by sha256 content hash.
 - **Don't auto-delete wiki pages** — a source file being removed from the export doesn't mean the wiki page is wrong. The page may synthesize multiple sources.
 - **Don't re-ingest everything** — re-running the full auto-ingest would create duplicate pages. Only process truly new/updated files.
-- **SHA256 changes after formatting-only edits** — if the user re-formatted a note, the hash changes but semantic content may be the same. Flag as "new" but note this caveat to the user.
-- **Raw filenames are sanitized on disk** — when copying new files, apply `fix_name()` from the llm-wiki reference `references/sanitize-raw-filenames.md`.
+- **SHA256 changes for formatting-only edits** — if the user just re-formatted a note, the hash changes but the semantic content is the same. Flag as "updated" but note this caveat.
+- **Sanitize filenames correctly** — only lowercase, replace spaces with hyphens, strip trailing whitespace. Do NOT strip Chinese characters, `&`, `()`, or any other Unicode. UTF-8 works on modern Windows and Linux. See `scripts/sanitize-raw-files.py` for a reusable implementation.
+- **Rename files BEFORE directories** — if you rename directories first, pre-computed old file paths become invalid. Always rename files first while parent directories still have their old names, then rename directories bottom-up (deepest first).
 - **Use zipfile.ZipFile, not unzip shell command** — filenames with `&` or shell meta-chars break the terminal tool. Python's zipfile module handles all filename characters correctly.
 - **Clean up temp dirs** — use `shutil.rmtree()` (not `rm -rf` via terminal) to avoid terminal timeout on large dirs.

@@ -1,7 +1,7 @@
 ---
 name: llm-wiki
 description: "Karpathy's LLM Wiki: build/query interlinked markdown KB."
-version: 2.5.0
+version: 2.6.0
 author: Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -368,10 +368,14 @@ When the user asks a question about the wiki's domain:
 ③ **Read the relevant pages** using `read_file`.
 ④ **Synthesize an answer** from the compiled knowledge. Cite the wiki pages
    you drew from: "Based on [[page-a]] and [[page-b]]..."
-⑤ **File valuable answers back** — if the answer is a substantial comparison,
+⑤ **If the wiki has only scattered mentions but no dedicated page,** report
+   what you found and offer to create a proper page. For example: "There are
+   3 mentions of PCIe scattered across [[hardwares]], [[qemu]], and raw source
+   files, but no dedicated PCIe page. Want me to create one?"
+⑥ **File valuable answers back** — if the answer is a substantial comparison,
    deep dive, or novel synthesis, create a page in `queries/` or `comparisons/`.
    Don't file trivial lookups — only answers that would be painful to re-derive.
-⑥ **Update log.md** with the query and whether it was filed.
+⑦ **Update log.md** with the query and whether it was filed.
 
 ### 4. Lint
 
@@ -599,6 +603,10 @@ vault in Obsidian on your laptop/phone — changes appear within seconds.
   first, then use them.
 - **Keep pages scannable** — a wiki page should be readable in 30 seconds. Split pages over
   200 lines. Move detailed analysis to dedicated deep-dive pages.
+- **Place pages in the right concept section.** A hardware topic (PCIe, CPU architecture, memory
+  bus) belongs in `hardware/`, not `linux-kernel/`. Kernel topics (schedulers, memory management,
+  drivers) describe software that manages hardware → use `linux-kernel/`. When unsure about
+  the best section, discuss placement with the user rather than guessing.
 - **Ask before mass-updating** — if an ingest would touch 10+ existing pages, confirm the scope with the user first. However, if the user profile says they prefer full-auto ingest, respect that preference and proceed directly.
 - **Rotate the log** — when log.md exceeds 500 entries, rename it `log-YYYY.md` and start fresh.
   The agent should check log size during lint.
@@ -610,6 +618,7 @@ vault in Obsidian on your laptop/phone — changes appear within seconds.
 - **Browser sandbox failures are common** in containers/VMs — fall back to `curl -sL` + Python
   tag-stripping for web research. Set `--no-sandbox` if browser tools are available.
 - **Do NOT hash or strip Chinese characters from filenames:** UTF-8 Chinese characters work fine on modern Windows and Linux. Only lowercase, replace spaces with hyphens, and strip trailing whitespace. Hashing Chinese names to `chinese-xxxxx` destroys traceability and was explicitly rejected by the user.
+- **Concurrent index/log edits from subagents cause formatting corruption:** When delegating ingest work to parallel subagents, do NOT let each one independently patch `index.md` and `log.md`. Concurrent edits produce artifacts: `||` prefixes on list lines, broken pipe characters, duplicate section headers. **Fix:** Have each subagent return a list of created files in its summary. The **parent** patches `index.md` and `log.md` once after all subagents finish. If the subagent model doesn't support returning summaries cleanly, serialize the work: dispatch one subagent to create pages, then a separate one to update index/log after all pages exist.
 - **File renames before directory renames:** When renaming thousands of files, rename files FIRST while parent directories still have their old names. THEN rename directories bottom-up (deepest first). If directories are renamed first, pre-computed old file paths become invalid.
 - **Shell meta-characters (`&`, `$`) in zip filenames:** The terminal tool interprets `&` as a background operator even inside double quotes. Copy the zip to `/tmp/` with a safe name first using Python's `shutil.copy2()`, then unzip the copy.
 - **Use Python/execute_code for bulk file ops, not terminal:** `rm -rf` on a directory with 300+
