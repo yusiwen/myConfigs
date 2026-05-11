@@ -378,8 +378,9 @@ When the user asks you to **find information about a topic and add it to the wik
 ② **Research the topic** — gather authoritative sources:
    - Use available tools (web_* search, browser, curl+terminal) to find 2-5 good sources
    - Prioritize: official docs (NVIDIA, HuggingFace, AWS) > papers (arxiv) > blog posts
-   - If a source tool isn't available, fall back to curl + terminal or browser tools with
-     `--no-sandbox` flag if needed — capture enough to extract key facts, not the full page
+   - If browser/search tools aren't available, see `references/web-research-fallback.md` for
+     curl+GitHub API techniques — Bing via curl and the GitHub Issues API are the most
+     reliable fallbacks
    - **Skip this step** if the user explicitly wants you to summarize from existing knowledge
      (e.g., "you mentioned TP earlier, explain it" — you can synthesize from what you know)
 
