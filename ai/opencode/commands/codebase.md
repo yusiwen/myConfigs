@@ -15,3 +15,5 @@ Check the value of the provided argument: "$ARGUMENTS".
 
 Ensure the final report includes the architecture, entry points, and key modules.
 
+Ensure the final report uses the same language used in project's AGENTS.md.
+If there is no AGENTS.md in the project yet, default language is English.
