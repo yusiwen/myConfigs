@@ -396,8 +396,18 @@ When the user asks you to **find information about a topic and add it to the wik
 ④ **Check what already exists** — scan index.md and existing pages for entities/concepts
    this research touches. Same as Ingest step ③.
 
-⑤ **Write or update wiki pages** — same as Ingest step ④. Since you're synthesizing from
-   multiple sources AND your own knowledge, use provenance markers (`^[raw/articles/source.md]`)
+⑤ **Write or update wiki pages** — same as Ingest step ④, plus:
+
+   - **Key Resources blockquote for agent-created pages:** Include a `> 🔗 **Key Resources:**` blockquote right after the H1 title with the 3-5 most important reference links (official docs, GitHub repos, tutorials). This gives readers immediate access to the best sources without scrolling.
+   - **Full references section:** Add a `## References` section at the bottom with the complete link list. Unlike the curated Key Resources, this is exhaustive — every source URL used during research.
+   - **Enhancing existing pages:** When adding new information to an existing page (not creating a new one):
+     1. Bump the `updated` date in frontmatter
+     2. Add new external reference links to the existing Key Resources blockquote (or create one if none exists)
+     3. Insert content into or after the relevant subsection
+     4. Add any additional links to the `## References` section at the bottom
+     5. Update the page's one-line description in `index.md` if it has changed
+   - **Tables for comparisons:** When comparing multiple implementations or versions, use a comparison table with clear rows per dimension (feature, version, max rate, year, etc.). This is more readable than nested bullet lists for side-by-side data.
+   - Since you're synthesizing from multiple sources AND your own knowledge, use provenance markers (`^[raw/articles/source.md]`)
    more aggressively to distinguish claims from the research vs. background knowledge.
 
 ⑥ **Update navigation** — same as Ingest step ⑤.
