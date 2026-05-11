@@ -140,6 +140,25 @@ Then ask:
 - **Deleted files:** Follow user's decision.
 - **Clean up:** `shutil.rmtree(tmp)`.
 
+### ⑥ Post-Ingest: Sync Key Resources Links
+
+Raw exports from wolai.app frequently have user-curated external links placed between the `## 目录` (TOC) and the first `#` heading — tutorials, official docs, and GitHub repos the user considered most important for that topic.
+
+After re-ingesting new/updated files, run the batch fix script to sync these links to the corresponding wiki pages:
+
+```bash
+python3 scripts/fix-top-links.py          # full scan + fix
+python3 scripts/fix-top-links.py --dry-run  # preview only
+```
+
+The script:
+1. Scans ALL raw export directories for files with top-of-page links (between TOC and first H1)
+2. Matches raw files to wiki pages via frontmatter `sources:` references
+3. Inserts any missing external links as a `> 🔗 **Key Resources:**` blockquote at the top of the wiki page body
+4. Skips links already present in the page (dedup by URL or title text match)
+
+This is safe to run repeatedly — it's idempotent and won't duplicate existing links.
+
 ## Pitfalls
 
 - **Don't match by filename** — the zip has original names (`TCP.md`), on disk they're sanitized (`tcp.md`). Always match by sha256 content hash.

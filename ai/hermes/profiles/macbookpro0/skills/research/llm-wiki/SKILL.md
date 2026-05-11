@@ -1,7 +1,7 @@
 ---
 name: llm-wiki
 description: "Karpathy's LLM Wiki: build/query interlinked markdown KB."
-version: 2.6.0
+version: 2.7.0
 author: Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -312,6 +312,12 @@ When the user asks to **find existing documents about a topic** in the wiki, and
 
 This workflow differs from "Research & Ingest" (step 2) in that it starts from *wiki content* rather than *external sources*. The goal is curation of existing knowledge, not expansion from new research. The user already has the domain expertise — they want you to organize what's there and fill the structural gaps.
 
+## Pre-Ingest: Auditing Content Sources via MCP
+
+Before ingesting any new export into the wiki, **first audit what exists** in the source application (wolai, Notion, etc.) via MCP. This gives you a complete inventory to compare against on-disk `raw/*-export` folders, revealing gaps, missing pages, and scope before any processing.
+
+See `references/mcp-content-audit.md` for the full workflow with exact tool calls, recursive page tree exploration patterns, and reporting format.
+
 ## Core Operations
 
 ### 1. Ingest
@@ -496,14 +502,37 @@ When a single source (article, paper, URL) generates 5-15 wiki pages, batch the 
 5. Update index.md once at the end
 6. Write a single log entry covering the batch
 
-### Importing Notebook/App Exports (ZIP, Notebook Export)
+### Importing Notebook/App Exports (ZIP or On-Disk Markdown)
 
-When the user provides a ZIP export from a note-taking app (Obsidian, Notion, Bear, standard markdown hierarchy):
+When the user provides a markdown export from a note-taking app — either as a ZIP file (Obsidian, Notion, Bear) or as files already on disk under `raw/<export-name>/` (e.g., from MCP export scripts):
 
 > **First time importing an export?** → Follow the workflow below.
 > **Re-importing an updated export?** → Use the `wiki-reingest` skill instead, which compares by content hash and asks about new/updated/deleted files.
 
-1. **Estimate scope first:** Unzip to a temp dir, count markdown files, assess depth. If 50+ files, this warrants parallel subagents. If the user has a known preference for full-auto ingest (check memory/profile), skip asking and proceed. Otherwise, ask if they want full auto, selective sections, or a raw dump.
+> **Export was produced programmatically (MCP, API)?** → The `wolai-export-to-markdown` skill covers the export side. The ingest workflow below handles the import side regardless of how the raw markdown was produced.
+
+#### Step 0: Prepare raw sources
+
+If the raw files are **already on disk** (e.g., from MCP export at `raw/web-export/`):
+1. **Add frontmatter** to every `.md` file — compute `sha256` of the body and prepend:
+   ```python
+   import hashlib, os, glob
+   for fp in glob.glob(f"{WIKI}/raw/<export-name>/**/*.md", recursive=True):
+       with open(fp, 'r') as f: content = f.read()
+       if content.startswith('---'): continue
+       fm = f"""---
+   source_export: <export-name>
+   ingested: {today}
+   sha256: {hashlib.sha256(content.encode()).hexdigest()}
+   ---
+   \n"""
+       with open(fp, 'w') as f: f.write(fm + content)
+   ```
+2. **Estimate scope** — count the `.md` files. If 50+ files, parallel subagents are warranted.
+
+If the raw files come as a **ZIP**: unzip to a temp dir first, then proceed with scope estimation.
+
+#### Step 1: Delegate to parallel subagents
 
 2. **Copy raw sources:** Use `execute_code` (Python) to copy all `.md`, `.pdf`, and images to `raw/<export-name>/` preserving the original directory hierarchy. This is faster and avoids `terminal` timeouts from per-file subshells:
    ```python
@@ -519,18 +548,19 @@ When the user provides a ZIP export from a note-taking app (Obsidian, Notion, Be
                shutil.copy2(os.path.join(root, f), os.path.join(dest, f))
    ```
 
-3. **Delegate to parallel subagents** (via `delegate_task`): Divide the export into logical sections (e.g., Kubernetes, Containers, IaaS/Tools). Each subagent gets:
-   - The wiki path, SCHEMA.md, index.md, log.md context
-   - Its section's raw source path
-   - Instructions to read its section's `.md` files, create concept/entity pages, and update `index.md` + `log.md`
+3. **Delegate to parallel subagents** (via `delegate_task` with max 3 concurrent — `delegate_task` enforces a default `max_concurrent_children=3` limit; split into batches of 3 if more are needed). Divide the export into logical sections (e.g., Kubernetes, Containers, IaaS/Tools). Each subagent gets:
+   - The wiki path, SCHEMA.md context
+   - Its section's raw source path(s)
+   - Instructions to read its section's `.md` files, create concept/entity pages
    - Key rules: frontmatter, [[wikilinks]], lowercase-hyphenated filenames, proper tags, write in English
 
-4. **Index/log updates — parent reconciles, not children:** Do NOT let each subagent patch `index.md` and `log.md` independently — concurrent edits cause formatting artifacts (e.g., `||` prefixes, broken pipes). Instead:
-   - Each subagent writes its pages and returns a list of created files in its summary.
+4. **Parent reconciles index + log — children MUST NOT touch them.** This is critical:
+   - Each subagent writes pages and returns a list of created files in its summary.
    - The **parent** collects all results, then patches `index.md` and `log.md` **once** at the end.
-   - This avoids race conditions entirely and keeps the update atomic.
+   - If a subagent is instructed to update index/log, multiple concurrent edits will produce formatting artifacts (`||` prefixes, broken pipes, duplicate section headers).
+   - **Explicitly tell subagents**: "Do NOT modify index.md or log.md — the parent agent will handle those after all subagents finish."
    
-   Alternatively, if you must delegate index/log updates to subagents, serialize them: dispatch one subagent for page creation and a separate one for index/log updates after all pages exist. Never have 2+ subagents patch the same file.
+   If the subagent model doesn't support returning summaries cleanly, serialize: dispatch one subagent for page creation, then a separate one for index/log updates after all pages exist.
 
 5. **Group sub-topics, don't flood:** For a 200+ file export, instruct subagents to create **well-structured pages** that group related sub-topics (e.g., one "kubernetes-networking.md" page rather than 15 tiny ones). Target 8-15 pages per subagent, not 50.
 
@@ -541,6 +571,17 @@ When the user provides a ZIP export from a note-taking app (Obsidian, Notion, Be
    ```
 
 7. **Report growth:** After all subagents finish, summarize: pages created, wiki size before/after, raw files ingested.
+
+8. **Sync Key Resources links:** Raw exports from wolai.app often have user-curated external links between the `## 目录` (TOC) and the first `#` heading — tutorials, official docs, and GitHub repos the user considered most important for that topic. After creating or updating wiki pages, **always sync these links** by running the fix script:
+
+   ```bash
+   python3 scripts/fix-top-links.py          # full scan + fix
+   python3 scripts/fix-top-links.py --dry-run  # preview only
+   ```
+
+   This script (at the `wiki-reingest` skill directory) scans all raw exports, finds matching wiki pages via `sources:` frontmatter, and inserts missing links as a `> 🔗 **Key Resources:**` blockquote after the H1 title. It's **idempotent** — safe to run repeatedly.
+
+   If creating wiki pages manually (not via the script), also add the Key Resources blockquote yourself: extract the external links from between `## 目录` and the first `#` heading in the raw source, and insert them right after the H1 title.
 
 > 📖 See `references/zip-import-workflow.md` for a concrete worked example with exact Python snippets, subagent batch structure, and pitfalls from a real 264+184 file import.
 > 📖 See `references/sanitize-raw-filenames.md` for the full file-sanitization workflow: handling Chinese→hash collisions, bottom-up directory renames, conflict resolution, and reference updating.
@@ -660,6 +701,8 @@ vault in Obsidian on your laptop/phone — changes appear within seconds.
   tag-stripping for web research. Set `--no-sandbox` if browser tools are available.
 - **Do NOT hash or strip Chinese characters from filenames:** UTF-8 Chinese characters work fine on modern Windows and Linux. Only lowercase, replace spaces with hyphens, and strip trailing whitespace. Hashing Chinese names to `chinese-xxxxx` destroys traceability and was explicitly rejected by the user.
 - **Concurrent index/log edits from subagents cause formatting corruption:** When delegating ingest work to parallel subagents, do NOT let each one independently patch `index.md` and `log.md`. Concurrent edits produce artifacts: `||` prefixes on list lines, broken pipe characters, duplicate section headers. **Fix:** Have each subagent return a list of created files in its summary. The **parent** patches `index.md` and `log.md` once after all subagents finish. If the subagent model doesn't support returning summaries cleanly, serialize the work: dispatch one subagent to create pages, then a separate one to update index/log after all pages exist.
+- **delegate_task max_concurrent_children defaults to 3:** If you try to dispatch 4+ tasks at once, the tool errors. Split into batches: 3 tasks first, then the remaining 1+ when those complete. The error message tells you the limit — read it and adjust, don't retry with the same count.
+- **Subagent file modifications invalidate the parent's cached reads:** Subagents write pages and sometimes patch shared files despite instructions. When the parent later reads a file a subagent modified, it gets a "sibling modified" warning. Always re-read index.md and log.md after all subagents finish rather than relying on earlier cached reads.
 - **File renames before directory renames:** When renaming thousands of files, rename files FIRST while parent directories still have their old names. THEN rename directories bottom-up (deepest first). If directories are renamed first, pre-computed old file paths become invalid.
 - **Shell meta-characters (`&`, `$`) in zip filenames:** The terminal tool interprets `&` as a background operator even inside double quotes. Copy the zip to `/tmp/` with a safe name first using Python's `shutil.copy2()`, then unzip the copy.
 - **Use Python/execute_code for bulk file ops, not terminal:** `rm -rf` on a directory with 300+

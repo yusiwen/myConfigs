@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+"""Wolai blocks to Markdown converter - handles recursive page nesting.
+Reads /tmp/blocks_*.json files and exports to markdown matching wolai.app convention."""
+
+import json, os, re, shutil, glob
+
+EXPORT_DIR = "/Users/yusiwen/git/mine/wiki/raw/web-export"
+DATA_DIR = "/tmp"
+
+def render_inline(items):
+    if not items: return ""
+    parts = []
+    for item in items:
+        t = item.get("title","")
+        typ = item.get("type","text")
+        if typ == "equation": parts.append(f"${t}$"); continue
+        if typ == "bi_link": parts.append(f"[{t}](wiki:{item.get('ref_id','')})"); continue
+        text = t
+        if item.get("inline_code"): text = f"`{text}`"
+        if item.get("bold"): text = f"**{text}**"
+        if item.get("italic"): text = f"*{text}*"
+        if item.get("strikethrough"): text = f"~~{text}~~"
+        if item.get("underline"): text = f"<u>{text}</u>"
+        link = item.get("link")
+        if link: text = f"[{text}]({link} \"{t}\")"
+        parts.append(text)
+    return "".join(parts)
+
+def block_to_md(block):
+    typ = block.get("type","")
+    if typ == "heading":
+        return f"\n{'#' * block.get('level',1)} {render_inline(block.get('content',[]))}\n"
+    if typ == "text":
+        return render_inline(block.get("content",[])) + "\n"
+    if typ == "code":
+        lang = block.get("language","")
+        code = "".join(p.get("title","") for p in block.get("content",[]))
+        return f"\n```{lang}\n{code}\n```\n"
+    if typ == "bookmark":
+        url = block.get("bookmark_source","")
+        info = block.get("bookmark_info",{})
+        t = info.get("title","") or url
+        d = info.get("description","")
+        if d: return f"> [{t}]({url})\n> {d}\n"
+        return f"[{t}]({url})\n"
+    if typ == "callout":
+        return "> " + render_inline(block.get("content",[])) + "\n"
+    if typ in ("bull_list",):
+        return "- " + render_inline(block.get("content",[])) + "\n"
+    if typ in ("todo_list",):
+        ck = "x" if block.get("checked") else " "
+        return f"- [{ck}] " + render_inline(block.get("content",[])) + "\n"
+    if typ == "enum_list":
+        return "1. " + render_inline(block.get("content",[])) + "\n"
+    if typ == "divider": return "---\n"
+    if typ == "image":
+        url = block.get("media",{}).get("download_url","")
+        if url: return f"![image]({url})\n"
+        return ""
+    if typ == "quote": return "> " + render_inline(block.get("content",[])) + "\n"
+    if typ == "block_equation": return "\n$$" + render_inline(block.get("content",[])) + "$$\n"
+    return ""
+
+def slugify(name):
+    name = name.strip().replace(" ","-").replace("/","-").replace(":","-").replace("(","").replace(")","")
+    name = re.sub(r'[<>"\\|?*]','',name)
+    name = re.sub(r'-+','-',name).strip('-')
+    return name or "untitled"
+
+def get_page_title(blocks):
+    for b in blocks:
+        if b.get("type")=="page":
+            c = b.get("content",[])
+            if c: return c[0].get("title","Untitled")
+    return "Untitled"
+
+def build_ordered(blocks):
+    bm = {b["id"]:b for b in blocks}
+    for b in blocks:
+        cids = b.get("children",{}).get("ids",[])
+        b["_kids"] = []
+        for cid in cids:
+            if cid in bm: b["_kids"].append(bm[cid])
+    for b in blocks:
+        if b.get("type")=="page": return flatten(b)
+    return []
+
+def flatten(node, depth=0):
+    r = [(node,depth)]
+    for c in node.get("_kids",[]):
+        r.extend(flatten(c,depth+1))
+    return r
+
+def find_subpages(blocks):
+    root_id = None
+    for b in blocks:
+        if b.get("type")=="page": root_id = b["id"]; break
+    return [b for b in blocks if b.get("type")=="page" and b["id"]!=root_id]
+
+def page_to_md(blocks, subpage_links=None):
+    page_title = get_page_title(blocks)
+    ordered = build_ordered(blocks)
+    root_id = blocks[0]["id"] if blocks else ""
+    lines = [f"# {page_title}\n"]
+    if subpage_links:
+        lines.append("## 目录\n")
+        for slug, title in subpage_links:
+            lines.append(f"- [{title}]({slug}/{slug}.md \"{title}\")")
+        lines.append("")
+    for block, depth in ordered:
+        if block.get("type")=="page" and block["id"]==root_id: continue
+        if block.get("type")=="page": continue
+        md = block_to_md(block)
+        if md and md.strip():
+            lines.append(md)
+    return "\n".join(lines)
+
+def main():
+    out_dir = os.environ.get("EXPORT_DIR", EXPORT_DIR)
+    if os.path.exists(out_dir):
+        shutil.rmtree(out_dir)
+    
+    id_map = {}
+    for jf in sorted(glob.glob(f"{DATA_DIR}/blocks_*.json")):
+        with open(jf) as f:
+            data = json.load(f)
+        id_map[data["page_id"]] = data["blocks"]
+    
+    if not id_map:
+        print("No block data files found in /tmp/blocks_*.json")
+        return
+    
+    # Use first page's parent_chain to find root, or just pick first
+    root_id = list(id_map.keys())[0]
+    
+    def export_recursive(blocks, output_dir):
+        page_title = get_page_title(blocks)
+        slug = slugify(page_title)
+        os.makedirs(output_dir, exist_ok=True)
+        subpages = find_subpages(blocks)
+        subpage_links = []
+        for sp in subpages:
+            sp_id = sp["id"]
+            sp_title = get_page_title([sp])
+            sp_slug = slugify(sp_title)
+            if sp_id in id_map:
+                sp_blocks = id_map[sp_id]
+                sp_dir = os.path.join(output_dir, sp_slug)
+                export_recursive(sp_blocks, sp_dir)
+                subpage_links.append((sp_slug, sp_title))
+        
+        md = page_to_md(blocks, subpage_links if subpage_links else None)
+        with open(os.path.join(output_dir, f"{slug}.md"), "w", encoding="utf-8") as f:
+            f.write(md)
+        print(f"  ✓ {slug}/{slug}.md ({page_title})")
+    
+    export_recursive(id_map[root_id], out_dir)
+    print(f"\n✅ Export complete → {out_dir}")
+
+if __name__ == "__main__":
+    main()
