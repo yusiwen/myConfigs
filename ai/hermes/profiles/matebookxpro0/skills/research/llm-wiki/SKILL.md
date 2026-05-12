@@ -1,7 +1,7 @@
 ---
 name: llm-wiki
 description: "Karpathy's LLM Wiki: build/query interlinked markdown KB."
-version: 2.6.0
+version: 2.6.1
 author: Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -9,7 +9,7 @@ metadata:
   hermes:
     tags: [wiki, knowledge-base, research, notes, markdown, rag-alternative]
     category: research
-    related_skills: [obsidian, arxiv]
+    related_skills: [obsidian, arxiv, wiki-git-pull-push]
 ---
 
 # Karpathy's LLM Wiki
@@ -318,26 +318,27 @@ This workflow differs from "Research & Ingest" (step 2) in that it starts from *
 
 When the user provides a source (URL, file, paste), integrate it into the wiki:
 
-① **Capture the raw source:**
+① **Pull before write (git-synced wikis only):** If the wiki is managed via Git
+   (check for a `.git` directory), run `git pull --rebase` before making any
+   changes. This reduces merge conflicts when multiple machines write to the
+   same wiki. See the `wiki-git-pull-push` skill for the full pull-commit-push
+   workflow.
+
+② **Capture the raw source:**
    - URL → use `web_extract` to get markdown, save to `raw/articles/`
    - PDF → use `web_extract` (handles PDFs), save to `raw/papers/`
    - Pasted text → save to appropriate `raw/` subdirectory
    - Name the file descriptively: `raw/articles/karpathy-llm-wiki-2026.md`
    - **Add raw frontmatter** (`source_url`, `ingested`, `sha256` of the body).
-     On re-ingest of the same URL: recompute the sha256, compare to the stored value —
-     skip if identical, flag drift and update if different. This is cheap enough to
-     do on every re-ingest and catches silent source changes.
-
-② **Discuss takeaways** with the user — what's interesting, what matters for
+     On re-ingest of the same URL: recompute the sha256, compare to the stored value —\n     skip if identical, flag drift and update if different. This is cheap enough to\n     do on every re-ingest and catches silent source changes.\n\n③ **Discuss takeaways** with the user — what's interesting, what matters for
    the domain. (Skip this in automated/cron contexts — proceed directly.)
-   **Note:** If the user says "just add it", "wiki this", or otherwise signals
-   they want the ingest without back-and-forth, skip directly to step ③.
+   **Note:** If the user says "just add it", "wiki this", or otherwise signals\n   they want the ingest without back-and-forth, skip directly to step ④.
 
-③ **Check what already exists** — search index.md and use `search_files` to find
+④ **Check what already exists** — search index.md and use `search_files` to find
    existing pages for mentioned entities/concepts. This is the difference between
    a growing wiki and a pile of duplicates.
 
-④ **Write or update wiki pages:**
+⑤ **Write or update wiki pages:**
    - **New entities/concepts:** Create pages only if they meet the Page Thresholds
      in SCHEMA.md (2+ source mentions, or central to one source).
      **Exception:** When the user says "create missing pages" or "fill the gaps"
@@ -346,7 +347,10 @@ When the user provides a source (URL, file, paste), integrate it into the wiki:
    - **Existing pages:** Add new information, update facts, bump `updated` date.
      When new info contradicts existing content, follow the Update Policy.
    - **Cross-reference:** Every new or updated page must link to at least 2 other
-     pages via `[[wikilinks]]`. Check that existing pages link back.
+     pages via `[[wikilinks]]`. **After creating a new page, search for existing
+     pages that mention the topic and add backlinks from them** — this weaves the
+     new page into the wiki's link graph instead of leaving it isolated.
+     Check that existing pages link back; if they don't, update them.
    - **Tags:** Only use tags from the taxonomy in SCHEMA.md
    - **Provenance:** On pages synthesizing 3+ sources, append `^[raw/articles/source.md]`
      markers to paragraphs whose claims trace to a specific source.
@@ -354,13 +358,13 @@ When the user provides a source (URL, file, paste), integrate it into the wiki:
      `confidence: medium` or `low` in frontmatter. Don't mark `high` unless the
      claim is well-supported across multiple sources.
 
-⑤ **Update navigation:**
+⑥ **Update navigation:**
    - Add new pages to `index.md` under the correct section, alphabetically
    - Update the "Total pages" count and "Last updated" date in index header
    - Append to `log.md`: `## [YYYY-MM-DD] ingest | Source Title`
    - List every file created or updated in the log entry
 
-⑥ **Report what changed** — list every file created or updated to the user.
+⑦ **Report what changed** — list every file created or updated to the user.
 
 A single source can trigger updates across 5-15 wiki pages. This is normal
 and desired — it's the compounding effect.

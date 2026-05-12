@@ -103,3 +103,8 @@ terminal(f"cd {wiki} && git add -A && git commit -m '...' && git push")
 - **Large commits (>20 files) increase conflict risk** — prefer smaller, more frequent commits.
 - **`git pull --rebase` without arguments** requires the current branch to have an upstream tracking branch configured (usually set automatically on first clone/push). If not, specify remote and branch explicitly: `git pull --rebase origin main`
 - **This skill assumes `log.md` is append-only** — the workflow is most effective when log entries are only added at the bottom, never reordered or rewritten.
+- **NEVER use `patch` with `old_string` on append-only files like `log.md`** — the `patch` tool replaces text by matching `old_string`, which can accidentally replace an existing entry instead of appending. This silently corrupts the append-only invariant. Append-only files must be modified using ONE of:
+  - **Safe method (read + write):** `read_file` to get full content → append new entry at end → `write_file` to write back. Use this when the file fits in context comfortably.
+  - **Safe method (last-line anchor patch):** `read_file` to get the last line → use `patch` with `old_string` set to that last line and `new_string` = `old_line + newline + new_entry`. This guarantees append because you're replacing the last line with itself + new content. Verify the match is truly unique (e.g. the file's final blank line `""` or a unique closing marker).
+  - **Safe method (read_file with offset/limit):** For very large log files, use `read_file` with `offset` near the end to get the last N lines, then append similarly.
+- **`patch` with `replace_all=true` on log.md is even more dangerous** — never use it on append-only files.
