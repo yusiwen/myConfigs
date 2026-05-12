@@ -152,6 +152,14 @@ Pick the closest existing category. Don't invent new top-level categories casual
 
 7. **Linking to skills that don't exist in-repo.** `related_skills: [some-user-local-skill]` works for you but breaks for other clones. Prefer only in-repo links.
 
+8. **Hardcoded environment-specific values in skill content.** Before presenting a skill to the user or committing, audit every path, branch name, remote name, directory reference, and machine-specific value. Common culprits:
+   - `$HOME/git/mine/wiki` → should be `$WIKI` / `$WIKI_PATH` / `~/wiki` (use the llm-wiki resolution chain)
+   - `origin master` → should be `git pull --rebase` / `git push` without arguments (uses upstream tracking)
+   - `/home/<user>/...` → should use `$HOME`, `~`, or env-var-based resolution
+   - A specific hostname, port, or absolute path that only exists on one machine
+   
+   Fix: parameterize through env vars, config.yaml settings, or the resolution chains defined by upstream skills (e.g. llm-wiki's wiki path resolution). The skill should work on any machine that has the relevant tools and config, not just yours.
+
 ## Verification Checklist
 
 - [ ] File is at `skills/<category>/<name>/SKILL.md` (not in `~/.hermes/skills/`)
