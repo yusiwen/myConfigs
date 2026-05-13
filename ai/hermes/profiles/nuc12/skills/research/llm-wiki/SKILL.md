@@ -1,7 +1,7 @@
 ---
 name: llm-wiki
 description: "Karpathy's LLM Wiki: build/query interlinked markdown KB."
-version: 2.6.0
+version: 2.7.0
 author: Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -9,7 +9,7 @@ metadata:
   hermes:
     tags: [wiki, knowledge-base, research, notes, markdown, rag-alternative]
     category: research
-    related_skills: [obsidian, arxiv]
+    related_skills: [obsidian, arxiv, wiki-git-pull-push]
 ---
 
 # Karpathy's LLM Wiki
@@ -312,32 +312,134 @@ When the user asks to **find existing documents about a topic** in the wiki, and
 
 This workflow differs from "Research & Ingest" (step 2) in that it starts from *wiki content* rather than *external sources*. The goal is curation of existing knowledge, not expansion from new research. The user already has the domain expertise — they want you to organize what's there and fill the structural gaps.
 
+## Sensitive Data Check
+
+**Before adding any new information to the wiki — raw sources, wiki pages, or any content — check for sensitive data first.**
+
+`raw/` exports have historically contained real production credentials — Gitea app.ini secrets, MinIO passwords, Spring Boot DB credentials, Prometheus auth, Docker swarm tokens, and more (see `raw/tasks/sensitive-data.md` for the full audit).
+
+### When to scan
+
+Scan the content being added when any of these is true:
+- **Ingesting a zip export** — scan all `.md`, `.yaml`, `.env`, `.cfg`, `.ini`, `.conf`, `.toml`, `.properties`, `.json`, `.py` files for credentials
+- **Adding a raw source** from a URL, pasted text, or file copy — scan the text you're saving
+- **Writing wiki pages** from research or synthesis — only scan if your source text contained credentials in raw format
+- **Creating entity pages for tools/tool configs** — config file examples often include real secrets
+
+### What to scan for
+
+Use `execute_code` (Python) with regex patterns:
+
+```python
+import os, re
+
+SENSITIVE_PATTERNS = [
+    # API keys and tokens
+    (r'(?i)(api[_-]?key|api[_-]?secret|access[_-]?key|secret[_-]?key)["\\s:=]+["\\']?[A-Za-z0-9_\\-]{16,}', "API key / secret"),
+    (r'(?i)(bearer|auth[_-]?token|token)["\\s:=]+["\\']?[A-Za-z0-9_\\-]{20,}', "Bearer token / auth token"),
+    (r'(?i)(sk-[A-Za-z0-9]{20,}|pk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{4,})', "OpenAI / GitHub token"),
+    (r'eyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}', "JWT token (potentially real)"),
+    (r'SWMTKN-[A-Za-z0-9-]{40,}', "Docker Swarm join token"),
+
+    # Passwords
+    (r'(?i)(password|passwd|pwd)["\\s:=]+["\\']?[A-Za-z0-9!@#$%^&*()_+\\-={}\\[\\]|;:,.<>?]{8,}', "Password (≥8 chars)"),
+
+    # Private keys and certs
+    (r'-----BEGIN.*PRIVATE KEY-----', "Private key"),
+    (r'-----BEGIN CERTIFICATE-----', "Certificate"),
+    (r'(?i)(ssh-rsa|ssh-ed25519|ecdsa-sha2) AAAA[0-9A-Za-z+/]+[=]{0,3}', "SSH public key"),
+
+    # Database connection strings with credentials
+    (r'(?i)(mongodb|postgresql|mysql|redis|jdbc|amqp|rabbitmq)://[^:\\s]+:[^@\\s]+@', "DB connection string with password"),
+]
+
+def scan_content(text, filename=""):
+    hits = []
+    for pattern, label in SENSITIVE_PATTERNS:
+        matches = re.finditer(pattern, text)
+        for m in matches:
+            # Redact the value for safe reporting
+            exposed = m.group(0)
+            redacted = exposed[:20] + "..." if len(exposed) > 20 else exposed
+            hits.append({"file": filename, "type": label, "match": redacted})
+    return hits
+```
+
+Or use `search_files` for a quick pre-check:
+
+```bash
+search_files "(?i)(api[_-]?key|secret[_-]?key|password|passwd)['\"\\s:=]+['\"]?[A-Za-z0-9_\\-]{16,}" path="<new-content-path>"
+```
+
+### What to do when found
+
+**Do NOT silently redact or commit.** Report to the user with specific file paths, the type of secret found, and the first few characters for identification:
+
+> ⚠️ **Sensitive data detected** in `raw/network-export/config/app.ini`:
+> - API key / secret: `5BOWX23DZU5yC0j...` (line 45)
+> - JWT token: `eyJhbG...hPpg` (line 43)
+> - Password: `5BHLfn8i2Pa1MN5f` (line 55)
+>
+> How should I handle these? Options:
+> 1. **Redact now** — replace with `<redacted>` placeholder in-place
+> 2. **Skip and add** — copy the file as-is but warn you (you'll redact later)
+> 3. **Abort** — don't add this content until you've scrubbed it manually
+
+Let the user decide. Never make the call unilaterally.
+
+### Known-clean exceptions
+
+The following are safe and do not need scanning:
+- `concepts/`, `entities/`, `comparisons/`, `queries/` pages — curated content is verified clean
+- Code examples where the "password" is clearly a placeholder: `xxxx`, `****`, `<placeholder>`, `your-password`, `{{ password }}`, `$PASSWORD`, `\${PASSWORD}`
+- RFC example values (e.g. OAuth2 spec sample tokens, well-known test strings)
+- Private IP ranges (192.168.x.x, 10.x.x.x, 172.16-31.x.x) used as networking examples
+
+### Historical reference
+
+See `raw/tasks/sensitive-data.md` for the full audit of secrets found in `raw/` exports. Update this report when new sensitive data is discovered during future scans.
+
+See `scripts/scan-sensitive-data.py` for a reusable scanner with all patterns,
+placeholder detection, and CLI/import support. Use the command-line interface for
+quick checks on any path:
+
+```bash
+python3 scripts/scan-sensitive-data.py raw/my-new-export/
+```
+
+Or import `scan_files()` into your ingest workflow scripts for programmatic use.
+
+**This check applies to all ingest and content-creation operations below.**
+
+---
+
 ## Core Operations
 
 ### 1. Ingest
 
 When the user provides a source (URL, file, paste), integrate it into the wiki:
 
-① **Capture the raw source:**
+① **Pull before write (git-synced wikis only):** If the wiki is managed via Git
+   (check for a `.git` directory), run `git pull --rebase` before making any
+   changes. This reduces merge conflicts when multiple machines write to the
+   same wiki. See the `wiki-git-pull-push` skill for the full pull-commit-push
+   workflow.
+
+② **Capture the raw source:**
    - URL → use `web_extract` to get markdown, save to `raw/articles/`
    - PDF → use `web_extract` (handles PDFs), save to `raw/papers/`
    - Pasted text → save to appropriate `raw/` subdirectory
    - Name the file descriptively: `raw/articles/karpathy-llm-wiki-2026.md`
    - **Add raw frontmatter** (`source_url`, `ingested`, `sha256` of the body).
-     On re-ingest of the same URL: recompute the sha256, compare to the stored value —
-     skip if identical, flag drift and update if different. This is cheap enough to
-     do on every re-ingest and catches silent source changes.
-
-② **Discuss takeaways** with the user — what's interesting, what matters for
+     On re-ingest of the same URL: recompute the sha256, compare to the stored value —\n     skip if identical, flag drift and update if different. This is cheap enough to\n     do on every re-ingest and catches silent source changes.\n\n③ **Discuss takeaways** with the user — what's interesting, what matters for
    the domain. (Skip this in automated/cron contexts — proceed directly.)
-   **Note:** If the user says "just add it", "wiki this", or otherwise signals
-   they want the ingest without back-and-forth, skip directly to step ③.
+   **Note:** If the user says "just add it", "wiki this", or otherwise signals\n   they want the ingest without back-and-forth, skip directly to step ④.
 
-③ **Check what already exists** — search index.md and use `search_files` to find
+④ **Check what already exists** — search index.md and use `search_files` to find
    existing pages for mentioned entities/concepts. This is the difference between
    a growing wiki and a pile of duplicates.
 
-④ **Write or update wiki pages:**
+⑤ **Write or update wiki pages:**
    - **New entities/concepts:** Create pages only if they meet the Page Thresholds
      in SCHEMA.md (2+ source mentions, or central to one source).
      **Exception:** When the user says "create missing pages" or "fill the gaps"
@@ -346,7 +448,10 @@ When the user provides a source (URL, file, paste), integrate it into the wiki:
    - **Existing pages:** Add new information, update facts, bump `updated` date.
      When new info contradicts existing content, follow the Update Policy.
    - **Cross-reference:** Every new or updated page must link to at least 2 other
-     pages via `[[wikilinks]]`. Check that existing pages link back.
+     pages via `[[wikilinks]]`. **After creating a new page, search for existing
+     pages that mention the topic and add backlinks from them** — this weaves the
+     new page into the wiki's link graph instead of leaving it isolated.
+     Check that existing pages link back; if they don't, update them.
    - **Tags:** Only use tags from the taxonomy in SCHEMA.md
    - **Provenance:** On pages synthesizing 3+ sources, append `^[raw/articles/source.md]`
      markers to paragraphs whose claims trace to a specific source.
@@ -354,13 +459,13 @@ When the user provides a source (URL, file, paste), integrate it into the wiki:
      `confidence: medium` or `low` in frontmatter. Don't mark `high` unless the
      claim is well-supported across multiple sources.
 
-⑤ **Update navigation:**
+⑥ **Update navigation:**
    - Add new pages to `index.md` under the correct section, alphabetically
    - Update the "Total pages" count and "Last updated" date in index header
    - Append to `log.md`: `## [YYYY-MM-DD] ingest | Source Title`
    - List every file created or updated in the log entry
 
-⑥ **Report what changed** — list every file created or updated to the user.
+⑦ **Report what changed** — list every file created or updated to the user.
 
 A single source can trigger updates across 5-15 wiki pages. This is normal
 and desired — it's the compounding effect.

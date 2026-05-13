@@ -22,6 +22,9 @@ Key rules:
   The parent will update index.md and log.md.
 - Tags must come from SCHEMA.md taxonomy. Add new tags at your discretion
   but be conservative.
+- **Sensitive data check:** Before adding any content from config files, check for
+  credentials (API keys, passwords, tokens). If found, include the file path and
+  secret type in your summary — DO NOT silently redact.
 
 Existing wiki pages to be aware of:
 {{LIST_KEY_EXISTING_PAGES}}
