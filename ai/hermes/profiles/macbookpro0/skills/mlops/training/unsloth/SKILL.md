@@ -27,15 +27,39 @@ This skill should be triggered when:
 
 ## Quick Reference
 
-### Common Patterns
+### LoRA/QLoRA at a Glance
 
-*Quick reference patterns will be added as you use the skill.*
+| Concept | Summary |
+|---------|---------|
+| **LoRA** | Freeze base weights, train small A/B matrices (~1% of params). Scaling: `alpha / r`. |
+| **QLoRA** | LoRA + 4-bit NF4 base model. Uses 4× less VRAM with ~1% accuracy loss. |
+| **rsLoRA** | Uses `alpha / sqrt(r)` scaling. Better for high ranks. Enable via `use_rslora=True`. |
+| **LoftQ** | SVD-initialized LoRA for quantized models. Config: `loftq_config`. |
+| **Train on completions** | Mask user tokens, train only on assistant responses. +1% accuracy. |
+
+### Key Hyperparameters
+
+- **Rank (r)**: Start at 16 or 32. Higher = more capacity + more VRAM + overfitting risk.
+- **Alpha**: Set to `r` or `r * 2` (alpha/rank >= 1).
+- **Target modules**: Always target ALL linear layers (attention + MLP) — research shows this is critical to match full fine-tuning.
+- **Learning rate**: `2e-4` for fine-tuning, `5e-6` for RL (DPO/GRPO).
+- **Epochs**: 1-3 max. If loss < 0.2, you're overfitting.
+- **Gradient checkpointing**: Use `"unsloth"` for 30% less VRAM.
+- **Dropout**: Keep at 0 — unreliable for short fine-tuning runs.
+
+### Overfitting Fixes
+
+1. Scale LoRA alpha down (multiply by 0.5) post-training
+2. Reduce epochs, increase weight_decay (0.01), increase lora_dropout (0.1)
+3. Increase batch size or gradient accumulation
+4. Use evaluation early stopping
 
 ## Reference Files
 
 This skill includes comprehensive documentation in `references/`:
 
 - **llms-txt.md** - Llms-Txt documentation
+- **lora-hyperparameters-guide.md** - LoRA/QLoRA hyperparameters, advanced variants, best practices (new)
 
 Use `view` to read specific reference files when detailed information is needed.
 
