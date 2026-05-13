@@ -1,7 +1,7 @@
 ---
 name: wiki-reingest
 description: "Re-ingest updated zip exports into the wiki: detect new/updated/deleted notes, update raw sources and wiki pages accordingly."
-version: 1.0.0
+version: 1.3.0
 author: Hermes Agent
 platforms: [linux, macos]
 metadata:
@@ -136,6 +136,7 @@ Then ask:
 ### ⑤ Execute
 
 - **New files:** Copy to `raw/<export-name>/` with sanitized path, then run the standard ingest workflow from `llm-wiki` (Importing Notebook/App Exports) to create wiki pages.
+  **⚠️ Sensitive data check:** Before copying, scan ALL new files (not just markdown — `.yaml`, `.ini`, `.conf`, `.properties`, `.env`, `.json` too) for credentials. See the `llm-wiki` skill → **Sensitive Data Check** section for the full convention, patterns, and handling options. Report findings to the user and ask how to proceed — never silently commit secrets.
 - **Renamed files:** Update the raw source at the new path, then run the provenance reference update (replace old raw path with new raw path across all wiki pages).
 - **Deleted files:** Follow user's decision.
 - **Clean up:** `shutil.rmtree(tmp)`.
