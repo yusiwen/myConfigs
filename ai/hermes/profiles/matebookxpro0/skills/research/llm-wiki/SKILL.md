@@ -1,7 +1,7 @@
 ---
 name: llm-wiki
 description: "Karpathy's LLM Wiki: build/query interlinked markdown KB."
-version: 2.6.0
+version: 2.6.1
 author: Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -9,7 +9,7 @@ metadata:
   hermes:
     tags: [wiki, knowledge-base, research, notes, markdown, rag-alternative]
     category: research
-    related_skills: [obsidian, arxiv]
+    related_skills: [obsidian, arxiv, wiki-git-pull-push]
 ---
 
 # Karpathy's LLM Wiki
@@ -91,7 +91,7 @@ cross-referenced by the agent.
 
 When the user has an existing wiki, **always orient yourself before doing anything**:
 
-① **Read `SCHEMA.md`** — understand the domain, conventions, and tag taxonomy.
+① **Read `SCHEMA.md`** — understand the domain, conventions, tag taxonomy, **and filename convention** (it's the canonical source, not memory).
 ② **Read `index.md`** — learn what pages exist and their summaries.
 ③ **Scan recent `log.md`** — read the last 20-30 entries to understand recent activity.
 
@@ -318,32 +318,39 @@ This workflow differs from "Research & Ingest" (step 2) in that it starts from *
 
 When the user provides a source (URL, file, paste), integrate it into the wiki:
 
-① **Capture the raw source:**
+① **Pull before write (git-synced wikis only):** If the wiki is managed via Git
+   (check for a `.git` directory), run `git pull --rebase` before making any
+   changes. This reduces merge conflicts when multiple machines write to the
+   same wiki. See the `wiki-git-pull-push` skill for the full pull-commit-push
+   workflow.
+
+② **Capture the raw source:**
    - URL → use `web_extract` to get markdown, save to `raw/articles/`
    - PDF → use `web_extract` (handles PDFs), save to `raw/papers/`
    - Pasted text → save to appropriate `raw/` subdirectory
    - Name the file descriptively: `raw/articles/karpathy-llm-wiki-2026.md`
    - **Add raw frontmatter** (`source_url`, `ingested`, `sha256` of the body).
-     On re-ingest of the same URL: recompute the sha256, compare to the stored value —
-     skip if identical, flag drift and update if different. This is cheap enough to
-     do on every re-ingest and catches silent source changes.
-
-② **Discuss takeaways** with the user — what's interesting, what matters for
+     On re-ingest of the same URL: recompute the sha256, compare to the stored value —\n     skip if identical, flag drift and update if different. This is cheap enough to\n     do on every re-ingest and catches silent source changes.\n\n③ **Discuss takeaways** with the user — what's interesting, what matters for
    the domain. (Skip this in automated/cron contexts — proceed directly.)
-   **Note:** If the user says "just add it", "wiki this", or otherwise signals
-   they want the ingest without back-and-forth, skip directly to step ③.
+   **Note:** If the user says "just add it", "wiki this", or otherwise signals\n   they want the ingest without back-and-forth, skip directly to step ④.
 
-③ **Check what already exists** — search index.md and use `search_files` to find
+④ **Check what already exists** — search index.md and use `search_files` to find
    existing pages for mentioned entities/concepts. This is the difference between
    a growing wiki and a pile of duplicates.
 
-④ **Write or update wiki pages:**
+⑤ **Write or update wiki pages:**
    - **New entities/concepts:** Create pages only if they meet the Page Thresholds
-     in SCHEMA.md (2+ source mentions, or central to one source)
+     in SCHEMA.md (2+ source mentions, or central to one source).
+     **Exception:** When the user says "create missing pages" or "fill the gaps"
+     from specific raw files, promote EVERY distinct topic in those files — the
+     user's explicit directive overrides the threshold.
    - **Existing pages:** Add new information, update facts, bump `updated` date.
      When new info contradicts existing content, follow the Update Policy.
    - **Cross-reference:** Every new or updated page must link to at least 2 other
-     pages via `[[wikilinks]]`. Check that existing pages link back.
+     pages via `[[wikilinks]]`. **After creating a new page, search for existing
+     pages that mention the topic and add backlinks from them** — this weaves the
+     new page into the wiki's link graph instead of leaving it isolated.
+     Check that existing pages link back; if they don't, update them.
    - **Tags:** Only use tags from the taxonomy in SCHEMA.md
    - **Provenance:** On pages synthesizing 3+ sources, append `^[raw/articles/source.md]`
      markers to paragraphs whose claims trace to a specific source.
@@ -351,13 +358,13 @@ When the user provides a source (URL, file, paste), integrate it into the wiki:
      `confidence: medium` or `low` in frontmatter. Don't mark `high` unless the
      claim is well-supported across multiple sources.
 
-⑤ **Update navigation:**
+⑥ **Update navigation:**
    - Add new pages to `index.md` under the correct section, alphabetically
    - Update the "Total pages" count and "Last updated" date in index header
    - Append to `log.md`: `## [YYYY-MM-DD] ingest | Source Title`
    - List every file created or updated in the log entry
 
-⑥ **Report what changed** — list every file created or updated to the user.
+⑦ **Report what changed** — list every file created or updated to the user.
 
 A single source can trigger updates across 5-15 wiki pages. This is normal
 and desired — it's the compounding effect.
@@ -658,9 +665,11 @@ vault in Obsidian on your laptop/phone — changes appear within seconds.
   `extracted: true` in the raw frontmatter so future lints know it's not a verbatim source.
 - **Browser sandbox failures are common** in containers/VMs — fall back to `curl -sL` + Python
   tag-stripping for web research. Set `--no-sandbox` if browser tools are available.
-- **Do NOT hash or strip Chinese characters from filenames:** UTF-8 Chinese characters work fine on modern Windows and Linux. Only lowercase, replace spaces with hyphens, and strip trailing whitespace. Hashing Chinese names to `chinese-xxxxx` destroys traceability and was explicitly rejected by the user.
+- **Filename conventions live in SCHEMA.md, not memory:** The wiki's SCHEMA.md is the canonical source for the filename convention (lowercase, spaces-to-hyphens, preserve all special characters). Before any ingest, read SCHEMA.md from the wiki root. Do NOT strip Chinese characters, parentheses, or ampersands from filenames. Do NOT hash or truncate them.
 - **Concurrent index/log edits from subagents cause formatting corruption:** When delegating ingest work to parallel subagents, do NOT let each one independently patch `index.md` and `log.md`. Concurrent edits produce artifacts: `||` prefixes on list lines, broken pipe characters, duplicate section headers. **Fix:** Have each subagent return a list of created files in its summary. The **parent** patches `index.md` and `log.md` once after all subagents finish. If the subagent model doesn't support returning summaries cleanly, serialize the work: dispatch one subagent to create pages, then a separate one to update index/log after all pages exist.
 - **File renames before directory renames:** When renaming thousands of files, rename files FIRST while parent directories still have their old names. THEN rename directories bottom-up (deepest first). If directories are renamed first, pre-computed old file paths become invalid.
+- **Relative links within raw/ files break after bulk rename:** The link-update step (string replacement of wiki-root-relative paths) does NOT catch relative cross-references within raw/ files like `../../../安全/Old Name/Old Name.md`. After any full-sweep rename, run the improved `update-wiki-links.py` script which now includes relative-link resolution (Phase 2) for files inside raw/.
+- **When user says "create missing pages" or "fill the gaps" from specific raw files, promote ALL distinct topics:** The normal Page Threshold (2+ sources or central to one source) applies to routine ingest. But when the user explicitly points you at raw source files and asks for missing pages, create a page for EVERY distinct topic found in those files — even minor CLI commands, single-use tools, or one-liner concepts. The user's explicit "fill the gaps" directive overrides the threshold heuristic.
 - **Shell meta-characters (`&`, `$`) in zip filenames:** The terminal tool interprets `&` as a background operator even inside double quotes. Copy the zip to `/tmp/` with a safe name first using Python's `shutil.copy2()`, then unzip the copy.
 - **Use Python/execute_code for bulk file ops, not terminal:** `rm -rf` on a directory with 300+
   files can timeout the terminal tool. Use `shutil.rmtree()` and `shutil.copytree()` via

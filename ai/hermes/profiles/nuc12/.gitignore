@@ -1,0 +1,16 @@
+*
+!.gitignore
+
+!SOUL.md
+!config.yaml
+!skills/
+!hooks/
+!cron/
+
+!skills/**
+!hooks/**
+!cron/**
+
+hermes-agent/
+auth.json
+.env
