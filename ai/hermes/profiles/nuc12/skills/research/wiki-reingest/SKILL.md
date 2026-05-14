@@ -8,7 +8,7 @@ metadata:
   hermes:
     tags: [wiki, reingest, sync, update]
     category: research
-    related_skills: [llm-wiki]
+    related_skills: [llm-wiki, wolai-export-schema]
 ---
 
 # Wiki Re-Ingest Workflow
@@ -164,7 +164,21 @@ Then ask:
 - **Deleted files:** Follow user's decision.
 - **Clean up:** `shutil.rmtree(tmp)`.
 
-## Bulk Rename & Sanitization (Full-Sweep)
+## MCP-Driven Sync (Optional Enhancement)
+
+When MCP tools are available (wolai MCP server configured), you can use the `wolai-export-schema` skill to build a page-level mapping between MCP page IDs and local file paths before re-ingesting. This enables:
+
+1. **Exact rename detection** — instead of matching by sha256, you can match by wolai page ID and detect renames even when content is identical
+2. **New page detection** — MCP `edited_at` timestamps tell you which pages changed since the last export, so you know exactly which files to inspect
+3. **Deleted page detection** — pages present in the old MCP snapshot but missing from the new one
+
+To use: first run the MCP mapping workflow (see `wolai-export-schema` → `references/mapping-results.md` for the output format). The mapping lives in `raw/tasks/mapping/<export-name>.md`.
+
+```python
+# Example: use mapping to find the local path for a changed page
+mapping_path = f"{wiki}/raw/tasks/mapping/{export_name}.md"
+# Parse the mapping table to find local paths for MCP page IDs
+```
 
 When the user reports that file/dir names in `raw/` violate naming rules (e.g., wrong agent didn't have the memory), you can run a full sweep across ALL export dirs:
 
