@@ -347,6 +347,8 @@ Append a single log entry covering the batch:
 
 Follow the `wiki-git-pull-push` skill: commit with a descriptive message, push with up to 3 retries.
 
+> ⚠️ **Duplicate skill name collision:** If loading `wiki-git-pull-push` fails with "Ambiguous skill name: N skills match across local skills dir and external_dirs", it means a duplicate exists. Profile-local skills take precedence over external_dirs. To fix, delete the stale copy from the profile's skills dir: run `rm -rf ~/.hermes/profiles/<profile>/skills/<category>/<skill-name>/`, then reload the skill by name. The remaining copy (shared from git) will resolve cleanly.
+
 ### ⑦ Extract Embedded Content from Existing Wiki Pages
 
 When existing concept/entity wiki pages contain comparison sections that should be standalone comparison pages, use this extraction workflow.
@@ -549,12 +551,47 @@ new_count = total - pre_count
 
 Don't assume arithmetic — let the filesystem be the source of truth.
 
+## Supporting Files
+
+| File | Purpose |
+|------|---------|
+| `references/html-extraction-via-curl.md` | HTML-to-text extraction via curl+Python when the browser tool is unavailable (Chrome sandbox fails in headless/VM environments). Use for extracting docs/research content from static web pages. |
+
 ## Efficiency Patterns for Large Batches
 
 - **Batch reads** — use 5-10 `read_file` calls per `execute_code` block rather than one per block
 - **Batch writes** — use 8-15 `write_file` calls per `execute_code` block
 - **Index/log updates** — do these as single patch operations, not per-page updates
 - **De-duplicate nested paths** — raw exports often have triply-nested paths (file in dir of same name in dir of same name). Pick the shortest unique path or the one closest to the leaf.
+
+### Content Quality: Research Standalone Reusability
+
+When creating a concept page about a library, runtime, or component, check whether any of its **sub-components** have standalone usage outside the parent project. This is easy to miss because official docs typically describe sub-components as internal architecture, even when they're independently reusable.
+
+**Signal:** A component has a separately documented library, a standalone GitHub repo, or a `pkg/` directory that can be imported independently.
+
+**How to check:**
+1. Scan the official docs' first 1-2 paragraphs for phrases like "can be used independently", "standalone library", "separate module"
+2. Check if sub-packages are importable as their own Go modules / PyPI packages
+3. Search for real-world projects that depend on the sub-component (e.g., `go.mod` imports, `requirements.txt`)
+4. Distinguish: is the sub-component *only* used internally, or is it published as a standalone library?
+
+**Example — gVisor's netstack:**
+- Official docs: "netstack can be used independently as a userspace network stack"
+- `google/netstack` → standalone Go module ("IPv4 and IPv6 userland network stack")
+- Cloudflare's `slirpnetstack` → imports `gvisor.dev/gvisor/pkg/tcpip/...` as a library
+
+**Structure in the page:**
+Separate "Inside X" from "Outside X" with clear subsections, so the reader immediately sees both roles:
+
+```markdown
+### Component (Standalone Usage)
+
+**Inside the parent project:** how it's used internally.
+**Independent usage:** how other projects adopt it as a standalone library.
+```
+
+**Why this matters:** Without this check, the reader may conclude the component is tightly coupled, never realising it's a reusable library. The official announcement/blog post for the parent project may not mention standalone usage — you have to find the sub-project's own docs.
 
 ### Pitfalls for Bulk Creation
 
@@ -574,7 +611,6 @@ Don't assume arithmetic — let the filesystem be the source of truth.
   - "Use `search_files` to find each source file by leaf filename before reading — don't assume the path is correct"
   - "If the first `read_file` returns a 404/error, use `search_files` to locate the actual file"
   - "The raw exports use Chinese-named subdirectories — see the pattern table below"
-- **One commit per batch** — don't create 35 individual commits for 35 pages. Batch all creations into one commit with a descriptive message.
 - **One commit per batch** — don't create 35 individual commits for 35 pages. Batch all creations into one commit with a descriptive message.
 - **Handle JSON in page content** — when your wiki page contains JSON code blocks, the `{` and `}` in the JSON will be interpreted as `.format()` placeholders. Use raw string concatenation instead of `.format()`, or escape braces as `{{` and `}}`.
 - **Don't over-ask user for confirmation on each item** — once they say "add all," the decision is made. Proceed to create all pages without pausing at each one.

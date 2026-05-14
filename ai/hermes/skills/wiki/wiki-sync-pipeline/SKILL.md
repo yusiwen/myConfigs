@@ -148,6 +148,108 @@ git pull --rebase origin master
 git add -A && git commit -m "sync: updated N pages from Wolai" && git push origin master
 ```
 
+## Phase 7: Reverse Sync (Wiki → Raw Export → Wolai)
+
+The sync pipeline normally flows **Wolai → raw export → wiki pages** (downstream). Sometimes, however, you create or enhance a wiki concept page with fresh research (architecture, evidence, analysis) that wasn't in the original Wolai source. In that case, **push the improvement back upstream**:
+
+```
+wiki concept page (new/enhanced) → raw export update → Wolai MCP update
+```
+
+### When to do this
+
+- You created a new wiki concept page from raw export content + supplemental research
+- You discovered architectural relationships or evidence not captured in the original Wolai note
+- You added structured content (comparison tables, architecture diagrams, evidence citations) that would be useful in the original source
+
+### Workflow
+
+#### ① Update the raw export file
+
+The raw export is the local mirror of the Wolai page. Insert your new content at the appropriate location within the existing section — preserving all original content and just adding the missing context.
+
+Key rules:
+- **Don't replace or remove** original content — the raw export is a mirror, not a rewrite
+- Use a **blockquote or callout** to highlight the new insight (e.g., `> **Note about X:** ...`)
+- Add explicit **evidence citations** with links when possible
+
+#### ② Find the Wolai page ID
+
+Use the mapping files under `raw/tasks/mapping/`:
+
+```bash
+grep "工具" raw/tasks/mapping/cloud-computing-export.md
+```
+
+The mapping tree format is:
+```
+├── Parent [page_id] ★ (N subpages)
+```
+
+For deeply nested pages, search by title with MCP then verify `parent_id`:
+
+```python
+mcp_wolai_search_pages("page title")
+mcp_wolai_get_page(page_id)  # check parent_id matches expected
+```
+
+#### ③ Inspect the Wolai page structure
+
+```python
+mcp_wolai_get_page_blocks(page_id)
+```
+
+Identify the anchor block (e.g., last text block before bookmark links at the bottom). Note each block's `id`, `type`, `parent_id`, and `children`.
+
+#### ④ Insert new blocks via MCP
+
+```python
+mcp_wolai_insert_blocks_relative(
+    anchor_block_id="<last text block id>",
+    placement="after",
+    blocks=[
+        {"type": "callout", "content": [...]},
+        {"type": "text", "content": [...]},
+        {"type": "bull_list", "content": [...]},
+        {"type": "enum_list", "content": [...]},
+    ]
+)
+```
+
+**Rich text format (each inline element is an object):**
+```python
+{"title": "bold text", "type": "text", "bold": True}
+{"title": "code snippet", "type": "text", "inline_code": True}
+{"title": "link text", "type": "text", "link": "https://..."}
+```
+
+#### ⑤ Verify
+
+```python
+mcp_wolai_get_page_outline(page_id)  # confirm insertion
+```
+
+#### ⑥ Git commit the raw export update
+
+```bash
+cd ~/git/mine/wiki
+git add -A && git commit -m "docs: update raw export with ..." && git push
+```
+
+### Example — gVisor/netstack
+
+After creating `concepts/container/gvisor.md` with netstack's standalone usage:
+1. **Raw export**: Inserted a note block, architecture description, and 3-source evidence list after the original warning paragraph (before bookmark links)
+2. **Wolai page**: Added 10 blocks (callout + architecture + bullet list + evidence enumeration) after the last text block in the gVisor section
+3. **Evidence**: Official gVisor docs quote, `google/netstack` repo, Cloudflare `slirpnetstack`
+
+### Pitfalls
+
+- **Wolai block IDs are opaque** — use `get_page_blocks` to find the anchor; never guess
+- **Don't touch original blocks** — insert new ones; editing existing blocks breaks local-remote correspondence
+- **Rich text is verbose** — each inline style is a separate object; plan carefully
+- **Search title with exact spacing** — Wolai titles may have leading/trailing spaces
+
 ## Pitfalls
 
 1. **Large MCP responses** (>50KB) double-nested JSON, parse via `json.loads(outer["result"])`.
