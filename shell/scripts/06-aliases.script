@@ -27,14 +27,14 @@ if ! check_command eza; then
     alias dir='dir -l --color'
   fi
 else
-  if eza --version | grep -q '\-git'; then
-    alias ll='eza --long --color=auto --group'
-    alias lla='eza --long --all --color=auto --group'
-    alias tree='eza --tree --all --color=auto'
+  if eza --version | grep -q '+git'; then
+    alias ll='eza --long --git --color=always --group --icons'
+    alias lla='eza --long --all --git --color=always --group --icons'
+    alias tree='eza --tree --all --git --color=always --icons'
   else
-    alias ll='eza --long --git --color=always --group'
-    alias lla='eza --long --all --git --color=always --group'
-    alias tree='eza --tree --all --git --color=always'
+    alias ll='eza --long --color=auto --group --icons'
+    alias lla='eza --long --all --color=auto --group --icons'
+    alias tree='eza --tree --all --color=auto --icons'
   fi
   alias l='eza --oneline --color=auto'
   alias la='eza --all --color=auto'
