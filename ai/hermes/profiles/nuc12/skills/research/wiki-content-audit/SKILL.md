@@ -564,6 +564,109 @@ Don't assume arithmetic — let the filesystem be the source of truth.
 - **Index/log updates** — do these as single patch operations, not per-page updates
 - **De-duplicate nested paths** — raw exports often have triply-nested paths (file in dir of same name in dir of same name). Pick the shortest unique path or the one closest to the leaf.
 
+### Entity Page Creation from Concept Pages
+
+When you create (or update) a **concept page** for a notable **software tool, runtime, library, model, company, or person**, check whether it also qualifies for an **entity page** under `entities/`. This provides the **3-layer coverage pattern**:
+
+```
+raw/<export>/xxx.md          ← Source snapshot (raw export)
+concepts/<domain>/xxx.md     ← Deep explanation (architecture, usage, security)
+entities/tools/xxx.md         ← Fast index (key facts, relationships, cross-links)
+```
+
+**When to create an entity page:**
+- The topic is a **named tool** (gVisor, React, Vite, Docker, etc.)
+- The topic is a **company or organization** (Google, Cloudflare, etc.)
+- The topic is a **person** (Linus Torvalds, Guido van Rossum, etc.)
+- The topic is a **published model** (GPT-4, Llama 3, etc.)
+
+**When NOT to create an entity page:**
+- The topic is a **concept** (e.g., "OCI Specifications", "Container Security" — these are concepts, not entities)
+- The topic is a **comparison** (use the `comparisons/` directory instead)
+- The topic is already covered by an entity page of a different name (e.g., don't create "LLaMA" as both a model entity and a tool entity)
+
+**Entity page structure (follow the React pattern):**
+
+```yaml
+---
+title: Tool Name
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+type: entity
+tags: [<domain>, <category>, ...]
+sources:
+  - concepts/<domain>/<concept-page>.md     # ← Link back to the concept page
+  - raw/<export>/<path>.md                    # ← Link to the raw source
+---
+```
+
+```markdown
+# Tool Name
+
+**Short description** — one-sentence elevator pitch.
+
+## Overview
+
+- **Type**: What kind of thing is it (application kernel / UI library / build tool / etc.)
+- **Released**: Year or date of first release
+- **Language**: Primary implementation language
+- **License**: Open-source license
+- **Website**: [link](...)
+- **GitHub**: [link](...)
+
+## Architecture (quick reference)
+
+| Component | Role |
+|-----------|------|
+| ... | ... |
+
+A compact table or bullet list covering the main architectural components.
+
+## Integrations / Ecosystem
+
+| Platform | Integration |
+|----------|-------------|
+| ... | ... |
+
+## Alternatives
+
+- **Alternative A** — One-line description
+- **Alternative B** — One-line description
+
+## See Also
+
+- [[concepts/<domain>/<concept-page>|Tool Name]] — Detailed concept page
+- [[entities/tools/<category>/<related>|Related Entity]] — ...
+```
+
+**Workflow:**
+1. The concept page already exists (you just created or updated it)
+2. Check if the concept is a notable entity (see criteria above)
+3. Create the entity page under the correct `entities/tools/<category>/` subdirectory
+4. Add `[[wikilink]]` from the entity page's "See Also" back to the concept page
+5. Add `[[wikilink]]` from the concept page's "Related Pages" to the entity page
+6. Update `index.md` under the correct Entities section, and bump the total page count
+7. Append entry to `log.md`
+8. Commit and push
+
+**Existing entity categories:**
+- `entities/tools/ai-ml-frameworks/` — ML/AI frameworks (PyTorch, TensorFlow, vLLM, etc.)
+- `entities/tools/container-vm/` — Containers & VMs (Kubernetes, KVM, gVisor, etc.)
+- `entities/tools/network-services/` — Network services (Envoy, WireGuard, etc.)
+- `entities/tools/network-diagnostics/` — Network diagnostic tools (tcpdump, nmap, etc.)
+- `entities/tools/security-auth/` — Security & auth (iptables, OpenSSH, etc.)
+- `entities/tools/web-app-frameworks/` — Web frameworks (React, Vue, Next.js, etc.)
+- `entities/tools/build-systems/` — Build systems (Makefile, etc.)
+- `entities/tools/code-editors/` — Code editors (CLion, etc.)
+- `entities/tools/perf-debug/` — Performance & debugging (Delve, etc.)
+- `entities/tools/shells-scripting/` — Shells & scripting (zsh, etc.)
+- `entities/tools/sysadmin-utils/` — Sysadmin utilities (lsof, logrotate, etc.)
+- `entities/tools/test-quality/` — Testing & quality (Playwright, JUnit, etc.)
+- `entities/people/` — Notable individuals
+- `entities/models/` — ML models
+
+If no existing category fits, choose the closest one. The user can reorganize later.
+
 ### Content Quality: Research Standalone Reusability
 
 When creating a concept page about a library, runtime, or component, check whether any of its **sub-components** have standalone usage outside the parent project. This is easy to miss because official docs typically describe sub-components as internal architecture, even when they're independently reusable.
