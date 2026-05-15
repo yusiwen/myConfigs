@@ -81,9 +81,12 @@ Choose the right insertion strategy:
 
 | Situation | Tool | Notes |
 |-----------|------|-------|
-| Insert blocks after a specific block | `mcp_wolai_insert_blocks_relative(anchor_block_id, placement="after", blocks=...)` | Best for appending between existing text and bookmark links |
+| Insert blocks after a specific block | `mcp_wolai_insert_blocks_relative(anchor_block_id, placement="after", blocks=...)` | Best for appending between existing text and bookmark links. **Max 20 blocks per call** — split into multiple calls if needed. |
+| Insert blocks BEFORE a specific block | `mcp_wolai_insert_blocks_relative(anchor_block_id, placement="before", blocks=...)` | Use for prepending content at the top of a page — pass the first content block's ID as `anchor_block_id` with `placement="before"`. Also useful for inserting content between specific blocks (e.g., before a bookmark). |
 | Insert under a heading | `mcp_wolai_insert_under_heading(page_id, target_section_id, placement="append_inside", blocks=...)` | Good if you want new content at top or bottom of a section |
-| Replace a section entirely | `mcp_wolai_rewrite_section(page_id, section_id, blocks=...)` | Use only when replacing all content under a heading |
+| Replace a section entirely | `mcp_wolai_rewrite_section(page_id, section_id, heading=..., blocks=...)` | **Pitfall:** the heading updates reliably, but body blocks may silently fail to persist even when the response reports `inserted_root_block_count: N`. Always verify with `mcp_wolai_get_page_outline()` or `mcp_wolai_get_page_blocks()` after rewriting. If no blocks appear under the heading, use `mcp_wolai_create_block(parent_id=<heading_block_id>, blocks=...)` to add them. |
+| Replace one block with new blocks | `mcp_wolai_replace_block(block_id, replacement_blocks=[...])` | Best for swapping out a single block in-place (e.g., updating a comparison table by adding a new row, or replacing a text block with a callout). The new blocks take the original block's position. Use `preserve_children=true` if the old block has children you want to keep under the replacement. |
+| Add blocks to a heading's children | `mcp_wolai_create_block(parent_id=<heading_block_id>, blocks=...)` | Workaround when `rewrite_section` didn't persist body blocks. Pass the heading block's ID as `parent_id`. Max 20 blocks per call. |
 
 **For rich text content**, use the inline styling format:
 
@@ -108,7 +111,53 @@ Choose the right insertion strategy:
 mcp_wolai_get_page_outline(page_id)  # check content_block_count
 ```
 
-### Step 6: Git Commit and Push
+### Step 6: Check if Mapping File Needs Updating
+
+After syncing content, verify whether the **mapping file** (`raw/tasks/mapping/<export-name>.md`) needs updating.
+
+**Conditions that require a mapping update:**
+
+| Condition | What to do | Example |
+|-----------|-----------|---------|
+| **New page created on Wolai** (e.g., you added a new section as a standalone subpage via MCP) | Add a new row to the mapping table with `page_id`, `title`, `local_path`, `depth`, and `status: ✅ confirmed` | Creating a new child page under 分布式数据库 |
+| **Page deleted** from Wolai and the raw export is removed | Mark as removed or delete the mapping row | Deprecated page no longer exported |
+| **Page path changed** (raw export file renamed/moved) | Update the `local_path` column | `foo.md` → `bar/foo.md` |
+| **A ⚠️ heading-only entry now confirmed** (you verified it IS a real Wolai subpage) | Change status from `⚠️ heading only` to `✅ confirmed` | The sync proves the page exists |
+| **A previously unmapped entry found** (your sync hit a mapping with only `(N children)` and you discovered a new child page) | Add the new child to the mapping table with its confirmed `page_id` | New subpage under 容器 → 工具 that wasn't in the tree |
+
+**How to update the mapping file:**
+
+```bash
+# Read the current mapping file
+# Find the relevant section in the tree structure and mapping table
+# Use patch() to add/update the entry
+```
+
+The mapping table format (from `wolai-export-schema` skill):
+
+```
+| # | Page ID | Title | Local Path | Depth | Status |
+|---|---------|-------|-----------|-------|--------|
+| N | `<page_id>` | `<title>` | `<path>` | `<depth>` | ✅ confirmed |
+```
+
+The tree section format:
+
+```
+├── <title> [<page_id>] (N children)
+│   └── <child-title> [<child-page_id>] (M children)
+```
+
+**When NOT to update mapping:**
+- You only updated content (blocks/text) on an existing page — the `page_id ↔ local_path` relationship hasn't changed
+- The page already has a `✅ confirmed` status and nothing structural changed
+- This is the common case; most content syncs do NOT need a mapping update
+
+**After updating mapping:**
+- Bump the "Last updated" date in the mapping file's frontmatter/header
+- Run `git add raw/tasks/mapping/<export-name>.md` alongside other changed files
+
+### Step 7: Git Commit and Push
 
 ```bash
 cd $WIKI
@@ -131,3 +180,5 @@ done
 - **One `insert_blocks_relative` call can add multiple blocks** — pass them all in the `blocks` array to avoid ordering issues
 - **Bookmark blocks in the raw export** have a specific format: `[ description text ](url "description text")` — preserve them when editing
 - **Raw export is the source of truth snapshot** — the Wolai update should mirror the raw export content, not the other way around
+- **`rewrite_section` body blocks may silently fail** — even when the API returns success with `inserted_root_block_count: N`, the blocks may not actually be created on the page. Always verify the page outline afterward. If the heading has empty children, use `create_block(parent_id=<heading_block_id>, blocks=...)` as a fallback
+- **20-block per-request limit** — `mcp_wolai_insert_blocks_relative` and `mcp_wolai_create_block` both reject requests with more than 20 blocks. Split into multiple sequential calls if your content has 21+ blocks. Ensure you use the *last* block from batch N as the `anchor_block_id` for batch N+1
