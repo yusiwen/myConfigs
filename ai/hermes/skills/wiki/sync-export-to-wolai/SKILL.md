@@ -9,11 +9,19 @@ author: Hermes Agent
 
 ## When This Skill Activates
 
-This skill activates when the user asks you to update content in a **raw export file** (under `raw/<export-name>/...`) and you need to also update the corresponding **Wolai page** via MCP. This happens when:
+This skill activates when you need to keep wiki content in sync between its three layers — **concept/entity pages**, **raw export files**, and **Wolai pages**. This happens when:
 
 - The user discovers missing context in a raw export and wants it fixed in both places
 - A wiki concept page was improved and the raw source should reflect the changes
+- A raw article (`raw/articles/`) was ingested into a concept/entity page and the result should be synced back to the appropriate raw export and Wolai page
 - The user explicitly asks to "update the export page and the corresponding Wolai note"
+
+**Two workflow directions:**
+
+| Direction | Trigger | Flow |
+|-----------|---------|------|
+| **A — Export→Wolai** | Raw export content changed | `raw/<export>/...` → Wolai page (standard sync) |
+| **B — Concept→Export→Wolai** | Concept/entity page improved; no raw export changed yet | `concepts/...` or `entities/...` → `raw/<export>/...` → Wolai page |
 
 ## Workflow
 
@@ -50,7 +58,19 @@ mcp_wolai_get_page(page_id="<candidate_id>")
 # Verify: page.parent_id == expected_parent_id from mapping
 ```
 
-### Step 3: Understand Both Structures
+### Step 3.5 — Direction B: Concept/Entity → Raw Export
+
+If the sync originated from a **concept or entity page** improvement (not a raw export change), you need to first create or update the raw export file before syncing to Wolai:
+
+1. **Find the raw export path** — using the `sources:` field in the concept page's frontmatter. If the concept page was created from a raw article (`raw/articles/...`), look for an existing raw export at `raw/<export-name>/...` that corresponds to the same topic. If none exists, the content is wiki-native (no raw export to maintain).
+
+2. **Determine if a raw export should exist** — check the Wolai workspace using `mcp_wolai_search_pages(query=...)` and mapping files in `raw/tasks/mapping/`. If a corresponding Wolai page exists, it should have a raw export counterpart at `raw/<export-name>/...`.
+
+3. **Create or update the raw export** — if it exists, patch it; if it doesn't, create it with the correct path matching the Wolai page's location in the export tree.
+
+4. **Add the concept/entity page as a source** — the `sources:` field in the concept page should include the raw article it came from (if any) AND the raw export it was synced to.
+
+5. **Ensure provenance markers are added** — in the concept/entity page, add `^[raw/<path>.md]` markers at the end of paragraphs whose claims come from a specific source (see SCHEMA.md). After renaming or moving a source file, update ALL provenance markers that reference the old path — search across the entire wiki with `search_files(pattern="<old-path>", path="$WIKI")` to catch every reference.
 
 **Read the raw export file:**
 ```
@@ -181,4 +201,7 @@ done
 - **Bookmark blocks in the raw export** have a specific format: `[ description text ](url "description text")` — preserve them when editing
 - **Raw export is the source of truth snapshot** — the Wolai update should mirror the raw export content, not the other way around
 - **`rewrite_section` body blocks may silently fail** — even when the API returns success with `inserted_root_block_count: N`, the blocks may not actually be created on the page. Always verify the page outline afterward. If the heading has empty children, use `create_block(parent_id=<heading_block_id>, blocks=...)` as a fallback
+- **`replace_block` requires the FULL replacement** — when updating a table (e.g., adding a new row to a simple_table), you must pass ALL rows in `replacement_blocks`, not just the new row. The table is replaced entirely.
 - **20-block per-request limit** — `mcp_wolai_insert_blocks_relative` and `mcp_wolai_create_block` both reject requests with more than 20 blocks. Split into multiple sequential calls if your content has 21+ blocks. Ensure you use the *last* block from batch N as the `anchor_block_id` for batch N+1
+- **After renaming a source file (`raw/articles/...`), update all provenance trail references** — concept pages use `^[raw/articles/<old-name>.md]` markers and frontmatter `sources:` field. Search the entire wiki for the old path after any rename: `search_files(pattern="<old-path>", path="$WIKI")`. The references are in: frontmatter sources lists, inline provenance markers, log.md history entries, and wikilinks. All must be updated in the same commit.
+- **Raw articles in `raw/articles/` should be named after their content, not their original filename** — files exported from Google AI Mode use the prefix `google-ai-mode_<descriptive-name>.md` (e.g., `google-ai-mode_llm-inference-deep-dive.md`). See `references/raw-article-naming-conventions.md` for the full convention.
