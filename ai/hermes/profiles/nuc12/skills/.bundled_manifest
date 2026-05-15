@@ -13,7 +13,7 @@ claude-code:231f7e3cb0b2b91f64ce4b23fc2cef4d
 claude-design:c1b63b7651b66fd15d096e57728ec686
 codebase-inspection:29f67c87df868dd08e76c57b86c7a5c6
 codex:a116c5f880869f663b2974c2c9a79dbd
-comfyui:d6f42584ff328d6aa6a4b2e8e678c030
+comfyui:f1fcbff34047947651280c36511ebcfb
 debugging-hermes-tui-commands:b093ceac961144fb3e72e57b12a5d354
 design-md:b40264457352831ab1d06f3ec671b532
 dogfood:ae6e92c2cd27c3da8a0587f089d19fe3
@@ -38,7 +38,7 @@ humanizer:6645b341862575f452e86139c5c71ce9
 ideation:8cfdaafa9abda023643427110c8c3073
 imessage:f545da0f5cc64dd9ee1ffd2b7733a11b
 jupyter-live-kernel:352c43dc28428592abbc8c91cb5ce295
-kanban-orchestrator:1b9990f2fa2da662b66ee180c0d3beaf
+kanban-orchestrator:335a645935c88361ef2a103dba1fba01
 kanban-worker:381c14fb24d058e1750d1f97aa8d8011
 linear:58a67824f7df6e4753cfe0575be9e921
 llama-cpp:0991055ce47146735f0ed02d7658a254
