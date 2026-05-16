@@ -1,7 +1,7 @@
 ---
 name: wiki-article-ingestion
 description: "Create wiki pages from external content — two entry paths: article-driven (raw/articles/ files) and research-driven (web research + synthesis). Covers: placement, frontmatter, concept page structure, research depth, source tracking, cross-links, index/log updates, and handoff to sync-export-to-wolai."
-version: 1.0.0
+version: 1.2.0
 author: Hermes Agent
 ---
 
@@ -74,14 +74,24 @@ Structure the page with these sections (adapt as needed):
 - Comparison tables should have 6+ rows and be verifiable
 - Code examples should be runnable with real libraries (not pseudocode)
 
-**For article-driven path only — Step 4: Determine If a Raw Export Corresponds**
+### Step 4: Determine If a Raw Export Corresponds
 
-Search for a matching raw export under `raw/<export-name>/`. If one exists:
+Search for a matching raw export under `raw/<export-name>/`. Two scenarios:
+
+**Scenario A — Raw export exists:**
 - It is the source-of-truth snapshot for Wolai sync
 - Update it with the new content (matching the entity/concept page's structure)
 - The raw export acts as the bridge between wiki page content and Wolai
 
-If no raw export exists, the article stands alone under `raw/articles/` and no Wolai sync is needed.
+**Scenario B — No raw export exists (wiki-native concept):**
+The concept page has no corresponding raw export. Two sub-cases:
+
+| Sub-case | Example | Action |
+|----------|---------|--------|
+| **B1 — Standalone article** | `raw/articles/foo.md` that won't go to Wolai | Standalone — no Wolai sync needed |
+| **B2 — Concept needs Wolai presence** | New concept page (like bi-encoder) that deserves its own Wolai page | **Create** a new raw export + Wolai page. See `sync-export-to-wolai` Sub-scenario B2 + hybrid edge case note for the full workflow: choose Wolai parent, create page, create raw export at matching path, populate both, update mapping, rebuild `_snapshot.json` |
+
+**⚠️ Hybrid B2 edge case:** A wiki-native concept page may have `sources:` that reference *related* existing exports (e.g., pages that mention the concept) without having an export that IS the concept itself. In this case you're still in B2 — create a new raw export for the concept itself, then add the new path to `sources:` in the concept page's frontmatter.
 
 ### Step 5: Sync to Wolai (If Raw Export Exists)
 
@@ -126,9 +136,13 @@ All ingestion follows a consistent pipeline, regardless of entry path:
                                                ▼
                               (create/update) entities/ or concepts/ page
                                                   │
-                                                  ▼
-                              (update) raw/<export-name>/.../<page>.md
-                                       └── if raw export exists
+                             ┌────────────────────┼────────────────────┐
+                             ▼                    ▼                    ▼
+                  if raw export exists    if no raw export        standalone
+                             │           (create new RAW +       raw/articles/
+                             ▼            Wolai page)                 │
+                              (update) raw/<export-name>/.../<page.md>│
+                                       └── or create if B2           │
                                                   │
                                                   ▼
                               (sync) Wolai page via MCP
@@ -153,3 +167,4 @@ All ingestion follows a consistent pipeline, regardless of entry path:
 - **Citation markers like [系统 1], [系统 2]** — AI-generated indexing artifacts; clean them up or integrate the info naturally
 - **Mapping check is always required** — even when just updating content, verify no structural change occurred that would invalidate the existing mapping
 - **`patch` tool pipe-prefix gotcha** — the `patch` tool output shows `LINE_NUM|CONTENT` with a pipe separator, but the actual file content does NOT have pipes. When crafting a replacement in `old_string`, make sure you haven't accidentally captured the display-format `|` prefix. This bit me when updating `log.md`: the `old_string` I grabbed from `read_file` output included leading `|` on some lines, producing corrupted output. **Always copy `old_string` from the actual file (confirmed by reading a second time) rather than from the first `read_file` output, which may show the display-format pipes.**
+- **`_snapshot.json` goes stale after mapping changes** — If you created a new raw export + Wolai page (B2 path), you updated the `.md` mapping file but `_snapshot.json` is NOT auto-regenerated. Run `python3 raw/tasks/mapping/detect-changes.py --build-snapshot` from the wiki root to rebuild it before git push. Forgetting this means future change-detection runs silently use stale cache. See `sync-export-to-wolai` skill Step 6 for the full regeneration workflow.
