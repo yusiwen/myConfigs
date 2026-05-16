@@ -1,7 +1,7 @@
 ---
 name: sync-export-to-wolai
 description: "Update a raw export markdown file AND its corresponding Wolai page simultaneously, keeping both in sync. Covers: locating the Wolai page ID via mapping files, editing both sides, and git commit/push."
-version: 1.0.0
+version: 1.1.0
 author: Hermes Agent
 ---
 
@@ -50,27 +50,45 @@ If the mapping only says "(N children)" without listing individual subpages, use
 
 **Approach B — Wolai search (fallback):**
 
-Use `mcp_wolai_search_pages(query=<title>)` to find the page. The title may include a leading space (e.g., `" 开发"`). After finding a candidate, verify it:
+Use `mcp_wolai_search_pages(query=<title>)` to find the page. The title may include a leading space (e.g., `" 开发"`). Search may return multiple results with similar names (e.g., "authelia" and "Authelia") — you'll need to verify each.
+
+After finding a candidate, verify its parent chain:
 
 ```python
-# Check that the parent_id matches the parent in the mapping tree
-mcp_wolai_get_page(page_id="<candidate_id>")
-# Verify: page.parent_id == expected_parent_id from mapping
+page = mcp_wolai_get_page(page_id="<candidate_id>")
+# The response has these relevant fields:
+#   id:         the page's own ID (matches what you queried)
+#   parent_id:  the immediate parent block/page ID
+#   page_id:    the TOP-LEVEL L1 ancestor page ID (*not* the page's own ID)
+#   parent_type: "page" or "header"
+
+# Case 1 — Direct child of a page (parent_type="page"):
+#   page.parent_id should == expected_parent_id from mapping
+
+# Case 2 — Nested under a heading block (parent_type="header"):
+#   page.parent_id will be a heading block's ID, NOT the mapping page.
+#   In this case, query the heading block to find the real parent:
+heading = mcp_wolai_get_block(page.parent_id)
+# heading.parent_id should == expected_parent_id from mapping
 ```
+
+**Case 2** is common when many subpages exist under one section — Wolai organizes them under headings rather than direct page children. The `page_id` field in the response is always the **top-level L1 ancestor**, not the immediate parent — do not use it for parent verification.
 
 ### Step 3.5 — Direction B: Concept/Entity → Raw Export
 
-If the sync originated from a **concept or entity page** improvement (not a raw export change), you need to first create or update the raw export file before syncing to Wolai:
+If the sync originated from a **concept or entity page** improvement (not a raw export change), you need to first create or update the raw export file before syncing to Wolai. Two sub-scenarios: the concept page may be **export-derived** (has `sources:`) or **wiki-native** (no `sources:`).
 
-1. **Find the raw export path** — using the `sources:` field in the concept page's frontmatter. If the concept page was created from a raw article (`raw/articles/...`), look for an existing raw export at `raw/<export-name>/...` that corresponds to the same topic. If none exists, the content is wiki-native (no raw export to maintain).
+#### Sub-scenario B1: Concept is Export-Derived (has `sources:`)
 
-2. **Determine if a raw export should exist** — check the Wolai workspace using `mcp_wolai_search_pages(query=...)` and mapping files in `raw/tasks/mapping/`. If a corresponding Wolai page exists, it should have a raw export counterpart at `raw/<export-name>/...`.
+1. **Find the raw export path** — using the `sources:` field in the concept page's frontmatter. Look for an existing raw export at `raw/<export-name>/...`.
+
+2. **Read the raw export file** and the Wolai page blocks. Identify where existing content ends.
 
 3. **Create or update the raw export** — if it exists, patch it; if it doesn't, create it with the correct path matching the Wolai page's location in the export tree.
 
-4. **Add the concept/entity page as a source** — the `sources:` field in the concept page should include the raw article it came from (if any) AND the raw export it was synced to.
+4. **Update the concept/entity page frontmatter** — ensure the `sources:` field already covers the raw export path.
 
-5. **Ensure provenance markers are added** — in the concept/entity page, add `^[raw/<path>.md]` markers at the end of paragraphs whose claims come from a specific source (see SCHEMA.md). After renaming or moving a source file, update ALL provenance markers that reference the old path — search across the entire wiki with `search_files(pattern="<old-path>", path="$WIKI")` to catch every reference.
+5. **Ensure provenance markers are added** — see SCHEMA.md for the `^[raw/<path>.md]` format.
 
 **Read the raw export file:**
 ```
@@ -82,6 +100,41 @@ read_file(path="raw/<export>/.../<file>.md")
 mcp_wolai_get_page_blocks(page_id="<found_id>")
 ```
 This returns the full block tree. Identify where existing content ends and where to insert new blocks (the anchor block).
+
+#### Sub-scenario B2: Concept is Wiki-Native (no `sources:`) → Create New Wolai Page
+
+When the user explicitly asks to push a wiki-native concept to Wolai (e.g., "add a new page about X" or "sync this back to Wolai"), follow this order:
+
+**1. Choose a Wolai parent page** — examine the concept page's content for domain clues:
+   - Tags in the frontmatter (e.g., `tags: [model, architecture, inference]` → likely NLP → Transformer in AI export)
+   - Section headings and cross-references (e.g., mentions RAG, recommender systems)
+   - Compare against existing Wolai page trees in mapping files at `raw/tasks/mapping/`
+   - When multiple fits exist, prefer the parent where the content is most actionable (e.g., recommender system ranking tools over general AI theory)
+
+**2. Create the Wolai page first** — use `mcp_wolai_create_page(parent_id=<parent_page_id>, title="<title>")`. This gives you the new page ID (e.g., `kac25tvUDHoENTG5NB3DNK`).
+
+**3. Create the raw export file** at matching path:
+   ```
+   raw/<export-name>/<parent-1>/.../<page-title>/<page-title>.md
+   ```
+   Use lowercase with hyphens for English titles. Create the directory first with `mkdir -p`.
+
+**4. Populate both sides:**
+   - Write raw export content using `write_file()` (see Step 4 for markdown format)
+   - Populate Wolai page blocks via `mcp_wolai_create_block(parent_id=<new_page_id>, blocks=[...])` — max 20 blocks per call
+   - Empty code blocks need separate `mcp_wolai_update_block()` calls to fill with code content
+
+**5. Update the concept page's frontmatter** — add `sources:` pointing to the new raw export:
+   ```yaml
+   sources:
+     - raw/<export-name>/<parent-chain>/<page-title>/<page-title>.md
+   ```
+
+**6. Update the mapping file** — add a new row AND update the tree structure:
+   - Add mapping row: `| N | <page_id> | <title> | <local_path> | <depth> | ✅ leaf |`
+   - Bump the "Total" count in Stats section
+   - Add the page to the Full Page Tree section under its parent using `└──` or `├──` tree-prefix convention
+   - Bump the "Last updated" date in the mapping file's header
 
 ### Step 4: Update the Raw Export File
 
@@ -205,3 +258,4 @@ done
 - **20-block per-request limit** — `mcp_wolai_insert_blocks_relative` and `mcp_wolai_create_block` both reject requests with more than 20 blocks. Split into multiple sequential calls if your content has 21+ blocks. Ensure you use the *last* block from batch N as the `anchor_block_id` for batch N+1
 - **After renaming a source file (`raw/articles/...`), update all provenance trail references** — concept pages use `^[raw/articles/<old-name>.md]` markers and frontmatter `sources:` field. Search the entire wiki for the old path after any rename: `search_files(pattern="<old-path>", path="$WIKI")`. The references are in: frontmatter sources lists, inline provenance markers, log.md history entries, and wikilinks. All must be updated in the same commit.
 - **Raw articles in `raw/articles/` should be named after their content, not their original filename** — files exported from Google AI Mode use the prefix `google-ai-mode_<descriptive-name>.md` (e.g., `google-ai-mode_llm-inference-deep-dive.md`). See `references/raw-article-naming-conventions.md` for the full convention.
+- **Sync verification companion workflow** — to check whether a wiki page has a Wolai counterpart and whether its content is synced, see `references/sync-verification.md`. Useful before starting a sync to assess scope: the cross-check flow (frontmatter → mapping → Wolai outline) quickly tells you if content needs syncing or if the page is wiki-native.
