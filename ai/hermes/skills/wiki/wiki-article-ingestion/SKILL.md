@@ -1,7 +1,7 @@
 ---
 name: wiki-article-ingestion
 description: "Create wiki pages from external content — two entry paths: article-driven (raw/articles/ files) and research-driven (web research + synthesis). Covers: placement, frontmatter, concept page structure, research depth, source tracking, cross-links, index/log updates, and handoff to sync-export-to-wolai."
-version: 1.2.0
+version: 1.3.0
 author: Hermes Agent
 ---
 
@@ -68,11 +68,16 @@ Structure the page with these sections (adapt as needed):
 | **Historical Context** | Timeline or evolution table connecting milestones |
 | **Related Pages** | `[[wikilinks]]` to existing wiki pages (minimum 3) |
 
+**Backlinks are mandatory:** After creating a new page, search for and update existing wiki pages that should link TO the new one. For the bi-encoder concept page, this meant adding `> Full standalone coverage: [[bi-encoder]]` to `cross-encoder-reranking.md` and adding `[[bi-encoder]]` to `recall-models.md`'s Related Pages section. Without backlinks, the new page is an orphan — it links to others but nothing links back.
+
+**Worked example:** Load `references/bi-encoder-concept-page-example.md` to see a complete research-driven concept page creation walkthrough (10 searches, extraction fallbacks, structure decisions, cross-linking, pitfalls encountered).
+
 **Research depth guidelines:**
 - Make 5-10 `web_search` calls covering different angles (architecture, training, comparison, applications, history)
 - Extract at least 3 authoritative sources for factual claims
 - Comparison tables should have 6+ rows and be verifiable
 - Code examples should be runnable with real libraries (not pseudocode)
+- **Fallback when `web_extract` is blocked** — many sites (Medium, Milvus docs, shadecoder.com) return empty or blocked content. When extraction fails on key sources: (a) rely on `web_search` result descriptions for structure, (b) use `browser_navigate` + `browser_vision` to read visual content, (c) use `browser_console(expression=...)` with JS to extract text from the page directly. Do NOT give up after one failed extraction — rotate through fallbacks.
 
 ### Step 4: Determine If a Raw Export Corresponds
 
@@ -168,3 +173,4 @@ All ingestion follows a consistent pipeline, regardless of entry path:
 - **Mapping check is always required** — even when just updating content, verify no structural change occurred that would invalidate the existing mapping
 - **`patch` tool pipe-prefix gotcha** — the `patch` tool output shows `LINE_NUM|CONTENT` with a pipe separator, but the actual file content does NOT have pipes. When crafting a replacement in `old_string`, make sure you haven't accidentally captured the display-format `|` prefix. This bit me when updating `log.md`: the `old_string` I grabbed from `read_file` output included leading `|` on some lines, producing corrupted output. **Always copy `old_string` from the actual file (confirmed by reading a second time) rather than from the first `read_file` output, which may show the display-format pipes.**
 - **`_snapshot.json` goes stale after mapping changes** — If you created a new raw export + Wolai page (B2 path), you updated the `.md` mapping file but `_snapshot.json` is NOT auto-regenerated. Run `python3 raw/tasks/mapping/detect-changes.py --build-snapshot` from the wiki root to rebuild it before git push. Forgetting this means future change-detection runs silently use stale cache. See `sync-export-to-wolai` skill Step 6 for the full regeneration workflow.
+- **New pages are orphans without backlinks** — The `Related Pages` section on the new page links TO existing pages, but existing pages won't automatically link back. After creating any new concept/entity page, search the wiki for existing pages that reference the same topic and add backlinks. Without this step, the page is disconnected from the wiki's link graph. The bi-encoder page needed 2 backlinks added (cross-encoder-reranking.md, recall-models.md).
