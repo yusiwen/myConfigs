@@ -347,7 +347,7 @@ Append a single log entry covering the batch:
 
 Follow the `wiki-git-pull-push` skill: commit with a descriptive message, push with up to 3 retries.
 
-> ⚠️ **Duplicate skill name collision:** If loading `wiki-git-pull-push` fails with "Ambiguous skill name: N skills match across local skills dir and external_dirs", it means a duplicate exists. Profile-local skills take precedence over external_dirs. To fix, delete the stale copy from the profile's skills dir: run `rm -rf ~/.hermes/profiles/<profile>/skills/<category>/<skill-name>/`, then reload the skill by name. The remaining copy (shared from git) will resolve cleanly.
+> ⚠️ **Duplicate skill name collision:** This is a **systemic pattern**, not a one-off. If loading *any* skill fails with "Ambiguous skill name: N skills match across local skills dir and external_dirs", it means a duplicate exists between the profile-local skills dir (`~/.hermes/profiles/<profile>/skills/`) and the shared external_dirs (`~/.hermes/skills/`). Confirmed offenders: `wiki-git-pull-push`, `hermes-agent`. Profile-local skills take precedence over external_dirs. To fix, delete the stale copy from the profile's skills dir: run `rm -rf ~/.hermes/profiles/<profile>/skills/<category>/<skill-name>/`, then reload the skill by name. The remaining copy (shared from git) will resolve cleanly. The fix is the same regardless of which skill name triggered the error.
 
 ### ⑦ Extract Embedded Content from Existing Wiki Pages
 
