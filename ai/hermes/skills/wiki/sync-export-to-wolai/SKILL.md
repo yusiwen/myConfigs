@@ -1,7 +1,7 @@
 ---
 name: sync-export-to-wolai
 description: "Update a raw export markdown file AND its corresponding Wolai page simultaneously, keeping both in sync. Covers: locating the Wolai page ID via mapping files, editing both sides, and git commit/push."
-version: 1.1.0
+version: 1.2.0
 author: Hermes Agent
 ---
 
@@ -102,6 +102,8 @@ mcp_wolai_get_page_blocks(page_id="<found_id>")
 This returns the full block tree. Identify where existing content ends and where to insert new blocks (the anchor block).
 
 #### Sub-scenario B2: Concept is Wiki-Native (no `sources:`) → Create New Wolai Page
+
+**⚠️ Hybrid edge case:** The concept page may have `sources:` pointing to *related* existing exports (e.g., reference material in other pages that mention the concept), but still need a *new* raw export created for itself. The key test: does the `sources:` path point to an existing file that IS the concept's own content, or to different pages that merely reference it? If no existing raw export IS the concept itself, you're in B2 — proceed as if no `sources:` exist for the new page, then add the new raw export path to `sources:` at step 5.
 
 When the user explicitly asks to push a wiki-native concept to Wolai (e.g., "add a new page about X" or "sync this back to Wolai"), follow this order:
 
@@ -230,6 +232,18 @@ The tree section format:
 - Bump the "Last updated" date in the mapping file's frontmatter/header
 - Run `git add raw/tasks/mapping/<export-name>.md` alongside other changed files
 
+**⚡ Also update `_snapshot.json`:**
+After modifying any mapping file, regenerate `_snapshot.json` so it stays in sync with the canonical `.md` mapping files:
+
+```bash
+cd $WIKI
+python3 raw/tasks/mapping/detect-changes.py --build-snapshot
+```
+
+This rebuilds `_snapshot.json` from all `.md` mapping files. The snapshot is the machine-readable cache used by `detect-changes.py` for change detection — it must reflect all page additions, deletions, and path changes.
+
+**Why this matters:** Forgetting to regenerate `_snapshot.json` means the cache becomes stale. Future change-detection runs (`detect-changes.py` without `--build-snapshot`) will use the old cache and may miss or misreport changes for newly created pages. Regenerating after every mapping update ensures the cache always matches the canonical `.md` files.
+
 ### Step 7: Git Commit and Push
 
 ```bash
@@ -257,5 +271,8 @@ done
 - **`replace_block` requires the FULL replacement** — when updating a table (e.g., adding a new row to a simple_table), you must pass ALL rows in `replacement_blocks`, not just the new row. The table is replaced entirely.
 - **20-block per-request limit** — `mcp_wolai_insert_blocks_relative` and `mcp_wolai_create_block` both reject requests with more than 20 blocks. Split into multiple sequential calls if your content has 21+ blocks. Ensure you use the *last* block from batch N as the `anchor_block_id` for batch N+1
 - **After renaming a source file (`raw/articles/...`), update all provenance trail references** — concept pages use `^[raw/articles/<old-name>.md]` markers and frontmatter `sources:` field. Search the entire wiki for the old path after any rename: `search_files(pattern="<old-path>", path="$WIKI")`. The references are in: frontmatter sources lists, inline provenance markers, log.md history entries, and wikilinks. All must be updated in the same commit.
+- **Mapping table formatting fragile with `patch()`** — the mapping file uses markdown table rows with leading `|`. When patching adjacent rows (e.g., updating the Stats section), the `patch` tool can accidentally strip the leading `|` from a row if the match boundary isnt exact. Always verify the mapping table renders correctly after patching — especially around the Stats rows (`| **Confirmed page IDs** | ... |`) and mapping table rows. Read the affected section afterward to catch dropped pipes.
+- **`log.md` pipe-injection with `patch()`** — When appending entries to `log.md` using `patch()`, the tool may inject extra `|` pipe characters at the start of new lines if the surrounding context contains pipe-delimited content. After patching `log.md`, always re-read the appended section to check for spurious `|` prefixes on lines.
 - **Raw articles in `raw/articles/` should be named after their content, not their original filename** — files exported from Google AI Mode use the prefix `google-ai-mode_<descriptive-name>.md` (e.g., `google-ai-mode_llm-inference-deep-dive.md`). See `references/raw-article-naming-conventions.md` for the full convention.
 - **Sync verification companion workflow** — to check whether a wiki page has a Wolai counterpart and whether its content is synced, see `references/sync-verification.md`. Useful before starting a sync to assess scope: the cross-check flow (frontmatter → mapping → Wolai outline) quickly tells you if content needs syncing or if the page is wiki-native.
+- **`_snapshot.json` goes stale when mapping changes** — updating the `.md` mapping file is only half the job. The `_snapshot.json` cache is NOT auto-regenerated. After any mapping update (new page, path change, deletion), run `detect-changes.py --build-snapshot` to rebuild it. Before the next `git push`, verify both files changed. This pitfall was discovered when a new bi-encoder page was added to the mapping but `_snapshot.json` wasn't regenerated — the change-detection script would have silently used the stale cache on its next run.
