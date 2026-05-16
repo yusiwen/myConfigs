@@ -1,7 +1,7 @@
 ---
 name: sync-export-to-wolai
 description: "Update a raw export markdown file AND its corresponding Wolai page simultaneously, keeping both in sync. Covers: locating the Wolai page ID via mapping files, editing both sides, and git commit/push."
-version: 1.2.0
+version: 1.3.0
 author: Hermes Agent
 ---
 
@@ -15,6 +15,8 @@ This skill activates when you need to keep wiki content in sync between its thre
 - A wiki concept page was improved and the raw source should reflect the changes
 - A raw article (`raw/articles/`) was ingested into a concept/entity page and the result should be synced back to the appropriate raw export and Wolai page
 - The user explicitly asks to "update the export page and the corresponding Wolai note"
+
+> ⚠️ **Wolai sync requires explicit user request.** Improving an entity page or raw export (adding sections, fixing content, enriching details) does NOT automatically mean Wolai sync is needed. Local wiki improvements can stand alone. Only proceed to Step 5 (Wolai MCP update) when the user says "sync this back to Wolai" or equivalent. Doing Wolai sync unprompted is not helpful — the user decides when and what to sync.
 
 **Two workflow directions:**
 
@@ -150,6 +152,22 @@ Edit the markdown file using `patch()`. The raw export format uses Wolai's markd
 
 **Always follow the wiki git workflow:** pull before edit, commit + push after.
 
+**Ensure raw export has ingestion frontmatter (for Wolai-derived exports):**
+
+Wolai-derived raw exports should have YAML frontmatter at the top of the file:
+
+```yaml
+---
+source_export: wolai-<export-name>
+ingested: YYYY-MM-DD
+sha256: <sha256-of-original-content-or-unknown>
+---
+```
+
+If an existing raw export lacks this frontmatter, add it when editing. Check nearby raw export files in the same `raw/<export>/` directory for the correct pattern. The `source_export` value typically matches the export name (e.g., `wolai-artificial-intelligence`, `wolai-web`).
+
+**Pitfall:** Some older raw exports (especially those manually created or from initial bulk exports) may be missing this frontmatter entirely. When you encounter one, add it rather than leaving it bare.
+
 ### Step 5: Update the Wolai Page via MCP
 
 Choose the right insertion strategy:
@@ -276,3 +294,5 @@ done
 - **Raw articles in `raw/articles/` should be named after their content, not their original filename** — files exported from Google AI Mode use the prefix `google-ai-mode_<descriptive-name>.md` (e.g., `google-ai-mode_llm-inference-deep-dive.md`). See `references/raw-article-naming-conventions.md` for the full convention.
 - **Sync verification companion workflow** — to check whether a wiki page has a Wolai counterpart and whether its content is synced, see `references/sync-verification.md`. Useful before starting a sync to assess scope: the cross-check flow (frontmatter → mapping → Wolai outline) quickly tells you if content needs syncing or if the page is wiki-native.
 - **`_snapshot.json` goes stale when mapping changes** — updating the `.md` mapping file is only half the job. The `_snapshot.json` cache is NOT auto-regenerated. After any mapping update (new page, path change, deletion), run `detect-changes.py --build-snapshot` to rebuild it. Before the next `git push`, verify both files changed. This pitfall was discovered when a new bi-encoder page was added to the mapping but `_snapshot.json` wasn't regenerated — the change-detection script would have silently used the stale cache on its next run.
+- **Wolai sync is not automatic** — updating entity pages or raw exports (adding sections, fixing content) does NOT mean Wolai sync is needed. Stop at the raw export update unless the user explicitly says "sync to Wolai". Auto-pushing to Wolai overwrites user-controlled content without their consent.
+- **Missing ingestion frontmatter in raw exports** — Some Wolai-derived raw exports lack the YAML frontmatter block (`source_export`, `ingested`, `sha256`). When editing such a file, add the frontmatter rather than leaving it bare. Check sibling files in the same `raw/<export>/` directory for the correct pattern. This was discovered when the CUDA raw export (under `raw/artificial-intelligence-export/工具/cuda/cuda.md`) was found to lack ingestion frontmatter during a WSL content update.
