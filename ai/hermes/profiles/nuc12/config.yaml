@@ -477,5 +477,5 @@ voice:
 web:
   backend: ''
   extract_backend: ''
-  search_backend: ''
+  search_backend: 'searxng'
 whatsapp: {}
