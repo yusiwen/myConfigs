@@ -241,7 +241,11 @@ zinit wait lucid light-mode for \
     mv'gotify-cli*.exe -> gotify-cli.exe' pick'gotify-cli.exe' \
     bpick'*windows-amd64.exe' \
     if'[[ "$(uname -o)" = "Msys" ]]' \
-  gotify/cli
+  gotify/cli \
+    from'gh-r' as'program' id-as'mu' \
+    mv'mu-*-> mu' pick'mu' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  yusiwen/myUtilities
 
 # Git stuffs
 zinit wait lucid light-mode for \
