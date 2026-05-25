@@ -245,6 +245,9 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' id-as'mu' \
     mv'mu-*-> mu' pick'mu' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
+    atload"
+      alias ggcm='mu commit'
+    " \
   yusiwen/myUtilities
 
 # Git stuffs
@@ -360,30 +363,6 @@ zinit wait lucid light-mode for \
 
 # AI Agent
 zinit wait lucid light-mode for \
-    from'gh-r' as'program' id-as'codegpt' extract"!" \
-    mv'codegpt* -> codegpt' pick'codegpt' \
-    has'git' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-    atload="
-      alias cg='codegpt'
-      alias cgc='codegpt commit'
-      alias cgcp='codegpt commit --preview'
-      alias cgr='codegpt review'
-      mkdir -p $HOME/.config/codegpt/prompt
-    " \
-  appleboy/CodeGPT \
-    from'gh-r' as'program' id-as'codegpt' extract"!" \
-    mv'codegpt*.exe -> codegpt.exe' pick'codegpt.exe' bpick'*windows*' \
-    has'git' \
-    if'[[ "$(uname -o)" = "Msys" ]]' \
-    atload="
-      alias cg='codegpt'
-      alias cgc='codegpt commit'
-      alias cgcp='codegpt commit --preview'
-      alias cgr='codegpt review'
-      mkdir -p $HOME/.config/codegpt/prompt
-    " \
-  appleboy/CodeGPT \
     from'gh-r' as'program' id-as'rtk' pick'rtk' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   rtk-ai/rtk \
