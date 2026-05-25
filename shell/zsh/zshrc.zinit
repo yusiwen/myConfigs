@@ -384,6 +384,10 @@ zinit wait lucid light-mode for \
       mkdir -p $HOME/.config/codegpt/prompt
     " \
   appleboy/CodeGPT \
+    from'gh-r' as'program' id-as'rtk' \
+    pick'rtk' bpick'*linux*' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  rtk-ai/rtk \
     as"program" id-as'opencode' run-atpull \
     atclone"curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path" \
     atinit'
