@@ -245,10 +245,11 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' id-as'mu' \
     mv'mu-*-> mu' pick'mu' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
-    atload"
-      alias ggcm='mu git commit'
-      alias ggi='mu git ignore'
-    " \
+    atload'
+      alias ggcm="mu git commit"
+      alias ggi="mu git ignore"
+      eval "$(mu completion zsh)"
+    ' \
   yusiwen/myUtilities
 
 # Git stuffs
