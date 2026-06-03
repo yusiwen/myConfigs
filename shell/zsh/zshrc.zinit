@@ -246,7 +246,8 @@ zinit wait lucid light-mode for \
     mv'mu-*-> mu' pick'mu' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
     atload"
-      alias ggcm='mu commit'
+      alias ggcm='mu git commit'
+      alias ggi='mu git ignore'
     " \
   yusiwen/myUtilities
 
