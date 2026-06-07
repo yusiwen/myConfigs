@@ -200,7 +200,7 @@ zinit wait lucid light-mode for \
     from'gh-r' as'program' id-as'navi' pick'navi' \
   denisidoro/navi \
     from'gh-r' as'program' id-as'yq' \
-    mv'yq* -> yq' pick'yq' \
+    mv'yq* -> yq' pick'yq' bpick'*.tar.gz' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   mikefarah/yq \
     from'gh-r' as'program' id-as'yq' \
