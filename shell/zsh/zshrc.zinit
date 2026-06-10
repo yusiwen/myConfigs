@@ -304,6 +304,10 @@ zinit wait lucid light-mode for \
     mv'k0sctl* -> k0sctl' pick'k0sctl' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   k0sproject/k0sctl \
+    from'gh-r' as'program' id-as'talosctl' \
+    mv'talosctl* -> talosctl' pick'talosctl' extract"!" \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  siderolabs/talos \
     as"program" id-as'kubectl' run-atpull \
     atclone"curl -sLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- install" \
     atpull"curl -sLo- 'https://share.yusiwen.cn/public/k8s/kubectl_installer.sh' | bash -s -- update" \
