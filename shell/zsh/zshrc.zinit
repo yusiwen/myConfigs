@@ -301,7 +301,7 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   kubeedge/kubeedge \
     from'gh-r' as'program' id-as'k0sctl' \
-    mv'k0sctl* -> k0sctl' pick'k0sctl' \
+    mv'k0sctl* -> k0sctl' pick'k0sctl' extract"!" \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   k0sproject/k0sctl \
     from'gh-r' as'program' id-as'talosctl' \
