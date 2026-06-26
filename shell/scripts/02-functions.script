@@ -673,7 +673,7 @@ function link_jdks() {
 # }}}
 
 # {{{ Clipbaord over OSC52
-clip() {
+function clip() {
   local data
   data=$(base64 | tr -d '\n')
   printf "\033]52;c;%s\a" "$data"
