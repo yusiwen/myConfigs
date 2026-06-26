@@ -540,7 +540,7 @@ function _docker_search_tags() { # {{{
   fi
 
   local namespace
-  local repo 
+  local repo
 
   if echo "$1" | grep -q '/'; then
     namespace=$(echo "$1" | cut -d'/' -f1)
@@ -671,5 +671,13 @@ function link_jdks() {
   fi
 }
 # }}}
+
+# {{{ Clipbaord over OSC52
+clip() {
+  local data
+  data=$(base64 | tr -d '\n')
+  printf "\033]52;c;%s\a" "$data"
+}
+}}}
 
 # vim: foldmethod=marker :
