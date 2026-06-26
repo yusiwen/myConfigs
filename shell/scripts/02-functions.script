@@ -678,6 +678,6 @@ function clip() {
   data=$(base64 | tr -d '\n')
   printf "\033]52;c;%s\a" "$data"
 }
-}}}
+# }}}
 
 # vim: foldmethod=marker :
