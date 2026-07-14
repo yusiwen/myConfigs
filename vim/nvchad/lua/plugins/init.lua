@@ -204,7 +204,7 @@ return {
     -- Trigger lazy loading on these keymaps
     keys = {
       { "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", desc = "ToggleTerm Float" },
-      { "<leader>th", "<cmd>ToggleTerm direction=horizontal<cr>", desc = "ToggleTerm Horizontal" },
+      { "<leader>tH", "<cmd>ToggleTerm direction=horizontal<cr>", desc = "ToggleTerm Horizontal" },
       { "<leader>tv", "<cmd>ToggleTerm direction=vertical<cr>", desc = "ToggleTerm Vertical" },
     },
     opts = {
