@@ -248,6 +248,7 @@ zinit wait lucid light-mode for \
     atload'
       alias ggcm="mu git commit"
       alias ggi="mu git ignore"
+      alias ma="mu ask"
       eval "$(mu completion zsh)"
     ' \
   yusiwen/myUtilities
