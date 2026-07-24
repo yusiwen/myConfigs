@@ -6,6 +6,7 @@ set -g @tpm_plugins '\
   tmux-plugins/tmux-sensible \
   tmux-plugins/tmux-logging \
   sainnhe/tmux-fzf \
+  tmux-plugins/tmux-resurrect \
 '
 
 run '~/.config/byobu/plugins/tpm/tpm'
