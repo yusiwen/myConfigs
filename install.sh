@@ -384,6 +384,7 @@ function init_env() { # {{{
 function fetch_myConfigs() { # {{{
   mkdir -p "$HOME"/git
   if [ -d "$HOME"/git/myConfigs ]; then
+    ln -sfnv "$HOME"/git/myConfigs "$HOME"/myConfigs
     echo -e "${COLOR1}git/myConfigs${COLOR} already exists.${NC}"
     return
   fi
