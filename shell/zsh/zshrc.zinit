@@ -218,11 +218,11 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   BurntSushi/ripgrep \
     from'gh-r' as'program' id-as'media-get' \
-    mv'media-get* -> media-get' pick'media-get' \
+    mv'media-get* -> media-get' pick'media-get' extract"!" \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   foamzou/media-get \
     from'gh-r' as'program' id-as'media-get' \
-    mv'media-get*.exe -> media-get.exe' pick'media-get.exe' bpick'*win.exe*' \
+    mv'media-get*.exe -> media-get.exe' pick'media-get.exe' bpick'*win.exe*' extract"!" \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   foamzou/media-get \
     from'gh-r' as'program' id-as'gum' pick'**/gum' \
@@ -234,7 +234,7 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   @direnv/direnv \
     from'gh-r' as'program' id-as'gotify-cli' \
-    mv'gotify-cli* -> gotify-cli' pick'gotify-cli'  \
+    mv'gotify-cli* -> gotify-cli' pick'gotify-cli' extract"!"  \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   gotify/cli \
     from'gh-r' as'program' id-as'gotify-cli' \
