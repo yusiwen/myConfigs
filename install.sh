@@ -246,15 +246,15 @@ function install_mu() {
     path="windows/amd64"
     file="mu-windows-amd64-v1.3.3.zip"
     unzip="unzip"
-    tmp_mu_bin="mu-windows-amd64"
+    tmp_mu_bin="mu-windows-amd64-v1.3.3"
   elif [ "$OS" == 'Linux' ]; then
     path="linux/$ARCH"
     file="mu-linux-$ARCH-v1.3.3.gz"
-    tmp_mu_bin="mu-linux-$ARCH"
+    tmp_mu_bin="mu-linux-$ARCH-v1.3.3"
   elif [ "$OS" == 'Darwin' ]; then
     path="darwin/$ARCH"
     file="mu-darwin-$ARCH-v1.3.3.gz"
-    tmp_mu_bin="mu-darwin-$ARCH"
+    tmp_mu_bin="mu-darwin-$ARCH-v1.3.3"
   else
     echo -e "${COLOR}OS not supported.${NC}"
     exit 1
