@@ -243,16 +243,16 @@ function install_mu() {
   local unzip_command="gunzip"
   local tmp_mu_bin=""
   if [ "$OS" == 'Windows_NT' ]; then
-    path="windows/amd64/"
+    path="windows/amd64"
     file="mu-windows-amd64-v1.3.3.zip"
     unzip="unzip"
     tmp_mu_bin="mu-windows-amd64"
   elif [ "$OS" == 'Linux' ]; then
-    path="linux/$ARCH/"
+    path="linux/$ARCH"
     file="mu-linux-$ARCH-v1.3.3.gz"
     tmp_mu_bin="mu-linux-$ARCH"
   elif [ "$OS" == 'Darwin' ]; then
-    path="darwin/$ARCH/"
+    path="darwin/$ARCH"
     file="mu-darwin-$ARCH-v1.3.3.gz"
     tmp_mu_bin="mu-darwin-$ARCH"
   else
