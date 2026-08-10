@@ -98,6 +98,7 @@ if [ "$OS" = 'Windows_NT' ] && [ "$(uname -o)" = 'Msys' ]; then
 fi
 
 APP_HOME=$OPT_PATH/apps
+MU_BIN=
 # }}}
 
 set -e
@@ -232,32 +233,46 @@ function enable_FUSE() { # {{{
 } # }}}
 
 function install_mu() {
+  if check_command mu; then
+    MU_BIN="$(which mu)"
+    return
+  fi
+
   local path=""
+  local file=""
+  local unzip_command="gunzip"
+  local tmp_mu_bin=""
   if [ "$OS" == 'Windows_NT' ]; then
-    path="windows/amd64/mu.exe"
+    path="windows/amd64/"
+    file="mu-windows-amd64-v1.3.3.zip"
+    unzip="unzip"
+    tmp_mu_bin="mu-windows-amd64"
   elif [ "$OS" == 'Linux' ]; then
-    path="linux/$ARCH/mu"
+    path="linux/$ARCH/"
+    file="mu-linux-$ARCH-v1.3.3.gz"
+    tmp_mu_bin="mu-linux-$ARCH"
+  elif [ "$OS" == 'Darwin' ]; then
+    path="darwin/$ARCH/"
+    file="mu-darwin-$ARCH-v1.3.3.gz"
+    tmp_mu_bin="mu-darwin-$ARCH"
+  else
+    echo -e "${COLOR}OS not supported.${NC}"
+    exit 1
   fi
 
   echo -e "${COLOR}Downloading myUtilities...${NC}"
   if check_command curl >/dev/null 2>&1; then
-    $SUDO curl -s -L "https://share.yusiwen.cn/public/mu/$path" -o /usr/local/bin/mu
+    $SUDO curl -s -L "https://share.yusiwen.cn/public/mu/$path/$file" -o /tmp/"$file"
   elif check_command wget >/dev/null 2>&1; then
-    $SUDO wget -qO /usr/local/bin/mu "https://share.yusiwen.cn/public/mu/$path"
+    $SUDO wget -qO /tmp/"$file" "https://share.yusiwen.cn/public/mu/$path"
   else
     echo -e "${COLOR}Error: Neither curl nor wget is installed. Please install one of them manually.${NC}"
     exit 1
   fi
-  $SUDO chmod +x /usr/local/bin/mu
+  cd /tmp && "$unzip_command" "$file"
+  chmod +x /tmp/"$tmp_mu_bin"
+  MU_BIN="/tmp/$tmp_mu_bin"
 }
-
-function install_gum() { # {{{
-  if ! check_command mu; then
-    install_mu
-  fi
-
-  mu install --move charmbracelet/gum | $SUDOE bash -
-} # }}}
 
 # Initialize apt and install prerequisite packages
 function init_env() { # {{{
@@ -268,9 +283,7 @@ function init_env() { # {{{
     minimal=2
   fi
 
-  if ! check_command gum; then
-    install_gum
-  fi
+  install_mu
 
   echo -e "${COLOR}Initializing system...${NC}"
 
@@ -289,7 +302,7 @@ function init_env() { # {{{
         fi
       fi
 
-      gum spin --title "Updating apt-get index..." -- bash -c "$SUDO apt-get update"
+      "$MU_BIN" run --command "Updating apt-get index"::"$SUDO apt-get update"
       local pkg_pstack=()
       if [ "$ARCH" = 'amd64' ] && [ "$DISTRO" = 'Ubuntu' ]; then
         pkg_pstack=( pstack ltrace )
@@ -310,22 +323,15 @@ function init_env() { # {{{
       local pkg_monitor=( htop atop "${pkg_btop[@]}" iotop iftop nethogs nload sysstat )
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found psmisc )
 
-      gum spin --show-error --title "Installing core packages..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_core[*]}"
-      gum spin --show-error --title "Installing zip packages..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_zip[*]}"
-      gum spin --show-error --title "Installing network packages..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_network[*]}"
-      gum spin --show-error --title "Installing filesystem packages..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_fs[*]}"
-      gum spin --show-error --title "Installing monitor packages..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_monitor[*]}"
-      gum spin --show-error --title "Installing misc packages..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_misc[*]}"
+      "$MU_BIN" run --command "Installing core packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_core[*]}"
+      "$MU_BIN" run --command "Installing zip packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_zip[*]}"
+      "$MU_BIN" run --command "Installing network packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_network[*]}"
+      "$MU_BIN" run --command "Installing filesystem packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_fs[*]}"
+      "$MU_BIN" run --command "Installing monitor packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_monitor[*]}"
+      "$MU_BIN" run --command "Installing misc packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_misc[*]}"
 
       if [ $minimal -eq 2 ]; then
-        gum spin --show-error --title "Installing development packages..." -- \
-          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_build[*]}"
+        "$MU_BIN" run --command "Installing development packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_build[*]}"
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       yay -S base-devel the_silver_searcher tmux byobu
@@ -395,8 +401,7 @@ function fetch_myConfigs() { # {{{
     mv "$HOME"/git/myConfigs-master "$HOME"/git/myConfigs
     rm -f /tmp/myConfigs.zip
   else
-    gum spin --show-error --title "Fetch yusiwen/myConfigs..." -- \
-      bash -c "git clone -q https://github.com/yusiwen/myConfigs.git $HOME/git/myConfigs && git -C $HOME/git/myConfigs submodule update -q --init"
+    "$MU_BIN" run --command "Fetch yusiwen/myConfigs"::"git clone -q https://github.com/yusiwen/myConfigs.git $HOME/git/myConfigs && git -C $HOME/git/myConfigs submodule update -q --init"
   fi
 
   ln -sfnv "$HOME"/git/myConfigs "$HOME"/myConfigs
@@ -711,6 +716,7 @@ function print_info() { # {{{
 
 case $1 in
 info) show_sysinfo ;;
+mu) install_mu ;;
 gum) install_gum ;;
 init)
   shift
