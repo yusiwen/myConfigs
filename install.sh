@@ -10,6 +10,9 @@
 # Installation script for my tools & environments
 # http://git.io/vtVXR
 # yusiwen@gmail.com
+#
+# Download:
+# curl -LO "https://raw.githubusercontent.com/yusiwen/myConfigs/refs/heads/master/install.sh"
 
 # Global variables {{{
 COLOR='\033[1;34m'  # Highlighted white
