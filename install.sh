@@ -213,7 +213,7 @@ function vercomp() { # {{{
   fi
 } # }}}
 
-function choose_fuse_version_by_apt() {
+function choose_fuse_version_by_apt() { # {{{
     local pkg cand
     for pkg in libfuse2t64 libfuse2; do
         cand=$(apt-cache policy "$pkg" 2>/dev/null | awk '/^\s*Candidate:\s/{print $2}')
@@ -223,7 +223,7 @@ function choose_fuse_version_by_apt() {
         fi
     done
     return 1
-}
+} # }}}
 
 function enable_FUSE() { # {{{
   install_mu
@@ -257,23 +257,24 @@ function install_mu() {
     return
   fi
 
+  local mu_version="v1.3.4"
   local path=""
   local file=""
   local unzip_command="gunzip"
   local tmp_mu_bin=""
   if [ "$OS" == 'Windows_NT' ]; then
     path="windows/amd64"
-    file="mu-windows-amd64-v1.3.3.zip"
+    file="mu-windows-amd64-$mu_version.zip"
     unzip="unzip"
-    tmp_mu_bin="mu-windows-amd64-v1.3.3"
+    tmp_mu_bin="mu-windows-amd64-$mu_version"
   elif [ "$OS" == 'Linux' ]; then
     path="linux/$ARCH"
-    file="mu-linux-$ARCH-v1.3.3.gz"
-    tmp_mu_bin="mu-linux-$ARCH-v1.3.3"
+    file="mu-linux-$ARCH-$mu_version.gz"
+    tmp_mu_bin="mu-linux-$ARCH-$mu_version"
   elif [ "$OS" == 'Darwin' ]; then
     path="darwin/$ARCH"
-    file="mu-darwin-$ARCH-v1.3.3.gz"
-    tmp_mu_bin="mu-darwin-$ARCH-v1.3.3"
+    file="mu-darwin-$ARCH-$mu_version.gz"
+    tmp_mu_bin="mu-darwin-$ARCH-$mu_version"
   else
     echo -e "${COLOR}OS not supported.${NC}"
     exit 1
