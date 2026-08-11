@@ -556,6 +556,7 @@ function install_samba() { # {{{
 function install_rust() { # {{{
   # shellcheck disable=SC1091
   source "$HOME"/myConfigs/rust/install.sh
+  install_llvm
   _install_rust
 } # }}}
 

@@ -4,8 +4,7 @@ function _install_ruby() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! check_command ruby; then
-        gum spin --show-error --title "Installing ruby..." -- \
-          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev"
+        "$MU_BIN" run --command "Installing ruby"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ruby-full curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev"
         echo -e "${COLOR}Installing ${COLOR1}Ruby${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}ruby${COLOR} was found.${NC}"
@@ -13,8 +12,7 @@ function _install_ruby() { # {{{
         PACKAGE=$(dpkg -l | grep -c ruby-full)
         set -e
         if [ "$PACKAGE" -eq 0 ]; then
-          gum spin --show-error --title "Installing ruby-full..." -- \
-            bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ruby-full"
+          "$MU_BIN" run --command "Installing ruby-full"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ruby-full"
         fi
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
