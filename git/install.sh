@@ -18,13 +18,13 @@ function _install_git() { # {{{
 
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
             "$MU_BIN" run --command "Updating apt repository"::"$SUDO apt-get -qq update" \
-                          --commdnd "Upgrading system"::"$SUDO env NEEDRESTART_MODE=a apt-get -qq full-upgrade -y"
+                          --commdnd "Upgrading system"::"$SUDO env NEEDRESTART_MODE=a apt-get full-upgrade -y"
           else
             echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
           fi
         fi
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
-        "$MU_BIN" run --command "Installing git-core"::"$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y git"
+        "$MU_BIN" run --command "Installing git-core"::"$SUDO env NEEDRESTART_MODE=a apt-get install -y git"
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}git${COLOR} was found at '$(which git)'.${NC}"
@@ -51,7 +51,7 @@ function _install_git() { # {{{
 
       if ! check_command tig; then
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
-        "$MU_BIN" run --command "Installing tig"::"$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y tig"
+        "$MU_BIN" run --command "Installing tig"::"$SUDO env NEEDRESTART_MODE=a apt-get install -y tig"
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}tig${COLOR} was found at '$(which tig)'.${NC}"
