@@ -351,7 +351,7 @@ function init_env() { # {{{
                     --command "Installing misc packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_misc[*]}"
 
       if [ $minimal -eq 2 ]; then
-        "$MU_BIN" run --command "Installing development packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_build[*]}"
+        "$MU_BIN" run --command "Installing development packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_build[*]}"
       fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       yay -S base-devel the_silver_searcher tmux byobu
@@ -501,8 +501,7 @@ function install_rxvt() { # {{{
 
     if [ "$DISTRO" = 'Ubuntu' ]; then
       if ! check_command rxvt; then
-        gum spin --show-error --title "Installing rxvt-unicode-256color..." -- \
-          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y rxvt-unicode-256color"
+        "$MU_BIN" run --command "Installing rxvt-unicode-256color"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y rxvt-unicode-256color"
       fi
     fi
   else
@@ -526,8 +525,7 @@ function install_containerd() { # {{{
 function install_llvm() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      gum spin --show-error --title "Installing llvm..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y llvm clang clang-format clang-tidy clang-tools lldb lld"
+      "$MU_BIN" run --command "Installing llvm"::"SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y llvm clang clang-format clang-tidy clang-tools lldb lld"
     elif [ "$DISTRO" = 'CentOS' ]; then
       set +e
       PACKAGE=$(yum list installed | grep -c ^centos-release-scl)
@@ -546,8 +544,7 @@ function install_llvm() { # {{{
 function install_samba() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      gum spin --show-error --title "Installing samba..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y samba samba-common"
+      "$MU_BIN" run --command "Installing samba"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y samba samba-common"
       $SUDO cp "$HOME"/git/myConfigs/samba/smb.conf /etc/samba/smb.conf
       $SUDO smbpasswd -a yusiwen
       $SUDO systemctl restart smbd
@@ -572,8 +569,7 @@ function install_perl() { # {{{
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! check_command perl; then
-        gum spin --show-error --title "Installing perl..." -- \
-          bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y perl cpanminus"
+        "$MU_BIN" run --command "Installing perl"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y perl cpanminus"
       fi
     fi
   fi
@@ -640,8 +636,7 @@ function init_cilium() { # {{{
 function init_bpf() { # {{{ # Initialization of BPF development environment
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ]; then
-      gum spin --show-error --title "Installing perl..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install build-essential git make libelf-dev libelf1 clang llvm strace tar make bpfcc-tools linux-headers-$(uname -r) gcc-multilib"
+      "$MU_BIN" run --command "Installing perl"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install build-essential git make libelf-dev libelf1 clang llvm strace tar make bpfcc-tools linux-headers-$(uname -r) gcc-multilib"
 
       git clone --depth 1 git://kernel.ubuntu.com/ubuntu-stable/ubuntu-stable-"$(lsb_release -c -s)".git /tmp/kernel_src &&
         $SUDO mv /tmp/kernel_src /opt/kernel-src &&
@@ -703,7 +698,8 @@ function print_info() { # {{{
   echo -e "\nUsage:\n${COLOR}install.sh [COMMAND]${NC}"
   echo -e "\nCommands:"
   echo -e "\tinfo \t\tShow system information"
-  echo -e "\tgum \t\tInstall charmbracelet/gum"
+  echo -e "\tmu \t\tInstall muUtilities binary"
+  echo -e "\tfuse \t\tInstall FUSE support"
   echo -e "\tinit \t\tInitialize environment, '-m' for minimal setup"
   echo -e "\tgit \t\tInstall git"
   echo -e "\truby \t\tInstall ruby"
@@ -737,7 +733,7 @@ function print_info() { # {{{
 case $1 in
 info) show_sysinfo ;;
 mu) install_mu ;;
-gum) install_gum ;;
+fuse) enable_FUSE ;;
 init)
   shift
   init_env "$@"
