@@ -210,13 +210,27 @@ function vercomp() { # {{{
   fi
 } # }}}
 
+function choose_fuse_version_by_apt() {
+    local pkg cand
+    for pkg in libfuse2t64 libfuse2; do
+        cand=$(apt-cache policy "$pkg" 2>/dev/null | awk '/^\s*Candidate:\s/{print $2}')
+        if [[ -n "$cand" && "$cand" != "(none)" ]]; then
+            echo "$pkg"
+            return 0
+        fi
+    done
+    return 1
+}
+
 function enable_FUSE() { # {{{
+  install_mu
+
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
-      gum spin --show-error --title "Adding universe repository..." -- \
-        bash -c "$SUDO add-apt-repository -y universe"
-      gum spin --show-error --title "Installing libfuse2..." -- \
-        bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y libfuse2"
+      local pkg
+      pkg=$(choose_fuse_version_by_apt)
+      "$MU_BIN" run --command "Adding universe repository"::"$SUDO add-apt-repository -y universe" \
+                    --command "Installing $pkg..."::"$SUDO env NEEDRESTART_MODE=a apt-get install -y $pkg"
     elif [ "$DISTRO" = 'CentOS' ]; then
       if [ "$OS_VERSION" = '"7"' ]; then
         $SUDO yum --enablerepo=epel -y install fuse-sshfs # install from EPEL
@@ -235,6 +249,8 @@ function enable_FUSE() { # {{{
 function install_mu() {
   if check_command mu; then
     MU_BIN="$(which mu)"
+    return
+  elif [ -n "$MU_BIN" ]; then
     return
   fi
 
@@ -323,12 +339,12 @@ function init_env() { # {{{
       local pkg_monitor=( htop atop "${pkg_btop[@]}" iotop iftop nethogs nload sysstat )
       local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found psmisc )
 
-      "$MU_BIN" run --command "Installing core packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_core[*]}"
-      "$MU_BIN" run --command "Installing zip packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_zip[*]}"
-      "$MU_BIN" run --command "Installing network packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_network[*]}"
-      "$MU_BIN" run --command "Installing filesystem packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_fs[*]}"
-      "$MU_BIN" run --command "Installing monitor packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_monitor[*]}"
-      "$MU_BIN" run --command "Installing misc packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_misc[*]}"
+      "$MU_BIN" run --command "Installing core packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_core[*]}" \
+                    --command "Installing zip packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_zip[*]}" \
+                    --command "Installing network packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_network[*]}" \
+                    --command "Installing filesystem packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_fs[*]}" \
+                    --command "Installing monitor packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_monitor[*]}" \
+                    --command "Installing misc packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -qq -y ${pkg_misc[*]}"
 
       if [ $minimal -eq 2 ]; then
         "$MU_BIN" run --command "Installing development packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -qq install -y ${pkg_build[*]}"

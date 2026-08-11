@@ -9,8 +9,7 @@ function _install_git() { # {{{
           GIT_PPA=/etc/apt/sources.list.d/git-core-ubuntu-ppa-$CODENAME.list
           if [ ! -e "$GIT_PPA" ]; then
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...${NC}"
-            gum spin --show-error --title "Adding ppa:git-core/ppa..." -- \
-              bash -c "$SUDO apt-add-repository -y ppa:git-core/ppa"
+            "$MU_BIN" run --command "Adding ppa:git-core/ppa"::"SUDO apt-add-repository -y ppa:git-core/ppa"
 
             if [ -n "$MIRRORS" ] && [ "$MIRRORS" -eq 1 ]; then
               # Replace official launchpad address with reverse proxy from USTC
@@ -18,17 +17,14 @@ function _install_git() { # {{{
             fi
 
             echo -e "${COLOR}Add ${COLOR1}git-core${COLOR} ppa...OK${NC}"
-            gum spin --show-error --title "Updating apt repository..." -- \
-              bash -c "$SUDO apt-get -qq update"
-            gum spin --show-error --title "Upgrading system..." -- \
-              bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq full-upgrade -y"
+            "$MU_BIN" run --command "Updating apt repository"::"$SUDO apt-get -qq update" \
+                          --commdnd "Upgrading system"::"$SUDO env NEEDRESTART_MODE=a apt-get -qq full-upgrade -y"
           else
             echo -e "${COLOR1}ppa:git-core/ppa${COLOR} was found.${NC}"
           fi
         fi
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...${NC}"
-        gum spin --show-error --title "Installing git-core..." -- \
-          bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y git"
+        "$MU_BIN" run --command "Installing git-core"::"$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y git"
         echo -e "${COLOR}Installing ${COLOR1}git-core${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}git${COLOR} was found at '$(which git)'.${NC}"
@@ -45,8 +41,7 @@ function _install_git() { # {{{
           gcm_arch='x64'
         fi
         curl -sL "https://github.com/git-ecosystem/git-credential-manager/releases/download/v$gcm_latest_version/gcm-linux-$gcm_arch-$gcm_latest_version.deb" -o /tmp/gcm.deb
-        gum spin --show-error --title "Installing git-credential-manager..." -- \
-          bash -c "$SUDO dpkg --install /tmp/gcm.deb && rm -f /tmp/gcm.deb"
+        "$MU_BIN" run --command "Installing git-credential-manager"::"$SUDO dpkg --install /tmp/gcm.deb && rm -f /tmp/gcm.deb"
       else
         echo -e "${COLOR1}git-credential-manager${COLOR} was found at '/usr/local/bin/git-credential-manager'.${NC}"
       fi
@@ -56,8 +51,7 @@ function _install_git() { # {{{
 
       if ! check_command tig; then
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...${NC}"
-        gum spin --show-error --title "Installing tig..." -- \
-          bash -c "$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y tig"
+        "$MU_BIN" run --command "Installing tig"::"$SUDO env NEEDRESTART_MODE=a apt-get -qq install -y tig"
         echo -e "${COLOR}Installing ${COLOR1}tig${COLOR}...OK${NC}"
       else
         echo -e "${COLOR1}tig${COLOR} was found at '$(which tig)'.${NC}"
