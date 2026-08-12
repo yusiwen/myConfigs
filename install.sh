@@ -296,11 +296,9 @@ function install_mu() {
 
 # Initialize apt and install prerequisite packages
 function init_env() { # {{{
-  local minimal=0
-  if [ "$1" = '-m' ]; then
-    minimal=1
-  elif [ "$1" = '-b' ]; then
-    minimal=2
+  local minimal=1
+  if [ "$1" = '-f' ]; then
+    minimal=0
   fi
 
   install_mu
@@ -349,10 +347,6 @@ function init_env() { # {{{
                     --command "Installing filesystem packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_fs[*]}" \
                     --command "Installing monitor packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_monitor[*]}" \
                     --command "Installing misc packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_misc[*]}"
-
-      if [ $minimal -eq 2 ]; then
-        "$MU_BIN" run --command "Installing development packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_build[*]}"
-      fi
     elif [ "$DISTRO" = 'Manjaro' ]; then
       yay -S base-devel the_silver_searcher tmux byobu
     elif [ "$DISTRO" = 'CentOS' ]; then
@@ -372,13 +366,11 @@ function init_env() { # {{{
     fi
 
     enable_FUSE
+    fetch_myConfigs
+    install_git
 
-    if [ $minimal -eq 0 ] || [ $minimal -eq 1 ]; then
-      fetch_myConfigs
-      install_git
-    else
-      fetch_myConfigs
-      install_git
+    if [ $minimal -eq 0 ]; then
+      "$MU_BIN" run --command "Installing development packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_build[*]}"
       install_perl
       install_lua
       install_rust
@@ -701,7 +693,7 @@ function print_info() { # {{{
   echo -e "\tinfo \t\tShow system information"
   echo -e "\tmu \t\tInstall muUtilities binary"
   echo -e "\tfuse \t\tInstall FUSE support"
-  echo -e "\tinit \t\tInitialize environment, '-m' for minimal setup"
+  echo -e "\tinit \t\tInitialize environment, '-f' for full setup"
   echo -e "\tgit \t\tInstall git"
   echo -e "\truby \t\tInstall ruby"
   echo -e "\tmyConfigs \tClone myConfigs repository"
