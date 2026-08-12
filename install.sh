@@ -257,7 +257,7 @@ function install_mu() {
     return
   fi
 
-  local mu_version="v1.3.4"
+  local mu_version="$(get_latest_release_from_github 'yusiwen/myUtilities')"
   local path=""
   local file=""
   local unzip_command="gunzip"
