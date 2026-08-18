@@ -234,6 +234,12 @@ return {
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {},
+  },
+
+  -- https://github.com/esmuellert/codediff.nvim
+  {
+    "esmuellert/codediff.nvim",
+    cmd = "CodeDiff",
   }
 
 }
