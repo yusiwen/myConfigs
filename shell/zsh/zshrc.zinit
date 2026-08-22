@@ -378,7 +378,7 @@ zinit wait lucid light-mode for \
     atclone"curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path" \
     atinit'
       function load_opencode_keys() {
-        if command -v pass &>/dev/null; then
+        if command -v pass &>/dev/null ; then
           export HINDSIGHT_API_KEY="$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null)"
         fi
       }
@@ -388,6 +388,22 @@ zinit wait lucid light-mode for \
       alias opc='[ -z \"\$HINDSIGHT_API_KEY\" ] && load_opencode_keys; opencode'
       alias opencode='[ -z \"\$HINDSIGHT_API_KEY\" ] && load_opencode_keys; opencode'
     " \
+  zdharma-continuum/null \
+    as"program" id-as'dsh' \
+    has'npm' \
+    atclone"npm install -g @deepseek-ai/dsh" \
+    atpull"npm update -g @deepseek-ai/dsh" \
+    atinit'
+      function load_dsh_keys() {
+        if [ -z "$HINDSIGHT_API_KEY" ] && command -v pass &>/dev/null; then
+          export HINDSIGHT_API_KEY="$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null)"
+        fi
+        if [ -z "$WOLAI_API_KEY" ] && command -v pass &>/dev/null; then
+          export WOLAI_API_KEY="$(pass www.wolai.com/mcp_key 2>/dev/null)"
+        fi
+      }
+    ' \
+    atload"alias dsh='load_dsh_keys; dsh'" \
   zdharma-continuum/null
 
 # My customized scripts
