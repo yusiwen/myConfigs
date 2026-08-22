@@ -388,10 +388,6 @@ zinit wait lucid light-mode for \
       alias opc='[ -z \"\$HINDSIGHT_API_KEY\" ] && load_opencode_keys; opencode'
       alias opencode='[ -z \"\$HINDSIGHT_API_KEY\" ] && load_opencode_keys; opencode'
     " \
-  zdharma-continuum/null \
-    as"program" id-as'qoder' run-atpull \
-    atclone"curl -fsSL https://qoder.com.cn/install | bash" \
-    atload"alias qd='qoderclicn'" \
   zdharma-continuum/null
 
 # My customized scripts
