@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 function _install_lua() { # {{{
+  install_mu
   if [ "$OS" = 'Linux' ]; then
     if [ "$DISTRO" = 'Ubuntu' ] || [ "$DISTRO" = 'Debian' ]; then
       if ! check_command lua; then
