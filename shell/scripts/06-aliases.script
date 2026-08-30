@@ -31,15 +31,20 @@ else
     alias ll='eza --long --git --color=always --group --icons'
     alias lla='eza --long --all --git --color=always --group --icons'
     alias tree='eza --tree --all --git --color=always --icons'
+    alias ltl='eza --tree --long --git --color=auto'
+    alias ltla='eza --tree --long --all --git --color=auto'
   else
     alias ll='eza --long --color=auto --group --icons'
     alias lla='eza --long --all --color=auto --group --icons'
     alias tree='eza --tree --all --color=auto --icons'
+    alias ltl='eza --tree --long --color=auto'
+    alias ltla='eza --tree --long --all --color=auto'
   fi
   alias l='eza --oneline --color=auto'
   alias la='eza --all --color=auto'
   alias ls='eza --color=auto'
   alias dir='eza --color=auto'
+  alias lt='eza --tree'
 fi
 
 # On Mac, to enable italic fonts in iTerm2, TERM must be set to 'xterm-256color-italic'.

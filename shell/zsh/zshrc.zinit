@@ -173,11 +173,6 @@ zinit wait lucid light-mode for \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   @sharkdp/bat \
     from'gh-r' as'program' id-as'eza' pick'eza' \
-    atload"
-      alias la='eza --all --git --color=auto'
-      alias ls='eza --git --color=auto'
-      alias ll='eza --long --all --git --color=auto'
-    " \
     if'[[ "$(uname -o)" != "Darwin" ]]' \
   eza-community/eza \
     from'gh-r' as'program' id-as'delta' pick'**/delta' \
@@ -209,8 +204,6 @@ zinit wait lucid light-mode for \
   mikefarah/yq \
     from'gh-r' as'program' id-as'dust' pick'**/dust' \
   bootandy/dust \
-    from'gh-r' as'program' id-as'tre' pick'**/tre' \
-  dduan/tre \
     from'gh-r' as'program' id-as'rg' pick'**/rg' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   BurntSushi/ripgrep \
