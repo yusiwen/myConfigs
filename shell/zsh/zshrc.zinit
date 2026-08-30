@@ -225,9 +225,6 @@ zinit wait lucid light-mode for \
     mv'media-get*.exe -> media-get.exe' pick'media-get.exe' bpick'*win.exe*' extract"!" \
     if'[[ "$(uname -o)" = "Msys" ]]' \
   foamzou/media-get \
-    from'gh-r' as'program' id-as'gum' pick'**/gum' \
-    if'[[ "$(uname -o)" != "Msys" ]]' \
-  charmbracelet/gum \
     from'gh-r' as'program' id-as'direnv' \
     mv'direnv.* -> direnv' pick'direnv' extract"!" \
     atload'eval "$(direnv hook zsh)"' \
