@@ -600,12 +600,12 @@ function install_ansible() { # {{{
 
 function install_mc() { # {{{
   if [ "$OS" = 'Linux' ]; then
-    curl -L "https://dl.min.io/client/mc/release/linux-$ARCH/mc" -o "$HOME"/.local/bin/mc
+    curl -L "https://dl.min.io/aistor/mc/release/linux-$ARCH/mc" -o "$HOME"/.local/bin/mc
     chmod +x "$HOME"/.local/bin/mc
   elif [ "$OS" = 'Darwin' ]; then
     brew install minio/stable/mc
   elif [ "$OS" = 'Windows_NT' ]; then
-    curl -L "https://dl.minio.io/client/mc/release/windows-amd64/mc.exe" -o "$HOME"/.local/bin/mc.exe
+    curl -L "https://dl.minio.io/aistor/mc/release/windows-amd64/mc.exe" -o "$HOME"/.local/bin/mc.exe
   fi
 } # }}}
 
