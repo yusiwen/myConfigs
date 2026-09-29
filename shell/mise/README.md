@@ -57,6 +57,29 @@ eza = { version = "latest", os = ["linux"] }   # macOS gets eza from Homebrew
 
 Bump them on purpose, not as a side effect of an upgrade.
 
+## Version files mise reads
+
+`[settings] idiomatic_version_file_enable_tools = ["java", "go"]`:
+
+| file | tool | notes |
+| ---- | ---- | ----- |
+| `.sdkmanrc`, `.java-version` | java | sdkman vendor/version strings are mapped (`11.0.12-zulu` → `zulu-11`); vendors bsg / graal / nik are unsupported |
+| `go.mod`, `go.work`, `.go-version` | go | `go.mod` wins over `.go-version`; a repo pinning `go 1.20` makes mise select — and on first use install — that exact toolchain |
+| `.tool-versions` | any | read regardless of this setting (asdf compatibility, the setting does not switch it off) |
+
+Per-directory opt-out, for projects whose toolchain comes from somewhere else
+(e.g. a nix flake devshell):
+
+```toml
+# ./mise.toml
+[settings]
+idiomatic_version_file_enable_tools = []
+```
+
+Go note: with `GOTOOLCHAIN=auto` (Go ≥ 1.21 default) Go downloads a *newer*
+toolchain for a repo that asks for one, but never an older one — that case is
+what mise's `go.mod` pinning covers.
+
 ## One-time follow-ups after switching a machine
 
 - **node**: global npm packages must be reinstalled under the mise-managed node

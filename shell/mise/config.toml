@@ -90,5 +90,9 @@ eza = { version = "latest", os = ["linux"] }
 
 [settings]
 # Keep reading .sdkmanrc / .java-version so existing Java projects (e.g.
-# spring-framework) keep selecting their JDK without a project mise.toml.
-idiomatic_version_file_enable_tools = ["java"]
+# spring-framework) keep selecting their JDK without a project mise.toml, and
+# go.mod/.go-version so Go projects pick their toolchain. Projects already
+# managed by a nix flake can opt out per directory with a mise.toml containing
+# `[settings] idiomatic_version_file_enable_tools = []`.
+# Note `.tool-versions` is read regardless of this setting (asdf compatibility).
+idiomatic_version_file_enable_tools = ["java", "go"]
