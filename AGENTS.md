@@ -21,6 +21,7 @@ Personal dotfiles and bootstrap configs for Linux/macOS/Windows workstations and
 - Internal helper functions prefixed with underscore (`_install_zsh`, `_setup_go`).
 - LF line endings enforced by `.gitattributes`. Do not introduce CRLF.
 - Validate shell changes with `shellcheck` (installed during bootstrap).
+- **zinit snippet cache**: `shell/zsh/zshrc.zinit` loads `shell/scripts/*.script` as zinit `is-snippet`s, and zinit *copies and compiles* them into `~/.local/share/zinit/snippets/Users--yusiwen--git--myConfigs--shell--scripts/`. Editing those scripts has no effect on new shells until that cache directory is deleted (zinit re-copies on next start) or `zinit update` is run — otherwise your edits look silently ignored.
 
 ## Git
 - **Commit style**: Conventional Commits — `<prefix>(<scope>): summary`. See recent `git log` or `ai/opencode/commands/commit.md` for the full prefix list.
