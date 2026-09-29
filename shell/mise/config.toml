@@ -90,9 +90,14 @@ eza = { version = "latest", os = ["linux"] }
 
 [settings]
 # Keep reading .sdkmanrc / .java-version so existing Java projects (e.g.
-# spring-framework) keep selecting their JDK without a project mise.toml, and
-# go.mod/.go-version so Go projects pick their toolchain. Projects already
-# managed by a nix flake can opt out per directory with a mise.toml containing
-# `[settings] idiomatic_version_file_enable_tools = []`.
-# Note `.tool-versions` is read regardless of this setting (asdf compatibility).
-idiomatic_version_file_enable_tools = ["java", "go"]
+# spring-framework) keep selecting their JDK without a project mise.toml.
+#
+# Deliberately NOT enabled: "go". mise reads go.mod's `go` directive but is
+# dropping that in 2026.11 (it is a minimum-compatible version, not the build
+# version), and meanwhile it downgrades the selected toolchain and warns
+# `missing: go@X` on every prompt in old repos. Go instead relies on the single
+# mise-managed toolchain plus Go's own GOTOOLCHAIN=auto; repos that need a pin
+# opt in locally (see shell/mise/README.md).
+#
+# `.tool-versions` is read regardless of this setting (asdf compatibility).
+idiomatic_version_file_enable_tools = ["java"]

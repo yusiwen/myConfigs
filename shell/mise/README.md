@@ -59,13 +59,34 @@ Bump them on purpose, not as a side effect of an upgrade.
 
 ## Version files mise reads
 
-`[settings] idiomatic_version_file_enable_tools = ["java", "go"]`:
+`[settings] idiomatic_version_file_enable_tools = ["java"]`:
 
 | file | tool | notes |
 | ---- | ---- | ----- |
 | `.sdkmanrc`, `.java-version` | java | sdkman vendor/version strings are mapped (`11.0.12-zulu` → `zulu-11`); vendors bsg / graal / nik are unsupported |
-| `go.mod`, `go.work`, `.go-version` | go | `go.mod` wins over `.go-version`; a repo pinning `go 1.20` makes mise select — and on first use install — that exact toolchain |
 | `.tool-versions` | any | read regardless of this setting (asdf compatibility, the setting does not switch it off) |
+
+**Why `go` is deliberately not in that list.** mise does read go.mod's `go`
+directive, but (a) it announced it will stop doing so in mise 2026.11 — the
+directive is a *minimum compatible version*, not the version the project is
+built with — and (b) while it does, it selects that older toolchain, which
+downgrades what you build with and prints a `mise WARN missing: go@X` plus a
+deprecation warning on **every prompt** inside e.g. `~/git/reading/mihomo`
+(`go 1.20`). Instead:
+
+- the single mise-managed Go (global `go = "1.27"`) covers everything: newer
+  requirements are fetched by Go itself through `GOTOOLCHAIN=auto` +
+  `GOPROXY` (goproxy.cn), older ones just build with the local toolchain;
+- a repo that really needs its own toolchain opts in locally:
+
+```toml
+# <repo>/mise.toml
+[tools]     # simplest: pin this repo explicitly
+go = "1.26"
+# ...or let mise read .go-version / a `toolchain goX.Y.Z` line in go.mod here:
+# [settings]
+# idiomatic_version_file_enable_tools = ["go"]
+```
 
 Per-directory opt-out, for projects whose toolchain comes from somewhere else
 (e.g. a nix flake devshell):
@@ -75,10 +96,6 @@ Per-directory opt-out, for projects whose toolchain comes from somewhere else
 [settings]
 idiomatic_version_file_enable_tools = []
 ```
-
-Go note: with `GOTOOLCHAIN=auto` (Go ≥ 1.21 default) Go downloads a *newer*
-toolchain for a repo that asks for one, but never an older one — that case is
-what mise's `go.mod` pinning covers.
 
 ## One-time follow-ups after switching a machine
 
