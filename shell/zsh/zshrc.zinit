@@ -331,6 +331,10 @@ zinit wait lucid light-mode for \
     pick'aliyun' \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   aliyun/aliyun-cli \
+    from'gh-r' as'program' id-as'drone-cli' \
+    pick'drone' \
+    if'[[ "$(uname -o)" != "Msys" ]]' \
+  harness/drone-cli \
     as'program' id-as'tree-sitter-cli' \
     atclone'cargo install tree-sitter-cli' \
     has'cargo' \
