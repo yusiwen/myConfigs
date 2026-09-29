@@ -1,0 +1,94 @@
+# Global mise configuration.
+#
+# Deployed as a symlink by `install.sh zsh`:
+#   ~/.config/mise/config.toml -> ~/myConfigs/shell/mise/config.toml
+#
+# This file replaces the *tool installation* half of shell/zsh/zshrc.zinit. Each
+# entry below used to be either a zinit `from'gh-r' as'program'` ice (GitHub
+# release binaries) or an atclone/atinit hook running a vendor installer
+# (sdkman, n, micromamba, uv, opencode, kubectl, helm, ...).
+#
+# zinit is still used, but only for what it is good at: loading zsh plugins.
+#
+# Platform differences use the `os` tool option instead of the repeated
+# `if [[ "$(uname -o)" != Msys/Darwin ]]` guards that used to litter zshrc.
+#
+# Verify a tool/backend:  mise registry <name>   /  mise ls-remote <name>
+# Add a tool:             mise use -g <name>@<version>   (then commit this file)
+
+[tools]
+# {{{ Shell utilities
+fd = "latest"
+bat = "latest"
+delta = "latest"
+dust = "latest"
+gdu = "latest"
+navi = "latest"
+ripgrep = "latest"
+yq = "latest"
+zellij = "latest"
+direnv = "latest"
+# }}}
+
+# {{{ Git
+lazygit = "latest"
+gitleaks = "latest"
+gitui = "latest"
+"github:github/git-sizer" = "latest"
+# }}}
+
+# {{{ Docker and Kubernetes
+k9s = "latest"
+stern = "latest"
+flux2 = "latest"
+dive = "latest"
+lazydocker = "latest"
+k0sctl = "latest"
+talosctl = "latest"
+kubectl = "latest"
+helm = "3" # 3.22.0 via sdkman; move to 4 deliberately, not by accident
+drone = "latest"
+# keadm only ships inside the kubeedge tarball and has no darwin asset, hence the
+# explicit asset name + binary path. TODO: verify this entry on omarchy (Linux).
+"github:kubeedge/kubeedge" = { version = "latest", os = ["linux"], matching_regex = "^keadm-v", bin_path = "keadm/keadm" }
+# }}}
+
+# {{{ Cloud and misc CLI
+"github:aliyun/aliyun-cli" = "latest"
+"github:gotify/cli" = "latest"
+"github:foamzou/media-get" = "latest"
+"github:yusiwen/myUtilities" = "latest" # provides `mu`
+rtk = "latest"
+# }}}
+
+# {{{ Development tooling
+tree-sitter = "latest"
+micromamba = "latest" # binary only; conda envs stay in $MAMBA_ROOT_PREFIX
+uv = "latest"
+opencode = "latest"
+# }}}
+
+# {{{ Runtimes (replaces sdkman + n)
+# In a version list the FIRST entry is the default, every entry is installed.
+# sdkman used to provide zulu 8/11/17/21/23/25 with 25.0.3 as `current`.
+java = ["zulu-25", "zulu-23", "zulu-21", "zulu-17", "zulu-11", "zulu-8"]
+maven = "latest" # sdkman had 3.9.9
+gradle = "8"      # sdkman had 8.12.1; move to 9 deliberately, not by accident
+node = "lts"
+# }}}
+
+# {{{ Linux only (macOS gets these from Homebrew)
+eza = { version = "latest", os = ["linux"] }
+# }}}
+
+# Not managed here, on purpose:
+#   fzf    - installed by ~/.fzf/install and wired up by unixorn/fzf-zsh-plugin
+#   yt-dlp - zinit (Linux only): the same plugin also provides its zsh completion
+#   jq     - /usr/bin/jq on macOS; install per machine if a newer one is wanted
+#   dsh    - npm-only prerelease (@deepseek-ai/dsh); mise's npm backend cannot
+#            resolve prerelease-only packages. See shell/mise/README.md.
+
+[settings]
+# Keep reading .sdkmanrc / .java-version so existing Java projects (e.g.
+# spring-framework) keep selecting their JDK without a project mise.toml.
+idiomatic_version_file_enable_tools = ["java"]
