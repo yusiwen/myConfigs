@@ -53,6 +53,7 @@ eza = { version = "latest", os = ["linux"] }   # macOS gets eza from Homebrew
 | ------ | ------- | --------------------------------------------------------------- |
 | `helm` | `3`     | 3.22.0 was in use; `latest` is 4.x, a major bump                |
 | `gradle` | `8`   | 8.12.1 was in use; `latest` is 9.x, a major bump                |
+| `go` | `1.27` | replaces the `/opt/go` 1.27.0 tarball; follows 1.27.x patches    |
 
 Bump them on purpose, not as a side effect of an upgrade.
 
@@ -95,7 +96,10 @@ Bump them on purpose, not as a side effect of an upgrade.
 
 - **now redundant** (can be removed once the new setup is verified):
   `~/.sdkman` (1.7G), `~/.asdf`, `~/.n`, `~/.local/bin/{uv,kubectl}`,
-  `/usr/local/bin/{helm,talosctl}`.
+  `/usr/local/bin/{helm,talosctl}`, and the `/opt/go` tarball toolchain
+  (`sudo rm -rf /opt/go /opt/go1.27.0.linux-arm64`, PATH now resolves go from
+  mise). `~/.gopackages` (GOPATH) stays — it holds `go install` output and is
+  deliberately outside the mise install dir.
 
 - **dropped tools**: `keadm` and `micromamba` are no longer managed or used.
   Their data is still on disk and can be deleted when convenient:

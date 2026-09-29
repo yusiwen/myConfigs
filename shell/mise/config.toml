@@ -72,6 +72,7 @@ java = ["zulu-25", "zulu-23", "zulu-21", "zulu-17", "zulu-11", "zulu-8"]
 maven = "latest" # sdkman had 3.9.9
 gradle = "8"      # sdkman had 8.12.1; move to 9 deliberately, not by accident
 node = "lts"
+go = "1.27" # was a /opt/go tarball installed by `install.sh golang`
 # }}}
 
 # {{{ Linux only (macOS gets these from Homebrew)

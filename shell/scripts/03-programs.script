@@ -98,27 +98,18 @@ fi
 #}}}
 
 # {{{ GoLang
-if [ -e /usr/local/go/bin/go ] || [ -e /opt/go/bin/go ] || [ -e "$HOME"/.local/go/bin/go ]; then
-  GOROOT=/usr/local/go
-  if [ ! -e "$GOROOT" ]; then
-    if [ -e "/opt/go/bin/go" ]; then
-      GOROOT=/opt/go
-    elif [ -e "$HOME"/.local/go/bin/go ]; then
-      GOROOT="$HOME"/.local/go
-    fi
-  else
-    GOROOT=
-  fi
-  export GOROOT
-  export GOPATH=$HOME/.gopackages
-  mkdir -p "$GOPATH"
-  export GO111MODULE=on
-  export GOPRIVATE=git.yusiwen.cn
-  export GOPROXY=https://goproxy.cn,direct
-  PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
+# The toolchain itself is managed by mise (shell/mise/config.toml, `go = "1.27"`).
+# GOPATH stays here on purpose: `go install` output must survive toolchain
+# upgrades, so it must not live inside the mise install directory.
+export GOPATH=$HOME/.gopackages
+mkdir -p "$GOPATH"
+export GOPRIVATE=git.yusiwen.cn
+export GOPROXY=https://goproxy.cn,direct
+if [ -d "$GOPATH/bin" ] && [[ ":$PATH:" != *":$GOPATH/bin:"* ]]; then
+  PATH="$PATH:$GOPATH/bin"
   export PATH
 fi
-#}}}
+# }}}
 
 # {{{ Ansible
 if command -v ansible &>/dev/null; then
