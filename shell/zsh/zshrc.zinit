@@ -161,8 +161,8 @@ zinit wait lucid light-mode for \
 # lives in shell/mise/config.toml (symlinked to ~/.config/mise/config.toml).
 # `mise activate` re-evaluates $PATH, $JAVA_HOME, ... on every prompt and on
 # directory change, so this replaces the zinit `from'gh-r' as'program'`
-# installs (fd, bat, k9s, ...), the sdkman / n / asdf / uv / micromamba init
-# hooks and the custom kubectl / helm installers that used to live here.
+# installs (fd, bat, k9s, ...), the sdkman / n / asdf / uv init hooks and the
+# custom kubectl / helm installers that used to live here.
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 else

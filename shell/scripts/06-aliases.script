@@ -349,7 +349,6 @@ fi
 # K8s
 alias ka='kubeadm'
 alias kc='kubectl'
-alias ke='keadm'
 alias k9='k9s'
 
 # Docker {{{

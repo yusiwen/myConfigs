@@ -12,7 +12,7 @@ The tool-installation half of `shell/zsh/zshrc.zinit`:
 | before (zinit)                                              | now                                        |
 | ----------------------------------------------------------- | ------------------------------------------ |
 | `from'gh-r' as'program'` ices (fd, bat, k9s, lazygit, ...)  | `[tools]` entries                          |
-| vendor installer hooks (kubectl, helm, uv, micromamba, ...) | `[tools]` entries (`aqua:` / `github:`)    |
+| vendor installer hooks (kubectl, helm, uv, opencode, ...)   | `[tools]` entries (`aqua:` / `github:`)    |
 | sdkman (java / maven / gradle), n (node), asdf              | `core:` backends in `[tools]`              |
 | `if [[ "$(uname -o)" != Msys/Darwin ]]` guards              | the `os` tool option                       |
 | `atload` aliases and `pass` key loading                     | `shell/scripts/02-functions.script`, `06-aliases.script` |
@@ -81,8 +81,13 @@ Bump them on purpose, not as a side effect of an upgrade.
   mise-selected JDK.
 
 - **now redundant** (can be removed once the new setup is verified):
-  `~/.sdkman` (1.7G), `~/.asdf`, `~/.n`, `~/.local/bin/{uv,micromamba,kubectl}`,
+  `~/.sdkman` (1.7G), `~/.asdf`, `~/.n`, `~/.local/bin/{uv,kubectl}`,
   `/usr/local/bin/{helm,talosctl}`.
+
+- **dropped tools**: `keadm` and `micromamba` are no longer managed or used.
+  Their data is still on disk and can be deleted when convenient:
+  `~/.micromamba` (3.5G conda root, contains `envs/`) and
+  `~/.local/bin/micromamba` (14M).
 
 ## Verifying a migration step
 

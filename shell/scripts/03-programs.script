@@ -444,13 +444,4 @@ if check_command direnv; then
 fi
 # }}}
 
-# {{{ micromamba
-# mise only manages the binary; conda environments continue to live in
-# $MAMBA_ROOT_PREFIX, which is where the previous installer put them too.
-export MAMBA_ROOT_PREFIX="$HOME/.micromamba"
-if check_command micromamba; then
-  eval "$(micromamba shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" | sed "s/\r$//")"
-fi
-# }}}
-
 # vim: foldmethod=marker :

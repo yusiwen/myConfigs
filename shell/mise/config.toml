@@ -6,7 +6,7 @@
 # This file replaces the *tool installation* half of shell/zsh/zshrc.zinit. Each
 # entry below used to be either a zinit `from'gh-r' as'program'` ice (GitHub
 # release binaries) or an atclone/atinit hook running a vendor installer
-# (sdkman, n, micromamba, uv, opencode, kubectl, helm, ...).
+# (sdkman, n, uv, opencode, kubectl, helm, ...).
 #
 # zinit is still used, but only for what it is good at: loading zsh plugins.
 #
@@ -48,9 +48,6 @@ talosctl = "latest"
 kubectl = "latest"
 helm = "3" # 3.22.0 via sdkman; move to 4 deliberately, not by accident
 drone = "latest"
-# keadm only ships inside the kubeedge tarball and has no darwin asset, hence the
-# explicit asset name + binary path. TODO: verify this entry on omarchy (Linux).
-"github:kubeedge/kubeedge" = { version = "latest", os = ["linux"], matching_regex = "^keadm-v", bin_path = "keadm/keadm" }
 # }}}
 
 # {{{ Cloud and misc CLI
@@ -63,7 +60,6 @@ rtk = "latest"
 
 # {{{ Development tooling
 tree-sitter = "latest"
-micromamba = "latest" # binary only; conda envs stay in $MAMBA_ROOT_PREFIX
 uv = "latest"
 opencode = "latest"
 # }}}
@@ -87,6 +83,8 @@ eza = { version = "latest", os = ["linux"] }
 #   jq     - /usr/bin/jq on macOS; install per machine if a newer one is wanted
 #   dsh    - npm-only prerelease (@deepseek-ai/dsh); mise's npm backend cannot
 #            resolve prerelease-only packages. See shell/mise/README.md.
+#   keadm, micromamba - dropped, no longer used (were a zinit gh-r install and a
+#            curl installer respectively)
 
 [settings]
 # Keep reading .sdkmanrc / .java-version so existing Java projects (e.g.
