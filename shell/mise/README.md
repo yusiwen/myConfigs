@@ -69,6 +69,19 @@ Bump them on purpose, not as a side effect of an upgrade.
   `dsh` stays npm-managed on purpose: npm publishes it as prereleases only
   (`0.1.7-rc.x`, `0.2.0-rc.1`) and mise's npm backend cannot resolve those.
 
+  Note: npm globals installed this way live **inside the node version directory**
+  (`~/.local/share/mise/installs/node/<version>/lib/node_modules`), so a
+  `mise upgrade node` to a new major/patch moves `installs/node/lts` to the new
+  version and the global CLI disappears (neither the direct path nor the shim
+  can find it). Re-run the `npm i -g ...` list after a node upgrade.
+
+- **hardcoding a path to a mise tool** (editor/IDE config, script, systemd unit,
+  MCP server command): use the shim `~/.local/share/mise/shims/<tool>`. It is the
+  supported entry point for contexts that never load your shell config, and it
+  resolves the version for the current directory. Do not hardcode
+  `~/.local/share/mise/installs/...`: that is internal layout (`latest` / `lts`
+  are symlinks mise repoints on upgrade).
+
 - **java / macOS**: `mise activate` exports `JAVA_HOME`, but GUI apps that use
   `/usr/libexec/java_home` (IDEs, installers) do not see mise JDKs. To register
   the selected JDK, see "macOS JAVA_HOME Integration" in the mise Java docs
