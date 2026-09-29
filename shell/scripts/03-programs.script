@@ -432,4 +432,25 @@ if check_command pass; then
   export PASSWORD_STORE_ENABLE_EXTENSIONS
 fi
 
+# {{{ bat
+# bat's man-page colouring (used to be an atinit on the zinit gh-r install)
+export MANROFFOPT='-c'
+# }}}
+
+# {{{ direnv
+# used to be an atload on the zinit gh-r install
+if check_command direnv; then
+  eval "$(direnv hook zsh)"
+fi
+# }}}
+
+# {{{ micromamba
+# mise only manages the binary; conda environments continue to live in
+# $MAMBA_ROOT_PREFIX, which is where the previous installer put them too.
+export MAMBA_ROOT_PREFIX="$HOME/.micromamba"
+if check_command micromamba; then
+  eval "$(micromamba shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" | sed "s/\r$//")"
+fi
+# }}}
+
 # vim: foldmethod=marker :

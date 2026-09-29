@@ -427,4 +427,14 @@ fi
 if check_command drone && check_command pass; then
   alias drone='drone --server https://ci.yusiwen.cn --token $(pass ci.yusiwen.cn/token)'
 fi
+
+# mu (yusiwen/myUtilities) - was a zinit atload on the gh-r install
+if check_command mu; then
+  alias ggcm="mu git commit"
+  alias ggi="mu git ignore"
+  alias ggr="mu git review"
+  alias ma="mu ask"
+fi
+
+alias opc='opencode'
 # vim: foldmethod=marker :

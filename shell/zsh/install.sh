@@ -55,6 +55,8 @@ function _install_zsh() { # {{{
   check_link "$CONFIG_SHELL"/profile "$HOME"/.profile
   check_link "$CONFIG_SHELL"/zsh/zshrc.zinit "$HOME"/.zshrc
   check_link "$CONFIG_SHELL"/starship/starship.toml "$HOME"/.config/starship.toml
+  # mise reads its global config from here; the tool list lives in the repo
+  check_link "$CONFIG_SHELL"/mise/config.toml "$HOME"/.config/mise/config.toml
 
   if [ "$SHELL" = 'zsh' ]; then
     source "$HOME/.zshrc"

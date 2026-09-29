@@ -680,4 +680,36 @@ function clip() {
 }
 # }}}
 
+# {{{ AI agent CLIs
+# API keys come from pass and are loaded on first use of the command, not at
+# shell startup. These used to be a zinit atinit/atload pair on the gh-r
+# installs of opencode and dsh; both binaries are installed by mise now.
+function load_opencode_keys() {
+  if [ -z "$HINDSIGHT_API_KEY" ] && command -v pass >/dev/null 2>&1; then
+    export HINDSIGHT_API_KEY="$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null)"
+  fi
+}
+
+function load_dsh_keys() {
+  if [ -z "$HINDSIGHT_API_KEY" ] && command -v pass >/dev/null 2>&1; then
+    export HINDSIGHT_API_KEY="$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null)"
+  fi
+  if [ -z "$WOLAI_API_KEY" ] && command -v pass >/dev/null 2>&1; then
+    export WOLAI_API_KEY="$(pass www.wolai.com/mcp_key 2>/dev/null)"
+  fi
+}
+
+# Functions rather than the old `alias opencode='... opencode'` one-liners: the
+# recursion guard is explicit and arguments are passed through untouched.
+function opencode() {
+  load_opencode_keys
+  command opencode "$@"
+}
+
+function dsh() {
+  load_dsh_keys
+  command dsh "$@"
+}
+# }}}
+
 # vim: foldmethod=marker :

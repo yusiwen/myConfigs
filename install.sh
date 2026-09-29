@@ -385,7 +385,7 @@ function init_env() { # {{{
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     else
-      brew update && brew install eza tmux gnupg pass pstree
+      brew update && brew install eza tmux gnupg pass pstree mise
     fi
     install_rust
   elif [ "$OS" = 'Windows_NT' ]; then
@@ -687,6 +687,25 @@ function init_gui() { # {{{
   fi
 } # }}}
 
+function install_mise() { # {{{
+  if ! check_command mise; then
+    echo -e "${COLOR}Installing ${COLOR1}mise${COLOR}...${NC}"
+    if [ "$OS" = 'Darwin' ]; then
+      brew install mise
+    elif check_command pacman; then
+      $SUDO pacman -S --noconfirm mise
+    else
+      curl https://mise.run | sh
+    fi
+  fi
+
+  # Global config lives in the repo; install_zsh links it to
+  # $HOME/.config/mise/config.toml. `mise install` then fetches everything the
+  # config declares (heavy on a fresh machine: 6 JDKs, node, maven, gradle...).
+  check_link "$HOME"/myConfigs/shell/mise/config.toml "$HOME"/.config/mise/config.toml
+  mise install
+} # }}}
+
 function print_info() { # {{{
   echo -e "\nUsage:\n${COLOR}install.sh [COMMAND]${NC}"
   echo -e "\nCommands:"
@@ -713,7 +732,8 @@ function print_info() { # {{{
   echo -e "\tperl \t\tInstall perl"
   echo -e "\tgolang \t\tInstall golang, version can be specified as the next argument"
   echo -e "\ttalosctl \tInstall talosctl"
-  echo -e "\tsdkman \t\tInstall sdkman"
+  echo -e "\tsdkman \t\tInstall sdkman (deprecated: java toolchains come from mise)"
+  echo -e "\tmise \t\tInstall mise and every tool declared in shell/mise/config.toml"
   echo -e "\tbyobu \t\tInstall byobu"
   echo -e "\tansible \tInstall ansible"
   echo -e "\tmc \t\tInstall Minio client"
@@ -754,6 +774,7 @@ golang)
   ;;
 talosctl) install_talosctl ;;
 sdkman) install_sdkman ;;
+mise) install_mise ;;
 byobu) init_byobu ;;
 ansible) install_ansible ;;
 mc) install_mc ;;
