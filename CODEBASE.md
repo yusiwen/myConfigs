@@ -56,9 +56,7 @@ Personal dotfiles and bootstrap scripts for Linux/macOS/Windows workstations and
 | Module | `install.sh` pattern | Notes |
 |--------|----------------------|-------|
 | **python/** | Source `python/install.sh` → `_install_python` | Installs pyenv/pipx/pipenv |
-| **node.js/** | Source `node.js/install.sh` → `_install_node` | nvm/node/npm |
 | **rust/** | Source `rust/install.sh` → `_install_rust` | rustup/cargo |
-| **golang/** | Source `golang/install.sh` → `_install_golang` | Go via tarball |
 | **ruby/** | Source `ruby/install.sh` → `_install_ruby` | rbenv |
 | **lua/** | Source `lua/install.sh` → `_install_lua` | Lua/luarocks |
 

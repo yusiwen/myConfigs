@@ -145,12 +145,11 @@ function _install_containerd() { # {{{
       # Install CNI tools
       if ! check_command cnitool; then
         if ! check_command go; then
-          install_golang
-          export GOROOT="$HOME"/.local/go
-          export GOPATH=$HOME/.gopackages
+          echo -e "${COLOR}go not found: run 'mise install' first (go is mise-managed)${NC}"
+        else
+          echo -e "${COLOR}Installing ${COLOR1}cnitool${COLOR}...${NC}"
+          go install github.com/containernetworking/cni/cnitool@latest
         fi
-        echo -e "${COLOR}Installing ${COLOR1}cnitool${COLOR}...${NC}"
-        go install github.com/containernetworking/cni/cnitool@latest
       fi
     else
       echo -e "${COLOR}Unsupported on this ${COLOR1}${DISTRO}${COLOR}.${NC}"

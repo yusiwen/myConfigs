@@ -7,7 +7,7 @@ Personal dotfiles and bootstrap configs for Linux/macOS/Windows workstations and
 - Full setup: `./install.sh init`
 - Minimal setup: `./install.sh init -m`
 - Development setup: `./install.sh init -b`
-- Individual components: `./install.sh <subcmd>` (zsh, vim, git, docker, python, node, rust, golang, k8s, …)
+- Individual components: `./install.sh <subcmd>` (zsh, vim, git, docker, python, rust, k8s, …; note that `go`, `node`, `mc`, `talosctl` and the java toolchains are **mise-managed** now — see `shell/mise/`)
 - Font/theming: `./change_font.sh`, `./change_theme.sh`
 
 ## Architecture

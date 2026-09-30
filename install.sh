@@ -378,7 +378,6 @@ function init_env() { # {{{
       install_python
       # Install gittyleaks after python is initialized
       pipx install gittyleaks
-      install_golang
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if ! check_command brew; then
@@ -433,11 +432,6 @@ function install_python() { # {{{
   _install_python
 } # }}}
 
-function install_node() { # {{{
-  # shellcheck disable=SC1091
-  source "$HOME"/myConfigs/node.js/install.sh
-  _install_node
-} # }}}
 
 function install_fish() {
   # shellcheck disable=SC1091
@@ -568,20 +562,7 @@ function install_perl() { # {{{
   fi
 } # }}}
 
-function install_golang() { # {{{
-  # shellcheck disable=SC1091
-  source "$HOME"/myConfigs/golang/install.sh
-  _install_golang "$@"
-} # }}}
 
-function install_sdkman() { # {{{
-  # https://sdkman.io/install
-  curl -s "https://get.sdkman.io" | bash
-  if [ -e "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
-    # shellcheck source=/dev/null
-    source "$HOME/.sdkman/bin/sdkman-init.sh"
-  fi
-} # }}}
 
 function init_byobu() { # {{{
   # shellcheck disable=SC1091
@@ -598,16 +579,6 @@ function install_ansible() { # {{{
   pipx install ansible
 } # }}}
 
-function install_mc() { # {{{
-  if [ "$OS" = 'Linux' ]; then
-    curl -L "https://dl.min.io/aistor/mc/release/linux-$ARCH/mc" -o "$HOME"/.local/bin/mc
-    chmod +x "$HOME"/.local/bin/mc
-  elif [ "$OS" = 'Darwin' ]; then
-    brew install minio/stable/mc
-  elif [ "$OS" = 'Windows_NT' ]; then
-    curl -L "https://dl.minio.io/aistor/mc/release/windows-amd64/mc.exe" -o "$HOME"/.local/bin/mc.exe
-  fi
-} # }}}
 
 function init_k8s() { # {{{
   # Krew
@@ -642,28 +613,6 @@ function init_bpf() { # {{{ # Initialization of BPF development environment
   fi
 } # }}}
 
-function install_talosctl { # {{{ Install talosctl, see https://www.talos.dev
-  if ! check_command talosctl; then
-    curl -sL https://talos.dev/install | sh
-  else
-    local latest_release
-    local local_release
-    local_release=$(talosctl version --client --short | awk '/^Talos/ {print $2}')
-    echo "local_release=$local_release"
-    latest_release=$(get_latest_release_from_github 'siderolabs/talos')
-    echo "latest_release=v$latest_release"
-    if [ -z "$latest_release" ] || [ -z "$local_release" ]; then
-      echo 'fail to get release info, bail out...'
-      return
-    fi
-    if [ "v$latest_release" != "$local_release" ]; then
-      $SUDO rm -f $(which talosctl)
-      curl -sL https://talos.dev/install | sh
-    else
-      echo "$(which talosctl) is update"
-    fi
-  fi
-} # }}}
 
 function init_gui() { # {{{
   if [ "$OS" = 'Linux' ]; then
@@ -680,10 +629,12 @@ function init_gui() { # {{{
     fi
     ln -snfv "$HOME"/git/myConfigs/X11/alacritty "$HOME"/.config/alacritty
 
+    # node is mise-managed (shell/mise/config.toml): install it there first
     if ! check_command npm; then
-      install_node
+      echo -e "${COLOR}npm not found: run 'mise install' first (node is mise-managed)${NC}"
+    else
+      npm install -g alacritty-theme-switch
     fi
-    npm install -g alacritty-theme-switch
   fi
 } # }}}
 
@@ -717,7 +668,6 @@ function print_info() { # {{{
   echo -e "\truby \t\tInstall ruby"
   echo -e "\tmyConfigs \tClone myConfigs repository"
   echo -e "\tpython \t\tInstall python"
-  echo -e "\tnode \t\tInstall node"
   echo -e "\tfish \t\tInstall fish shell (On Windows only)"
   echo -e "\tzsh \t\tInstall zsh"
   echo -e "\tvim \t\tInstall vim"
@@ -730,13 +680,9 @@ function print_info() { # {{{
   echo -e "\trust \t\tInstall Rust"
   echo -e "\tlua \t\tInstall lua"
   echo -e "\tperl \t\tInstall perl"
-  echo -e "\tgolang \t\tInstall golang, version can be specified as the next argument (legacy: mise manages go)"
-  echo -e "\ttalosctl \tInstall talosctl"
-  echo -e "\tsdkman \t\tInstall sdkman (deprecated: java toolchains come from mise)"
   echo -e "\tmise \t\tInstall mise and every tool declared in shell/mise/config.toml"
   echo -e "\tbyobu \t\tInstall byobu"
   echo -e "\tansible \tInstall ansible"
-  echo -e "\tmc \t\tInstall Minio client"
   echo -e "\tk8s \t\tInitialize Kubernetes"
   echo -e "\tcilium \t\tInitialize Cilium"
   echo -e "\tbpf \t\tInitialize BPF development environment"
@@ -755,7 +701,6 @@ git) install_git ;;
 ruby) install_ruby ;;
 myConfigs) fetch_myConfigs ;;
 python) install_python ;;
-node) install_node ;;
 fish) install_fish ;;
 zsh) install_zsh ;;
 vim) install_vim ;;
@@ -768,16 +713,9 @@ ctags) install_universal_ctags ;;
 rust) install_rust ;;
 lua) install_lua ;;
 perl) install_perl ;;
-golang)
-  shift
-  install_golang "$@"
-  ;;
-talosctl) install_talosctl ;;
-sdkman) install_sdkman ;;
 mise) install_mise ;;
 byobu) init_byobu ;;
 ansible) install_ansible ;;
-mc) install_mc ;;
 k8s) init_k8s ;;
 cilium) init_cilium ;;
 bpf) init_bpf ;;
