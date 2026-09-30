@@ -166,7 +166,11 @@ zinit wait lucid light-mode for \
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 else
-  info 'mise not found: install it with `brew install mise` (macOS) / `sudo pacman -S mise` (Arch)'
+  if [ -e "$HOME"/.local/bin/mise ]; then
+    eval "$($HOME/.local/bin/mise activate zsh)"
+  else
+    info "mise not found: install it with 'brew install mise' (macOS) / 'sudo pacman -S mise' (Arch)"
+  fi
 fi
 
 # My customized scripts
