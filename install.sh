@@ -107,7 +107,7 @@ MU_BIN=
 set -e
 set -o pipefail
 
-function show_sysinfo() {
+function show_sysinfo() { # {{{
   echo "OS=$OS"
   echo "OS_ARCH=$OS_ARCH"
   echo "ARCH=$ARCH"
@@ -116,7 +116,7 @@ function show_sysinfo() {
   echo "OS_VERSION=$OS_VERSION"
   echo "DISTRO=$DISTRO"
   echo "MIRRORS=$MIRRORS"
-}
+} # }}}
 
 function make_link() { # {{{
   local target="$1" linkname="$2"
@@ -249,7 +249,7 @@ function enable_FUSE() { # {{{
   fi
 } # }}}
 
-function install_mu() {
+function install_mu() { # {{{
   if check_command mu; then
     MU_BIN="$(which mu)"
     return
@@ -265,7 +265,6 @@ function install_mu() {
   if [ "$OS" == 'Windows_NT' ]; then
     path="windows/amd64"
     file="mu-windows-amd64-$mu_version.zip"
-    unzip="unzip"
     tmp_mu_bin="mu-windows-amd64-$mu_version"
   elif [ "$OS" == 'Linux' ]; then
     path="linux/$ARCH"
@@ -292,7 +291,7 @@ function install_mu() {
   cd /tmp && "$unzip_command" "$file"
   chmod +x /tmp/"$tmp_mu_bin"
   MU_BIN="/tmp/$tmp_mu_bin"
-}
+} # }}}
 
 # Initialize apt and install prerequisite packages
 function init_env() { # {{{
@@ -432,12 +431,11 @@ function install_python() { # {{{
   _install_python
 } # }}}
 
-
-function install_fish() {
+function install_fish() { # {{{
   # shellcheck disable=SC1091
   source "$HOME"/myConfigs/shell/fish/install.sh
   _install_fish
-}
+} # }}}
 
 function install_zsh() { # {{{
   # shellcheck disable=SC1091
@@ -562,8 +560,6 @@ function install_perl() { # {{{
   fi
 } # }}}
 
-
-
 function init_byobu() { # {{{
   # shellcheck disable=SC1091
   source "$HOME"/myConfigs/byobu/install.sh
@@ -578,7 +574,6 @@ function install_ansible() { # {{{
   echo -e "${COLOR}Install ${COLOR1}ansible${COLOR}...${NC}"
   pipx install ansible
 } # }}}
-
 
 function init_k8s() { # {{{
   # Krew
@@ -612,7 +607,6 @@ function init_bpf() { # {{{ # Initialization of BPF development environment
     echo -e "${COLOR}OS not supported.${NC}"
   fi
 } # }}}
-
 
 function init_gui() { # {{{
   if [ "$OS" = 'Linux' ]; then
