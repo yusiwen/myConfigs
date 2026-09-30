@@ -59,9 +59,14 @@ fi
 
 export PS1="\[\e[32m\]\u@\h \[\e[37m\]\W \[\e[32m\]$> \[\e[37m\]"
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-# shellcheck source=/dev/null
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+# Tooling and runtimes are managed by mise (see shell/mise/config.toml). This
+# must come after load_my_scripts, so the PATH entries those scripts add
+# (~/.local/bin, $GOPATH/bin, ~/.cargo/bin) are in place when mise computes its
+# own environment. Replaces the sdkman init that used to live here.
+if check_command mise; then
+    eval "$(mise activate bash)"
+else
+    echo -e "${COLOR}[WARN]${NC} mise not found: tools from shell/mise/config.toml are unavailable"
+fi
 check_command mc && complete -C "$(which mc)" mc
 check_command aliyun && complete -C "$(which aliyun)" aliyun
