@@ -97,6 +97,25 @@ Per-directory opt-out, for projects whose toolchain comes from somewhere else
 idiomatic_version_file_enable_tools = []
 ```
 
+## What mise owns per platform
+
+**macOS (this machine)**: every CLI tool plus `java`/`maven`/`gradle`/`node`/`go`/`rust`.
+Homebrew keeps the system-ish packages (`eza tmux gnupg pass pstree python3 lua`); `ruby`
+and `perl` come from macOS itself, so nothing in `install.sh`'s Linux branch applies.
+`mc` and `gittyleaks` moved off Homebrew / pipx onto mise (`mc` → `aqua:minio/mc`, so the
+third-party `minio/stable` tap is no longer needed; `gittyleaks` → the `pipx:` backend,
+which needs `pipx` on PATH at install time).
+
+**Linux (omarchy)**: the same file; only `eza` differs (`os = ["linux"]`).
+
+**Rust**: rustup stays the source of truth — `~/.rustup` and `~/.cargo` are reused, no
+second toolchain set is downloaded. mise only picks the toolchain and exports
+`RUSTUP_TOOLCHAIN`. That is exactly why `rust` is in
+`idiomatic_version_file_enable_tools`: the env var outranks a repo's
+`rust-toolchain.toml`, so without idiomatic discovery `minfer` (pinned 1.97.1) would
+silently build with the global `stable`. Consequence: a repo whose pin is not installed
+reports it (`eza` pins 1.90, `zed` 1.94.1) until `mise install` is run there.
+
 ## One-time follow-ups after switching a machine
 
 - **node**: global npm packages must be reinstalled under the mise-managed node

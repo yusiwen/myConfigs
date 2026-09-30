@@ -36,6 +36,8 @@ lazygit = "latest"
 gitleaks = "latest"
 gitui = "latest"
 "github:github/git-sizer" = "latest"
+# pipx backend: needs pipx on PATH at install time (brew/pipx on macOS)
+"pipx:gittyleaks" = "latest"
 # }}}
 
 # {{{ Docker and Kubernetes
@@ -52,6 +54,7 @@ drone = "latest"
 # }}}
 
 # {{{ Cloud and misc CLI
+mc = "latest"
 "github:aliyun/aliyun-cli" = "latest"
 "github:gotify/cli" = "latest"
 "github:foamzou/media-get" = "latest"
@@ -73,6 +76,10 @@ maven = "latest" # sdkman had 3.9.9
 gradle = "8"      # sdkman had 8.12.1; move to 9 deliberately, not by accident
 node = "lts"
 go = "1.27" # was a /opt/go tarball installed by `install.sh golang`
+# rustup stays the source of truth for toolchains (~/.rustup, ~/.cargo are
+# reused, nothing is downloaded twice); mise only picks the toolchain. The
+# install_env keeps the China mirror when mise drives rustup.
+rust = { version = "stable", install_env = { RUSTUP_DIST_SERVER = "https://rsproxy.cn", RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup" } }
 # }}}
 
 # {{{ Linux only (macOS gets these from Homebrew)
@@ -92,6 +99,13 @@ eza = { version = "latest", os = ["linux"] }
 # Keep reading .sdkmanrc / .java-version so existing Java projects (e.g.
 # spring-framework) keep selecting their JDK without a project mise.toml.
 #
+# "rust" is here because mise exports RUSTUP_TOOLCHAIN for the toolchain it
+# selected, and that environment variable OUTRANKS a repo's rust-toolchain.toml.
+# Without it, entering minfer (pinned 1.97.1) would silently build with the
+# global `stable` instead of the pinned toolchain. Consequence: a repo whose pin
+# is not installed reports it (eza pins 1.90, zed 1.94.1) until you `mise install`
+# there.
+#
 # Deliberately NOT enabled: "go". mise reads go.mod's `go` directive but is
 # dropping that in 2026.11 (it is a minimum-compatible version, not the build
 # version), and meanwhile it downgrades the selected toolchain and warns
@@ -100,4 +114,4 @@ eza = { version = "latest", os = ["linux"] }
 # opt in locally (see shell/mise/README.md).
 #
 # `.tool-versions` is read regardless of this setting (asdf compatibility).
-idiomatic_version_file_enable_tools = ["java"]
+idiomatic_version_file_enable_tools = ["java", "rust"]
