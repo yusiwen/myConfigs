@@ -327,18 +327,13 @@ function init_env() { # {{{
         pkg_pstack=()
       fi
 
-      local pkg_btop=()
-      if apt-cache search btop | grep -q '^btop'; then
-        pkg_btop=( btop )
-      fi
-
       local pkg_core=( gdebi-core software-properties-common apt-transport-https make )
       local pkg_zip=( p7zip-full pigz zip unzip )
       local pkg_network=( curl wget net-tools iputils-ping iputils-arping hping3 nmap ethtool )
       local pkg_build=( build-essential cmake "${pkg_pstack[@]}" )
       local pkg_fs=( cifs-utils nfs-common )
-      local pkg_monitor=( htop atop "${pkg_btop[@]}" iotop iftop nethogs nload sysstat )
-      local pkg_misc=( tmux byobu jq pass ncdu silversearcher-ag shellcheck command-not-found psmisc )
+      local pkg_monitor=( htop atop iotop iftop nethogs nload sysstat )
+      local pkg_misc=( tmux byobu pass silversearcher-ag command-not-found psmisc )
 
       "$MU_BIN" run --command "Installing core packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_core[*]}" \
                     --command "Installing zip packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_zip[*]}" \
@@ -372,11 +367,8 @@ function init_env() { # {{{
       "$MU_BIN" run --command "Installing development packages"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y ${pkg_build[*]}"
       install_perl
       install_lua
-      install_rust
       install_ruby
       install_python
-      # Install gittyleaks after python is initialized
-      pipx install gittyleaks
     fi
   elif [ "$OS" = 'Darwin' ]; then
     if ! check_command brew; then
@@ -537,13 +529,6 @@ function install_samba() { # {{{
   fi
 } # }}}
 
-function install_rust() { # {{{
-  # shellcheck disable=SC1091
-  source "$HOME"/myConfigs/rust/install.sh
-  install_llvm
-  _install_rust
-} # }}}
-
 function install_lua() { # {{{
   # shellcheck disable=SC1091
   source "$HOME"/myConfigs/lua/install.sh
@@ -671,7 +656,6 @@ function print_info() { # {{{
   echo -e "\tcontainerd \tInstall containerd"
   echo -e "\tsamba \t\tInstall samba"
   echo -e "\tctags \t\tInstall universal ctags"
-  echo -e "\trust \t\tInstall Rust"
   echo -e "\tlua \t\tInstall lua"
   echo -e "\tperl \t\tInstall perl"
   echo -e "\tmise \t\tInstall mise and every tool declared in shell/mise/config.toml"

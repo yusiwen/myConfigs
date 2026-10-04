@@ -28,7 +28,6 @@ gdu = "latest"
 ripgrep = "latest"
 jq = "latest"
 yq = "latest"
-zellij = "latest"
 direnv = "latest"
 # }}}
 
@@ -67,6 +66,7 @@ rtk = "latest"
 tree-sitter = "latest"
 uv = "latest"
 opencode = "latest"
+shellcheck = "latest"
 # }}}
 
 # {{{ Runtimes (replaces sdkman + n)
@@ -85,6 +85,7 @@ rust = { version = "stable", install_env = { RUSTUP_DIST_SERVER = "https://rspro
 
 # {{{ Linux only (macOS gets these from Homebrew)
 eza = { version = "latest", os = ["linux"] }
+btop = { version = "latest", os = ["linux"] }
 # }}}
 
 # Not managed here, on purpose:
