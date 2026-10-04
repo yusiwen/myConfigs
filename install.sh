@@ -383,7 +383,7 @@ function init_env() { # {{{
       echo -e "${COLOR}Installing ${COLOR1}HomeBrew${COLOR}...${NC}"
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     else
-      brew update && brew install eza tmux gnupg pass pstree mise
+      brew update && brew install eza tmux gnupg pass pstree the_silver_searcher mise
     fi
     install_rust
   elif [ "$OS" = 'Windows_NT' ]; then
