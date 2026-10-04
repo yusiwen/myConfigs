@@ -26,6 +26,7 @@ gdu = "latest"
 # 2.24.0 upstream ships no darwin assets (2.23.0 does), so pin + use github:
 "github:denisidoro/navi" = "2.23.0"
 ripgrep = "latest"
+jq = "latest"
 yq = "latest"
 zellij = "latest"
 direnv = "latest"
@@ -89,7 +90,6 @@ eza = { version = "latest", os = ["linux"] }
 # Not managed here, on purpose:
 #   fzf    - installed by ~/.fzf/install and wired up by unixorn/fzf-zsh-plugin
 #   yt-dlp - zinit (Linux only): the same plugin also provides its zsh completion
-#   jq     - /usr/bin/jq on macOS; install per machine if a newer one is wanted
 #   dsh    - npm-only prerelease (@deepseek-ai/dsh); mise's npm backend cannot
 #            resolve prerelease-only packages. See shell/mise/README.md.
 #   keadm, micromamba - dropped, no longer used (were a zinit gh-r install and a
