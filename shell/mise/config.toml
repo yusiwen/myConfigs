@@ -36,8 +36,6 @@ lazygit = "latest"
 gitleaks = "latest"
 gitui = "latest"
 "github:github/git-sizer" = "latest"
-# pipx backend: needs pipx on PATH at install time (brew/pipx on macOS)
-"pipx:gittyleaks" = "latest"
 # }}}
 
 # {{{ Docker and Kubernetes
