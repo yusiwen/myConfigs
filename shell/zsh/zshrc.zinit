@@ -139,6 +139,7 @@ zinit wait lucid light-mode for \
       typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zdharma-continuum/fast-syntax-highlighting \
+    nocompletions \
     if'[[ "$(uname -o)" != "Msys" ]]' \
   zsh-users/zsh-completions \
     run-atpull \
