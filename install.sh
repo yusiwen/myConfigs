@@ -452,6 +452,7 @@ function install_universal_ctags() { # {{{
 function install_git() { # {{{
   # shellcheck disable=SC1091
   source "$HOME"/myConfigs/git/install.sh
+  install_mu
   _install_git
 } # }}}
 
