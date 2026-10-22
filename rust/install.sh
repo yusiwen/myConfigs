@@ -65,12 +65,6 @@ EOF
       fi
     fi
 
-    if ! check_command btm; then
-      "$MU_BIN" run --command "Installing bottom"::"cargo install bottom"
-    else
-      echo -e "${COLOR}${COLOR1}bottom${COLOR} is found.${NC}"
-    fi
-
     if ! check_command cargo-install-update; then
       echo -e "${COLOR}Installing ${COLOR1}cargo-update${COLOR}...${NC}"
       "$MU_BIN" run --command "Installing cargo-update"::"$SUDO env NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install -y libssl-dev && cargo install cargo-update && cargo install-update -a"
