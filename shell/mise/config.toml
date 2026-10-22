@@ -64,7 +64,10 @@ rtk = "latest"
 tree-sitter = "latest"
 uv = "latest"
 opencode = "latest"
+"npm:@deepseek-ai/dsh" = { version = "latest", prerelease = true }
 shellcheck = "latest"
+"npm:yarn" = "latest"
+"npm:pnpm" = "latest"
 # }}}
 
 # {{{ Runtimes (replaces sdkman + n)
