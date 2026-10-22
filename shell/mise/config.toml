@@ -31,6 +31,7 @@ yq = "latest"
 direnv = "latest"
 eza = "latest"
 "btop" = { version = "latest", os = ["linux"] }
+bottom = "latest"
 # }}}
 
 # {{{ Git
