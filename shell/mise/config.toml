@@ -29,6 +29,8 @@ ripgrep = "latest"
 jq = "latest"
 yq = "latest"
 direnv = "latest"
+eza = "latest"
+btop = "latest"
 # }}}
 
 # {{{ Git
@@ -84,16 +86,9 @@ go = "1.27" # was a /opt/go tarball installed by `install.sh golang`
 rust = { version = "stable", install_env = { RUSTUP_DIST_SERVER = "https://rsproxy.cn", RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup" } }
 # }}}
 
-# {{{ Linux only (macOS gets these from Homebrew)
-eza = { version = "latest", os = ["linux"] }
-btop = { version = "latest", os = ["linux"] }
-# }}}
-
 # Not managed here, on purpose:
 #   fzf    - installed by ~/.fzf/install and wired up by unixorn/fzf-zsh-plugin
 #   yt-dlp - zinit (Linux only): the same plugin also provides its zsh completion
-#   dsh    - npm-only prerelease (@deepseek-ai/dsh); mise's npm backend cannot
-#            resolve prerelease-only packages. See shell/mise/README.md.
 #   keadm, micromamba - dropped, no longer used (were a zinit gh-r install and a
 #            curl installer respectively)
 
