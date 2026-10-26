@@ -69,6 +69,7 @@ uv = "latest"
 opencode = "latest"
 "pypi:ocdbc" = "latest"
 "pypi:cocoindex-code" = "latest"
+"pypi:hf" = "latest"
 "npm:@deepseek-ai/dsh" = { version = "latest", prerelease = true }
 shellcheck = "latest"
 "npm:yarn" = "latest"
