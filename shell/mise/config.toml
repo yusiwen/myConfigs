@@ -24,7 +24,7 @@ delta = "latest"
 dust = "latest"
 gdu = "latest"
 # 2.24.0 upstream ships no darwin assets (2.23.0 does), so pin + use github:
-"github:denisidoro/navi" = "2.23.0"
+"github:denisidoro/navi" = "latest"
 ripgrep = "latest"
 jq = "latest"
 yq = "latest"
@@ -81,10 +81,10 @@ shellcheck = "latest"
 # In a version list the FIRST entry is the default, every entry is installed.
 # sdkman used to provide zulu 8/11/17/21/23/25 with 25.0.3 as `current`.
 java = ["zulu-25", "zulu-23", "zulu-21", "zulu-17", "zulu-11", "zulu-8"]
-maven = "latest" # sdkman had 3.9.9
+maven = "3" # sdkman had 3.9.9
 gradle = "8"      # sdkman had 8.12.1; move to 9 deliberately, not by accident
 node = "lts"
-go = "1.27" # was a /opt/go tarball installed by `install.sh golang`
+go = "1.27"
 # rustup stays the source of truth for toolchains (~/.rustup, ~/.cargo are
 # reused, nothing is downloaded twice); mise only picks the toolchain. The
 # install_env keeps the China mirror when mise drives rustup.
