@@ -24,7 +24,7 @@ delta = "latest"
 dust = "latest"
 gdu = "latest"
 # 2.24.0 upstream ships no darwin assets (2.23.0 does), so pin + use github:
-"github:denisidoro/navi" = "latest"
+"github:denisidoro/navi" = { version = "latest", os = ["linux"] }
 ripgrep = "latest"
 jq = "latest"
 yq = "latest"
