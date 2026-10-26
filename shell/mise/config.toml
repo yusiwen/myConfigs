@@ -71,6 +71,7 @@ opencode = "latest"
 "pypi:cocoindex-code" = "latest"
 "pypi:hf" = "latest"
 "npm:@deepseek-ai/dsh" = { version = "latest", prerelease = true }
+"npm:skills" = "latest"
 shellcheck = "latest"
 "npm:yarn" = "latest"
 "npm:pnpm" = "latest"
