@@ -26,6 +26,7 @@ gdu = "latest"
 # 2.24.0 upstream ships no darwin assets (2.23.0 does), so pin + use github:
 "github:denisidoro/navi" = { version = "latest", os = ["linux"] }
 ripgrep = "latest"
+"pypi:jc" = "latest"
 jq = "latest"
 yq = "latest"
 direnv = "latest"
