@@ -19,6 +19,14 @@ function check_command() { # {{{
   fi
 } # }}}
 
+# Fail early with one message instead of one "command not found" per docker call.
+function _docker_require() { # {{{
+  if ! check_command docker; then
+    echo 'docker is not found, please install docker first.' >&2
+    return 1
+  fi
+} # }}}
+
 du1() { du -h -d 1 "$@" | sort -k 1,1hr -k 2,2f; }
 
 # Purge all rc packages
@@ -48,7 +56,7 @@ pdfpextr() { # {{{
   #   $2 is the last page of the range to extract
   #   $3 is the input file
   #   output file will be named "inputfile_pXX-pYY.pdf"
-  if [ $# -ne 2 ]; then
+  if [ $# -ne 3 ]; then
     echo 'Usage: pdfpextr start_page end_page input_file'
     echo '  output file wille be named "{input_file}_pXX-pYY.pdf"'
     return 1
@@ -94,9 +102,19 @@ splitbycue() { # {{{
 # Convert all FLAC files in current directory to ALAC
 #   see: https://gist.github.com/vol4ok/2587886
 flac2alac() { # {{{
+  local f found=0
+  # zsh aborts on an unmatched glob unless nomatch is disabled; bash leaves the
+  # literal pattern behind, which the -e check below filters out.
+  [ -n "${ZSH_VERSION:-}" ] && setopt localoptions nonomatch
   for f in *.flac; do
+    [ -e "$f" ] || continue
+    found=1
     ffmpeg -i "./$f" -acodec alac "./${f%.flac}.m4a"
   done
+  if [ "$found" -eq 0 ]; then
+    echo 'No .flac files found.' >&2
+    return 1
+  fi
 } # }}}
 
 # Add folder to $PATH if it doesn't exist in it
@@ -118,6 +136,7 @@ maxs() { # {{{
   elif [ $# -eq 1 ]; then
     if [ "$1" = "-h" ]; then
       echo "maxs [-fdh] [NUMBER]"
+      return 0
     fi
 
     if ! [[ "${1}" =~ $re ]]; then
@@ -148,7 +167,7 @@ maxs() { # {{{
 
 # Check if running in WSL
 is_running_in_wsl() { # {{{
-  if [ $(uname -r | sed -n 's/.*\( *Microsoft *\).*/\1/ip') ]; then
+  if [ -n "$(uname -r | sed -n 's/.*\( *Microsoft *\).*/\1/ip')" ]; then
     echo "1"
   else
     echo "0"
@@ -279,17 +298,22 @@ fif() { # {{{
 
 # Github {{{
 get_latest_release() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-    grep '"tag_name":' |                                            # Get tag line
-    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+  if ! check_command curl; then
+    echo 'curl is not found, please install curl first.' >&2
+    return 1
+  fi
+  curl --fail --silent --show-error --location \
+    "https://api.github.com/repos/${1:-}/releases/latest" | # Get latest release from GitHub api
+    sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -n 1  # Pluck JSON value
 }
 #}}}
 
 # Python {{{
 function _pip() {
   if check_command pip_search; then
-    if [ $1 = "search" ]; then
-      pip_search "$2"
+    if [ "${1:-}" = "search" ]; then
+      shift
+      pip_search "$@"
     else
       pip "$@"
     fi
@@ -300,8 +324,9 @@ function _pip() {
 
 function _pip3() {
   if check_command pip_search; then
-    if [ $1 = "search" ]; then
-      pip_search "$2"
+    if [ "${1:-}" = "search" ]; then
+      shift
+      pip_search "$@"
     else
       pip3 "$@"
     fi
@@ -321,14 +346,17 @@ function _python_is_python3() {
 
 # Docker {{{
 docker-fuzzy-image-ls() {
+  _docker_require || return 1
   local cid
-  cid=$(docker image ls --format '{{.ID | printf "%-15s"}} {{.Repository | printf "%-50.50s"}}\t{{.Tag | printf "%-20.20s"}}\t{{.Size}}' |\
+  # No .50/.20 precision: truncating the repository made `-t` build
+  # `docker rmi` arguments from the truncated name.
+  cid=$(docker image ls --format '{{.ID | printf "%-15s"}} {{.Repository | printf "%-50s"}}\t{{.Tag | printf "%-20s"}}\t{{.Size}}' |\
     fzf --no-sort --tiebreak=index \
         --preview 'docker image inspect {1}' --preview-window=top:15,hidden \
         --preview-label='image details')
 
   if [ -n "$cid" ]; then
-    if [ "$1" = '-t' ]; then
+    if [ "${1:-}" = '-t' ]; then
       echo "$cid" | awk '{ print $2":"$3 }'
     else
       echo "$cid" | awk '{ print $1 }'
@@ -337,6 +365,7 @@ docker-fuzzy-image-ls() {
 }
 
 docker-fuzzy-container-ls() {
+  _docker_require || return 1
   local format="--format '{{.ID | printf \"%-15s\"}} {{.Names | printf \"%-40.40s\"}}\t{{.Status | printf \"%-16.16s\"}} {{.Image}}'"
   local arguments
   arguments="container ls $format"
@@ -353,12 +382,15 @@ docker-fuzzy-container-ls() {
 }
 
 docker-get-pid-by-container-id() {
+  _docker_require || return 1
   local container_id
   container_id=$(docker-fuzzy-container-ls)
+  [ -n "$container_id" ] || return 1
   docker inspect --format '{{.State.Pid}}' "$container_id"
 }
 
 docker-fuzzy-network-ls() {
+  _docker_require || return 1
   docker network ls --format '{{.ID | printf "%-15s"}} {{.Name | printf "%-20.20s"}}\t{{.Driver}}\t{{.Scope}}' |\
     fzf --no-sort --tiebreak=index \
         --preview 'docker network inspect {1}' --preview-window=top:15,hidden \
@@ -367,9 +399,7 @@ docker-fuzzy-network-ls() {
 }
 
 docker-veth-ls() {
-  if ! check_command docker; then
-    return
-  fi
+  _docker_require || return 1
 
   for container in $(docker ps -q); do
     local container_name=
@@ -387,6 +417,7 @@ done
 
 # Select a docker container to execute command
 function de() { # {{{
+  _docker_require || return 1
   local cid
   cid=$(docker-fuzzy-container-ls)
 
@@ -394,6 +425,7 @@ function de() { # {{{
 } # }}}
 # Select a docker container to start and attach to
 function da() { # {{{
+  _docker_require || return 1
   local cid
   cid=$(docker-fuzzy-container-ls -a)
 
@@ -401,6 +433,7 @@ function da() { # {{{
 } # }}}
 # Select a running docker container to stop
 function ds() { # {{{
+  _docker_require || return 1
   local cid
   cid=$(docker-fuzzy-container-ls)
 
@@ -408,46 +441,53 @@ function ds() { # {{{
 } # }}}
 # Select docker containers to remove
 function _drm() { # {{{
+  _docker_require || return 1
   local cid
   cid=$(docker-fuzzy-container-ls -a)
   [ -n "$cid" ] && docker rm "$cid"
 } # }}}
 # Select a docker image or images to remove
 function _drmi() { # {{{
+  _docker_require || return 1
   local cid
   cid=$(docker-fuzzy-image-ls -t)
   [ -n "$cid" ] && docker rmi "$cid"
 } # }}}
 
 function _docker_compose_project_dir() { # {{{
-  if ! check_command docker; then
-    echo 'docker is not found, please install docker first.'
-    return 1
-  fi
+  _docker_require || return 1
 
   if ! check_command jq; then
-    echo 'jq is not found, please install jq first.'
+    echo 'jq is not found, please install jq first.' >&2
     return 1
   fi
 
   if ! check_command fzf; then
-    echo 'fzf is not found, please install fzf first.'
+    echo 'fzf is not found, please install fzf first.' >&2
     return 1
   fi
 
+  # An empty selection made the filter match every project, so `cd` could land
+  # in a directory unrelated to what the user picked.
   local selection
   selection=$(docker compose ls -q | fzf)
+  [ -n "$selection" ] || return 1
 
   local project_path
-  project_path=$(docker compose ls --filter "name=$selection" --format json | jq -r '.[].ConfigFiles')
-  dirname "$project_path"
+  project_path=$(docker compose ls --filter "name=$selection" --format json | jq -r '.[0].ConfigFiles // empty')
+  [ -n "$project_path" ] || return 1
+  dirname -- "$project_path"
 } # }}}
 
 function _docker_compose_change_dir_to_project() { # {{{
-  cd "$(_docker_compose_project_dir)" || return 1
+  local target
+  target=$(_docker_compose_project_dir) || return 1
+  [ -n "$target" ] || return 1
+  cd "$target"
 } # }}}
 
 function _docker_images_group_by_id() { # {{{
+  _docker_require || return 1
   local -a rows running
   local row id repo tag name_with_tag suffix running_image
   local last_id=''
@@ -489,6 +529,7 @@ function _docker_images_group_by_id() { # {{{
 } # }}}
 
 function _docker_images_group_by_name() { # {{{
+  _docker_require || return 1
   local -a rows running
   local row id name_with_tag name_without_tag suffix running_image
   local max_name_length=0
@@ -554,49 +595,69 @@ function _docker_images_group_by_name() { # {{{
 
 function _docker_search_tags() { # {{{
   if ! check_command jq; then
-    echo 'jq is not found, please install jq first.'
-    return
+    echo 'jq is not found, please install jq first.' >&2
+    return 1
   fi
   if ! check_command wget; then
-    echo 'wget is not found, please install wget first.'
-    return
+    echo 'wget is not found, please install wget first.' >&2
+    return 1
   fi
 
-  if [ -z "$1" ]; then
-    echo 'Please input search keyword.'
-    return
+  if [ -z "${1:-}" ]; then
+    echo 'Please input search keyword.' >&2
+    return 1
   fi
 
-  local namespace
-  local repo
+  local reference="$1"
+  local namespace repo
 
-  if echo "$1" | grep -q '/'; then
-    namespace=$(echo "$1" | cut -d'/' -f1)
-    repo=$(echo "$1" | cut -d'/' -f2)
-  else
+  # `cut -d/ -f2` turned "ghcr.io/org/repo" into namespace "org", which is not
+  # a Docker Hub namespace at all. Only Docker Hub's [namespace/]repo form can
+  # be looked up here.
+  repo=${reference##*/}
+  if [ "$repo" = "$reference" ]; then
     namespace='library'
-    repo="$1"
+  else
+    namespace=${reference%/*}
+    case $namespace in
+      *.*|*:*|localhost)
+        echo "Only Docker Hub repositories are supported (got '$reference')." >&2
+        return 1
+        ;;
+    esac
   fi
 
-  wget -q -O - "https://hub.docker.com/v2/namespaces/$namespace/repositories/$repo/tags"|jq -r '.results[].name' 
+  wget -q -O - "https://hub.docker.com/v2/namespaces/$namespace/repositories/$repo/tags" | jq -r '.results[].name'
 } # }}}
 
 function _docker_pull_tags() { # {{{
+  local reference="${1:-}"
+  if [ -z "$reference" ]; then
+    echo 'Usage: dpt <repository>' >&2
+    return 1
+  fi
+  _docker_require || return 1
   if ! check_command fzf; then
-    echo 'fzf is not found, please install fzf first.'
-    return
+    echo 'fzf is not found, please install fzf first.' >&2
+    return 1
   fi
 
-  _docker_search_tags "$1" | fzf | xargs -I{} docker pull "$1:{}"
+  local tag
+  tag=$(_docker_search_tags "$reference" | fzf)
+  [ -n "$tag" ] || return 1
+  docker pull "$reference:$tag"
 } # }}}
 
 function _docker_run_into_shell() { # {{{
+  _docker_require || return 1
   if ! check_command fzf; then
-    echo 'fzf is not found, please install fzf first.'
-    return
+    echo 'fzf is not found, please install fzf first.' >&2
+    return 1
   fi
 
+  local repo
   repo=$(docker images --format '{{.Repository}}:{{.Tag}}' | fzf)
+  [ -n "$repo" ] || return 1
   docker run --rm -i -t --entrypoint=sh "$repo"
 } # }}}
 
@@ -692,15 +753,21 @@ function busy() { # {{{
 
 # {{{ Java
 function link_jdk_version_to_latest_installed_dir() {
-  local jdk_version="$1"
+  local jdk_version="${1:-}"
   local jdk_installed
-  if [ "$OS" = 'Darwin' ]; then
-    jdk_installed="$(/bin/ls -d "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"*zulu 2>/dev/null|sort -r|head -1)"
+  if [ -z "$jdk_version" ] || [ -z "${SDKMAN_CANDIDATES_DIR:-}" ]; then
+    return 1
+  fi
+  # The candidate glob may not match anything; zsh would abort on that.
+  [ -n "${ZSH_VERSION:-}" ] && setopt localoptions nonomatch
+  # `sort -r` is lexicographic: it picked 8.0.9 over 8.0.412.
+  if [ "${OS:-}" = 'Darwin' ]; then
+    jdk_installed="$(/bin/ls -d "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"*zulu 2>/dev/null | sort -rV | head -1)"
   else
-    jdk_installed="$(/usr/bin/ls -d "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"*tem 2>/dev/null|sort -r|head -1)"
+    jdk_installed="$(/usr/bin/ls -d "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"*tem 2>/dev/null | sort -rV | head -1)"
   fi
 
-  if [ -n "$jdk_installed" ] && [ -n "$jdk_version" ]; then
+  if [ -n "$jdk_installed" ]; then
     ln -sfnv "$jdk_installed" "$SDKMAN_CANDIDATES_DIR/java/$jdk_version"
   fi
 }
