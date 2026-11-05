@@ -458,30 +458,43 @@ function _docker_compose_change_dir_to_project() { # {{{
 } # }}}
 
 function _docker_images_group_by_id() { # {{{
-  local lines
+  local -a rows running
+  local row id repo tag name_with_tag suffix running_image
+  local last_id=''
   # Keep IFS local, see _docker_images_group_by_name.
   local IFS=$'\n'
-  lines=( $(docker images --format '{{.ID}}' | sort | uniq) )
-  for id in "${lines[@]}"; do
-    last_id=''
-    images=( $(docker images --format '{{.ID}} {{.Repository}}:{{.Tag}}' | grep "${id}") )
-    for image in "${images[@]}"; do
-      current_id=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\1/p')
-      name=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\2/p')
-      suffix=''
 
-      if docker container ls --format '{{.Image}}' | grep -q "$name"; then
+  # One `docker images` call with '|'-separated fields (IDs, repositories and
+  # tags never contain '|'). The previous version ran `grep "${id}"` for every
+  # ID, which matched it as a regex anywhere in the row, and parsed each row
+  # with GNU-only `sed 's/...\s.../'` (BSD sed treats `\s` as a literal "s").
+  rows=( $(docker images --format '{{.ID}}|{{.Repository}}|{{.Tag}}' | sort -t'|' -k1,1 -k2,2 -k3,3) )
+
+  # Snapshot running images once instead of one `docker container ls` per image.
+  running=( $(docker container ls --format '{{.Image}}') )
+
+  for row in "${rows[@]}"; do
+    id=${row%%|*}
+    row=${row#*|}
+    repo=${row%%|*}
+    tag=${row#*|}
+    name_with_tag="$repo:$tag"
+
+    suffix=''
+    for running_image in "${running[@]}"; do
+      if [ "$running_image" = "$name_with_tag" ]; then
         suffix=" (${BOLD_YELLOW}running${NC})"
+        break
       fi
-
-      if [ "$last_id" != "$current_id" ]; then
-        echo "${BOLD_GREEN}$id${NC} - $name$suffix"
-      else
-        echo "               $name$suffix"
-      fi
-
-      last_id="$id"
     done
+
+    if [ "$last_id" != "$id" ]; then
+      printf '%b%s%b - %s%b\n' "$BOLD_GREEN" "$id" "$NC" "$name_with_tag" "$suffix"
+    else
+      printf '%*s%s%b\n' 15 '' "$name_with_tag" "$suffix"
+    fi
+
+    last_id=$id
   done
 } # }}}
 
