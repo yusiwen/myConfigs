@@ -459,7 +459,9 @@ function _docker_compose_change_dir_to_project() { # {{{
 
 function _docker_images_group_by_id() { # {{{
   local lines
-  IFS=$'\n' lines=( $(docker images --format '{{.ID}}' | sort | uniq) )
+  # Keep IFS local, see _docker_images_group_by_name.
+  local IFS=$'\n'
+  lines=( $(docker images --format '{{.ID}}' | sort | uniq) )
   for id in "${lines[@]}"; do
     last_id=''
     images=( $(docker images --format '{{.ID}} {{.Repository}}:{{.Tag}}' | grep "${id}") )
@@ -489,6 +491,12 @@ function _docker_images_group_by_name() { # {{{
   local max_name_length=0
   local previous_name_without_tag=''
   local last_id=''
+  # IFS must be local: `IFS=$'\n' arr=(...)` is two plain assignments, not a
+  # temporary environment (zsh and bash both), so an unlocalised IFS leaks into
+  # the interactive shell. A newline-only IFS then breaks ZLE and completion
+  # with errors like "(eval):zle:1: not enough arguments for -C"
+  # (zsh-autosuggestions issue #825).
+  local IFS=$'\n'
 
   # Fetch everything in one pass, with ID, repository and tag separated by '|'
   # (a character none of them can contain). The previous version ran
@@ -497,11 +505,11 @@ function _docker_images_group_by_name() { # {{{
   # so that image was printed once per matching repository (i.e. twice).
   # The sort is stable, so within a repository docker's own order (newest first)
   # is kept.
-  IFS=$'\n' rows=( $(docker images --format '{{.ID}}|{{.Repository}}|{{.Tag}}' | sort -t'|' -k2,2 -s) )
+  rows=( $(docker images --format '{{.ID}}|{{.Repository}}|{{.Tag}}' | sort -t'|' -k2,2 -s) )
 
   # Snapshot the running containers' image references once, instead of running
   # `docker container ls` for every single image.
-  IFS=$'\n' running=( $(docker container ls --format '{{.Image}}') )
+  running=( $(docker container ls --format '{{.Image}}') )
 
   for row in "${rows[@]}"; do
     name_with_tag="${row#*|}"
