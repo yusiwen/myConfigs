@@ -1,24 +1,14 @@
 #!/usr/bin/env bash
 
 whichv() { # {{{
-  printf '\e[?7t'
-
-  TYPE="$(builtin type "$@")"
-  builtin which "$@" &&
-    echo "$TYPE"
-
-  ALIAS='alias'
-  FUNCTION='function'
-  BUILTIN='builtin'
-  NOTFOUND='not found'
-  if [[ "$TYPE" =~ $ALIAS ]] || [[ "$TYPE" =~ $FUNCTION ]] || [[ "$TYPE" =~ $BUILTIN ]] || [[ "$TYPE" =~ $NOTFOUND ]]; then
-    whereis "$@"
-  else
-    whereis "$@"
-    file "$(builtin type "$@" | awk '{print $3}')"
-  fi
-
-  printf '\e[?7t'
+  # Not `path`: in zsh that is a tied array for PATH, so a local `path` would
+  # empty PATH for the duration of the function.
+  local name cmd_path
+  for name in "$@"; do
+    type "$name" 2>&1
+    cmd_path=$(command -v "$name" 2>/dev/null) || continue
+    [ -f "$cmd_path" ] && file "$cmd_path"
+  done
 } # }}}
 
 function check_command() { # {{{
@@ -29,7 +19,7 @@ function check_command() { # {{{
   fi
 } # }}}
 
-du1() { du -h --max-depth=1 "$@" | sort -k 1,1hr -k 2,2f; }
+du1() { du -h -d 1 "$@" | sort -k 1,1hr -k 2,2f; }
 
 # Purge all rc packages
 purgerc() { # {{{
@@ -174,7 +164,7 @@ fzf-git-branch() { # {{{
     grep -v HEAD |
     fzf --height 50% --ansi --no-multi --preview-window right:65% \
       --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
-    sed 's/^\*\?\s\+//'      
+    sed 's/^[*[:space:]]*//'
 } # }}}
 
 fzf-git-checkout() { # {{{
@@ -237,7 +227,7 @@ fzf-git-checkout() { # {{{
 git-fuzzy-diff() { # {{{
   local PREVIEW_PAGER="less --tabs=4 -Rc"
 
-  local REVISION="${@[1]}"
+  local REVISION="${1:-}"
   if [ "$REVISION" = '.' ]; then
     REVISION='HEAD'
   fi
@@ -255,18 +245,18 @@ git-fuzzy-diff() { # {{{
 } # }}}
 
 git-fuzzy-log() { # {{{
-  PREVIEW_COMMAND='f() {
+  local PREVIEW_COMMAND='f() {
 		set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}")
 		[ $# -eq 0 ] || (
 			git show --no-patch --color=always $1
 			echo
 			git show --stat --format="" --color=always $1 |
-			while read line; do
+			while IFS= read -r line; do
 				tput dim
-				echo " $line" | sed "s/\x1B\[m/\x1B\[2m/g"
+				printf " %s\n" "$line" | sed "s/$(printf "\033")\[m/$(printf "\033")[2m/g"
 				tput sgr0
 			done |
-			tac | sed "1 a \ " | tac
+			awk "1; END { print \"\" }"
 		)
 	}; f {}'
 
@@ -635,6 +625,20 @@ function gpg_agent_preset()
   # authorize preset mechanism, in our context agent is not loaded yet.
   # echo allow-preset-passphrase  >> ~/.gnupg/gpg-agent.conf
 
+  # Locate the helper instead of assuming the Debian path; Fedora, Arch and
+  # macOS keep it elsewhere (or not at all).
+  local preset
+  preset=$(command -v gpg-preset-passphrase 2>/dev/null || true)
+  [ -n "$preset" ] || preset='/usr/lib/gnupg/gpg-preset-passphrase'
+  if [ ! -x "$preset" ]; then
+    echo 'gpg-preset-passphrase not found, install GnuPG 2.1+ or add it to PATH.' >&2
+    return 1
+  fi
+  if ! command -v gpg-connect-agent >/dev/null 2>&1; then
+    echo 'gpg-connect-agent not found, install GnuPG 2.1+.' >&2
+    return 1
+  fi
+
   # this will start the agent ang give use keygripID
   local keygrip
   keygrip=( $(gpg-connect-agent -q 'keyinfo --list' /bye | awk '/KEYINFO/ { print $3 }') )
@@ -642,7 +646,9 @@ function gpg_agent_preset()
   local k
   for k in "${keygrip[@]}"
   do
-    echo "$gpg_passphrase"  | /usr/lib/gnupg/gpg-preset-passphrase --preset "$k"
+    # printf, not echo: zsh's echo expands backslash escapes and would corrupt
+    # passphrases containing \t, \n or \033.
+    printf '%s\n' "$gpg_passphrase" | "$preset" --preset "$k"
   done
 } # }}}
 
