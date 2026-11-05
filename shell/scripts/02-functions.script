@@ -484,43 +484,60 @@ function _docker_images_group_by_id() { # {{{
 } # }}}
 
 function _docker_images_group_by_name() { # {{{
-  local lines
-  IFS=$'\n' lines=( $(docker images --format '{{.Repository}}:{{.Tag}}' | sort | uniq) )
-  local max_name_length
-  for name in "${lines[@]}"; do
-    len="${#name}"
-    if [ "$len" -gt "$max_name_length" ]; then
-      max_name_length="$len"
+  local -a rows running
+  local row id name_with_tag name_without_tag suffix running_image
+  local max_name_length=0
+  local previous_name_without_tag=''
+  local last_id=''
+
+  # Fetch everything in one pass, with ID, repository and tag separated by '|'
+  # (a character none of them can contain). The previous version ran
+  # `grep "$name"` for every repository, which matched the name as a regex
+  # anywhere in the row: "sonarqube" also matched "sonarsource/sonarqube-mcp",
+  # so that image was printed once per matching repository (i.e. twice).
+  # The sort is stable, so within a repository docker's own order (newest first)
+  # is kept.
+  IFS=$'\n' rows=( $(docker images --format '{{.ID}}|{{.Repository}}|{{.Tag}}' | sort -t'|' -k2,2 -s) )
+
+  # Snapshot the running containers' image references once, instead of running
+  # `docker container ls` for every single image.
+  IFS=$'\n' running=( $(docker container ls --format '{{.Image}}') )
+
+  for row in "${rows[@]}"; do
+    name_with_tag="${row#*|}"
+    name_with_tag="${name_with_tag%%|*}:${name_with_tag#*|}"
+    if (( ${#name_with_tag} > max_name_length )); then
+      max_name_length=${#name_with_tag}
     fi
   done
 
-  local previous_image_name_without_tag
-  IFS=$'\n' lines=( $(docker images --format '{{.Repository}}' | sort | uniq) )
-  for name in "${lines[@]}"; do
-    last_id=''
-    images=( $(docker images --format '{{.ID}} {{.Repository}}:{{.Tag}}' | grep "${name}") )
-    for image in "${images[@]}"; do
-      current_id=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\1/p')
-      name_with_tag=$(echo "$image" | sed -n -e 's/^\(.*\)\s\(.*\)$/\2/p')
-      name_without_tag=${name_with_tag%:*}
-      if [ ! "$previous_image_name_without_tag" = "$name_without_tag" ]; then
-        printf "\e[1;2m%${max_name_length}s\e[m\n" "-" | tr ' ' '-'
-      fi
-      suffix=''
+  for row in "${rows[@]}"; do
+    id=${row%%|*}
+    name_with_tag=${row#*|}
+    name_without_tag=${name_with_tag%%|*}
+    name_with_tag="$name_without_tag:${name_with_tag#*|}"
 
-      if docker container ls --format '{{.Image}}' | grep -q "$name_with_tag"; then
+    if [ "$name_without_tag" != "$previous_name_without_tag" ]; then
+      printf "\e[1;2m%${max_name_length}s\e[m\n" "-" | tr ' ' '-'
+      last_id=''
+      previous_name_without_tag="$name_without_tag"
+    fi
+
+    suffix=''
+    for running_image in "${running[@]}"; do
+      if [ "$running_image" = "$name_with_tag" ]; then
         suffix="(${BOLD_YELLOW}running${NC})"
+        break
       fi
-
-      if [ "$last_id" != "$current_id" ]; then
-        printf "%${max_name_length}s %12b %b\n" "$name_with_tag" "${BOLD_GREEN}$current_id${NC}" "$suffix"
-      else
-        printf "%${max_name_length}s %12s %b\n" "$name_with_tag" " " "$suffix"
-      fi
-
-      last_id="$current_id"
-      previous_image_name_without_tag="$name_without_tag"
     done
+
+    if [ "$last_id" != "$id" ]; then
+      printf "%${max_name_length}s %12b %b\n" "$name_with_tag" "${BOLD_GREEN}$id${NC}" "$suffix"
+    else
+      printf "%${max_name_length}s %12s %b\n" "$name_with_tag" " " "$suffix"
+    fi
+
+    last_id="$id"
   done
 } # }}}
 
