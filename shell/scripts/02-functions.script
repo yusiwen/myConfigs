@@ -31,6 +31,7 @@ du1() { du -h -d 1 "$@" | sort -k 1,1hr -k 2,2f; }
 
 # Purge all rc packages
 purgerc() { # {{{
+  local RC choice
   RC=$(dpkg -l | grep "^rc" | cut -d ' ' -f 3)
   if [ -z "$RC" ]; then
     echo "No 'rc' status package was found."
@@ -127,9 +128,9 @@ addpath() { # {{{
 
 # Find largest directories or files in current folder
 maxs() { # {{{
-  numbers=10
-  type='d'
-  re='^[0-9]+$'
+  local numbers=10
+  local type='d'
+  local re='^[0-9]+$'
   if [ $# -eq 0 ]; then
     numbers=10
     type='d'
@@ -189,7 +190,7 @@ fzf-git-branch() { # {{{
 fzf-git-checkout() { # {{{
   git rev-parse HEAD >/dev/null 2>&1 || return
 
-  local current_branch
+  local current_branch yn
   current_branch=$(git branch --show-current)
 
   if [ -n "$(git status -s)" ]; then
@@ -209,7 +210,7 @@ fzf-git-checkout() { # {{{
     echo "No branch selected."
     return
   fi
-  
+
   echo -n "Checkout specific commit? [yes|NO] "
   read -r yn
 
@@ -236,9 +237,9 @@ fzf-git-checkout() { # {{{
   # using --track and a remote branch name, it is the same as:
   # git checkout -b branchName --track origin/branchName
   if [[ "$commit" = 'remotes/'* ]]; then
-    git checkout --track $commit
+    git checkout --track "$commit"
   else
-    git checkout $commit
+    git checkout "$commit"
   fi
 } # }}}
 
@@ -250,6 +251,14 @@ git-fuzzy-diff() { # {{{
   if [ "$REVISION" = '.' ]; then
     REVISION='HEAD'
   fi
+  # The revision is interpolated into the fzf preview command; reject values
+  # that are not valid rev syntax instead of letting them act as shell syntax.
+  case $REVISION in
+    *[[:space:]\'\"]*)
+      echo "Unsupported revision: '$REVISION'" >&2
+      return 1
+      ;;
+  esac
 
   # Don't just diff the selected file alone, get related files first using
   # '--name-status -R' in order to include moves and renames in the diff.
@@ -289,11 +298,18 @@ git-fuzzy-log() { # {{{
 # using ripgrep combined with preview
 # find-in-file - usage: fif <searchTerm>
 fif() { # {{{
-  if [ ! "$#" -gt 0 ]; then
-    echo "Need a string to search for!"
+  if [ "${#}" -eq 0 ]; then
+    echo "Need a string to search for!" >&2
     return 1
   fi
-  rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+  if ! check_command rg; then
+    echo 'rg is not found, please install ripgrep first.' >&2
+    return 1
+  fi
+  # The search term reaches the fzf preview through the environment, so quotes
+  # in it are data instead of shell syntax.
+  rg --files-with-matches --no-messages "$1" |
+    FIF_TERM="$1" fzf --preview 'highlight -O ansi -l {} 2> /dev/null | rg --colors "match:bg:yellow" --ignore-case --pretty --context 10 "$FIF_TERM" || rg --ignore-case --pretty --context 10 "$FIF_TERM" {}'
 } # }}}
 
 # Github {{{
@@ -366,15 +382,13 @@ docker-fuzzy-image-ls() {
 
 docker-fuzzy-container-ls() {
   _docker_require || return 1
-  local format="--format '{{.ID | printf \"%-15s\"}} {{.Names | printf \"%-40.40s\"}}\t{{.Status | printf \"%-16.16s\"}} {{.Image}}'"
-  local arguments
-  arguments="container ls $format"
-  if [ -n "$1" ]; then
-    arguments="container ls $1 $format"
-  fi
-  local command="docker $arguments"
+  # Build an argument vector instead of a string + eval: an extra argument such
+  # as `-a; rm -rf ~/x` used to be executed by the shell.
+  local -a args=(container ls)
+  [ -n "${1:-}" ] && args+=("$1")
+  args+=(--format '{{.ID | printf "%-15s"}} {{.Names | printf "%-40.40s"}}\t{{.Status | printf "%-16.16s"}} {{.Image}}')
 
-  eval "$command" |\
+  docker "${args[@]}" |\
     fzf --no-sort --tiebreak=index \
         --preview 'docker container inspect {1}' --preview-window=top:15,hidden \
         --preview-label='container details' |\
@@ -400,18 +414,21 @@ docker-fuzzy-network-ls() {
 
 docker-veth-ls() {
   _docker_require || return 1
+  if [ ! -d /sys/class/net ]; then
+    echo '/sys/class/net is not available (Linux only).' >&2
+    return 1
+  fi
 
+  local container container_name iflink veth
   for container in $(docker ps -q); do
-    local container_name=
     container_name=$(docker ps --format '{{.Names}}' -f "id=$container")
-    local iflink=
-    iflink=$(docker exec -it "$container" cat /sys/class/net/eth0/iflink)
-    iflink=$(echo "$iflink" | tr -d '\r')
-    local veth=
-    veth=$(grep -l "$iflink" /sys/class/net/veth*/ifindex)
-    veth=$(echo "$veth" | sed -e 's;^.*net/\(.*\)/ifindex$;\1;')
-    echo "$container : $veth : $container_name"
-done
+    # No -t: command substitution has no TTY, and -t injects CR characters.
+    iflink=$(docker exec "$container" cat /sys/class/net/eth0/iflink)
+    iflink=$(printf '%s' "$iflink" | tr -d '\r')
+    veth=$(grep -l -x "$iflink" /sys/class/net/veth*/ifindex)
+    veth=$(printf '%s' "$veth" | sed -e 's;^.*net/\(.*\)/ifindex$;\1;')
+    printf '%s : %s : %s\n' "$container" "$veth" "$container_name"
+  done
 }
 #}}}
 
@@ -483,7 +500,7 @@ function _docker_compose_change_dir_to_project() { # {{{
   local target
   target=$(_docker_compose_project_dir) || return 1
   [ -n "$target" ] || return 1
-  cd "$target"
+  cd "$target" || return 1
 } # }}}
 
 function _docker_images_group_by_id() { # {{{
@@ -714,41 +731,38 @@ function gpg_agent_preset()
 } # }}}
 
 # https://github.com/ardnew/bash-busy/blob/main/busy.bash
-# Usage: busy [delay] <prompt> <expression>
+# Usage: busy [delay] <prompt> <command...>
 function busy() { # {{{
-	# Define the animation frames in-order.
-	#local -a frame=( '/' '-' '\' '|' )
-	local -a frame=( ⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏ )
-	
-	local delay='0.1s' # Animated frame duration
-	local prompt       # Message displayed after frame animation
+  # Define the animation frames in-order.
+  local -a frame=( ⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏ )
+  local delay='0.1s' # Animated frame duration
+  local prompt       # Message displayed after frame animation
 
-	# Test if first argument appears to be a sleep(1) duration.
-	local pat='^([0-9](\.[0-9]*)?|[0-9]*\.[0-9]{1,})[smhd]?$'
-	if [[ ${#} -gt 0 ]] && [[ "${1}" =~ ${pat} ]]; then
-		delay=${1}
-		prompt=${2}
-		shift
-		shift
-	else
-		prompt=${1}
-		shift
-	fi
-	
-	# Find the widest frame in the animation.
-	local wide=0
-	for s in "${frame[@]}"; do 
-		[[ ${#s} -gt ${wide} ]] && wide=${#s}
-	done
+  # Test if first argument appears to be a sleep(1) duration.
+  local pat='^([0-9](\.[0-9]*)?|[0-9]*\.[0-9]{1,})[smhd]?$'
+  if [ "${#}" -gt 0 ] && [[ "${1}" =~ ${pat} ]]; then
+    delay=${1}
+    shift
+  fi
+  prompt="${1:-}"
+  [ "${#}" -gt 0 ] && shift
 
-	local n=0
-	printf ' %*s %s\r' ${wide} '' "${prompt}"
-	while ! eval -- "${*}"; do
-		printf ' %*s \r' ${wide} "${frame[((n=++n%${#frame[@]}))]}"
-		sleep "${delay}"
-	done
-	# Clear the animation frame and prompt
-	printf ' %*s %*s\r' ${wide} '' ${#prompt} ''
+  # Find the widest frame in the animation.
+  local wide=0 s
+  for s in "${frame[@]}"; do
+    [[ ${#s} -gt ${wide} ]] && wide=${#s}
+  done
+
+  local n=0
+  printf ' %*s %s\r' "${wide}" '' "${prompt}"
+  # Run the command directly: `eval -- "${*}"` lost the argument boundaries and
+  # executed pipes/quotes that happened to sit in the arguments.
+  while ! "$@"; do
+    printf ' %*s \r' "${wide}" "${frame[((n=++n%${#frame[@]}))]}"
+    sleep "${delay}"
+  done
+  # Clear the animation frame and prompt
+  printf ' %*s %*s\r' "${wide}" '' "${#prompt}" ''
 } # }}}
 
 # {{{ Java
@@ -796,17 +810,28 @@ function clip() {
 # shell startup. These used to be a zinit atinit/atload pair on the gh-r
 # installs of opencode and dsh; both binaries are installed by mise now.
 function load_opencode_keys() {
-  if [ -z "$HINDSIGHT_API_KEY" ] && command -v pass >/dev/null 2>&1; then
-    export HINDSIGHT_API_KEY="$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null)"
+  local key
+  if [ -z "${HINDSIGHT_API_KEY:-}" ] && command -v pass >/dev/null 2>&1; then
+    key=$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null) || key=''
+    if [ -n "$key" ]; then
+      export HINDSIGHT_API_KEY="$key"
+    fi
   fi
 }
 
 function load_dsh_keys() {
-  if [ -z "$HINDSIGHT_API_KEY" ] && command -v pass >/dev/null 2>&1; then
-    export HINDSIGHT_API_KEY="$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null)"
+  local key
+  if [ -z "${HINDSIGHT_API_KEY:-}" ] && command -v pass >/dev/null 2>&1; then
+    key=$(pass memory.yusiwen.cn/secret_api_key 2>/dev/null) || key=''
+    if [ -n "$key" ]; then
+      export HINDSIGHT_API_KEY="$key"
+    fi
   fi
-  if [ -z "$WOLAI_API_KEY" ] && command -v pass >/dev/null 2>&1; then
-    export WOLAI_API_KEY="$(pass www.wolai.com/mcp_key 2>/dev/null)"
+  if [ -z "${WOLAI_API_KEY:-}" ] && command -v pass >/dev/null 2>&1; then
+    key=$(pass www.wolai.com/mcp_key 2>/dev/null) || key=''
+    if [ -n "$key" ]; then
+      export WOLAI_API_KEY="$key"
+    fi
   fi
 }
 
