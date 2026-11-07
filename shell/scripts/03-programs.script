@@ -1,24 +1,49 @@
 #!/usr/bin/env bash
 
+# PATH helpers {{{
+# Add a directory once; re-sourcing this file must not grow PATH. Order is
+# preserved: _path_prepend puts the directory first, _path_append last.
+function _path_prepend() { # {{{
+  local dir
+  for dir in "$@"; do
+    [ -n "$dir" ] || continue
+    case ":$PATH:" in
+      *":$dir:"*) continue ;;
+    esac
+    PATH="$dir:$PATH"
+  done
+  export PATH
+} # }}}
+
+function _path_append() { # {{{
+  local dir
+  for dir in "$@"; do
+    [ -n "$dir" ] || continue
+    case ":$PATH:" in
+      *":$dir:"*) continue ;;
+    esac
+    PATH="$PATH:$dir"
+  done
+  export PATH
+} # }}}
+# }}}
+
 # .local/bin {{{
-# re-check if '$HOME/.local/bin' exists and is in $PATH
 if [ ! -d "$HOME/.local/bin" ]; then
   mkdir -p "$HOME"/.local/bin
 fi
-if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-  PATH="$HOME/.local/bin:$PATH"
-  export PATH
+if [ -d "$HOME/.local/bin" ]; then
+  _path_prepend "$HOME/.local/bin"
 fi
 # }}}
 
-# {{{ NeoVim
-export XDG_CONFIG_HOME=$HOME/.config
-mkdir -p "$XDG_CONFIG_HOME"
-export XDG_CACHE_HOME=$HOME/.cache
-mkdir -p "$XDG_CACHE_HOME"
-export XDG_DATA_HOME=$HOME/.local/share
-mkdir -p "$XDG_DATA_HOME"
-#}}}
+# {{{ XDG directories
+# Defaults only: a user-provided XDG layout must survive.
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${XDG_CACHE_HOME:=$HOME/.cache}"
+: "${XDG_DATA_HOME:=$HOME/.local/share}"
+mkdir -p "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME" "$XDG_DATA_HOME"
+# }}}
 
 # {{{ Oracle instant client
 if [ -z "$ORACLE_HOME" ] || [ ! -d "$ORACLE_HOME" ]; then
@@ -29,7 +54,7 @@ if [ -z "$ORACLE_HOME" ] || [ ! -d "$ORACLE_HOME" ]; then
     ORACLE_HOME=$(printf '%s' "${ORACLE_HOME%/}")
     export ORACLE_HOME
     export ORACLE_BASE=$CLIENT_INSTALLATION_PATH
-    export PATH=$PATH:$ORACLE_HOME:$ORACLE_HOME/sdk
+    _path_append "$ORACLE_HOME" "$ORACLE_HOME/sdk"
     export TNS_ADMIN=$ORACLE_HOME/network/admin
     export NLS_LANG=AMERICAN_AMERICA.UTF8
     # On linux,
@@ -43,8 +68,12 @@ if [ -z "$ORACLE_HOME" ] || [ ! -d "$ORACLE_HOME" ]; then
       export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
     fi
 
-    if [ "$OS" = 'Darwin' ]; then
-      export DYLD_LIBRARY_PATH=$ORACLE_HOME
+    if [ "${OS:-}" = 'Darwin' ]; then
+      case ":${DYLD_LIBRARY_PATH:-}:" in
+        *":$ORACLE_HOME:"*) ;;
+        *) DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH:+$DYLD_LIBRARY_PATH:}$ORACLE_HOME" ;;
+      esac
+      export DYLD_LIBRARY_PATH
     fi
   fi
 fi
@@ -53,18 +82,17 @@ fi
 # {{{ MySQL Connector
 MYSQL_CONNECTOR_INST_PATH="/opt/mysql"
 if [ -d "$MYSQL_CONNECTOR_INST_PATH" ]; then
-  MYSQL_CONNECTOR=$(/bin/ls -dr $MYSQL_CONNECTOR_INST_PATH/mysql-connector*/ 2>/dev/null | head -1)
-  if [ -n "$MYSQL_CONNECTOR" ]; then
-    # truncate trailing '/'
-    MYSQL_CONNECTOR=$(printf '%s' "${MYSQL_CONNECTOR%/}")
+  # find avoids zsh's "no matches found" and sort -V picks 8.0.33 over 8.0.9.
+  MYSQL_CONNECTOR=$(find "$MYSQL_CONNECTOR_INST_PATH" -mindepth 1 -maxdepth 1 -type d -name 'mysql-connector*' 2>/dev/null | sort -V | tail -n 1)
+  if [ -n "${MYSQL_CONNECTOR:-}" ]; then
     export MYSQL_CONNECTOR
-    export PATH=$PATH:$MYSQL_CONNECTOR/bin
+    _path_append "$MYSQL_CONNECTOR/bin"
     # NOTE: On Ubuntu, 'LD_LIBRARY_PATH' can't be set in .profile,
     #   it can only be set in '/etc/ld.so.conf.d/XXX.conf' and run 'ldconfig'
-    if [ -z "$LD_LIBRARY_PATH" ]; then
-      export LD_LIBRARY_PATH=$MYSQL_CONNECTOR/lib
+    if [ -z "${LD_LIBRARY_PATH:-}" ]; then
+      export LD_LIBRARY_PATH="$MYSQL_CONNECTOR/lib"
     else
-      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MYSQL_CONNECTOR/lib
+      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$MYSQL_CONNECTOR/lib"
     fi
   fi
 fi
@@ -74,26 +102,36 @@ fi
 if [ -z "$CONFLUENT_HOME" ] || [ ! -d "$CONFLUENT_HOME" ]; then
   if [ -d /opt/confluent ]; then
     export CONFLUENT_HOME=/opt/confluent
-    export PATH=$PATH:$CONFLUENT_HOME/bin
+    _path_append "$CONFLUENT_HOME/bin"
   elif [ -d "$HOME/confluent" ]; then
     export CONFLUENT_HOME=$HOME/confluent
-    export PATH=$PATH:$CONFLUENT_HOME/bin
+    _path_append "$CONFLUENT_HOME/bin"
   fi
 fi
 
 if [ -e "$HOME/.jdtls/bin/jdtls" ] || [ -e "$HOME/.jdtls/bin/jdtls.bat" ]; then
   export JDTLS_HOME="$HOME/.jdtls"
-  export PATH=$PATH:$JDTLS_HOME/bin
+  _path_append "$JDTLS_HOME/bin"
 fi
 #}}}
 
 # {{{ Ruby
 if command -v ruby &>/dev/null && command -v gem &>/dev/null; then
-  GEM_HOME=$(ruby -e 'puts Gem.user_dir')
-  export GEM_HOME
-  export GEM_PATH=$GEM_HOME
-  PATH="$GEM_HOME/bin:$PATH"
-  export PATH
+  if [ -z "${GEM_HOME:-}" ]; then
+    _gem_user_dir=$(ruby -e 'puts Gem.user_dir' 2>/dev/null || true)
+    if [ -n "$_gem_user_dir" ]; then
+      export GEM_HOME="$_gem_user_dir"
+    fi
+    unset _gem_user_dir
+  fi
+  if [ -n "${GEM_HOME:-}" ]; then
+    case ":${GEM_PATH:-}:" in
+      *":$GEM_HOME:"*) ;;
+      *) GEM_PATH="${GEM_PATH:+$GEM_PATH:}$GEM_HOME" ;;
+    esac
+    export GEM_PATH
+    _path_prepend "$GEM_HOME/bin"
+  fi
 fi
 #}}}
 
@@ -101,20 +139,27 @@ fi
 # The toolchain itself is managed by mise (shell/mise/config.toml, `go = "1.27"`).
 # GOPATH stays here on purpose: `go install` output must survive toolchain
 # upgrades, so it must not live inside the mise install directory.
-export GOPATH=$HOME/.gopackages
+export GOPATH="${GOPATH:-$HOME/.gopackages}"
 mkdir -p "$GOPATH"
-export GOPRIVATE=git.yusiwen.cn
-export GOPROXY=https://goproxy.cn,direct
-if [ -d "$GOPATH/bin" ] && [[ ":$PATH:" != *":$GOPATH/bin:"* ]]; then
-  PATH="$PATH:$GOPATH/bin"
-  export PATH
+# GOPRIVATE is a comma-separated pattern list, not a colon-separated path.
+case ",${GOPRIVATE:-}," in
+  *",git.yusiwen.cn,"*) ;;
+  *) GOPRIVATE="${GOPRIVATE:+$GOPRIVATE,}git.yusiwen.cn" ;;
+esac
+export GOPRIVATE
+export GOPROXY="${GOPROXY:-https://goproxy.cn,direct}"
+if [ -d "$GOPATH/bin" ]; then
+  _path_append "$GOPATH/bin"
 fi
 # }}}
 
 # {{{ Ansible
 if command -v ansible &>/dev/null; then
-  ANSIBLE_INVENTORY=$HOME/git/myAnsible/etc/ansible/hosts
-  export ANSIBLE_INVENTORY
+  _ansible_inventory="$HOME/git/myAnsible/etc/ansible/hosts"
+  if [ -f "$_ansible_inventory" ] && [ -z "${ANSIBLE_INVENTORY:-}" ]; then
+    export ANSIBLE_INVENTORY="$_ansible_inventory"
+  fi
+  unset _ansible_inventory
 fi
 #}}}
 
@@ -123,25 +168,19 @@ if [ -e "$HOME/.cargo/env" ]; then
   # shellcheck source=/dev/null
   source "$HOME/.cargo/env"
 else
-  case ":${PATH}:" in
-    *:"$HOME/.cargo/bin":*)
-        ;;
-    *)
-        # Prepending path in case a system-installed rustc needs to be overridden
-        export PATH="$HOME/.cargo/bin:$PATH"
-        ;;
-  esac
+  # Prepending path in case a system-installed rustc needs to be overridden
+  _path_prepend "$HOME/.cargo/bin"
 fi
 #}}}
 
 # {{{ Python
 export WORKON_HOME=$HOME/venv
 if command -v python2 &>/dev/null; then
-  PYTHON_HOST_PROG=$(which python2)
+  PYTHON_HOST_PROG="${PYTHON_HOST_PROG:-$(command -v python2)}"
   export PYTHON_HOST_PROG
 fi
 if command -v python3 &>/dev/null; then
-  PYTHON3_HOST_PROG=$(which python3)
+  PYTHON3_HOST_PROG="${PYTHON3_HOST_PROG:-$(command -v python3)}"
   export PYTHON3_HOST_PROG
 fi
 #}}}
@@ -158,8 +197,12 @@ if [ -z "$HADOOP_HOME" ] || [ ! -d "$HADOOP_HOME" ]; then
     export HADOOP_HDFS_HOME=$HADOOP_HOME
     export YARN_HOME=$HADOOP_HOME
     export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HADOOP_COMMON_LIB_NATIVE_DIR
-    export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+    if [ -z "${LD_LIBRARY_PATH:-}" ]; then
+      export LD_LIBRARY_PATH="$HADOOP_COMMON_LIB_NATIVE_DIR"
+    else
+      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HADOOP_COMMON_LIB_NATIVE_DIR"
+    fi
+    _path_append "$HADOOP_HOME/sbin" "$HADOOP_HOME/bin"
     export HADOOP_INSTALL=$HADOOP_HOME
 
     export HADOOP_LOG_DIR=$HOME/.cache/hadoop/logs
@@ -171,8 +214,7 @@ if [ -z "$HIVE_HOME" ] || [ ! -d "$HIVE_HOME" ]; then
   if [ -d /opt/hive ]; then
     HIVE_HOME=/opt/hive
     export HIVE_HOME
-    PATH=$PATH:$HIVE_HOME/bin
-    export PATH
+    _path_append "$HIVE_HOME/bin"
   fi
 fi
 # }}}
@@ -183,6 +225,13 @@ if [ -d /opt/cni/bin ]; then
 fi
 # }}}
 
+# HOSTNAME is used by the monitor detection below and by other tools; set it
+# before that block, not at the end of this file.
+if [ -z "${HOSTNAME:-}" ]; then
+  HOSTNAME=$(hostname)
+  export HOSTNAME
+fi
+
 # {{{ Montiors
 # Set $DISPLAY on WSL, needed by VcXsrv
 #if uname -a | grep -q 'microsoft'; then
@@ -190,7 +239,7 @@ fi
 #  export DISPLAY
 #fi
 
-if [ -n "$DISPLAY" ]; then
+if [ -n "${DISPLAY:-}" ]; then
   MONITOR=
   if [ "$HOSTNAME" = 'deskmini-server' ]; then
     MONITOR='HDMI-A-0'
@@ -210,55 +259,52 @@ fi
 # }}}
 
 #{{{ CUDA
-if [ -e /usr/local/cuda/bin ]; then
+if [ -d /usr/local/cuda/bin ]; then
   export CUDA_HOME=/usr/local/cuda
-  export PATH=$CUDA_HOME/bin:$PATH
+  _path_prepend "$CUDA_HOME/bin"
 fi
 
-if [ -e /usr/local/cuda/lib64 ]; then
-  if [ -z "$LD_LIBRARY_PATH" ]; then
+if [ -d /usr/local/cuda/lib64 ]; then
+  if [ -z "${LD_LIBRARY_PATH:-}" ]; then
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64
   else
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
   fi
 fi
 
-if [ -e /usr/lib/llvm-8 ]; then
-  if [ -z "$LD_LIBRARY_PATH" ]; then
-    export LD_LIBRARY_PATH=/usr/lib/llvm-8
-  else
-    export LD_LIBRARY_PATH=/usr/lib/llvm-8:$LD_LIBRARY_PATH
-  fi
+if [ -d /usr/lib/llvm-8 ]; then
+  case ":${LD_LIBRARY_PATH:-}:" in
+    *":/usr/lib/llvm-8:"*) ;;
+    *) export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}/usr/lib/llvm-8" ;;
+  esac
 fi
 #}}}
 
 # {{{ Misc
-# TERMINAL used in i3-sensible-terminal
-if check_command alacritty; then
-  TERMINAL=alacritty
-  export TERMINAL
-elif check_command urxvtc; then
-  TERMINAL=urxvtc
-  export TERMINAL
-else
-  TERMINAL=
-  export TERMINAL
+# TERMINAL used in i3-sensible-terminal; never overwrite an existing value and
+# do not export an empty one.
+if [ -z "${TERMINAL:-}" ]; then
+  for _terminal in alacritty kitty foot wezterm urxvtc; do
+    if check_command "$_terminal"; then
+      TERMINAL="$_terminal"
+      export TERMINAL
+      break
+    fi
+  done
+  unset _terminal
 fi
 
-if [ -z "$EDITOR" ]; then
+if [ -z "${EDITOR:-}" ]; then
   if check_command nvim; then
     export EDITOR=nvim
   elif check_command vim; then
     export EDITOR=vim
-  else
+  elif check_command nano; then
     export EDITOR=nano
   fi
-  export GIT_EDITOR="${EDITOR}"
-fi
-
-if [ -z "$HOSTNAME" ]; then
-  HOSTNAME=$(hostname)
-  export HOSTNAME
+  if [ -n "${EDITOR:-}" ]; then
+    export GIT_EDITOR="${EDITOR}"
+  fi
 fi
 
 # i3wm color scheme, see i3/_config
@@ -267,49 +313,50 @@ if [ -z "$I3_COLOR_THEME" ]; then
   export I3_COLOR_THEME
 fi
 
-# Add $HOME/bin to $PATH if exists && not added
-if [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
-  PATH="$HOME/bin${PATH:+:"$PATH"}"
-  export PATH
+# Add $HOME/bin to $PATH if it exists
+if [ -d "$HOME/bin" ]; then
+  _path_prepend "$HOME/bin"
 fi
 
-# Add $HOME/bin to $PATH if exists && not added
-if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-  PATH="$HOME/.local/bin${PATH:+:"$PATH"}"
-  export PATH
+# Add $HOME/.local/bin to $PATH if it exists
+if [ -d "$HOME/.local/bin" ]; then
+  _path_prepend "$HOME/.local/bin"
 fi
 
 # CMake
-if [ -d "/opt/cmake" ] && [[ ":$PATH:" != *":/opt/cmake:"* ]]; then
-  PATH="/opt/cmake/bin${PATH:+:"$PATH"}"
-  export PATH
+if [ -d /opt/cmake/bin ]; then
+  _path_prepend /opt/cmake/bin
 fi
 
 # Homebrew's sbin path
-if [ -d "/usr/local/sbin" ] && [[ ":$PATH:" != *":/usr/local/sbin:"* ]]; then
-  PATH="/usr/local/sbin:${PATH:+:"$PATH"}"
-  export PATH
+if [ -d /usr/local/sbin ]; then
+  _path_prepend /usr/local/sbin
 fi
 
 # Use mirror for Homebrew-bottles
-if [ "$OS" = 'Darwin' ]; then
-  export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
-  [[ -e /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+if [ "${OS:-}" = 'Darwin' ]; then
+  export HOMEBREW_BOTTLE_DOMAIN="${HOMEBREW_BOTTLE_DOMAIN:-https://mirrors.ustc.edu.cn/homebrew-bottles}"
+  # brew shellenv prepends its bin directory; only run it while that directory
+  # is missing from PATH so re-sourcing does not duplicate entries.
+  if [ -e /opt/homebrew/bin/brew ] && [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
 fi
 
 # clangd
-if [ -d "/opt/clangd" ]; then
-  PATH="$PATH:/opt/clangd/bin"
-  export PATH
+if [ -d /opt/clangd/bin ]; then
+  _path_append /opt/clangd/bin
 fi
 
 # kubectl-krew
 if [ -e "$HOME/.krew/bin/kubectl-krew" ]; then
-  export PATH="$PATH:$HOME/.krew/bin"
+  _path_append "$HOME/.krew/bin"
 fi
 
-GPG_TTY=$(tty)
-export GPG_TTY
+if [ -t 0 ] && [ -z "${GPG_TTY:-}" ]; then
+  GPG_TTY=$(tty)
+  export GPG_TTY
+fi
 
 # fzf {{{
 _fzf_default_opts=(
@@ -325,27 +372,34 @@ _fzf_default_opts=(
   --bind "ctrl-/:toggle-preview"
 )
 
-FZF_DEFAULT_OPTS="${_fzf_default_opts[*]}"
+FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:+$FZF_DEFAULT_OPTS }${_fzf_default_opts[*]}"
 export FZF_DEFAULT_OPTS
 # }}}
 
 # Support symbolic link in git bash on windows
-if [ "$OS" = 'Windows_NT' ]; then
+if [ "${OS:-}" = 'Windows_NT' ]; then
   export MSYS=winsymlinks:nativestrict
 fi
 #}}}
 
 # broot (https://dystroy.org/broot/)
+# The "bash" launcher is generated for bash and zsh alike; broot itself tells
+# both shells to source this file, so no shell guard is needed here.
 if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
   # shellcheck source=/dev/null
   source "$HOME/.config/broot/launcher/bash/br"
 fi
 
 # git-credential-manager
-if [ -e /usr/local/bin/git-credential-manager ]; then
-  if [ "$(git config --global --get credential.helper)" != '/usr/local/bin/git-credential-manager' ]; then
-    /usr/local/bin/git-credential-manager configure
-  fi
+if [ -e /usr/local/bin/git-credential-manager ] && command -v git >/dev/null 2>&1; then
+  # `configure` stores "manager", not the absolute path, so comparing against
+  # the path made this run on every startup.
+  _gcm_helper="$(git config --global --get credential.helper 2>/dev/null || true)"
+  case "$_gcm_helper" in
+    manager*|/usr/local/bin/git-credential-manager*) ;;
+    *) /usr/local/bin/git-credential-manager configure ;;
+  esac
+  unset _gcm_helper
   if ! git config --global --get credential.credentialStore >/dev/null 2>&1; then
     if check_command pass; then
       git config --global credential.credentialStore gpg
@@ -357,19 +411,23 @@ fi
 
 # pass
 if check_command pass; then
-  PASSWORD_STORE_ENABLE_EXTENSIONS=true
-  export PASSWORD_STORE_ENABLE_EXTENSIONS
+  export PASSWORD_STORE_ENABLE_EXTENSIONS="${PASSWORD_STORE_ENABLE_EXTENSIONS:-true}"
 fi
 
 # {{{ bat
 # bat's man-page colouring (used to be an atinit on the zinit gh-r install)
-export MANROFFOPT='-c'
+: "${MANROFFOPT:=-c}"
+export MANROFFOPT
 # }}}
 
 # {{{ direnv
 # used to be an atload on the zinit gh-r install
 if check_command direnv; then
-  eval "$(direnv hook zsh)"
+  if [ -n "${ZSH_VERSION:-}" ]; then
+    eval "$(direnv hook zsh)"
+  elif [ -n "${BASH_VERSION:-}" ]; then
+    eval "$(direnv hook bash)"
+  fi
 fi
 # }}}
 
