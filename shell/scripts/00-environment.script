@@ -1,41 +1,52 @@
 #!/usr/bin/env bash
 
-# {{{ Distribution Information
-# Determine OS platform
-if [ -n "$WINDIR" ]; then
-  OS='Windows_NT'
-else
-  OS=$(uname)
-fi
+# {{{ OS detection
+# `uname -s` is authoritative: WINDIR is also present in WSL when WSLENV
+# forwards it, and using it as the primary check marked WSL as Windows_NT.
+_os_uname=$(uname -s 2>/dev/null || true)
+case "$_os_uname" in
+  MINGW*|MSYS*|CYGWIN*) OS='Windows_NT' ;;
+  '')
+    if [ -n "${WINDIR:-}" ]; then
+      OS='Windows_NT'
+    else
+      OS='unknown'
+    fi
+    ;;
+  *) OS=$_os_uname ;;
+esac
+unset _os_uname
 export OS
-# If Linux, try to determine specific distribution
-if [ "$OS" = 'Linux' ]; then
-  # If available, use LSB to identify distribution
-  if [ -f /etc/lsb-release ] || [ -d /etc/lsb-release.d ]; then
-    DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
-  # Otherwise, use release info file
-  else
-    DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | xargs | cut -d ' ' -f1)
-  fi
-  export DISTRO
-fi
-# For everything else (or if above failed), just use generic identifier
-[ "$DISTRO" = '' ] && export DISTRO=$OS
-#}}}
+# }}}
 
-# Locale {{{
-export LC_COLLATE=en_US.UTF-8
-export LC_CTYPE=en_US.UTF-8
-export LC_MESSAGES=en_US.UTF-8
-export LC_MONETARY=en_US.UTF-8
-export LC_NUMERIC=en_US.UTF-8
-export LC_TIME=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
-if [ -z "$LANG" ]; then
-  export LANG=en_US.UTF-8
-  export LANGUAGE=en_US.UTF-8
+# {{{ Locale
+# Never export LC_ALL here: it overrides every other LC_* variable and the
+# user's choice (LC_ALL=C, a non-English LC_TIME, ...). Only provide a UTF-8
+# LANG fallback when nothing is configured and the locale is installed.
+if [ -z "${LC_ALL:-}" ] && [ -z "${LC_CTYPE:-}" ] && [ -z "${LANG:-}" ] &&
+  command -v locale >/dev/null 2>&1; then
+  for _locale in en_US.UTF-8 C.UTF-8 en_US.utf8; do
+    if locale -a 2>/dev/null | grep -qix "$_locale"; then
+      export LANG="$_locale"
+      break
+    fi
+  done
+  unset _locale
 fi
 # }}}
+
+# {{{ Distribution Information
+# Recompute on every source: a DISTRO inherited from a parent shell must not
+# leak into this session. The parser itself is hardened in a follow-up change.
+DISTRO=''
+if [ "$OS" = 'Linux' ]; then
+  if [ -f /etc/lsb-release ] || [ -d /etc/lsb-release.d ]; then
+    DISTRO=$(lsb_release -i 2>/dev/null | cut -d: -f2 | sed s/'^\t'//)
+  else
+    DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release 2>/dev/null | xargs | cut -d ' ' -f1)
+  fi
+fi
+export DISTRO="${DISTRO:-$OS}"
+#}}}
 
 # vim: foldmethod=marker :
