@@ -37,13 +37,41 @@ fi
 
 # {{{ Distribution Information
 # Recompute on every source: a DISTRO inherited from a parent shell must not
-# leak into this session. The parser itself is hardened in a follow-up change.
+# leak into this session.
 DISTRO=''
 if [ "$OS" = 'Linux' ]; then
-  if [ -f /etc/lsb-release ] || [ -d /etc/lsb-release.d ]; then
-    DISTRO=$(lsb_release -i 2>/dev/null | cut -d: -f2 | sed s/'^\t'//)
-  else
-    DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release 2>/dev/null | xargs | cut -d ' ' -f1)
+  # Prefer the LSB short ID when the tool is actually installed; the presence
+  # of /etc/lsb-release does not guarantee the binary.
+  if command -v lsb_release >/dev/null 2>&1; then
+    DISTRO=$(lsb_release -si 2>/dev/null || true)
+  fi
+  case $DISTRO in
+    n/a|'') DISTRO='' ;;
+  esac
+
+  # Fall back to os-release (ID first, then NAME). Do not truncate the name:
+  # "Linux Mint" is not "Linux".
+  if [ -z "$DISTRO" ]; then
+    for _os_release in /etc/os-release /usr/lib/os-release; do
+      [ -r "$_os_release" ] || continue
+      _id=$(awk -F= '/^ID=/{gsub(/"/, "", $2); print $2; exit}' "$_os_release")
+      _name=$(awk -F= '/^NAME=/{gsub(/"/, "", $2); print $2; exit}' "$_os_release")
+      # Normalize the lower-case IDs used by the scripts in this repo; any
+      # other distro keeps its full NAME (or ID when NAME is absent).
+      case "$_id" in
+        ubuntu) DISTRO='Ubuntu' ;;
+        debian) DISTRO='Debian' ;;
+        centos) DISTRO='CentOS' ;;
+        manjaro|manjaro-arm) DISTRO='Manjaro' ;;
+        linuxmint) DISTRO='Linux Mint' ;;
+        deepin) DISTRO='Deepin' ;;
+        openwrt) DISTRO='OpenWrt' ;;
+        openeuler) DISTRO='openEuler' ;;
+        *) DISTRO="${_name:-$_id}" ;;
+      esac
+      break
+    done
+    unset _os_release _id _name
   fi
 fi
 export DISTRO="${DISTRO:-$OS}"
