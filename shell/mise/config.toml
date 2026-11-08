@@ -33,6 +33,7 @@ direnv = "latest"
 eza = "latest"
 "btop" = { version = "latest", os = ["linux"] }
 bottom = "latest"
+neovim = "stable"
 # }}}
 
 # {{{ Git
