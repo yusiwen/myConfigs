@@ -13,10 +13,10 @@ if check_command lazyload; then
   lazyload gitleaks -- 'source <(gitleaks completion zsh)'
   lazyload pipx -- 'source <(register-python-argcomplete pipx)'
   lazyload yq -- 'source <(yq completion zsh)'
-  lazyload mc -- "autoload -U +X bashcompinit && bashcompinit && complete -o nospace -C $(which mc) mc"
-  lazyload uv -- "eval $(uv generate-shell-completion zsh)"
-  lazyload uvx -- "eval $(uvx --generate-shell-completion zsh)"
-  lazyload mu -- "eval $(mu completion zsh)"
+  lazyload mc -- "autoload -U +X bashcompinit && bashcompinit && complete -o nospace -C \"\$(which mc)\" mc"
+  lazyload uv -- "eval \$(uv generate-shell-completion zsh)"
+  lazyload uvx -- "eval \$(uvx --generate-shell-completion zsh)"
+  lazyload mu -- "eval \$(mu completion zsh)"
 fi
 
 if check_command mc; then
