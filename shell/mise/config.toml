@@ -77,6 +77,7 @@ opencode = "latest"
 shellcheck = "latest"
 "npm:yarn" = "latest"
 "npm:pnpm" = "latest"
+pipx = "latest"
 # }}}
 
 # {{{ Runtimes (replaces sdkman + n)
