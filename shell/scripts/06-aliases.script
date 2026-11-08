@@ -58,7 +58,10 @@ fi
 # Make grep more user friendly by highlighting matches
 # and exclude grepping through .svn folders.
 alias grep='grep -I --color=auto --exclude-dir={.git,.svn,CVS}'
-alias pgrep='pgrep -a'
+# BSD/macOS pgrep has no -a (it prints usage); procps on Linux does.
+if [ "${OS:-}" != 'Darwin' ]; then
+  alias pgrep='pgrep -a'
+fi
 
 alias ag='ag --nogroup'
 
@@ -87,7 +90,11 @@ if check_command lazygit; then
   alias lg='lazygit'
 fi
 
-if [ "$OS" = 'Windows_NT' ]; then
+# The git aliases below are copied from oh-my-zsh and rely on zsh syntax
+# (`&!`, `noglob`, `print -Pu2`) and zsh helper functions (git_main_branch,
+# git_current_branch, git_develop_branch, _git_log_prettily, ggu). Under Git
+# Bash they only produced "command not found", so keep them for zsh.
+if [ "${OS:-}" = 'Windows_NT' ] && [ -n "${ZSH_VERSION:-}" ]; then
   alias g=git
   alias ga='git add'
   alias gaa='git add --all'
@@ -310,13 +317,8 @@ alias pip3='_pip3'
 alias pipi='pip install --user'
 alias pipiu='pip --user --upgrade'
 
-if [ "$(uname)" = 'Darwin' ]; then
-  alias virtualenv2='virtualenv --python /usr/local/bin/python2 --system-site-packages'
-  alias virtualenv3='virtualenv --python /usr/local/bin/python3 --system-site-packages'
-else
-  alias virtualenv2='virtualenv --python /usr/bin/python2 --system-site-packages'
-  alias virtualenv3='virtualenv --python /usr/bin/python3 --system-site-packages'
-fi
+# virtualenv2/virtualenv3 removed: python2 is gone from current systems and
+# the python3 path differs between macOS and Linux; projects use uv.
 
 alias venv='python3 -m venv'
 # }}}
@@ -391,20 +393,12 @@ if check_command netprofiler; then
   alias np='netprofiler'
 fi
 
-# Check localhost port 7890 of Clash
-if [ "$OS" = 'Windows_NT' ]; then
-  if check_command netstat; then
-    if netstat -an|grep LISTEN|grep -q 7890 ; then
-      alias curlp='curl -x http://localhost:7890'
-    fi
-  fi
-else
-  if check_command netstat; then
-    if netstat -lnt | grep -q 7890 ; then
-      alias curlp='curl -x http://localhost:7890'
-    fi
-  fi
-fi
+# Clash HTTP proxy. The port is configurable because Clash Verge defaults to
+# 7897 while older profiles use 7890. A function avoids probing netstat at
+# shell startup (macOS netstat does not print LISTEN lines at all).
+curlp() {
+  command curl -x "http://127.0.0.1:${CLASH_PORT:-7890}" "$@"
+}
 
 if check_command vagrant; then
   alias vgt='vagrant'
@@ -423,8 +417,19 @@ if [ -e "$HOME/.config/mytmux/tmux.conf" ]; then
   alias tmux='tmux -f $HOME/.config/mytmux/tmux.conf'
 fi
 
-if check_command drone && check_command pass; then
-  alias drone='drone --server https://ci.yusiwen.cn --token $(pass ci.yusiwen.cn/token)'
+if check_command drone; then
+  # Keep the token out of argv (it is visible in ps) and only call pass once.
+  drone() {
+    local token="${DRONE_TOKEN:-}"
+    if [ -z "$token" ] && check_command pass; then
+      token=$(pass ci.yusiwen.cn/token 2>/dev/null) || token=''
+    fi
+    if [ -z "$token" ]; then
+      echo 'drone: no token; set DRONE_TOKEN or store ci.yusiwen.cn/token in pass' >&2
+      return 1
+    fi
+    DRONE_TOKEN="$token" command drone --server "${DRONE_SERVER:-https://ci.yusiwen.cn}" "$@"
+  }
 fi
 
 # mu (yusiwen/myUtilities) - was a zinit atload on the gh-r install
