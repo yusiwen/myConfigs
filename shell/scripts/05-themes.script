@@ -13,6 +13,12 @@ eval my_orange='$FG[214]'
 
 NEWLINE=$'\n'
 
+# vi_mode_prompt_info is defined by zshrc.zinit.windows or the vi-mode plugin;
+# fall back to an empty segment so the prompt does not run a missing command.
+if ! (( $+functions[vi_mode_prompt_info] )); then
+  vi_mode_prompt_info() { :; }
+fi
+
 # git settings
 ZSH_GIT_PROMPT_SHOW_UPSTREAM="no"
 ZSH_THEME_GIT_PROMPT_PREFIX="$FG[075]($FG[078]"
@@ -40,13 +46,13 @@ $FG[037]%(4~|%-1~/…/%1~|%3~)\
 %{$reset_color%}$(gitprompt) \
 $FG[105]%(!.#.»)%{$reset_color%} '
 PROMPT2='%{$fg[red]%}\ %{$reset_color%}'
-RPS1='${return_code}'
 
-# right prompt
+# Right prompt: RPS1 and RPROMPT are the same parameter in zsh, so set it once
+# and combine the return code with the optional virtualenv segment.
 if type "virtualenv_prompt_info" > /dev/null; then
-  RPROMPT='%{$reset_color%}$(virtualenv_prompt_info)'
+  RPROMPT='%{$reset_color%}$(virtualenv_prompt_info)${return_code}'
 else
-  RPROMPT='%{$reset_color%}'
+  RPROMPT='${return_code}'
 fi
 
 # vim: foldmethod=marker :
