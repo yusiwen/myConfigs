@@ -1,13 +1,21 @@
 #!/usr/bin/env bash
 
-# Source any extended scrips stored in $HOME/.exports/ folder
-if [ -d "$HOME"/.exports ]; then
+# Source any extended scripts stored in $HOME/.exports/ folder.
+# zsh aborts on an unmatched glob, so the loop lives in a function where
+# nonomatch can be scoped locally; [ -f ] keeps directories out of `source`.
+_source_custom_exports() { # {{{
+  [ -n "${ZSH_VERSION:-}" ] && setopt localoptions nonomatch
+  local script
   for script in "$HOME"/.exports/*.script; do
-    if [ -e "$script" ]; then
-      # shellcheck source=/dev/null
-      source "$script"
-    fi
+    [ -f "$script" ] || continue
+    # shellcheck source=/dev/null
+    source "$script"
   done
+} # }}}
+
+if [ -d "$HOME"/.exports ]; then
+  _source_custom_exports
 fi
+unset -f _source_custom_exports
 
 # vim: foldmethod=marker :
