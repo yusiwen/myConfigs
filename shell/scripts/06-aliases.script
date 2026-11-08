@@ -9,7 +9,7 @@ alias less='less -R'
 
 # Add some easy shortcuts for formatted directory listings and add a touch of color.
 if ! check_command eza; then
-  if [ "$(uname)" = 'Darwin' ]; then
+  if [ "${OS:-}" = 'Darwin' ]; then
     alias l='ls -GF'
     alias la='ls -G -aF'
     alias ll='ls -G -alF'
@@ -18,6 +18,7 @@ if ! check_command eza; then
     alias l='vdir -h --format=across --color'
     if [ -e /usr/local/bin/ls++ ]; then
       alias la='ls++ -aF'
+      alias ll='ls -la --color=auto'
       alias ls='ls++ -F'
     else
       alias la='ls -a --color=auto'
@@ -49,11 +50,9 @@ fi
 
 # On Mac, to enable italic fonts in iTerm2, TERM must be set to 'xterm-256color-italic'.
 # If ssh to a remote server, the environment may be passed on the remote and it will probable don't know this custom terminal.
-# A possible solution on the local host is to alias ssh
-# See 'https://gist.github.com/sos4nt/3187620' for detail
-if [ "$(uname)" = 'Darwin' ]; then
-  alias ssh='TERM=xterm-256color ssh'
-fi
+# The old iTerm2 workaround (alias ssh='TERM=xterm-256color ssh') forced TERM
+# for every ssh call and dropped truecolor/kitty support. Use
+# `TERM=xterm-256color ssh` explicitly when a remote needs it.
 
 # Make grep more user friendly by highlighting matches
 # and exclude grepping through .svn folders.
@@ -63,16 +62,22 @@ if [ "${OS:-}" != 'Darwin' ]; then
   alias pgrep='pgrep -a'
 fi
 
-alias ag='ag --nogroup'
+if check_command ag; then
+  alias ag='ag --nogroup'
+fi
 
-if [ "$(uname)" = 'Darwin' ]; then
+if [ "${OS:-}" = 'Darwin' ]; then
   alias df='df -h'
-else
+elif command df --total >/dev/null 2>&1; then
   alias df='df -h --total'
+else
+  alias df='df -h'
 fi
 
 # Shortcut for using the Kdiff3 tool for svn diffs.
-alias svnkdiff3='svn diff --diff-cmd kdiff3'
+if check_command svn && check_command kdiff3; then
+  alias svnkdiff3='svn diff --diff-cmd kdiff3'
+fi
 
 # Git {{{
 alias gsbu='git status --short --branch --untracked-files'
@@ -112,8 +117,8 @@ if [ "${OS:-}" = 'Windows_NT' ] && [ -n "${ZSH_VERSION:-}" ]; then
   alias gba='git branch --all'
   alias gbd='git branch --delete'
   alias gbg='LANG=C git branch -vv | grep ": gone\]"'
-  alias gbgD="LANG=C git branch --no-color -vv | grep \": gone\]\" | cut -c 3- | awk '\''{print $1}'\'' | xargs git branch -D"
-  alias gbgd="LANG=C git branch --no-color -vv | grep \": gone\]\" | cut -c 3- | awk '\''{print $1}'\'' | xargs git branch -d"
+  alias gbgD="LANG=C git branch --no-color -vv | grep \": gone\]\" | cut -c 3- | cut -d ' ' -f 1 | xargs -I{} git branch -D {}"
+  alias gbgd="LANG=C git branch --no-color -vv | grep \": gone\]\" | cut -c 3- | cut -d ' ' -f 1 | xargs -I{} git branch -d {}"
   alias gbl='git blame -w'
   alias gbm='git branch --move'
   alias gbnm='git branch --no-merged'
@@ -236,7 +241,6 @@ if [ "${OS:-}" = 'Windows_NT' ] && [ -n "${ZSH_VERSION:-}" ]; then
   alias grbom='git rebase origin/$(git_main_branch)'
   alias grbs='git rebase --skip'
   alias grbum='git rebase upstream/$(git_main_branch)'
-  alias grep='grep -I --color=auto --exclude-dir={.git,.svn,CVS}'
   alias grev='git revert'
   alias greva='git revert --abort'
   alias grevc='git revert --continue'
@@ -281,7 +285,8 @@ if [ "${OS:-}" = 'Windows_NT' ] && [ -n "${ZSH_VERSION:-}" ]; then
   alias gswd='git switch $(git_develop_branch)'
   alias gswm='git switch $(git_main_branch)'
   alias gta='git tag --annotate'
-  alias gtl="gtl(){ git tag --sort=-v:refname -n --list \"${1}*\" }; noglob gtl"
+  unalias gtl 2>/dev/null || true
+  gtl() { git tag --sort=-v:refname -n --list "${1}*"; }
   alias gts='git tag --sign'
   alias gtv='git tag | sort -V'
   alias gunignore='git update-index --no-assume-unchanged'
@@ -293,7 +298,7 @@ if [ "${OS:-}" = 'Windows_NT' ] && [ -n "${ZSH_VERSION:-}" ]; then
   alias gupomi=$'\n    print -Pu2 "%F{yellow}[oh-my-zsh] \'%F{red}gupomi%F{yellow}\' is a deprecated alias, using \'%F{green}gpromi%F{yellow}\' instead.%f"\n    gpromi'
   alias gupv=$'\n    print -Pu2 "%F{yellow}[oh-my-zsh] \'%F{red}gupv%F{yellow}\' is a deprecated alias, using \'%F{green}gprv%F{yellow}\' instead.%f"\n    gprv'
   alias gwch='git whatchanged -p --abbrev-commit --pretty=medium'
-  alias gwip='git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message "--wip-- [skip ci]"'
+  alias gwip='git add -A && git commit --no-verify --no-gpg-sign --message "--wip-- [skip ci]"'
   alias gwipe='git reset --hard && git clean --force -df'
   alias gwt='git worktree'
   alias gwta='git worktree add'
@@ -304,7 +309,9 @@ fi
 # }}}
 
 # Valgrind aliases
-alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v'
+if check_command valgrind; then
+  alias mchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v'
+fi
 
 # Python {{{
 alias python='_python_is_python3'
@@ -349,9 +356,15 @@ if check_command mvn; then
 fi
 
 # K8s
-alias ka='kubeadm'
-alias kc='kubectl'
-alias k9='k9s'
+if check_command kubeadm; then
+  alias ka='kubeadm'
+fi
+if check_command kubectl; then
+  alias kc='kubectl'
+fi
+if check_command k9s; then
+  alias k9='k9s'
+fi
 
 # Docker {{{
 if check_command docker; then
@@ -375,7 +388,9 @@ if check_command docker; then
 
   alias dris='_docker_run_into_shell'
 
-  alias lzd='lazydocker'
+  if check_command lazydocker; then
+    alias lzd='lazydocker'
+  fi
 fi
 # }}}
 
@@ -410,8 +425,10 @@ if check_command vagrant; then
   alias vgtgs='vagrant global-status'
 fi
 
-alias ipa='ip -c a'
-alias ipba='ip -br -c a'
+if check_command ip; then
+  alias ipa='ip -c a'
+  alias ipba='ip -br -c a'
+fi
 
 if [ -e "$HOME/.config/mytmux/tmux.conf" ]; then
   alias tmux='tmux -f $HOME/.config/mytmux/tmux.conf'
