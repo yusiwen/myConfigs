@@ -20,19 +20,29 @@ export OS
 # }}}
 
 # {{{ Locale
-# Never export LC_ALL here: it overrides every other LC_* variable and the
-# user's choice (LC_ALL=C, a non-English LC_TIME, ...). Only provide a UTF-8
-# LANG fallback when nothing is configured and the locale is installed.
-if [ -z "${LC_ALL:-}" ] && [ -z "${LC_CTYPE:-}" ] && [ -z "${LANG:-}" ] &&
-  command -v locale >/dev/null 2>&1; then
-  for _locale in en_US.UTF-8 C.UTF-8 en_US.utf8; do
+# Policy: this shell is English and UTF-8. LC_ALL is never exported — it
+# outranks LANG and every LC_* category, so it would also neutralise
+# per-command overrides such as `LC_TIME=zh_CN.UTF-8 date`.
+# The locale is pinned only when `locale -a` lists it: forcing a locale the
+# host does not install makes libc fall back to C and silently break UTF-8.
+_locale_en=''
+if command -v locale >/dev/null 2>&1; then
+  for _locale in en_US.UTF-8 en_US.utf8 C.UTF-8 C.utf8; do
     if locale -a 2>/dev/null | grep -qix "$_locale"; then
-      export LANG="$_locale"
+      _locale_en=$_locale
       break
     fi
   done
-  unset _locale
 fi
+if [ -n "$_locale_en" ]; then
+  unset LC_ALL
+  export LANG="$_locale_en"
+  export LC_CTYPE="$_locale_en" LC_COLLATE="$_locale_en"
+  export LC_MESSAGES="$_locale_en" LC_MONETARY="$_locale_en"
+  export LC_NUMERIC="$_locale_en" LC_TIME="$_locale_en"
+  export LANGUAGE=en_US:en
+fi
+unset _locale_en _locale
 # }}}
 
 # {{{ Distribution Information
