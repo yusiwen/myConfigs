@@ -72,7 +72,7 @@ opencode = "latest"
 "pypi:ocdbc" = "latest"
 "pypi:cocoindex-code" = "latest"
 "pypi:hf" = "latest"
-"npm:@deepseek-ai/dsh" = { version = "latest", prerelease = true }
+"npm:@deepseek-ai/dsh" = { version = "latest", prerelease = true, trust_policy_excludes = ["encodeurl@2.0.2"] }
 "npm:skills" = "latest"
 shellcheck = "latest"
 "npm:yarn" = "latest"
