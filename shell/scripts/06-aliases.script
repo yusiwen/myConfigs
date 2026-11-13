@@ -452,6 +452,7 @@ fi
 # mu (yusiwen/myUtilities) - was a zinit atload on the gh-r install
 if check_command mu; then
   alias ggcm="mu git commit"
+  alias ggcmc="mu git commit --land='cn'"
   alias ggi="mu git ignore"
   alias ggr="mu git review"
   alias ma="mu ask"
