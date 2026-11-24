@@ -41,6 +41,7 @@ lazygit = "latest"
 gitleaks = "latest"
 gitui = "latest"
 "github:github/git-sizer" = "latest"
+github-cli = "latest"
 # }}}
 
 # {{{ Docker and Kubernetes
